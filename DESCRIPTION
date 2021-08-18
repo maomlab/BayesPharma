@@ -1,0 +1,25 @@
+Package: BayesPharma
+Type: Package
+Title: Tools for Bayesian Analysis of Non-Linear Pharmacology Models
+Description: This package contains tools to analysis pharmacology data using Bayesian Statistics.
+Author: Madeline Martin <martin.mjm105@gmail.com>
+Depends: R (>= 4.0.0),
+    RTools4 (>= 4.0.0),
+    RStan (>= 2.21.1)
+Imports:
+    Rcpp
+    brms
+    devtools
+    dplyr
+    forcats
+    ggplot2
+    modelr
+    rstan
+    rstantools
+    StanHeaders
+    stringr
+    tibble
+    tidybayes
+    tidyr
+    tidyverse
+Encoding: UTF-8
