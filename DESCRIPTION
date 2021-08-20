@@ -1,8 +1,8 @@
 Package: BayesPharma
 Type: Package
 Title: Tools for Bayesian Analysis of Non-Linear Pharmacology Models
-Description: This package contains a collection of R tools to analysis pharmacology 
-    data using Bayesian Statistics.
+Description: This package contains a collection of R tools to analyze pharmacology 
+    data using Bayesian statistics.
 Author: Madeline Martin <martin.mjm105@gmail.com>
 Depends: R (>= 4.0.0),
     RTools4 (>= 4.0.0),
