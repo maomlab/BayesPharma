@@ -1,5 +1,6 @@
 
 
+
 posterior_densities <- function(model,
                                 title_label = "Posterior Density Plots with Mean and 95% CI") {
   posterior <- dplyr::bind_rows(

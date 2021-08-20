@@ -21,9 +21,9 @@ posterior_response_draws <- function(model,
                                    bottom = bottom,
                                    drug_name = Drug) {
   n_sample_draws(model, n) %>%
-    pivot_longer(cols = starts_with("b_"),
-                 names_to = "Parameters",
-                 values_to = "Value") %>%
+    tidyr::pivot_longer(cols = starts_with("b_"),
+                        names_to = "Parameters",
+                        values_to = "Value") %>%
     dplyr::mutate(b_class = stringr::str_extract(Parameters, "b_[a-zA-Z0-9]+") %>%
                     stringr::str_remove("b_"),
                   Drug = stringr::str_extract(Parameters, "Drug.+") %>%
@@ -115,20 +115,20 @@ plot_traj <- function(data,
                       ylabel = NULL) {
   ggplot2::ggplot() +
     ggplot2::geom_point(data = data,
-                        aes(x = log_dose,
-                            y = measurement),
+                        ggplot2::aes(x = log_dose,
+                                     y = measurement),
                         size = 0.5,
                         color = "black") +
     ggplot2::geom_line(data = draws,
-                       aes(x = log_dose,
-                           y = pred_response,
-                           group = draw_id),
+                       ggplot2::aes(x = log_dose,
+                                    y = pred_response,
+                                    group = draw_id),
                        size = 0.4,
                        alpha = 0.2,
                        color = "blueviolet") +
     ggplot2::geom_line(data = mean_draws,
-                       aes(x = log_dose,
-                           y = Response),
+                       ggplot2::aes(x = log_dose,
+                                    y = Response),
                        size = 0.5,
                        alpha = 1.0,
                        color = "black") +
