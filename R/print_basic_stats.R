@@ -1,5 +1,13 @@
 
-
+#' Tibble of mean, median, standard deviation,
+#' and confidence intervals
+#'
+#' @param model brmsfit
+#' @param l_ci decimal of the lower confidence interval (default = 0.025)
+#' @param u_ci decimal of the upper confidence interval (default = 0.975)
+#' @return tibble::tibble
+#'
+#' @export
 
 basic_stats <- function(model,
                         l_ci = 0.025,
