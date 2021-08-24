@@ -1,5 +1,47 @@
 
+#' Displays a tibble of mean, median, standard deviation,
+#' and confidence intervals
+#'
+#' @param model brmsfit
+#' @param l_ci decimal of the lower confidence interval (default = 0.025)
+#' @param u_ci decimal of the upper confidence interval (default = 0.975)
+#' @return tibble::tibble that is required for the 'posterior_densities'
+#' function
+#'
+#' @export
 
+basic_stats <- function(model,
+                        l_ci = 0.025,
+                        u_ci = 0.975) {
+
+  ple_info <- brms::fixef(model, probs = c(l_ci,u_ci))
+
+  model %>%
+    brms::posterior_samples() %>%
+    tidyr::gather(factor_key = TRUE) %>%
+    dplyr::group_by(key) %>%
+    dplyr::summarise(Mean = mean(value),
+                     SD= sd(value),
+                     Median = median(value),
+    ) %>%
+    dplyr::rename(variable = key) %>%
+    dplyr::filter(!stringr::str_detect(variable, "__$")) %>%
+    dplyr::filter(!stringr::str_detect(variable, "sigma")) %>%
+    cbind(l_ci = c(ple_info[ ,3]),
+          u_ci = c(ple_info[ ,4]))
+}
+
+
+#'Create a plot of the posterior density distributions of modeled parameters
+#'
+#'The 'basic_stats' function is used to plot the mean, lower confidence
+#'interval, and upper confidence interval
+#'
+#'@param model brmsfit
+#'@param title_label string
+#'@return ggplot2::ggplot object
+#'
+#'@export
 
 posterior_densities <- function(model,
                                 title_label = "Posterior Density Plots with Mean and 95% CI") {

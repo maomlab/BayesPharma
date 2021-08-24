@@ -1,5 +1,10 @@
 
-
+#' Dataframe of posterior samples of modeled parameters from brmsfit
+#'
+#'@param model brmsfit
+#'@param n number of samples from the posterior distribution (default n = 100)
+#'@return df that is required for the 'posterior_response_draws' function
+#'
 
 n_sample_draws <- function(model,
                            n= 100) {
@@ -9,7 +14,28 @@ n_sample_draws <- function(model,
     dplyr::mutate(draw_id = dplyr::row_number())
   }
 
-
+#' Tibble of draw_id, Drug, ec50, hill, top, bottom, and Response from a
+#' sample of the posterior distribution
+#'
+#'@param model brmsfit
+#'@param n number of samples from the posterior distribution (default n = 100).
+#'@param lower number for the lowest log_dose value to be used for calculating
+#'Response (default = -12).
+#'@param upper number for the highest log_dose value to be used for calculating
+#'Response (default = -3).
+#'@param ec50 effective concentration that induces half of the maximum effect.
+#'EC50 can be modeled by brmsfit or a fixed log dose value. (default = ec50)
+#'@param hill slope factor. Hill can be modeled by brmsfit or a fixed value.
+#'The standard slope for dose response curves is 1.0 for an agonist and -1.0
+#'for an inhibitor. (default = hill)
+#'@param top maximum response value. Top can be modeled by brmsfit or a fixed
+#'value. (default = top)
+#'@param bottom minimum response value. Bottom can be modeled by brmsfit or a
+#'fixed value. (default = bottom)
+#'@param drug_name string. The name of the drug being analyzed (default = Drug)
+#'@return tibble::tibble required for the 'plot_trajectories' function
+#'
+#'@export
 
 posterior_response_draws <- function(model,
                                    n = 100,
@@ -55,7 +81,28 @@ posterior_response_draws <- function(model,
     dplyr::mutate(Drug = ifelse(is.na(Drug), replace_na(drug_name), Drug))
   }
 
-
+#' Tibble of Drug, mean ec50, mean hill, mean top, mean bottom, and
+#' mean Response of the posterior distribution.
+#'
+#'@param model brmsfit
+#'@param n number of samples from the posterior distribution (default n = 100).
+#'@param lower number for the lowest log_dose value to be used for calculating
+#'Response (default = -12).
+#'@param upper number for the highest log_dose value to be used for calculating
+#'Response (default = -3).
+#'@param ec50 effective concentration that induces half of the maximum effect.
+#'EC50 can be modeled by brmsfit or a fixed log dose value. (default = ec50)
+#'@param hill slope factor. Hill can be modeled by brmsfit or a fixed value.
+#'The standard slope for dose response curves is 1.0 for an agonist and -1.0
+#'for an inhibitor. (default = hill)
+#'@param top maximum response value. Top can be modeled by brmsfit or a fixed
+#'value. (default = top)
+#'@param bottom minimum response value. Bottom can be modeled by brmsfit or a
+#'fixed value. (default = bottom)
+#'@param drug_name string. The name of the drug being analyzed (default = Drug)
+#'@return tibble::tibble required for the 'plot_trajectories' function
+#'
+#'@export
 
 posterior_mean <- function(model,
                            n = 100,
@@ -103,16 +150,31 @@ posterior_mean <- function(model,
     dplyr::mutate(Drug = ifelse(is.na(Drug), replace_na(drug_name), Drug))
   }
 
+#' Create a plot of the predicted responses from the posterior distribution
+#'
+#'@param data is the tibble or dataframe used for the brmsfit
+#'@param measurement is the column in 'data' containing response values.
+#'@param draws is the tibble::tibble returned from the
+#''posterior_response_draws' function
+#'@param pred_response is the 'Response' column in the tibble::tibble returned
+#'from the 'posterior_response_draws' function.
+#'@param mean_draws is the tibble::tibble returned from the 'posterior_mean'
+#'function
+#'@param title a string for the plot title (default = NULL)
+#'@param xlabel a string for the x-axis label (default = NULL)
+#'@param ylabel a string for the y-axis label (default = NULL)
+#'@return a ggplot2::ggplot object
+#'
+#'@export
 
-
-plot_traj <- function(data,
-                      measurement,
-                      draws,
-                      pred_response,
-                      mean_draws,
-                      title = NULL,
-                      xlabel = NULL,
-                      ylabel = NULL) {
+plot_trajectories <- function(data,
+                              measurement,
+                              draws,
+                              pred_response,
+                              mean_draws,
+                              title = NULL,
+                              xlabel = NULL,
+                              ylabel = NULL) {
   ggplot2::ggplot() +
     ggplot2::geom_point(data = data,
                         ggplot2::aes(x = log_dose,
