@@ -160,9 +160,9 @@ posterior_mean <- function(model,
 #'from the 'posterior_response_draws' function.
 #'@param mean_draws is the tibble::tibble returned from the 'posterior_mean'
 #'function
-#'@param title a string for the plot title (default = NULL)
-#'@param xlabel a string for the x-axis label (default = NULL)
-#'@param ylabel a string for the y-axis label (default = NULL)
+#'@param title string for the plot title (default = NULL)
+#'@param xlabel string for the x-axis label (default = NULL)
+#'@param ylabel string for the y-axis label (default = NULL)
 #'@return a ggplot2::ggplot object
 #'
 #'@export
