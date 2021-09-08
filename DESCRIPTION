@@ -6,27 +6,28 @@ Description: This package contains a collection of R tools to analyze pharmacolo
 Author: Madeline Martin <martin.mjm105@gmail.com>
 Version: 0.0.1
 Depends: 
-    R (>= 4.0.0),
-    RTools4 (>= 4.0.0),
-    RStan (>= 2.21.1)
+    R (>= 4.1.0)
 Imports:
-    Rcpp
-    brms
-    devtools
-    dplyr
-    forcats
-    ggplot2
-    modelr
-    rstan
-    rstantools
-    StanHeaders
-    stringr
-    tibble
-    tidybayes
-    tidyr
+    Rcpp,
+    brms,
+    devtools,
+    dplyr,
+    forcats,
+    ggplot2,
+    modelr,
+    rstan,
+    rstantools,
+    StanHeaders,
+    stringr,
+    tibble,
+    tidybayes,
+    tidyr,
     tidyverse
 Collage: 
-    'print_basic_stats.R'
-    'plot_posterior_density_distribution.R'
-    'plot_fitted_model.R'
+    'run_dr_brm_model.R',
+    'plot_posterior_density_distributions.R',
+    'plot_fitted_model_draws.R',
+    'create_default_inits.R',
+    'create_default_priors.R',
+    'plot_trace.R'
 Encoding: UTF-8

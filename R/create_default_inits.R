@@ -22,35 +22,46 @@ default_inits <- function(ec50 = TRUE,
                           top = TRUE,
                           bottom = TRUE,
                           chains = 4) {
-  init_list <- list()
+
   if (ec50 == TRUE){
-    init_list <- list(init_list, ec50 = -9)
+    ec50_init <-  -9
   } else {
+    ec50_init <- NULL
     print("ec50 is a fixed parameter. If not, set ec50 = TRUE.")
   }
   if (hill == TRUE && agonist == TRUE){
-    init_list <- list(init_list, hill = 1)
+    hill_init <- 1
     print("hill is a positive slope.")
   } else if (hill == TRUE && agonist == FALSE) {
-    print("hill is anegative slope.")
-    init_list <- list(init_list, hill = -1)
+    print("hill is a negative slope.")
+    hill_init <- -1
   } else{
-      print("hill is a fixed parameter. If not, set hill = TRUE.")
+    hill_init <- NULL
+    print("hill is a fixed parameter. If not, set hill = TRUE.")
   }
   if (top == TRUE){
-    init_list <- list(init_list, top = 100)
+    top_init <- 100
   } else {
+    top_init <- NULL
     print("top is a fixed parameter. If not, set top = TRUE.")
   }
   if (bottom == TRUE){
-    init_list <- list(init_list, bottom = 0)
+    bottom_init <- 0
   } else {
+    bottom_init <- NULL
     print("bottom is a fixed parameter. If not, set bottom = TRUE.")
   }
-
-  inits <- list()
-  for( i in chains){
-    inits <- list(inits, inits_list)
-  }
+  init_list <- list(ec50 = ec50_init,
+                    hill = hill_init,
+                    top = top_init,
+                    bottom = bottom_init)
+  # inits <- list()
+  inits <- list(init_list, init_list, init_list, init_list)
+  # i = 0
+  # while( i <= 4){
+  #   inits <- list(inits, init_list)
+  #   i = i + 1
+  # }
+  return(inits)
 
 }
