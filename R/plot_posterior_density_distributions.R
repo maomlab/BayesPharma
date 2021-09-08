@@ -69,12 +69,12 @@ posterior_densities <- function(model,
       color = "red"
     ) +
     ggplot2::geom_rect(
-      ggplot2::aes(xmin = -Inf, xmax = l_95, ymin = -Inf, ymax = Inf),
+      ggplot2::aes(xmin = -Inf, xmax = l_ci, ymin = -Inf, ymax = Inf),
       basic_stats(model),
       color = "gray",
       alpha = 0.5) +
     ggplot2::geom_rect(
-      ggplot2::aes(xmin = u_95, xmax = Inf, ymin = -Inf, ymax = Inf),
+      ggplot2::aes(xmin = u_ci, xmax = Inf, ymin = -Inf, ymax = Inf),
       basic_stats(model),
       color = "gray",
       alpha = 0.5) +

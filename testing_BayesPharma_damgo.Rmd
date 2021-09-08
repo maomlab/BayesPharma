@@ -1,0 +1,88 @@
+---
+title: "Testing Package Using Damgo"
+output: html_document
+---
+
+```{r}
+library("readxl")
+xl_damgo_dr <- "C:/Users/marti/Downloads/damgo_dr_reformatted.xlsx"
+
+damgo <- read_excel(xl_damgo_dr)
+
+damgo
+```
+
+```{r}
+ggplot2::ggplot(damgo) +
+  ggplot2::geom_point(
+    ggplot2::aes(x = log_dose,
+        y = response),
+    size = 1.0,
+    color = "black") +
+  ggplot2::labs(title = "Dose Response",
+       x = "Log Dose",
+       y = "Response")
+```
+
+```{r}
+damgo_inits <- default_inits(agonist = FALSE)
+damgo_inits
+```
+
+```{r}
+damgo_priors <- default_priors(agonist = FALSE)
+damgo_priors
+```
+
+```{r}
+damgo_model <- brms::brm(
+  formula = brms::brmsformula( 
+    response ~ (bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))), 
+    ec50 + hill + top + bottom ~ 1, 
+    nl = TRUE),
+  data = damgo,
+  prior = damgo_priors,
+  inits = damgo_inits,
+  iter = 8000,
+  chains = 4,
+  control = list(adapt_delta = 0.99, max_treedepth = 10)
+)
+
+damgo_model
+```
+
+```{r}
+traceplot(damgo_model)
+```
+
+```{r}
+damgo_posterior_draws <- posterior_response_draws(damgo_model,
+                                                  lower = -9,
+                                                  upper = -3, 
+                                                  drug_name = "Damgo")
+damgo_posterior_mean <- posterior_mean(damgo_model, 
+                                       lower = -9,
+                                       upper = -3,
+                                       drug_name = "Damgo")
+plot_trajectories(damgo, 
+                  damgo$response, 
+                  damgo_posterior_draws, 
+                  damgo_posterior_draws$Response,
+                  damgo_posterior_mean)
+```
+
+```{r}
+posterior_densities(damgo_model)
+```
+
+```{r}
+default_priors(ec50 = -6.5, agonist = FALSE)
+```
+
+
+```{r}
+dr_bayes_model(damgo, 
+               priors = default_priors(ec50 = -6.5, agonist = FALSE),
+               inits = default_inits(agonist = FALSE))
+```
+

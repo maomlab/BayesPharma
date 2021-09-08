@@ -24,19 +24,21 @@ default_priors <- function(ec50 = TRUE,
 
 
   if (ec50 == TRUE) {
-    ec50_prior <- brms::prior(stats::rnorm(-7,5), nlpar = 'ec50')
+    ec50_prior <- brms::prior(normal(-7,5), nlpar = 'ec50')
 
   } else {
-    ec50_prior <- NULL
-    print("ec50 is a fixed value or ec50 does not equal 'ec50' or 'ic50' ")
+    print(ec50)
+    ec50_prior <- brms::prior(constant(ec50), nlpar = 'ec50')
+    print("ec50 is a constant or ec50 does not equal 'ec50' or 'ic50' ")
+
   }
   if (hill == TRUE && agonist == TRUE) {
-    hill_prior <- brms::prior(stats::rnorm(1,4),
+    hill_prior <- brms::prior(normal(1,3),
                               nlpar = 'hill',
                               lb = -0.01)
 
   } else if (hill == TRUE && agonist == FALSE) {
-    hill_prior <- c(priors, brms::prior(stats::rnorm(-1,4),
+    hill_prior <- c(brms::prior(normal(-1,3),
                                         nlpar = 'hill',
                                         ub = 0.01))
 
@@ -47,7 +49,7 @@ default_priors <- function(ec50 = TRUE,
   }
 
   if (top == TRUE) {
-    top_prior <- brms::prior(stats::rnorm(100,25), nlpar = "top")
+    top_prior <- brms::prior(normal(100,25), nlpar = "top")
 
   } else {
     top_prior <- NULL
@@ -55,7 +57,7 @@ default_priors <- function(ec50 = TRUE,
   }
 
   if (bottom == TRUE) {
-    bottom_prior <- brms::prior(stats::rnorm(0,25), nlpar = "bottom")
+    bottom_prior <- brms::prior(normal(0,25), nlpar = "bottom")
 
   } else {
     bottom_prior <- NULL
