@@ -27,18 +27,17 @@ default_priors <- function(ec50 = TRUE,
     ec50_prior <- brms::prior(normal(-7,5), nlpar = 'ec50')
 
   } else {
-    print(ec50)
-    ec50_prior <- brms::prior(constant(ec50), nlpar = 'ec50')
+    ec50_prior <- NULL
     print("ec50 is a constant or ec50 does not equal 'ec50' or 'ic50' ")
 
   }
   if (hill == TRUE && agonist == TRUE) {
-    hill_prior <- brms::prior(normal(1,3),
+    hill_prior <- brms::prior(normal(1,2),
                               nlpar = 'hill',
                               lb = -0.01)
 
   } else if (hill == TRUE && agonist == FALSE) {
-    hill_prior <- c(brms::prior(normal(-1,3),
+    hill_prior <- c(brms::prior(normal(-1,2),
                                         nlpar = 'hill',
                                         ub = 0.01))
 
