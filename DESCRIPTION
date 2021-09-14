@@ -22,12 +22,15 @@ Imports:
     tibble,
     tidybayes,
     tidyr,
-    tidyverse
+    tidyverse,
+    bayesplot
 Collage: 
     'run_dr_brm_model.R',
     'plot_posterior_density_distributions.R',
     'plot_fitted_model_draws.R',
     'create_default_inits.R',
-    'create_default_priors.R',
-    'plot_trace.R'
+    'create_priors.R',
+    'plot_trace.R',
+    'data_preparation.R',
+    'plot_prior_posterior_check.R'
 Encoding: UTF-8
