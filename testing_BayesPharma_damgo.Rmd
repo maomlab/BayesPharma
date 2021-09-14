@@ -4,6 +4,18 @@ output: html_document
 ---
 
 ```{r}
+library("Rcpp")
+library("tidyverse")
+library("devtools")
+library("brms")
+library("rstan")
+library("rstantools")
+library("tidybayes")
+library("ggplot2")
+library("readxl")
+```
+
+```{r}
 library("readxl")
 xl_damgo_dr <- "C:/Users/marti/Downloads/damgo_dr_reformatted.xlsx"
 
@@ -30,8 +42,25 @@ damgo_inits
 ```
 
 ```{r}
-damgo_priors <- default_priors(agonist = FALSE)
+damgo_priors <- make_priors(hill = FALSE, 
+                            agonist = FALSE)
 damgo_priors
+```
+
+```{r}
+sampling_priors <- single_drug_model(damgo, 
+                                     "response",
+                                     "log_dose",
+                                     priors = damgo_priors,
+                                     inits = damgo_inits,
+                                     sample_prior = "only")
+sampling_priors
+```
+
+```{r}
+plot_pp_check(sampling_priors, n = 50) + 
+  ggplot2::xlim(-200,200) +
+  ggplot2::ylim(0, 0.1)
 ```
 
 ```{r}
@@ -46,26 +75,56 @@ damgo_model
 
 
 ```{r}
-traceplot(damgo_model)
+BayesPharma::traceplot(damgo_model)
 ```
 
 ```{r}
-damgo_posterior_draws <- posterior_response_draws(damgo_model,
-                                                  lower = -9,
-                                                  upper = -3, 
-                                                  drug_name = "Damgo")
-damgo_posterior_mean <- posterior_mean(damgo_model, 
-                                       lower = -9,
-                                       upper = -3,
-                                       drug_name = "Damgo")
-plot_trajectories(damgo, 
-                  damgo$response, 
-                  damgo_posterior_draws, 
-                  damgo_posterior_draws$Response,
-                  damgo_posterior_mean)
+damgo_draws <- posterior_response_draws(damgo_model, 
+                                        lower = -9, 
+                                        upper = -3,
+                                        drug_name = "Damgo")
+
+damgo_draw_means <- posterior_mean(damgo_model,
+                                   lower = -9, 
+                                   upper = -3,
+                                   drug_name = "Damgo")
+
+plot_trajectories(damgo,
+                  drug_col_name = NULL,
+                  damgo$response,
+                  damgo_draws,
+                  damgo_draws$Response,
+                  damgo_draw_means)
+```
+
+
+```{r}
+
+plot_draws_data(model = damgo_model,
+                n = 100,
+                lower = -9,
+                upper = -3,
+                ec50 = ec50,
+                hill = hill,
+                top = top,
+                bottom = bottom,
+                drug_name = "Damgo",
+                data = damgo,
+                drug_col_name = NULL,
+                measurement = damgo$response,
+                draws,
+                pred_response,
+                mean_draws,
+                title = NULL,
+                xlabel = "Log Dose",
+                ylabel = "Response")
 ```
 
 ```{r}
 posterior_densities(damgo_model)
+```
+
+```{r}
+plot_ppcheck(damgo_model)
 ```
 
