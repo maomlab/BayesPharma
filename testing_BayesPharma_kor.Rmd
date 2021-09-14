@@ -1,0 +1,78 @@
+---
+title: "KOR antagonists"
+output: html_document
+---
+
+
+```{r}
+library("Rcpp")
+library("tidyverse")
+library("devtools")
+library("brms")
+library("rstan")
+library("rstantools")
+library("tidybayes")
+library("ggplot2")
+library("readxl")
+
+```
+
+---
+Load data
+```{r}
+xl_kor_antag_dr <- "C:/Users/marti/Downloads/kor_antag_dose_response_data.xlsx"
+
+kor_antag <- read_excel(xl_kor_antag_dr)
+
+kor_antag
+```
+
+```{r}
+kor_model <- multi_drug_model(kor_antag, 
+                              "normalized_measurement", 
+                              "log_dose", 
+                              "Drug", 
+                              priors = make_priors(agonist = FALSE),
+                              inits = default_inits(agonist = FALSE))
+```
+
+```{r}
+kor_model
+```
+
+
+```{r}
+BayesPharma::traceplot(kor_model)
+```
+
+```{r}
+BayesPharma::basic_stats(kor_model)
+```
+
+```{r}
+
+kor_draws <- posterior_response_draws(kor_model)
+
+kor_draw_means <- posterior_mean(kor_model)
+
+plot_trajectories(kor_antag,
+                  "Drug",
+                  kor_antag$normalized_measurement,
+                  kor_draws,
+                  kor_draws$Response,
+                  kor_draw_means)
+
+
+```
+
+```{r}
+posterior_densities(kor_model)
+```
+
+```{r}
+make_priors(ec50 = brms::prior(normal(-8,2),nlpar = "ec50"),
+               hill = FALSE,
+               agonist = FALSE,
+               top = FALSE)
+```
+
