@@ -45,7 +45,7 @@ posterior_response_draws <- function(model,
                                      hill = hill,
                                      top = top,
                                      bottom = bottom,
-                                     drug_name = drug) {
+                                     drug_name = NULL) {
   n_sample_draws(model, n) %>%
     tidyr::pivot_longer(cols = starts_with("b_"),
                         names_to = "Parameters",
