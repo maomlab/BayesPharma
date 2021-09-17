@@ -16,6 +16,10 @@ library("readxl")
 ```
 
 ```{r}
+load_all()
+```
+
+```{r}
 library("readxl")
 xl_damgo_dr <- "C:/Users/marti/Downloads/damgo_dr_reformatted.xlsx"
 
@@ -42,18 +46,19 @@ damgo_inits
 ```
 
 ```{r}
-damgo_priors <- make_priors(hill = FALSE, 
-                            agonist = FALSE)
+damgo_priors <- make_priors(hill = -1, 
+                            top = 100)
 damgo_priors
 ```
 
 ```{r}
-sampling_priors <- single_drug_model(damgo, 
-                                     "response",
-                                     "log_dose",
-                                     priors = damgo_priors,
-                                     inits = damgo_inits,
-                                     sample_prior = "only")
+sampling_priors <- dose_response_model(damgo, 
+                                       "response",
+                                       "log_dose",
+                                       priors = damgo_priors,
+                                       inits = damgo_inits,
+                                       sample_prior = "only"
+                                       )
 sampling_priors
 ```
 
@@ -64,11 +69,13 @@ plot_pp_check(sampling_priors, n = 50) +
 ```
 
 ```{r}
-damgo_model <- single_drug_model(damgo, 
-                                 "response", 
-                                 "log_dose", 
-                                 priors = damgo_priors,
-                                 inits = damgo_inits)
+
+damgo_model <- dose_response_model(damgo, 
+                                   "response", 
+                                   "log_dose",
+                                   formula = dose_response_formula(),
+                                   priors = damgo_priors,
+                                   inits = damgo_inits)
 
 damgo_model
 ```

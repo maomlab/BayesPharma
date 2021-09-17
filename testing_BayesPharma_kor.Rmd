@@ -32,8 +32,8 @@ kor_model <- multi_drug_model(kor_antag,
                               "normalized_measurement", 
                               "log_dose", 
                               "Drug", 
-                              priors = make_priors(agonist = FALSE),
-                              inits = default_inits(agonist = FALSE))
+                               priors = make_priors(agonist = FALSE),
+                               inits = default_inits(agonist = FALSE))
 ```
 
 ```{r}
