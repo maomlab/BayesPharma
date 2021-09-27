@@ -16,12 +16,12 @@
 #'
 #'@export
 
-default_inits <- function(ec50 = -9,
-                          hill = TRUE,
-                          agonist = TRUE,
-                          top = 100,
-                          bottom = 0,
-                          chains = 4) {
+dr_inits <- function(ec50 = -9,
+                     hill = TRUE,
+                     agonist = TRUE,
+                     top = 100,
+                     bottom = 0,
+                     chains = 4) {
 
   ec50_init <- ec50
 
