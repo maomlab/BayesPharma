@@ -24,11 +24,15 @@ basic_stats <- function(model,
                      SD= sd(value),
                      Median = median(value),
     ) %>%
-    dplyr::rename(variable = key) %>%
-    dplyr::filter(!stringr::str_detect(variable, "__$")) %>%
-    dplyr::filter(!stringr::str_detect(variable, "sigma")) %>%
+    dplyr::filter(!stringr::str_detect(key, "__$")) %>%
+    dplyr::filter(!stringr::str_detect(key, "sigma")) %>%
+    dplyr::select(-key) %>%
     cbind(l_ci = c(ple_info[ ,3]),
-          u_ci = c(ple_info[ ,4]))
+          u_ci = c(ple_info[ ,4])) %>%
+    tibble::rownames_to_column("variables") %>%
+    dplyr::mutate(variables = stringr::str_extract(variables,
+                                                   "[a-zA-Z0-9]+.{1,100}") %>%
+                    stringr::str_remove("predictors"))
 }
 
 
@@ -52,7 +56,13 @@ posterior_densities <- function(model,
       dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
       dplyr::filter(!stringr::str_detect(.variable, "sigma"))
   ) %>%
-    dplyr::rename(variable = .variable)
+    dplyr::rename(variables = .variable) %>%
+    dplyr::mutate(variables = stringr::str_extract(variables,
+                                                   "b_[a-zA-Z0-9]+.{1,100}") %>%
+                    stringr::str_remove("b_")) %>%
+    dplyr::mutate(variables = stringr::str_extract(variables,
+                                                   "[a-zA-Z0-9]+.{1,100}") %>%
+                    stringr::str_remove("predictors"))
 
   ggplot2::ggplot(data = posterior) +
     ggplot2::theme_bw() +
@@ -81,7 +91,7 @@ posterior_densities <- function(model,
     ggplot2::ggtitle(
       label = paste0(title_label)) +
     ggplot2::facet_wrap(
-      facets = dplyr::vars(variable),
+      facets = dplyr::vars(variables),
       scales = "free") +
     ggplot2::scale_y_continuous("Density") +
     ggplot2::scale_x_continuous("Parameter Value") +
