@@ -12,11 +12,11 @@
 #'
 #'@export
 
-make_priors <- function(ec50 = NULL,
-                           hill = NULL,
-                           agonist = TRUE,
-                           top = NULL,
-                           bottom = NULL) {
+dr_priors <- function(ec50 = NULL,
+                      hill = NULL,
+                      agonist = TRUE,
+                      top = NULL,
+                      bottom = NULL) {
 
   cat("If the function arguments ec50, hill, top, bottom = NULL, pre-set
   normal distribution priors will be set. If agonist = TRUE, hill is positive.
