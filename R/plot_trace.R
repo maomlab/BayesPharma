@@ -9,7 +9,16 @@
 
 traceplot <- function(model,
                       title = NULL) {
-  bayesplot::mcmc_trace(model) +
+
+  model_parnames <- brms::parnames(model) %>%
+    stringr::str_remove("b_") %>%
+    stringr::str_remove("predictors")
+  model_parnames <- head(model_parnames, -2)
+
+  model_array <- as.array(model)[, , 1:length(model_parnames)]
+  dimnames(model_array)[[3]] <- model_parnames
+
+  bayesplot::mcmc_trace(model_array) +
     ggplot2::ggtitle(
       label = paste0("Trace Plot:", title)
     )
