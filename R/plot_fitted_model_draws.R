@@ -14,7 +14,7 @@ n_sample_draws <- function(model,
     dplyr::mutate(draw_id = dplyr::row_number())
   }
 
-#' Tibble of draw_id, drug, ec50, hill, top, bottom, and Response from a
+#' Tibble of draw_id, predictors, ec50, hill, top, bottom, and Response from a
 #' sample of the posterior distribution
 #'
 #'@param model brmsfit
@@ -32,7 +32,7 @@ n_sample_draws <- function(model,
 #'value. (default = top)
 #'@param bottom minimum response value. Bottom can be modeled by brmsfit or a
 #'fixed value. (default = bottom)
-#'@param drug_name string. The name of the drug being analyzed (default = drug)
+#'@param predictor_name string. The name of the predictor being analyzed (default = predictor)
 #'@return tibble::tibble required for the 'plot_trajectories' function
 #'
 #'@export
@@ -45,21 +45,21 @@ posterior_response_draws <- function(model,
                                      hill = hill,
                                      top = top,
                                      bottom = bottom,
-                                     drug_name = NULL) {
+                                     predictor_name = NULL) {
   n_sample_draws(model, n) %>%
     tidyr::pivot_longer(cols = starts_with("b_"),
                         names_to = "Parameters",
                         values_to = "Value") %>%
     dplyr::mutate(b_class = stringr::str_extract(Parameters, "b_[a-zA-Z0-9]+") %>%
                     stringr::str_remove("b_"),
-                  drug = stringr::str_extract(Parameters, "drug.+") %>%
-                    stringr::str_remove("drug")) %>%
+                  predictors = stringr::str_extract(Parameters, "predictors.+") %>%
+                    stringr::str_remove("predictors")) %>%
     dplyr::mutate() %>%
     dplyr::select(-Parameters) %>%
-    tidyr::pivot_wider(id_cols = c("draw_id", "drug"),
+    tidyr::pivot_wider(id_cols = c("draw_id", "predictors"),
                        names_from = "b_class",
                        values_from = "Value") %>%
-    dplyr::mutate(drug = drug, ec50 = ec50, hill = hill, top = top, bottom = bottom) %>%
+    dplyr::mutate(predictors = predictors, ec50 = ec50, hill = hill, top = top, bottom = bottom) %>%
     dplyr::rowwise() %>%
     dplyr::do({
       params <- .
@@ -70,7 +70,7 @@ posterior_response_draws <- function(model,
             to = log10(1*10^(upper)),
             length.out = 100)),
         draw_id = params$draw_id,
-        drug = params$drug,
+        predictors = params$predictors,
         ec50 = params$ec50,
         hill = params$hill,
         top = params$top,
@@ -78,10 +78,10 @@ posterior_response_draws <- function(model,
       )
     }) %>%
     dplyr::mutate(Response = bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))) %>%
-    dplyr::mutate(drug = ifelse(is.na(drug), replace_na(drug_name), drug))
+    dplyr::mutate(predictors = ifelse(is.na(predictors), replace_na(predictor_name), predictors))
   }
 
-#' Tibble of drug, mean ec50, mean hill, mean top, mean bottom, and
+#' Tibble of predictors, mean ec50, mean hill, mean top, mean bottom, and
 #' mean Response of the posterior distribution.
 #'
 #'@param model brmsfit
@@ -99,7 +99,7 @@ posterior_response_draws <- function(model,
 #'value. (default = top)
 #'@param bottom minimum response value. Bottom can be modeled by brmsfit or a
 #'fixed value. (default = bottom)
-#'@param drug_name string. The name of the drug being analyzed (default = drug)
+#'@param predictors_name string. The name of the predictors being analyzed (default = predictors)
 #'@return tibble::tibble required for the 'plot_trajectories' function
 #'
 #'@export
@@ -112,7 +112,7 @@ posterior_mean <- function(model,
                            hill = hill,
                            top = top,
                            bottom = bottom,
-                           drug_name = drug) {
+                           predictor_name = predictors) {
   model %>%
     brms::posterior_samples() %>%
     tidyr::gather(factor_key = TRUE) %>%
@@ -123,13 +123,13 @@ posterior_mean <- function(model,
     dplyr::filter(!stringr::str_detect(variable, "sigma")) %>%
     dplyr::mutate(b_class = stringr::str_extract(variable, "b_[a-zA-Z0-9]+")%>%
                     stringr::str_remove("b_"),
-                  drug = stringr::str_extract(variable, "drug.+")%>%
-                    stringr::str_remove("drug")) %>%
+                  predictors = stringr::str_extract(variable, "predictors.+")%>%
+                    stringr::str_remove("predictors")) %>%
     dplyr::select(-variable) %>%
-    tidyr::pivot_wider(id_cols = c("drug"),
+    tidyr::pivot_wider(id_cols = c("predictors"),
                        names_from = "b_class",
                        values_from = "Mean") %>%
-    dplyr::mutate(drug = drug, ec50 = ec50, hill = hill, top = top, bottom = bottom) %>%
+    dplyr::mutate(predictors = predictors, ec50 = ec50, hill = hill, top = top, bottom = bottom) %>%
     dplyr::rowwise() %>%
     dplyr::do({
       params <- .
@@ -139,7 +139,7 @@ posterior_mean <- function(model,
             from = log10(1*10^(lower)),
             to = log10(1*10^(upper)),
             length.out = 100)),
-        drug = params$drug,
+        predictors = params$predictors,
         ec50 = params$ec50,
         hill = params$hill,
         top = params$top,
@@ -147,7 +147,7 @@ posterior_mean <- function(model,
       )
     }) %>%
     dplyr::mutate(Response = bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))) %>%
-    dplyr::mutate(drug = ifelse(is.na(drug), replace_na(drug_name), drug))
+    dplyr::mutate(predictors = ifelse(is.na(predictors), replace_na(predictor_name), predictors))
   }
 
 #' Create a plot of the predicted responses from the posterior distribution
@@ -168,7 +168,7 @@ posterior_mean <- function(model,
 #'@export
 
 plot_trajectories <- function(data,
-                              drug_col_name = NULL,
+                              predictors_col_name = NULL,
                               measurement,
                               draws,
                               pred_response,
@@ -179,7 +179,7 @@ plot_trajectories <- function(data,
 
 
   input_data <- data %>%
-    dplyr::rename(drug = drug_col_name)
+    dplyr::rename(predictors = predictors_col_name)
 
   ggplot2::ggplot() +
     ggplot2::geom_point(data = input_data,
@@ -205,7 +205,7 @@ plot_trajectories <- function(data,
                   x = xlabel,
                   y = ylabel) +
     ggplot2::facet_wrap(
-      facets = dplyr::vars(drug))
+      facets = dplyr::vars(predictors))
   }
 
 #'
@@ -223,9 +223,9 @@ plot_draws_data <- function(model,
                             hill = hill,
                             top = top,
                             bottom = bottom,
-                            drug_name = drug,
+                            predictors_name = predictors,
                             data,
-                            drug_col_name = NULL,
+                            predictors_col_name = NULL,
                             measurement,
                             draws,
                             pred_response,
@@ -242,7 +242,7 @@ plot_draws_data <- function(model,
                                          hill,
                                          top,
                                          bottom,
-                                         drug_name)
+                                         predictors_name)
 
   resp_draws_mean <- posterior_response_draws(model,
                                               n,
@@ -252,10 +252,10 @@ plot_draws_data <- function(model,
                                               hill,
                                               top,
                                               bottom,
-                                              drug_name)
+                                              predictors_name)
 
   draws_plot <- plot_trajectories(data,
-                                  drug_col_name,
+                                  predictors_col_name,
                                   measurement,
                                   draws = resp_draws,
                                   pred_response = resp_draws$Response,
