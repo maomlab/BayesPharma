@@ -14,6 +14,7 @@ library("rstantools")
 library("tidybayes")
 library("ggplot2")
 library("readxl")
+library("bayesplot")
 
 ```
 
@@ -28,25 +29,46 @@ kor_antag
 ```
 
 ```{r}
-kor_model <- multi_drug_model(kor_antag, 
-                              "normalized_measurement", 
-                              "log_dose", 
-                              "Drug", 
-                               priors = make_priors(agonist = FALSE),
-                               inits = default_inits(agonist = FALSE))
+kor_sample_priors <- dose_response_model(kor_antag, 
+                                         "normalized_measurement", 
+                                         "log_dose", 
+                                         "Drug",
+                                         sigmoid_formula = predictors_dr_formula(),
+                                         priors = dr_priors(agonist = FALSE, top = 100),
+                                         inits = dr_inits(agonist = FALSE),
+                                         sample_prior = "only")
+kor_sample_priors
 ```
 
 ```{r}
+BayesPharma::plot_pp_check(kor_sample_priors)  + 
+  ggplot2::xlim(-200,200) +
+  ggplot2::ylim(0, 0.01)
+```
+
+```{r}
+kor_model <- dose_response_model(kor_antag, 
+                                 "normalized_measurement", 
+                                 "log_dose", 
+                                 "Drug",
+                                 sigmoid_formula = predictors_dr_formula(),
+                                 priors = dr_priors(agonist = FALSE, top = 100),
+                                 inits = dr_inits(agonist = FALSE))
+
 kor_model
 ```
 
-
 ```{r}
-BayesPharma::traceplot(kor_model)
+BayesPharma::traceplot(kor_model) 
 ```
 
 ```{r}
-BayesPharma::basic_stats(kor_model)
+BayesPharma::plot_pp_check(kor_model)
+```
+
+
+```{r}
+BayesPharma::basic_stats(kor_model) 
 ```
 
 ```{r}
@@ -69,10 +91,5 @@ plot_trajectories(kor_antag,
 posterior_densities(kor_model)
 ```
 
-```{r}
-make_priors(ec50 = brms::prior(normal(-8,2),nlpar = "ec50"),
-               hill = FALSE,
-               agonist = FALSE,
-               top = FALSE)
-```
+
 

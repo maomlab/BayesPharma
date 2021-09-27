@@ -41,13 +41,13 @@ ggplot2::ggplot(damgo) +
 ```
 
 ```{r}
-damgo_inits <- default_inits(agonist = FALSE)
+damgo_inits <- dr_inits(agonist = FALSE)
 damgo_inits
 ```
 
 ```{r}
-damgo_priors <- make_priors(hill = -1, 
-                            top = 100)
+damgo_priors <- dr_priors(agonist = FALSE, 
+                          top = 100)
 damgo_priors
 ```
 
@@ -55,6 +55,7 @@ damgo_priors
 sampling_priors <- dose_response_model(damgo, 
                                        "response",
                                        "log_dose",
+                                       sigmoid_formula = no_predictors_dr_formula(),
                                        priors = damgo_priors,
                                        inits = damgo_inits,
                                        sample_prior = "only"
@@ -73,7 +74,7 @@ plot_pp_check(sampling_priors, n = 50) +
 damgo_model <- dose_response_model(damgo, 
                                    "response", 
                                    "log_dose",
-                                   formula = dose_response_formula(),
+                                   sigmoid_formula = no_predictors_dr_formula(),
                                    priors = damgo_priors,
                                    inits = damgo_inits)
 
@@ -86,18 +87,22 @@ BayesPharma::traceplot(damgo_model)
 ```
 
 ```{r}
+plot_pp_check(damgo_model)
+```
+
+```{r}
 damgo_draws <- posterior_response_draws(damgo_model, 
                                         lower = -9, 
                                         upper = -3,
-                                        drug_name = "Damgo")
+                                        predictor_name = "Damgo")
 
 damgo_draw_means <- posterior_mean(damgo_model,
                                    lower = -9, 
                                    upper = -3,
-                                   drug_name = "Damgo")
+                                   predictor_name = "Damgo")
 
 plot_trajectories(damgo,
-                  drug_col_name = NULL,
+                  predictors_col_name = NULL,
                   damgo$response,
                   damgo_draws,
                   damgo_draws$Response,
@@ -115,9 +120,9 @@ plot_draws_data(model = damgo_model,
                 hill = hill,
                 top = top,
                 bottom = bottom,
-                drug_name = "Damgo",
+                predictor_name = "Damgo",
                 data = damgo,
-                drug_col_name = NULL,
+                predictor_col_name = NULL,
                 measurement = damgo$response,
                 draws,
                 pred_response,
@@ -128,10 +133,9 @@ plot_draws_data(model = damgo_model,
 ```
 
 ```{r}
-posterior_densities(damgo_model)
+basic_stats(damgo_model)
 ```
 
 ```{r}
-plot_ppcheck(damgo_model)
+posterior_densities(damgo_model)
 ```
-
