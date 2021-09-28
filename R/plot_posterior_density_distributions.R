@@ -17,16 +17,12 @@ basic_stats <- function(model,
   ple_info <- brms::fixef(model, probs = c(l_ci,u_ci))
 
   model %>%
-    brms::posterior_samples() %>%
-    tidyr::gather(factor_key = TRUE) %>%
-    dplyr::group_by(key) %>%
-    dplyr::summarise(Mean = mean(value),
-                     SD= sd(value),
-                     Median = median(value),
-    ) %>%
-    dplyr::filter(!stringr::str_detect(key, "__$")) %>%
-    dplyr::filter(!stringr::str_detect(key, "sigma")) %>%
-    dplyr::select(-key) %>%
+    posterior::summarise_draws("mean",
+                               "sd",
+                               "median") %>%
+    dplyr::filter(!stringr::str_detect(variable, "__$")) %>%
+    dplyr::filter(!stringr::str_detect(variable, "sigma")) %>%
+    dplyr::select(-variable) %>%
     cbind(l_ci = c(ple_info[ ,3]),
           u_ci = c(ple_info[ ,4])) %>%
     tibble::rownames_to_column("variables") %>%
@@ -74,7 +70,7 @@ posterior_densities <- function(model,
       color = "black",
       alpha = .9) +
     ggplot2::geom_vline(
-      ggplot2::aes(xintercept = Mean),
+      ggplot2::aes(xintercept = mean),
       basic_stats(model),
       color = "red"
     ) +
