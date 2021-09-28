@@ -10,7 +10,7 @@
 traceplot <- function(model,
                       title = NULL) {
 
-  model_parnames <- brms::parnames(model) %>%
+  model_parnames <- brms::variables(model) %>%
     stringr::str_remove("b_") %>%
     stringr::str_remove("predictors")
   model_parnames <- head(model_parnames, -2)
