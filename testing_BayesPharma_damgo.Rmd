@@ -46,7 +46,8 @@ damgo_inits
 ```
 
 ```{r}
-damgo_priors <- dr_priors(agonist = FALSE, 
+damgo_priors <- dr_priors(hill = brms::prior(normal(-1,1),ub = 0.1, nlpar = "hill"),
+                          agonist = FALSE, 
                           top = 100)
 damgo_priors
 ```
@@ -70,6 +71,10 @@ plot_pp_check(sampling_priors, n = 50) +
 ```
 
 ```{r}
+prior_densities(sampling_priors)
+```
+
+```{r}
 
 damgo_model <- dose_response_model(damgo, 
                                    "response", 
@@ -81,13 +86,20 @@ damgo_model <- dose_response_model(damgo,
 damgo_model
 ```
 
-
 ```{r}
 BayesPharma::traceplot(damgo_model)
 ```
 
 ```{r}
 plot_pp_check(damgo_model)
+```
+
+```{r}
+prior_posterior_densities(damgo_model)
+```
+
+```{r}
+posterior_densities(damgo_model)
 ```
 
 ```{r}
@@ -109,7 +121,6 @@ plot_trajectories(damgo,
                   damgo_draw_means)
 ```
 
-
 ```{r}
 
 plot_draws_data(model = damgo_model,
@@ -120,7 +131,6 @@ plot_draws_data(model = damgo_model,
                 hill = hill,
                 top = top,
                 bottom = bottom,
-                predictor_name = "Damgo",
                 data = damgo,
                 predictor_col_name = NULL,
                 measurement = damgo$response,
@@ -132,10 +142,3 @@ plot_draws_data(model = damgo_model,
                 ylabel = "Response")
 ```
 
-```{r}
-basic_stats(damgo_model)
-```
-
-```{r}
-posterior_densities(damgo_model)
-```
