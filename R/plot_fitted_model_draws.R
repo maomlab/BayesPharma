@@ -9,8 +9,8 @@
 n_sample_draws <- function(model,
                            n= 100) {
   model %>%
-    brms::posterior_samples() %>%
-    dplyr::sample_n(n) %>%
+    brms::as_draws_df() %>%
+    dplyr::slice_sample(n = n) %>%
     dplyr::mutate(draw_id = dplyr::row_number())
   }
 
@@ -114,7 +114,7 @@ posterior_mean <- function(model,
                            bottom = bottom,
                            predictor_name = predictors) {
   model %>%
-    brms::posterior_samples() %>%
+    brms::as_draws_df() %>%
     tidyr::gather(factor_key = TRUE) %>%
     dplyr::group_by(key) %>%
     dplyr::summarise(Mean = mean(value)) %>%
@@ -126,6 +126,7 @@ posterior_mean <- function(model,
                   predictors = stringr::str_extract(variable, "predictors.+")%>%
                     stringr::str_remove("predictors")) %>%
     dplyr::select(-variable) %>%
+    head(-3) %>%
     tidyr::pivot_wider(id_cols = c("predictors"),
                        names_from = "b_class",
                        values_from = "Mean") %>%
