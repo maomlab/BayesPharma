@@ -47,6 +47,11 @@ BayesPharma::plot_pp_check(kor_sample_priors)  +
 ```
 
 ```{r}
+prior_densities(kor_sample_priors)
+```
+
+
+```{r}
 kor_model <- dose_response_model(kor_antag, 
                                  "normalized_measurement", 
                                  "log_dose", 
@@ -66,9 +71,12 @@ BayesPharma::traceplot(kor_model)
 BayesPharma::plot_pp_check(kor_model)
 ```
 
+```{r}
+prior_posterior_densities(kor_model)
+```
 
 ```{r}
-BayesPharma::basic_stats(kor_model) 
+posterior_densities(kor_model)
 ```
 
 ```{r}
@@ -86,10 +94,3 @@ plot_trajectories(kor_antag,
 
 
 ```
-
-```{r}
-posterior_densities(kor_model)
-```
-
-
-
