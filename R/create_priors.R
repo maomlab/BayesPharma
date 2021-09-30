@@ -2,12 +2,34 @@
 #' data.frame of pre-determined priors of parameters to be predicted by the
 #' model
 #'
-#'@param ec50 (default = NULL)
-#'@param hill (default = NULL)
+#' If the function arguments ec50, hill, top, bottom = NULL, pre-set
+#' normal distribution priors will be set.
+#' If agonist = TRUE, hill is positive. If agonist = FALSE, hill is negative.
+#' If you would like to set a parameter as a constant, enter a numeric value for
+#' the function argument.
+#' If you would like to set your own distribution, for example, in the function
+#' arguments type 'ec50 = brms::prior(distribution(mu,sigma), nlpar = 'ec50')'.
+#' For other distribution options, reference
+#' http://mc-stan.org/rstanarm/reference/priors.html#arguments.
+#'
+#'@param ec50 NULL, numeric value, or brms::prior. NULL will provide a weakly
+#'informative prior. Setting ec50 to a numeric value will set the ec50 prior to
+#'a constant value of the given numeric value. A prior of choice can be set
+#'using brms::prior(). (default = NULL)
+#'@param hill NULL, numeric value, or brms::prior. NULL will provide a weakly
+#'informative prior. Setting hill to a numeric value will set the hill prior to
+#'a constant value of the given numeric value. A prior of choice can be set
+#'using brms::prior(). (default = NULL)
 #'@param agonist TRUE/FALSE value. This determines if a positive or negative
 #' slope is used for the hill prior. (default = TRUE)
-#'@param top (default = NULL)
-#'@param bottom  (default = NULL)
+#'@param top NULL, numeric value, or brms::prior. NULL will provide a weakly
+#'informative prior. Setting top to a numeric value will set the top prior to
+#'a constant value of the given numeric value. A prior of choice can be set
+#'using brms::prior(). (default = NULL)
+#'@param bottom  NULL, numeric value, or brms::prior. NULL will provide a weakly
+#'informative prior. Setting bottom to a numeric value will set the bottom prior
+#'to a constant value of the given numeric value. A prior of choice can be set
+#'using brms::prior(). (default = NULL)
 #'@return brmsprior data.frame
 #'
 #'@export

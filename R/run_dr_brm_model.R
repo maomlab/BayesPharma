@@ -1,8 +1,13 @@
+#'Create a formula for a singular perturbation/experimental variable for the
+#'brms model
 #'
+#'additional arguments for brmsformula can be added.
+#'Reference this website for more information on additional arguments:
+#'https://paul-buerkner.github.io/brms/reference/brmsformula.html
 #'
+#'@return brmsformula
 #'
-#'
-#'
+#'@export
 
 no_predictors_dr_formula <- function(...){
 
@@ -17,9 +22,11 @@ no_predictors_dr_formula <- function(...){
 
 }
 
+#'Create a formula for a multiple different perturbations/experimental variables
+#'for the brms model
 #'
-#'
-#'
+#'@param predictors expression of the grouping variables for the parameters.
+#'i.e. what perturbations/experimental differences should be modeled separately?
 #'
 #'
 
@@ -37,16 +44,23 @@ predictors_dr_formula <- function(predictors = 0 + predictors, ...){
 }
 
 
-#' title
+#'Run Bayesian Regression Model using Stan
 #'
-#'@param data
-#'@param priors
-#'@param inits
-#'@param iter
-#'@param warmup
-#'@param chains
-#'@param adapt_delta
-#'@param max_treedepth
+#'For additional information on additional function arguments, reference:
+#'https://paul-buerkner.github.io/brms/reference/brm.html
+#'or
+#'https://rdrr.io/cran/rstan/man/stan.html
+#'
+#'@param data tibble or data.frame of experimental data.
+#'@param priors brmspriors data.frame for ec50, hill, top, and bottom.
+#'Use 'dr_priors' to create priors to use here.
+#'@param inits list of lists, numeric value, or "random" for the initial values
+#'of the parameters being modeled. (default = 0)
+#'@param iter number of iterations the model runs. Increasing iter can help with
+#'model convergence. (default = 8000)
+#'@param control a named list of parameters to control the sampler's behavior.
+#'Adding max_treedepth and giving a greater value than 10 can improve model
+#'convergence. (default = list(adapt_delta = 0.99))
 #'
 #'@return brmsfit
 #'

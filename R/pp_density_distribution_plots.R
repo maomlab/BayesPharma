@@ -1,8 +1,9 @@
 #'Create a plot of the prior density distributions of modeled parameters
+#'from brmsfit with sample_prior = "only".
 #'
-#'@param model brmsfit of sample_prior = "only"
-#'@param title_label string
-#'@return ggplot2::ggplot object
+#'@param model brmsfit of sample_prior = "only".
+#'@param title_label string. Plot title name. (Default = "Prior Density Plot")
+#'@return ggplot object.
 #'
 #'@export
 
@@ -76,13 +77,14 @@ basic_stats <- function(model,
 
 
 #'Create a plot of the posterior density distributions of modeled parameters
+#'from brmsfit
 #'
 #'The 'basic_stats' function is used to plot the mean, lower confidence
 #'interval, and upper confidence interval
 #'
-#'@param model brmsfit
-#'@param title_label string
-#'@return ggplot2::ggplot object
+#'@param model brmsfit.
+#'@param title_label string. Plot title name. (Default = "Posterior Density Plot")
+#'@return ggplot object.
 #'
 #'@export
 
@@ -137,12 +139,14 @@ posterior_densities <- function(model,
     ggplot2::scale_fill_discrete("Distribution")
 }
 
+#'Create a plot of the prior & posterior density distributions of modeled
+#'parameters from brmsfit
 #'
+#'@param model brmsfit.
+#'@param title_label string. Plot title name. (Default = "Prior Posterior Density Plot")
+#'@return ggplot object.
 #'
-#'
-#'
-#'
-#'
+#'@export
 
 prior_posterior_densities <- function(model,
                                       title_label = "Prior Posterior Density Plots") {
