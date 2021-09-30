@@ -119,6 +119,7 @@ plot_trajectories(damgo,
                   damgo_draws,
                   damgo_draws$Response,
                   damgo_draw_means)
+
 ```
 
 ```{r}
@@ -127,12 +128,9 @@ plot_draws_data(model = damgo_model,
                 n = 100,
                 lower = -9,
                 upper = -3,
-                ec50 = ec50,
-                hill = hill,
-                top = top,
-                bottom = bottom,
+                predictor_name = "Damgo",
                 data = damgo,
-                predictor_col_name = NULL,
+                predictors_col_name = NULL,
                 measurement = damgo$response,
                 draws,
                 pred_response,
