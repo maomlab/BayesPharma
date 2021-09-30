@@ -68,7 +68,10 @@ BayesPharma::traceplot(kor_model)
 ```
 
 ```{r}
-BayesPharma::plot_pp_check(kor_model)
+BayesPharma::plot_pp_check(kor_model,
+                           "dens_overlay_grouped", 
+                           group = 'predictors',
+                           ndraws = 50)
 ```
 
 ```{r}
@@ -94,3 +97,21 @@ plot_trajectories(kor_antag,
 
 
 ```
+
+```{r}
+plot_draws_data(model = kor_model,
+                n = 100,
+                lower = -12,
+                upper = -3,
+                predictor_name = NULL,
+                data = kor_antag,
+                predictors_col_name = "Drug",
+                measurement = kor_antag$normalized_measurement,
+                draws,
+                pred_response,
+                mean_draws,
+                title = NULL,
+                xlabel = "Log Dose",
+                ylabel = "Response")
+```
+
