@@ -1,9 +1,9 @@
 
 #' Dataframe of posterior samples of modeled parameters from brmsfit
 #'
-#'@param model brmsfit
-#'@param n number of samples from the posterior distribution (default n = 100)
-#'@return df that is required for the 'posterior_response_draws' function
+#'@param model brmsfit.
+#'@param n number of samples from the posterior distribution. (default n = 100)
+#'@return df that is required for the 'posterior_response_draws' function.
 #'
 
 n_sample_draws <- function(model,
@@ -17,23 +17,16 @@ n_sample_draws <- function(model,
 #' Tibble of draw_id, predictors, ec50, hill, top, bottom, and Response from a
 #' sample of the posterior distribution
 #'
-#'@param model brmsfit
-#'@param n number of samples from the posterior distribution (default n = 100).
+#'@param model brmsfit.
+#'@param n number of samples from the posterior distribution. (default n = 100)
 #'@param lower number for the lowest log_dose value to be used for calculating
-#'Response (default = -12).
+#'Response. (default = -12)
 #'@param upper number for the highest log_dose value to be used for calculating
-#'Response (default = -3).
-#'@param ec50 effective concentration that induces half of the maximum effect.
-#'EC50 can be modeled by brmsfit or a fixed log dose value. (default = ec50)
-#'@param hill slope factor. Hill can be modeled by brmsfit or a fixed value.
-#'The standard slope for dose response curves is 1.0 for an agonist and -1.0
-#'for an inhibitor. (default = hill)
-#'@param top maximum response value. Top can be modeled by brmsfit or a fixed
-#'value. (default = top)
-#'@param bottom minimum response value. Bottom can be modeled by brmsfit or a
-#'fixed value. (default = bottom)
-#'@param predictor_name string. The name of the predictor being analyzed (default = predictor)
-#'@return tibble::tibble required for the 'plot_trajectories' function
+#'Response. (default = -3)
+#'@param predictor_name string. If only one perturbation is being tested, the
+#'name of the predictor being analyzed is required to avoid "NA" graph subtitle.
+#'(default = NULL)
+#'@return tibble::tibble required for the 'plot_trajectories' function.
 #'
 #'@export
 
@@ -41,10 +34,6 @@ posterior_response_draws <- function(model,
                                      n = 100,
                                      lower = -12,
                                      upper = -3,
-                                     ec50 = ec50,
-                                     hill = hill,
-                                     top = top,
-                                     bottom = bottom,
                                      predictor_name = NULL) {
   n_sample_draws(model, n) %>%
     tidyr::pivot_longer(cols = starts_with("b_"),
@@ -84,23 +73,16 @@ posterior_response_draws <- function(model,
 #' Tibble of predictors, mean ec50, mean hill, mean top, mean bottom, and
 #' mean Response of the posterior distribution.
 #'
-#'@param model brmsfit
-#'@param n number of samples from the posterior distribution (default n = 100).
+#'@param model brmsfit.
+#'@param n number of samples from the posterior distribution. (default n = 100)
 #'@param lower number for the lowest log_dose value to be used for calculating
-#'Response (default = -12).
+#'Response. (default = -12)
 #'@param upper number for the highest log_dose value to be used for calculating
-#'Response (default = -3).
-#'@param ec50 effective concentration that induces half of the maximum effect.
-#'EC50 can be modeled by brmsfit or a fixed log dose value. (default = ec50)
-#'@param hill slope factor. Hill can be modeled by brmsfit or a fixed value.
-#'The standard slope for dose response curves is 1.0 for an agonist and -1.0
-#'for an inhibitor. (default = hill)
-#'@param top maximum response value. Top can be modeled by brmsfit or a fixed
-#'value. (default = top)
-#'@param bottom minimum response value. Bottom can be modeled by brmsfit or a
-#'fixed value. (default = bottom)
-#'@param predictors_name string. The name of the predictors being analyzed (default = predictors)
-#'@return tibble::tibble required for the 'plot_trajectories' function
+#'Response. (default = -3)
+#'@param predictors_name string. If only one perturbation is being tested, the
+#'name of the predictor being analyzed is required to avoid "NA" graph subtitle.
+#'(default = NULL)
+#'@return tibble::tibble required for the 'plot_trajectories' function.
 #'
 #'@export
 
@@ -108,11 +90,7 @@ posterior_mean <- function(model,
                            n = 100,
                            lower = -12,
                            upper = -3,
-                           ec50 = ec50,
-                           hill = hill,
-                           top = top,
-                           bottom = bottom,
-                           predictor_name = predictors) {
+                           predictor_name = NULL) {
   model %>%
     brms::as_draws_df() %>%
     tidyr::gather(factor_key = TRUE) %>%
@@ -153,18 +131,20 @@ posterior_mean <- function(model,
 
 #' Create a plot of the predicted responses from the posterior distribution
 #'
-#'@param data is the tibble or dataframe used for the brmsfit
+#'@param data is the tibble or dataframe used for the brmsfit.
+#'@param predictors_col_name name of the column with the predictors used in
+#'brmsfit.
 #'@param measurement is the column in 'data' containing response values.
 #'@param draws is the tibble::tibble returned from the
-#''posterior_response_draws' function
+#''posterior_response_draws' function.
 #'@param pred_response is the 'Response' column in the tibble::tibble returned
 #'from the 'posterior_response_draws' function.
 #'@param mean_draws is the tibble::tibble returned from the 'posterior_mean'
-#'function
-#'@param title string for the plot title (default = NULL)
-#'@param xlabel string for the x-axis label (default = NULL)
-#'@param ylabel string for the y-axis label (default = NULL)
-#'@return a ggplot2::ggplot object
+#'function.
+#'@param title string for the plot title. (default = NULL)
+#'@param xlabel string for the x-axis label. (default = NULL)
+#'@param ylabel string for the y-axis label. (default = NULL)
+#'@return a ggplot2::ggplot object.
 #'
 #'@export
 
@@ -209,22 +189,43 @@ plot_trajectories <- function(data,
       facets = dplyr::vars(predictors))
   }
 
+#'Create a plot of the predicted responses from the posterior distribution
 #'
+#'This function holds the 3 functions required to plot the trajectory curves.
 #'
+#'@param model brmsfit.
+#'@param n number of samples from the posterior distribution (default n = 100)
+#'@param model brmsfit.
+#'@param n number of samples from the posterior distribution (default n = 100).
+#'@param lower number for the lowest log_dose value to be used for calculating
+#'Response (default = -12).
+#'@param upper number for the highest log_dose value to be used for calculating
+#'Response (default = -3).
+#'@param predictors_name string. If only one perturbation is being tested, the
+#'name of the predictor being analyzed is required to avoid "NA" graph subtitle.
+#'(default = NULL)
+#'@param data is the tibble or dataframe used for the brmsfit.
+#'@param predictors_col_name name of the column with the predictors used in
+#'brmsfit.
+#'@param measurement is the column in 'data' containing response values.
+#'@param draws is the tibble::tibble returned from the posterior_response_draws'
+#'function.
+#'@param pred_response is the 'Response' column in the tibble::tibble returned
+#'from the 'posterior_response_draws' function.
+#'@param mean_draws is the tibble::tibble returned from the 'posterior_mean'
+#'function.
+#'@param title string for the plot title. (default = NULL)
+#'@param xlabel string for the x-axis label. (default = NULL)
+#'@param ylabel string for the y-axis label. (default = NULL)
+#'@return a ggplot2::ggplot object.
 #'
-#'
-#'
-#'
+#'@export
 
 plot_draws_data <- function(model,
                             n = 100,
                             lower = -12,
                             upper = -3,
-                            ec50 = ec50,
-                            hill = hill,
-                            top = top,
-                            bottom = bottom,
-                            predictors_name = predictors,
+                            predictor_name,
                             data,
                             predictors_col_name = NULL,
                             measurement,
@@ -239,21 +240,13 @@ plot_draws_data <- function(model,
                                          n,
                                          lower,
                                          upper,
-                                         ec50,
-                                         hill,
-                                         top,
-                                         bottom,
-                                         predictors_name)
+                                         predictor_name)
 
-  resp_draws_mean <- posterior_response_draws(model,
-                                              n,
-                                              lower,
-                                              upper,
-                                              ec50,
-                                              hill,
-                                              top,
-                                              bottom,
-                                              predictors_name)
+  resp_draws_mean <- posterior_mean(model,
+                                    n,
+                                    lower,
+                                    upper,
+                                    predictor_name)
 
   draws_plot <- plot_trajectories(data,
                                   predictors_col_name,

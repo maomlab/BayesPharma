@@ -3,7 +3,7 @@
 #'
 #'@param model brmsfit
 #'@param title string for the plot title (default = NULL)
-#'@return ggplot2::ggplot object
+#'@return ggplot object
 #'
 #'@export
 
