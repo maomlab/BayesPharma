@@ -103,26 +103,6 @@ posterior_densities(damgo_model)
 ```
 
 ```{r}
-damgo_draws <- posterior_response_draws(damgo_model, 
-                                        lower = -9, 
-                                        upper = -3,
-                                        predictor_name = "Damgo")
-
-damgo_draw_means <- posterior_mean(damgo_model,
-                                   lower = -9, 
-                                   upper = -3,
-                                   predictor_name = "Damgo")
-
-plot_trajectories(damgo,
-                  predictors_col_name = NULL,
-                  damgo$response,
-                  damgo_draws,
-                  damgo_draws$Response,
-                  damgo_draw_means)
-
-```
-
-```{r}
 
 plot_draws_data(model = damgo_model,
                 n = 100,
@@ -139,4 +119,3 @@ plot_draws_data(model = damgo_model,
                 xlabel = "Log Dose",
                 ylabel = "Response")
 ```
-
