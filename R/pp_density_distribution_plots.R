@@ -155,16 +155,17 @@ prior_posterior_densities <- function(model,
     brms:::update.brmsfit(sample_prior = "only")
 
   draws <- dplyr::bind_rows(
-    model %>%
-      tidybayes::tidy_draws() %>%
-      tidybayes::gather_variables() %>%
-      dplyr::mutate(sample_type = "Posterior") %>%
-      dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
-      dplyr::filter(!stringr::str_detect(.variable, "sigma")),
+
     model_prior %>%
       tidybayes::tidy_draws() %>%
       tidybayes::gather_variables() %>%
       dplyr::mutate(sample_type = "Prior") %>%
+      dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
+      dplyr::filter(!stringr::str_detect(.variable, "sigma")),
+    model %>%
+      tidybayes::tidy_draws() %>%
+      tidybayes::gather_variables() %>%
+      dplyr::mutate(sample_type = "Posterior") %>%
       dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
       dplyr::filter(!stringr::str_detect(.variable, "sigma"))
   ) %>%
@@ -192,6 +193,6 @@ prior_posterior_densities <- function(model,
     ggplot2::scale_y_continuous("Density") +
     ggplot2::scale_x_continuous("Parameter Value") +
     ggplot2::scale_fill_manual(
-      values = c("Posterior" = "cyan2", "Prior" = "hotpink2"))
+      values = c( "Posterior" = "cyan2", "Prior" = "hotpink2"))
 }
 
