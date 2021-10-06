@@ -9,12 +9,12 @@
 #'
 #'@export
 
-no_predictors_dr_formula <- function(...){
+no_predictors_dr_formula <- function(...) {
 
-  predictor_formula = rlang::new_formula(lhs = quote(ec50 + hill + top + bottom),
+  predictor_formula <- rlang::new_formula(lhs = quote(ec50 + hill + top + bottom),
                                          rhs = quote(1))
 
-  sigmoid_formula = brms::brmsformula(
+  sigmoid_formula <- brms::brmsformula(
     response ~ (bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))),
     predictor_formula, nl = TRUE, ...)
 
@@ -30,12 +30,12 @@ no_predictors_dr_formula <- function(...){
 #'
 #'
 
-predictors_dr_formula <- function(predictors = 0 + predictors, ...){
+predictors_dr_formula <- function(predictors = 0 + predictors, ...) {
 
-  predictor_formula = rlang::new_formula(lhs = quote(ec50 + hill + top + bottom),
+  predictor_formula <- rlang::new_formula(lhs = quote(ec50 + hill + top + bottom),
                                          rhs = rlang::enexpr(predictors))
 
-  sigmoid_formula = brms::brmsformula(
+  sigmoid_formula <- brms::brmsformula(
     response ~ (bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))),
     predictor_formula, nl = TRUE, ...)
 
@@ -75,9 +75,9 @@ dose_response_model <- function(data,
                                 inits = 0,
                                 iter = 8000,
                                 control = list(adapt_delta = 0.99),
-                                ...){
+                                ...) {
 
-  if (is.null(priors)){
+  if (is.null(priors)) {
     stop("priors for ec50, hill, top and bottom are required. Use make_priors function to get default priors.")
   }
 

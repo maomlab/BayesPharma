@@ -1,10 +1,11 @@
 Package: BayesPharma
 Type: Package
 Title: Tools for Bayesian Analysis of Non-Linear Pharmacology Models
+Version: 0.0.1
+Author@R: person("Madeline", "Martin", email = "martin.mjm105@gmail.com", 
+    role = c("aut", "cre"))
 Description: This package contains a collection of R tools to analyze pharmacology 
     data using Bayesian statistics.
-Author: Madeline Martin <martin.mjm105@gmail.com>
-Version: 0.0.1
 Depends: 
     R (>= 4.1.0)
 Imports:
@@ -34,3 +35,4 @@ Collage:
     'data_preparation.R',
     'plot_prior_posterior_check.R'
 Encoding: UTF-8
+License: MIT + file LICENSE
