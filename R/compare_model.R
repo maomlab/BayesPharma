@@ -17,8 +17,8 @@ add_loo_criterion <- function(model,
 
   model <- model %>% brms::add_criterion(
     criterion = c("loo"),
-    model_name = paste0(n_params,"param"),
-    reloo=TRUE,
+    model_name = paste0(n_params, "param"),
+    reloo = TRUE,
     ...)
 
   return(model)

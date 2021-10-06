@@ -27,7 +27,7 @@ dr_inits <- function(ec50 = -9,
 
   ec50_init <- ec50
 
-  if (hill == TRUE && agonist == TRUE){
+  if (hill == TRUE && agonist == TRUE) {
     hill_init <- 1
     print("hill is a positive slope.")
   } else if (hill == TRUE && agonist == FALSE) {
@@ -47,11 +47,11 @@ dr_inits <- function(ec50 = -9,
                     bottom = bottom_init)
 
   inits <- list()
-  # inits <- list(init_list, init_list, init_list, init_list)
-  i = 0
-  while( i < chains){
+
+  i <- 0
+  while (i < chains) {
     inits <- append(inits, list(init_list))
-    i = i + 1
+    i <- i + 1
     }
 
   return(inits)
