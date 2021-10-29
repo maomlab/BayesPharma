@@ -59,6 +59,7 @@ basic_stats <- function(model,
                         u_ci = 0.975) {
 
   ple_info <- brms::fixef(model, probs = c(l_ci, u_ci))
+  print(paste0("lower CI:", l_ci," upper CI:", u_ci))
 
   model %>%
     posterior::summarise_draws("mean",
@@ -73,6 +74,7 @@ basic_stats <- function(model,
     dplyr::mutate(variables = stringr::str_extract(variables,
                                                    "[a-zA-Z0-9]+.{1,100}") %>%
                     stringr::str_remove("predictors"))
+
 }
 
 

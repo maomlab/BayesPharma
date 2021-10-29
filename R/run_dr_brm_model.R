@@ -97,3 +97,63 @@ dose_response_model <- function(data,
     control = control,
     ...)
   }
+
+
+#'
+#'
+#'
+#'
+#'
+#'
+
+dose_response_stanvar <- brms::stanvar(
+  scode = paste(
+    "   real sigmoid(",
+    "      real ec50,",
+    "      real hill,",
+    "      real top,",
+    "      real bottom,",
+    "      real log_dose) {",
+    "         return (bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill)));",
+    "   }", sep = "\n"),
+  block = "functions")
+
+#'
+#'
+#'
+#'
+#'
+
+dr_stanvar_model <- function(data,
+                             response_col_name,
+                             log_dose_col_name,
+                             predictors_col_name = NULL,
+                             priors = NULL,
+                             inits = 0,
+                             iter = 8000,
+                             control = list(adapt_delta = 0.99),
+                             ...) {
+
+  if (is.null(priors)) {
+    stop("priors for ec50, hill, top and bottom are required. Use make_priors function to get default priors.")
+  }
+
+  # this will probably be removed later
+  # will say the input tibble/data.frame needs to contain response and log_dose
+  input_data <- data %>%
+    dplyr::rename(response = response_col_name) %>%
+    dplyr::rename(log_dose = log_dose_col_name) %>%
+    dplyr::rename(predictors = predictors_col_name)
+
+  brms::brm(
+    formula = brms::brmsformula(
+      response ~ sigmoid(ec50, hill, top, bottom, log_dose),
+      ec50 + hill + top + bottom ~ 1, nl = TRUE, ...),
+    data = input_data,
+    prior = priors,
+    inits = inits,
+    iter = iter,
+    control = control,
+    stanvars = dose_response_stanvar,
+    ...)
+}

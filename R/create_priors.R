@@ -54,61 +54,49 @@ dr_priors <- function(ec50 = NULL,
 
   if (is.null(ec50)) {
     ec50_prior <- brms::prior(normal(-7, 5), nlpar = "ec50")
-    print("ec50 prior set to a normal distribution with a mean of -7 and a standard deviation of 5.")
 
   } else if (is.numeric(ec50)) {
     ec50_prior <- brms::prior_string(paste0("constant(", ec50, ")"), nlpar = "ec50")
-    print(paste0("ec50 prior set to a constant value of ", ec50))
+
   } else {
     ec50_prior <- ec50
-    print(paste0("ec50 prior is set to ", ec50))
 
   }
   if (is.null(hill) && agonist == TRUE) {
     hill_prior <- brms::prior(normal(1, 2),
                               nlpar = "hill",
                               lb = -0.01)
-    print("hill prior set to a normal distribution with a mean of 1 and a standard deviation of 2 with a lower bound of -0.01.")
 
   } else if (is.null(hill) && agonist == FALSE) {
     hill_prior <- brms::prior(normal(-1, 2),
                               nlpar = "hill",
                               ub = 0.01)
-    print("hill prior set to a normal distribution with a mean of -1 and a standard deviation of 2 with an upper bound of 0.01.")
 
   } else if (is.numeric(hill)) {
     hill_prior <- brms::prior_string(paste0("constant(", hill, ")"), nlpar = "hill")
-    print(paste0("hill prior set to constant value of ", hill))
 
   } else {
     hill_prior <- hill
-    print(paste0("hill prior set to ", hill))
   }
 
   if (is.null(top)) {
     top_prior <- brms::prior(normal(100, 25), nlpar = "top")
-    print("top prior set to a normal distribution with a mean of 100 and a standard deviation of 25.")
 
   } else if (is.numeric(top)) {
     top_prior <- brms::prior_string(paste0("constant(", top, ")"), nlpar = "top")
-    print(paste0("top prior set to a constant value of ", top))
 
   } else {
     top_prior <- top
-    print(paste0("top prior set to ", top))
   }
 
   if (is.null(bottom)) {
     bottom_prior <- brms::prior(normal(0, 25), nlpar = "bottom")
-    print("bottom prior set to a normal distribution with a mean of 0 and a standard deviation of 25")
 
   } else if (is.numeric(bottom)) {
     bottom_prior <- brms::prior_string(paste0("constant(", bottom, ")"), nlpar = "bottom")
-    print(paste0("bottom prior set to a constant value of ", bottom))
 
   } else {
     bottom_prior <- bottom
-    print(paste0("bottom prior set to ", bottom))
   }
 
   priors <- c(ec50_prior, hill_prior, top_prior, bottom_prior)
