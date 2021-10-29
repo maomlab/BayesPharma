@@ -36,3 +36,7 @@ Collage:
     'plot_prior_posterior_check.R'
 Encoding: UTF-8
 License: MIT + file LICENSE
+Suggests: 
+    rmarkdown,
+    knitr
+VignetteBuilder: knitr
