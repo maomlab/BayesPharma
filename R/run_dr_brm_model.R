@@ -67,9 +67,6 @@ predictors_dr_formula <- function(predictors = 0 + predictors, ...) {
 #'@export
 
 dose_response_model <- function(data,
-                                response_col_name,
-                                log_dose_col_name,
-                                predictors_col_name = NULL,
                                 sigmoid_formula = no_predictors_dr_formula(),
                                 priors = NULL,
                                 inits = 0,
@@ -81,13 +78,6 @@ dose_response_model <- function(data,
     stop("priors for ec50, hill, top and bottom are required. Use make_priors function to get default priors.")
   }
 
-  # this will probably be removed later
-  # will say the input tibble/data.frame needs to contain response and log_dose
-  input_data <- data %>%
-    dplyr::rename(response = response_col_name) %>%
-    dplyr::rename(log_dose = log_dose_col_name) %>%
-    dplyr::rename(predictors = predictors_col_name)
-
   brms::brm(
     formula = sigmoid_formula,
     data = input_data,
@@ -98,15 +88,9 @@ dose_response_model <- function(data,
     ...)
   }
 
+#' stanvar function
 
-#'
-#'
-#'
-#'
-#'
-#'
-
-dose_response_stanvar <- brms::stanvar(
+dr_stanvar <- brms::stanvar(
   scode = paste(
     "   real sigmoid(",
     "      real ec50,",
@@ -118,42 +102,62 @@ dose_response_stanvar <- brms::stanvar(
     "   }", sep = "\n"),
   block = "functions")
 
+#'Run Bayesian Regression Model using Stan
 #'
+#'For additional information on additional function arguments, reference:
+#'https://paul-buerkner.github.io/brms/reference/brm.html
+#'or
+#'https://rdrr.io/cran/rstan/man/stan.html
 #'
+#'@param data tibble or data.frame of experimental data.
+#'@param multiple_perturbations TRUE/FALSE. If FALSE, the model will produce a
+#'singular estimate for each parameter. If TRUE, the parameter will produce
+#'parameter estimates for each perturbation.
+#'@param priors brmspriors data.frame for ec50, hill, top, and bottom.
+#'Use 'dr_priors' to create priors to use here.
+#'@param inits list of lists, numeric value, or "random" for the initial values
+#'of the parameters being modeled. (default = 0)
+#'@param iter number of iterations the model runs. Increasing iter can help with
+#'model convergence. (default = 8000)
+#'@param control a named list of parameters to control the sampler's behavior.
+#'Adding max_treedepth and giving a greater value than 10 can improve model
+#'convergence. (default = list(adapt_delta = 0.99))
 #'
+#'@return brmsfit
 #'
-#'
+#'@export
 
 dr_stanvar_model <- function(data,
-                             response_col_name,
-                             log_dose_col_name,
-                             predictors_col_name = NULL,
+                             multiple_perturbations = FALSE,
                              priors = NULL,
                              inits = 0,
                              iter = 8000,
                              control = list(adapt_delta = 0.99),
+                             predictors = 0 + predictors,
                              ...) {
 
   if (is.null(priors)) {
     stop("priors for ec50, hill, top and bottom are required. Use make_priors function to get default priors.")
   }
 
-  # this will probably be removed later
-  # will say the input tibble/data.frame needs to contain response and log_dose
-  input_data <- data %>%
-    dplyr::rename(response = response_col_name) %>%
-    dplyr::rename(log_dose = log_dose_col_name) %>%
-    dplyr::rename(predictors = predictors_col_name)
+  if (multiple_perturbations == FALSE) {
+    predictor_eq <- rlang::new_formula(lhs = quote(ec50 + hill + top + bottom),
+                                       rhs = quote(1))
+  } else{
+    predictor_eq <- rlang::new_formula(lhs = quote(ec50 + hill + top + bottom),
+                                       rhs = rlang::enexpr(predictors))
+  }
+  data[data == -Inf] <- -100
 
   brms::brm(
     formula = brms::brmsformula(
       response ~ sigmoid(ec50, hill, top, bottom, log_dose),
-      ec50 + hill + top + bottom ~ 1, nl = TRUE, ...),
-    data = input_data,
+      predictor_eq, nl = TRUE, ...),
+    data = data,
     prior = priors,
     inits = inits,
     iter = iter,
     control = control,
-    stanvars = dose_response_stanvar,
+    stanvars = dr_stanvar,
     ...)
 }

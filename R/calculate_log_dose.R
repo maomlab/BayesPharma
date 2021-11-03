@@ -10,8 +10,7 @@
 calc_log_dose <- function(data,
                           dose_col,
                           molar_concentration) {
+
   data %>% dplyr::mutate(log_dose = log10(dose_col * molar_concentration))
 
-
-  return(data)
 }
