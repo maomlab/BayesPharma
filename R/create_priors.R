@@ -4,7 +4,7 @@
 #'
 #' If the function arguments ec50, hill, top, bottom = NULL, pre-set
 #' normal distribution priors will be set.
-#' If agonist = TRUE, hill is positive. If agonist = FALSE, hill is negative.
+#' If inhibitor = TRUE, hill is positive. If inhibitor = FALSE, hill is negative.
 #' If you would like to set a parameter as a constant, enter a numeric value for
 #' the function argument.
 #' If you would like to set your own distribution, for example, in the function
@@ -20,7 +20,7 @@
 #'informative prior. Setting hill to a numeric value will set the hill prior to
 #'a constant value of the given numeric value. A prior of choice can be set
 #'using brms::prior(). (default = NULL)
-#'@param agonist TRUE/FALSE value. This determines if a positive or negative
+#'@param inhibitor TRUE/FALSE value. This determines if a positive or negative
 #' slope is used for the hill prior. (default = TRUE)
 #'@param top NULL, numeric value, or brms::prior. NULL will provide a weakly
 #'informative prior. Setting top to a numeric value will set the top prior to
@@ -36,13 +36,13 @@
 
 dr_priors <- function(ec50 = NULL,
                       hill = NULL,
-                      agonist = TRUE,
+                      inhibitor = TRUE,
                       top = NULL,
                       bottom = NULL) {
 
   cat("If the function arguments ec50, hill, top, bottom = NULL, pre-set
-  normal distribution priors will be set. If agonist = TRUE, hill is positive.
-  If agonist = FALSE, hill is negative.
+  normal distribution priors will be set. If inhibitor = FALSE, hill is positive.
+  If inhibitor = TRUE, hill is negative.
   If you would like to set a parameter as a constant, enter a numeric value for
   the function argument.
   If you would like to set your own distribution, for example, in the function
@@ -62,12 +62,12 @@ dr_priors <- function(ec50 = NULL,
     ec50_prior <- ec50
 
   }
-  if (is.null(hill) && agonist == TRUE) {
+  if (is.null(hill) && inhibitor == FALSE) {
     hill_prior <- brms::prior(normal(1, 2),
                               nlpar = "hill",
                               lb = -0.01)
 
-  } else if (is.null(hill) && agonist == FALSE) {
+  } else if (is.null(hill) && inhibitor == TRUE) {
     hill_prior <- brms::prior(normal(-1, 2),
                               nlpar = "hill",
                               ub = 0.01)

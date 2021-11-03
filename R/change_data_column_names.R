@@ -12,7 +12,8 @@
 #'
 #'@export
 
-change_col_names <- function(response_col_name,
+change_col_names <- function(data,
+                             response_col_name,
                              log_dose_col_name,
                              predictors_col_name) {
   data %>%
