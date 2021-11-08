@@ -53,7 +53,7 @@ dr_priors <- function(ec50 = NULL,
 
 
   if (is.null(ec50)) {
-    ec50_prior <- brms::prior(normal(-7, 5), nlpar = "ec50")
+    ec50_prior <- brms::prior(normal(-7, 2.5), nlpar = "ec50")
 
   } else if (is.numeric(ec50)) {
     ec50_prior <- brms::prior_string(paste0("constant(", ec50, ")"), nlpar = "ec50")
@@ -63,12 +63,12 @@ dr_priors <- function(ec50 = NULL,
 
   }
   if (is.null(hill) && inhibitor == FALSE) {
-    hill_prior <- brms::prior(normal(1, 2),
+    hill_prior <- brms::prior(normal(1, 1),
                               nlpar = "hill",
                               lb = -0.01)
 
   } else if (is.null(hill) && inhibitor == TRUE) {
-    hill_prior <- brms::prior(normal(-1, 2),
+    hill_prior <- brms::prior(normal(-1, 1),
                               nlpar = "hill",
                               ub = 0.01)
 
