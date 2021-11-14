@@ -15,7 +15,7 @@ traceplot <- function(model,
     stringr::str_remove("predictors")
   model_parnames <- head(model_parnames, -2)
 
-  model_array <- as.array(model)[, , 1:length(model_parnames)]
+  model_array <- as.array(model)[, , seq(model_parnames)]
   dimnames(model_array)[[3]] <- model_parnames
 
   bayesplot::mcmc_trace(model_array) +

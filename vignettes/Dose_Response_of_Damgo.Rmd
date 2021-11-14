@@ -1,0 +1,25 @@
+---
+title: "Dose_Response_of_Damgo"
+author: "Madeline Martin"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Dose_Response_of_Damgo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(BayesPharma)
+```
+```{r}
+library("devtools")
+load_all()
+```
+

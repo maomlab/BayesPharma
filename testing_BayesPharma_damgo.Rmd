@@ -15,18 +15,25 @@ library("ggplot2")
 library("readxl")
 ```
 
+LOAD PACKAGE
+
 ```{r}
+library("devtools")
 load_all()
 ```
 
+LOAD DATA
+
 ```{r}
-library("readxl")
+#library("readxl")
 xl_damgo_dr <- "C:/Users/marti/Downloads/damgo_dr_reformatted.xlsx"
 
-damgo <- read_excel(xl_damgo_dr)
+damgo <- readxl::read_excel(xl_damgo_dr)
 
 damgo
 ```
+
+PLOT RAW DATA
 
 ```{r}
 ggplot2::ggplot(damgo) +
@@ -40,17 +47,22 @@ ggplot2::ggplot(damgo) +
        y = "Response")
 ```
 
-```{r}
-damgo_inits <- dr_inits(agonist = FALSE)
-damgo_inits
-```
+PRIORS
+max response is normalized to 100, therefore, top parameter prior set to a constant 
+value of 100.
 
 ```{r}
-damgo_priors <- dr_priors(hill = brms::prior(normal(-1,1),ub = 0.1, nlpar = "hill"),
-                          agonist = FALSE, 
+damgo_priors <- dr_priors(agonist = FALSE, 
                           top = 100)
 damgo_priors
 ```
+
+INITIAL VALUES FOR PARAMETERS
+```{r}
+damgo_inits <- dr_inits(agonist = FALSE)
+```
+
+SAMPLING THE PRIOR
 
 ```{r}
 sampling_priors <- dose_response_model(damgo, 
@@ -70,9 +82,13 @@ plot_pp_check(sampling_priors, n = 50) +
   ggplot2::ylim(0, 0.1)
 ```
 
+VISUALIZING THE PRIOR DISTRIBUTIONS
+
 ```{r}
 prior_densities(sampling_priors)
 ```
+
+RUNNING THE BAYESIAN MODEL
 
 ```{r}
 
@@ -83,44 +99,39 @@ damgo_model <- dose_response_model(damgo,
                                    priors = damgo_priors,
                                    inits = damgo_inits)
 
+```
+
+RESULTS FROM THE MODEL
+
+```{r}
 damgo_model
 ```
+
+CONVERGENCE CHECK
 
 ```{r}
 BayesPharma::traceplot(damgo_model)
 ```
 
+POSTERIOR PREDICTIVE CHECK
+
 ```{r}
 plot_pp_check(damgo_model)
 ```
+
+VISUALIZING PARAMETER PRIOR AND POSTERIOR DISTRIBUTIONS
 
 ```{r}
 prior_posterior_densities(damgo_model)
 ```
 
+PARAMETER POSTERIOR DISTRIBUTIONS WITH MEAN AND CIs
+
 ```{r}
 posterior_densities(damgo_model)
 ```
 
-```{r}
-damgo_draws <- posterior_response_draws(damgo_model, 
-                                        lower = -9, 
-                                        upper = -3,
-                                        predictor_name = "Damgo")
-
-damgo_draw_means <- posterior_mean(damgo_model,
-                                   lower = -9, 
-                                   upper = -3,
-                                   predictor_name = "Damgo")
-
-plot_trajectories(damgo,
-                  predictors_col_name = NULL,
-                  damgo$response,
-                  damgo_draws,
-                  damgo_draws$Response,
-                  damgo_draw_means)
-
-```
+SAMPLE OF DOSE RESPONSE CURVES FROM THE POSTERIOR DISTRIBUTION
 
 ```{r}
 
@@ -139,4 +150,157 @@ plot_draws_data(model = damgo_model,
                 xlabel = "Log Dose",
                 ylabel = "Response")
 ```
+
+
+---
+
+IMPROVING THE MODEL BY MAKING MORE INFORMATIVE PRIORS
+
+```{r}
+damgo_prior2 <- BayesPharma::dr_priors(ec50 = brms::prior(normal(-6, 1.5), 
+                                                          nlpar = "ec50"),
+                                       hill = brms::prior(normal(-0.5, 0.5), 
+                                                          # lb = -2.01,
+                                                          # ub = 0.01,
+                                                          nlpar = "hill"),
+                                       top = 100,
+                                       bottom = brms::prior(normal(25, 12.5), 
+                                                            nlpar = "bottom")
+                                       )
+damgo_prior2
+```
+
+SAMPLE PRIOR
+
+```{r}
+sample_priors2 <- BayesPharma::dose_response_model(damgo, 
+                                                   "response",
+                                                   "log_dose",
+                                                   sigmoid_formula = no_predictors_dr_formula(),
+                                                   priors = damgo_prior2,
+                                                   inits = damgo_inits,
+                                                   sample_prior = "only")
+sample_priors2
+```
+
+
+VIEW PRIOR DISTRIBUTIONS
+
+```{r}
+BayesPharma::prior_densities(sample_priors2)
+```
+
+RUN BAYESIAN MODEL
+
+```{r}
+damgo_model2 <- dose_response_model(damgo, 
+                                    "response",
+                                    "log_dose",
+                                    sigmoid_formula = no_predictors_dr_formula(),
+                                    priors = damgo_prior2,
+                                    inits = damgo_inits)
+damgo_model2
+```
+
+
+CHECK CONVERGENCE
+
+```{r}
+BayesPharma::traceplot(damgo_model2)
+```
+
+PROSTERIOR PREDICTIVE CHECK
+
+```{r}
+BayesPharma::plot_pp_check(damgo_model2)
+```
+
+PRIOR & POSTERIOR DISTRIBUTION
+
+```{r}
+BayesPharma::prior_posterior_densities(damgo_model2)
+```
+
+POSTERIOR DISTRIBUTION
+
+```{r}
+BayesPharma::posterior_densities(damgo_model2)
+```
+
+SAMPLE OF D-R CURVES FROM POSTERIOR DISTRIBUTION
+
+```{r}
+BayesPharma::plot_draws_data(model = damgo_model2,
+                             n = 100,
+                             lower = -9,
+                             upper = -3,
+                             predictor_name = "Damgo",
+                             data = damgo,
+                             predictors_col_name = NULL,
+                             measurement = damgo$response,
+                             draws,
+                             pred_response,
+                             mean_draws,
+                             title = NULL,
+                             xlabel = "Log Dose",
+                             ylabel = "Response"
+                             )
+```
+
+COMPARE THE MODELS
+
+```{r}
+damgo_model <- BayesPharma::add_loo_criterion(damgo_model, 3)
+damgo_model2 <- BayesPharma::add_loo_criterion(damgo_model2, 3)
+BayesPharma::compare_models(damgo_model, damgo_model2)
+```
+
+---
+
+ANALYSIS USING DRC
+
+```{r}
+library("drc") 
+# https://rstats4ag.org/dose-response-curves.html#one-dose-response-curve
+```
+
+```{r}
+response = damgo$response
+
+log_dose = damgo$log_dose
+
+damgo_drc <- drm(response ~ log_dose,
+                 fct = L.4(fixed = c(NA, NA, 100, NA),
+                            names = c("hill", "bottom", "top", "ec50")))
+summary(damgo_drc)
+
+```
+
+```{r}
+log_dose <- seq(min(log_dose), max(log_dose), length.out=100)
+pred_value <- predict(damgo_drc, expand.grid(log_dose, 1))
+drc_df <- data.frame(log_dose, pred_value)
+
+ggplot2::ggplot(drc_df) +
+  ggplot2::geom_line(mapping = ggplot2::aes(x = log_dose, y = pred_value)) +
+  ggplot2::geom_point(data = damgo, mapping = ggplot2::aes(x = log_dose, y = response))
+```
+
+---
+```{r}
+dr_stanvar_model(data = damgo,
+                 response_col_name = "response",
+                 log_dose_col_name = "log_dose",
+                 predictors_col_name = NULL,
+                 priors = damgo_prior2,
+                 inits = damgo_inits)
+```
+
+
+
+
+
+
+
+
 

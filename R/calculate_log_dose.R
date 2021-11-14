@@ -38,4 +38,3 @@ calculate_log_dose <- function(
   data %>% dplyr::mutate(log_dose = log10({{dose_col}} * molar_concentration))
 
 }
-

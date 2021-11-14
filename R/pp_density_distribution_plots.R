@@ -58,7 +58,8 @@ basic_stats <- function(model,
                         l_ci = 0.025,
                         u_ci = 0.975) {
 
-  ple_info <- brms::fixef(model, probs = c(l_ci,u_ci))
+  ple_info <- brms::fixef(model, probs = c(l_ci, u_ci))
+  print(paste0("lower CI:", l_ci," upper CI:", u_ci))
 
   model %>%
     posterior::summarise_draws("mean",
@@ -67,12 +68,13 @@ basic_stats <- function(model,
     dplyr::filter(!stringr::str_detect(variable, "__$")) %>%
     dplyr::filter(!stringr::str_detect(variable, "sigma")) %>%
     dplyr::select(-variable) %>%
-    cbind(l_ci = c(ple_info[ ,3]),
-          u_ci = c(ple_info[ ,4])) %>%
+    cbind(l_ci = c(ple_info[, 3]),
+          u_ci = c(ple_info[, 4])) %>%
     tibble::rownames_to_column("variables") %>%
     dplyr::mutate(variables = stringr::str_extract(variables,
                                                    "[a-zA-Z0-9]+.{1,100}") %>%
                     stringr::str_remove("predictors"))
+
 }
 
 
@@ -155,16 +157,17 @@ prior_posterior_densities <- function(model,
     brms:::update.brmsfit(sample_prior = "only")
 
   draws <- dplyr::bind_rows(
-    model %>%
-      tidybayes::tidy_draws() %>%
-      tidybayes::gather_variables() %>%
-      dplyr::mutate(sample_type = "Posterior") %>%
-      dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
-      dplyr::filter(!stringr::str_detect(.variable, "sigma")),
+
     model_prior %>%
       tidybayes::tidy_draws() %>%
       tidybayes::gather_variables() %>%
       dplyr::mutate(sample_type = "Prior") %>%
+      dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
+      dplyr::filter(!stringr::str_detect(.variable, "sigma")),
+    model %>%
+      tidybayes::tidy_draws() %>%
+      tidybayes::gather_variables() %>%
+      dplyr::mutate(sample_type = "Posterior") %>%
       dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
       dplyr::filter(!stringr::str_detect(.variable, "sigma"))
   ) %>%
@@ -179,7 +182,7 @@ prior_posterior_densities <- function(model,
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "bottom") +
     ggplot2::geom_density(
-      ggplot2::aes( x = .value,
+      ggplot2::aes(x = .value,
                     group = sample_type,
                     fill = sample_type),
       color = "black",
@@ -194,4 +197,3 @@ prior_posterior_densities <- function(model,
     ggplot2::scale_fill_manual(
       values = c("Posterior" = "cyan2", "Prior" = "hotpink2"))
 }
-
