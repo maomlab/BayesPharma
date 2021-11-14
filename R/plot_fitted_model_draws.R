@@ -39,16 +39,22 @@ posterior_response_draws <- function(model,
     tidyr::pivot_longer(cols = starts_with("b_"),
                         names_to = "Parameters",
                         values_to = "Value") %>%
-    dplyr::mutate(b_class = stringr::str_extract(Parameters, "b_[a-zA-Z0-9]+") %>%
+    dplyr::mutate(b_class = stringr::str_extract(Parameters,
+                                                 "b_[a-zA-Z0-9]+") %>%
                     stringr::str_remove("b_"),
-                  predictors = stringr::str_extract(Parameters, "predictors.+") %>%
+                  predictors = stringr::str_extract(Parameters,
+                                                    "predictors.+") %>%
                     stringr::str_remove("predictors")) %>%
     dplyr::mutate() %>%
     dplyr::select(-Parameters) %>%
     tidyr::pivot_wider(id_cols = c("draw_id", "predictors"),
                        names_from = "b_class",
                        values_from = "Value") %>%
-    dplyr::mutate(predictors = predictors, ec50 = ec50, hill = hill, top = top, bottom = bottom) %>%
+    dplyr::mutate(predictors = predictors,
+                  ec50 = ec50,
+                  hill = hill,
+                  top = top,
+                  bottom = bottom) %>%
     dplyr::rowwise() %>%
     dplyr::do({
       params <- .
@@ -66,7 +72,7 @@ posterior_response_draws <- function(model,
         bottom = params$bottom
       )
     }) %>%
-    dplyr::mutate(Response = bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))) %>%
+    dplyr::mutate(Response = bottom + (top - bottom) / (1 + 10^((ec50 - log_dose) * hill))) %>%
     dplyr::mutate(predictors = ifelse(is.na(predictors), replace_na(predictor_name), predictors))
   }
 
@@ -99,16 +105,20 @@ posterior_mean <- function(model,
     dplyr::rename(variable = key) %>%
     dplyr::filter(!stringr::str_detect(variable, "__$")) %>%
     dplyr::filter(!stringr::str_detect(variable, "sigma")) %>%
-    dplyr::mutate(b_class = stringr::str_extract(variable, "b_[a-zA-Z0-9]+")%>%
+    dplyr::mutate(b_class = stringr::str_extract(variable, "b_[a-zA-Z0-9]+") %>%
                     stringr::str_remove("b_"),
-                  predictors = stringr::str_extract(variable, "predictors.+")%>%
+                  predictors = stringr::str_extract(variable, "predictors.+") %>%
                     stringr::str_remove("predictors")) %>%
     dplyr::select(-variable) %>%
     head(-3) %>%
     tidyr::pivot_wider(id_cols = c("predictors"),
                        names_from = "b_class",
                        values_from = "Mean") %>%
-    dplyr::mutate(predictors = predictors, ec50 = ec50, hill = hill, top = top, bottom = bottom) %>%
+    dplyr::mutate(predictors = predictors,
+                  ec50 = ec50,
+                  hill = hill,
+                  top = top,
+                  bottom = bottom) %>%
     dplyr::rowwise() %>%
     dplyr::do({
       params <- .
