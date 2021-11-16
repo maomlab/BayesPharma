@@ -2,11 +2,11 @@ Package: BayesPharma
 Type: Package
 Title: Tools for Bayesian Analysis of Non-Linear Pharmacology Models
 Version: 0.0.1
-Author@R: person("Madeline", "Martin", email = "martin.mjm105@gmail.com", 
+Author@R: person("Madeline", "Martin", email = "martin.mjm105@gmail.com",
     role = c("aut", "cre"))
-Description: This package contains a collection of R tools to analyze pharmacology 
+Description: This package contains a collection of R tools to analyze pharmacology
     data using Bayesian statistics.
-Depends: 
+Depends:
     R (>= 4.1.0)
 Imports:
     Rcpp,
@@ -25,7 +25,7 @@ Imports:
     tidyr,
     tidyverse,
     bayesplot
-Collage: 
+Collage:
     'run_dr_brm_model.R',
     'plot_posterior_density_distributions.R',
     'plot_fitted_model_draws.R',
@@ -36,7 +36,10 @@ Collage:
     'plot_prior_posterior_check.R'
 Encoding: UTF-8
 License: MIT + file LICENSE
-Suggests: 
+Suggests:
+    testthat (>= 3.0.0),
     rmarkdown,
     knitr
 VignetteBuilder: knitr
+Config/testthat/edition: 3
+RoxygenNote: 7.1.1
