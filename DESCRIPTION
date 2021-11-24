@@ -7,7 +7,7 @@ Authors@R: person("Madeline", "Martin", email = "martin.mjm105@gmail.com",
 Description: This package contains a collection of R tools to analyze pharmacology
     data using Bayesian statistics.
 Depends:
-    R (>= 4.0.4)
+    R (>= 4.0.0)
 Imports:
     Rcpp,
     brms,
@@ -16,6 +16,9 @@ Imports:
     forcats,
     ggplot2,
     modelr,
+    magrittr,
+    posterior,
+    rlang,
     rstan,
     rstantools,
     StanHeaders,

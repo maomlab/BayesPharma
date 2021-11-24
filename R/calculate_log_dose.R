@@ -6,8 +6,8 @@
 #' @usage
 #' calculate_log_dose(
 #'   data,
-#'   dose_col = dose_col,
-#'   molar_concentration = molar_concentration)
+#'   dose_col = 1,
+#'   molar_concentration = 1)
 #'
 #' @param data data.frame containing a column representing a dose in molar units
 #' @param dose_col expression for dose column in the input data.frame (default = dose)
