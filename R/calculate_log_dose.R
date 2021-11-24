@@ -4,9 +4,10 @@
 #'    add a new column of the log base-10 dose, `log_dose`, in the data.frame and return it.
 #'
 #' @usage
-#'   data %>% calculate_log_dose(
-#'     dose_col = <dose_col>,
-#'     molar_concentration = <molar_concentration>)
+#' calculate_log_dose(
+#'   data,
+#'   dose_col = dose_col,
+#'   molar_concentration = molar_concentration)
 #'
 #' @param data data.frame containing a column representing a dose in molar units
 #' @param dose_col expression for dose column in the input data.frame (default = dose)
