@@ -4,7 +4,8 @@
 \alias{calculate_log_dose}
 \title{Add a log dose (in base 10) column to the input data.frame}
 \usage{
-data %>% calculate_log_dose(
+calculate_log_dose(
+  data,
   dose_col = dose_col,
   molar_concentration = molar_concentration)
 }
