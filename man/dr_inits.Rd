@@ -7,7 +7,7 @@
 dr_inits(
   ec50 = -9,
   hill = TRUE,
-  agonist = TRUE,
+  inhibitor = TRUE,
   top = 100,
   bottom = 0,
   chains = 4
@@ -21,9 +21,9 @@ dr_inits(
 initial value of 1/-1 or a numeric value can be assigned to hill. Initial
 value for hill used in brmsfit.(default = TRUE)}
 
-\item{agonist}{TRUE/FALSE value that determines if hill is a positive or
-negative slope. If TRUE, the initial condition will be hill = 1. If FALSE,
-hill = -1. (default = TRUE)}
+\item{inhibitor}{TRUE/FALSE value that determines if hill is a positive or
+negative slope. If TRUE, the initial condition will be hill = -1. If FALSE,
+hill = 1. (default = TRUE)}
 
 \item{top}{numeric value. Initial value for top used in brmsfit.
 (default = 100)}
