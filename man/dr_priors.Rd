@@ -5,7 +5,13 @@
 \title{data.frame of pre-determined priors of parameters to be predicted by the
 model}
 \usage{
-dr_priors(ec50 = NULL, hill = NULL, agonist = TRUE, top = NULL, bottom = NULL)
+dr_priors(
+  ec50 = NULL,
+  hill = NULL,
+  inhibitor = TRUE,
+  top = NULL,
+  bottom = NULL
+)
 }
 \arguments{
 \item{ec50}{NULL, numeric value, or brms::prior. NULL will provide a weakly
@@ -18,7 +24,7 @@ informative prior. Setting hill to a numeric value will set the hill prior to
 a constant value of the given numeric value. A prior of choice can be set
 using brms::prior(). (default = NULL)}
 
-\item{agonist}{TRUE/FALSE value. This determines if a positive or negative
+\item{inhibitor}{TRUE/FALSE value. This determines if a positive or negative
 slope is used for the hill prior. (default = TRUE)}
 
 \item{top}{NULL, numeric value, or brms::prior. NULL will provide a weakly
@@ -37,7 +43,7 @@ brmsprior data.frame
 \description{
 If the function arguments ec50, hill, top, bottom = NULL, pre-set
 normal distribution priors will be set.
-If agonist = TRUE, hill is positive. If agonist = FALSE, hill is negative.
+If inhibitor = TRUE, hill is positive. If inhibitor = FALSE, hill is negative.
 If you would like to set a parameter as a constant, enter a numeric value for
 the function argument.
 If you would like to set your own distribution, for example, in the function

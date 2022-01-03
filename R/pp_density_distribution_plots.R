@@ -2,12 +2,18 @@
 #'from brmsfit with sample_prior = "only".
 #'
 #'@param model brmsfit of sample_prior = "only".
+#'#'@param predictors_col_name string. Name of the column with the perturbations
+#'that each parameter is being estimated for.
+#'@param half_max_label string. Label for the half maximal that fits the type of
+#'experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
 #'@param title_label string. Plot title name. (Default = "Prior Density Plot")
 #'@return ggplot object.
 #'
 #'@export
 
 prior_densities <- function(model,
+                            predictors_col_name = "predictors",
+                            half_max_label = NULL,
                             title_label = "Prior Density Plots") {
   prior <- dplyr::bind_rows(
     model %>%
@@ -22,7 +28,10 @@ prior_densities <- function(model,
                     stringr::str_remove("b_")) %>%
     dplyr::mutate(.variable = stringr::str_extract(.variable,
                                                    "[a-zA-Z0-9]+.{1,100}") %>%
-                    stringr::str_remove("predictors"))
+                    stringr::str_remove(predictors_col_name)) %>%
+    dplyr::mutate(.variable = stringr::str_extract(.variable,
+                                                   "[a-zA-Z0-9]+.{1,100}") %>%
+                    stringr::str_replace("ec50", half_max_label))
 
   ggplot2::ggplot(data = prior) +
     ggplot2::theme_bw() +
@@ -47,6 +56,10 @@ prior_densities <- function(model,
 #' and confidence intervals
 #'
 #' @param model brmsfit
+#' #'@param predictors_col_name string. Name of the column with the perturbations
+#'that each parameter is being estimated for.
+#'@param half_max_label string. Label for the half maximal that fits the type of
+#'experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
 #' @param l_ci decimal of the lower confidence interval (default = 0.025)
 #' @param u_ci decimal of the upper confidence interval (default = 0.975)
 #' @return tibble::tibble that is required for the 'posterior_densities'
@@ -55,6 +68,8 @@ prior_densities <- function(model,
 #' @export
 
 basic_stats <- function(model,
+                        predictors_col_name = "predictors",
+                        half_max_label = NULL,
                         l_ci = 0.025,
                         u_ci = 0.975) {
 
@@ -73,7 +88,10 @@ basic_stats <- function(model,
     tibble::rownames_to_column("variables") %>%
     dplyr::mutate(variables = stringr::str_extract(variables,
                                                    "[a-zA-Z0-9]+.{1,100}") %>%
-                    stringr::str_remove("predictors"))
+                    stringr::str_remove(predictors_col_name)) %>%
+    dplyr::mutate(variables = stringr::str_extract(variables,
+                                                   "[a-zA-Z0-9]+.{1,100}") %>%
+                    stringr::str_replace("ec50", half_max_label))
 
 }
 
@@ -85,12 +103,18 @@ basic_stats <- function(model,
 #'interval, and upper confidence interval
 #'
 #'@param model brmsfit.
+#'#'@param predictors_col_name string. Name of the column with the perturbations
+#'that each parameter is being estimated for.
+#'@param half_max_label string. Label for the half maximal that fits the type of
+#'experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
 #'@param title_label string. Plot title name. (Default = "Posterior Density Plot")
 #'@return ggplot object.
 #'
 #'@export
 
 posterior_densities <- function(model,
+                                predictors_col_name = "predictors",
+                                half_max_label = NULL,
                                 title_label = "Posterior Density Plots with Mean and 95% CI") {
   posterior <- dplyr::bind_rows(
     model %>%
@@ -105,7 +129,10 @@ posterior_densities <- function(model,
                     stringr::str_remove("b_")) %>%
     dplyr::mutate(variables = stringr::str_extract(variables,
                                                    "[a-zA-Z0-9]+.{1,100}") %>%
-                    stringr::str_remove("predictors"))
+                    stringr::str_remove(predictors_col_name)) %>%
+    dplyr::mutate(variables = stringr::str_extract(variables,
+                                                   "[a-zA-Z0-9]+.{1,100}") %>%
+                    stringr::str_replace("ec50", half_max_label))
 
   ggplot2::ggplot(data = posterior) +
     ggplot2::theme_bw() +
@@ -118,17 +145,17 @@ posterior_densities <- function(model,
       alpha = .9) +
     ggplot2::geom_vline(
       ggplot2::aes(xintercept = mean),
-      basic_stats(model),
+      basic_stats(model, predictors_col_name, half_max_label),
       color = "red"
     ) +
     ggplot2::geom_rect(
       ggplot2::aes(xmin = -Inf, xmax = l_ci, ymin = -Inf, ymax = Inf),
-      basic_stats(model),
+      basic_stats(model, predictors_col_name, half_max_label),
       color = "gray",
       alpha = 0.5) +
     ggplot2::geom_rect(
       ggplot2::aes(xmin = u_ci, xmax = Inf, ymin = -Inf, ymax = Inf),
-      basic_stats(model),
+      basic_stats(model, predictors_col_name, half_max_label),
       color = "gray",
       alpha = 0.5) +
     ggplot2::ggtitle(
@@ -145,12 +172,18 @@ posterior_densities <- function(model,
 #'parameters from brmsfit
 #'
 #'@param model brmsfit.
+#'#'@param predictors_col_name string. Name of the column with the perturbations
+#'that each parameter is being estimated for.
+#'@param half_max_label string. Label for the half maximal that fits the type of
+#'experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
 #'@param title_label string. Plot title name. (Default = "Prior Posterior Density Plot")
 #'@return ggplot object.
 #'
 #'@export
 
 prior_posterior_densities <- function(model,
+                                      predictors_col_name = "predictors",
+                                      half_max_label = NULL,
                                       title_label = "Prior Posterior Density Plots") {
 
   model_prior <- model %>%
@@ -176,7 +209,10 @@ prior_posterior_densities <- function(model,
                     stringr::str_remove("b_")) %>%
     dplyr::mutate(.variable = stringr::str_extract(.variable,
                                                    "[a-zA-Z0-9]+.{1,100}") %>%
-                    stringr::str_remove("predictors"))
+                    stringr::str_remove(predictors_col_name)) %>%
+    dplyr::mutate(.variable = stringr::str_extract(.variable,
+                                                   "[a-zA-Z0-9]+.{1,100}") %>%
+                    stringr::str_replace("ec50", half_max_label))
 
   ggplot2::ggplot(data = draws) +
     ggplot2::theme_bw() +

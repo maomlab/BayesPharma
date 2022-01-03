@@ -6,7 +6,7 @@
 \usage{
 plot_trajectories(
   data,
-  predictors_col_name = NULL,
+  predictors_col_name = "predictors",
   measurement,
   draws,
   pred_response,

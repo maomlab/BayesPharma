@@ -5,7 +5,13 @@
 \title{Displays a tibble of mean, median, standard deviation,
 and confidence intervals}
 \usage{
-basic_stats(model, l_ci = 0.025, u_ci = 0.975)
+basic_stats(
+  model,
+  predictors_col_name = "predictors",
+  half_max_label = NULL,
+  l_ci = 0.025,
+  u_ci = 0.975
+)
 }
 \arguments{
 \item{model}{brmsfit}
