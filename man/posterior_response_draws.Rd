@@ -10,7 +10,7 @@ posterior_response_draws(
   n = 100,
   lower = -12,
   upper = -3,
-  predictor_name = NULL
+  predictor_col_name = "predictors"
 )
 }
 \arguments{

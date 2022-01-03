@@ -5,7 +5,12 @@
 \title{Create a plot of the prior density distributions of modeled parameters
 from brmsfit with sample_prior = "only".}
 \usage{
-prior_densities(model, title_label = "Prior Density Plots")
+prior_densities(
+  model,
+  predictors_col_name = "predictors",
+  half_max_label = NULL,
+  title_label = "Prior Density Plots"
+)
 }
 \arguments{
 \item{model}{brmsfit of sample_prior = "only".}

@@ -1,20 +1,21 @@
-#'A list of pre-determined initial values for the parameters
+#' Create a list of initial values of the model parameters
 #'
-#'@param ec50 numeric value. Initial value for ec50 used in brmsfit.
-#'(default = -9)
-#'@param hill TRUE, FALSE, or numeric value, TRUE/FALSE sets hill to an
-#'initial value of 1/-1 or a numeric value can be assigned to hill. Initial
-#'value for hill used in brmsfit.(default = TRUE)
-#'@param inhibitor TRUE/FALSE value that determines if hill is a positive or
-#' negative slope. If TRUE, the initial condition will be hill = -1. If FALSE,
-#' hill = 1. (default = TRUE)
-#'@param top numeric value. Initial value for top used in brmsfit.
-#'(default = 100)
-#'@param bottom numeric value. Initial value for bottom used in brmsfit.
-#'(default = 0)
-#'@param chain the number of chains that will be used for in brmsfit.
-#'(default = 4)
-#'@return list of lists
+#' @description Creating a list of lists containing initial values for the model parameters
+#'   that will be used as an argument in the dr_model.
+#'
+#' @usage
+#'
+#' @param ec50 numeric unit of ec50 (default = -9)
+#' @param hill TRUE, FALSE, or numeric value, TRUE/FALSE sets hill to an
+#'   initial value of 1/-1 or a numeric value can be assigned to hill.
+#'   numeric unit of hill (default = TRUE)
+#' @param inhibitor TRUE/FALSE value that determines if hill is a positive or
+#'   negative slope. If TRUE, the initial condition will be hill = -1. If FALSE,
+#'   hill = 1 (default = TRUE)
+#' @param top numeric unit of top (default = 100)
+#' @param bottom numeric unit of bottom (default = 0)
+#' @param chain the number of Markov chains that will be used in brmsfit.(default = 4)
+#' @return list of lists
 #'
 #'@export
 

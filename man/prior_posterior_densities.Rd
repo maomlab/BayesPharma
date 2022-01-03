@@ -5,7 +5,12 @@
 \title{Create a plot of the prior & posterior density distributions of modeled
 parameters from brmsfit}
 \usage{
-prior_posterior_densities(model, title_label = "Prior Posterior Density Plots")
+prior_posterior_densities(
+  model,
+  predictors_col_name = "predictors",
+  half_max_label = NULL,
+  title_label = "Prior Posterior Density Plots"
+)
 }
 \arguments{
 \item{model}{brmsfit.}

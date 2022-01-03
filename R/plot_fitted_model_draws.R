@@ -34,7 +34,7 @@ posterior_response_draws <- function(model,
                                      n = 100,
                                      lower = -12,
                                      upper = -3,
-                                     predictor_name = NULL) {
+                                     predictor_col_name = "predictors") {
   n_sample_draws(model, n) %>%
     tidyr::pivot_longer(cols = starts_with("b_"),
                         names_to = "Parameters",
@@ -43,8 +43,8 @@ posterior_response_draws <- function(model,
                                                  "b_[a-zA-Z0-9]+") %>%
                     stringr::str_remove("b_"),
                   predictors = stringr::str_extract(Parameters,
-                                                    "predictors.+") %>%
-                    stringr::str_remove("predictors")) %>%
+                                                    paste0(predictor_col_name,".+")) %>%
+                    stringr::str_remove(predictor_col_name)) %>%
     dplyr::mutate() %>%
     dplyr::select(-Parameters) %>%
     tidyr::pivot_wider(id_cols = c("draw_id", "predictors"),
@@ -73,7 +73,7 @@ posterior_response_draws <- function(model,
       )
     }) %>%
     dplyr::mutate(Response = bottom + (top - bottom) / (1 + 10^((ec50 - log_dose) * hill))) %>%
-    dplyr::mutate(predictors = ifelse(is.na(predictors), replace_na(predictor_name), predictors))
+    dplyr::mutate(predictors = ifelse(is.na(predictors), replace_na(predictors_col_name), predictors))
   }
 
 #' Tibble of predictors, mean ec50, mean hill, mean top, mean bottom, and
@@ -96,7 +96,7 @@ posterior_mean <- function(model,
                            n = 100,
                            lower = -12,
                            upper = -3,
-                           predictor_name = NULL) {
+                           predictor_col_name = "predictors") {
   model %>%
     brms::as_draws_df() %>%
     tidyr::gather(factor_key = TRUE) %>%
@@ -107,8 +107,9 @@ posterior_mean <- function(model,
     dplyr::filter(!stringr::str_detect(variable, "sigma")) %>%
     dplyr::mutate(b_class = stringr::str_extract(variable, "b_[a-zA-Z0-9]+") %>%
                     stringr::str_remove("b_"),
-                  predictors = stringr::str_extract(variable, "predictors.+") %>%
-                    stringr::str_remove("predictors")) %>%
+                  predictors = stringr::str_extract(variable,
+                                                    paste0(predictor_col_name,".+")) %>%
+                    stringr::str_remove(predictor_col_name)) %>%
     dplyr::select(-variable) %>%
     head(-3) %>%
     tidyr::pivot_wider(id_cols = c("predictors"),
@@ -136,7 +137,7 @@ posterior_mean <- function(model,
       )
     }) %>%
     dplyr::mutate(Response = bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))) %>%
-    dplyr::mutate(predictors = ifelse(is.na(predictors), replace_na(predictor_name), predictors))
+    dplyr::mutate(predictors = ifelse(is.na(predictors), replace_na(predictors_col_name), predictors))
   }
 
 #' Create a plot of the predicted responses from the posterior distribution
@@ -159,7 +160,7 @@ posterior_mean <- function(model,
 #'@export
 
 plot_trajectories <- function(data,
-                              predictors_col_name = NULL,
+                              predictors_col_name = "predictors",
                               measurement,
                               draws,
                               pred_response,
@@ -235,9 +236,8 @@ plot_draws_data <- function(model,
                             n = 100,
                             lower = -12,
                             upper = -3,
-                            predictor_name,
+                            predictors_col_name = "predictors",
                             data,
-                            predictors_col_name = NULL,
                             measurement,
                             draws,
                             pred_response,
@@ -250,13 +250,13 @@ plot_draws_data <- function(model,
                                          n,
                                          lower,
                                          upper,
-                                         predictor_name)
+                                         predictors_col_name)
 
   resp_draws_mean <- posterior_mean(model,
                                     n,
                                     lower,
                                     upper,
-                                    predictor_name)
+                                    predictors_col_name)
 
   draws_plot <- plot_trajectories(data,
                                   predictors_col_name,
