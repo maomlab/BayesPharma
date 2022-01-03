@@ -7,6 +7,7 @@
 #'@param n_params numeric value. The number of params being estimated by the
 #'model. i.e. how many parameters have non-constant priors? in the case of dose
 #'response cureves, are all 4 parameters being predicted by the model?
+#'@param ... extra arguments passed on to `brms::add_criterion``
 #'@return brmsfit object with loo criterion.
 #'
 #'@export
