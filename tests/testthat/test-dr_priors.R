@@ -79,3 +79,14 @@ testthat::test_that("dr_priors with custom priors", {
     as.list(priors[4,]) ==
       c("beta(1, 10)", "b", "", "", "", "", "bottom", "", "user")))
 })
+
+testthat::test_that("dr_priors in agonist mode", {
+  priors <- BayesPharma::dr_priors(inhibitor=FALSE)
+  testthat::expect_true("brmsprior" %in% class(priors))
+
+  testthat::expect_true(all(
+    as.list(priors[2,]) ==
+      c("normal(1, 1)", "b", "", "", "", "", "hill", "<lower=-0.01>", "user")))
+
+})
+
