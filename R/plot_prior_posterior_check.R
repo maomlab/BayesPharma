@@ -24,6 +24,9 @@ plot_pp_check <- function(model,
                           plot_type = "dens_overlay",
                           n = 50,
                           ...) {
+
+  brms::expose_functions(kor_model, vectorize = TRUE)
+
   cat("For other plot options reference 'PPC plotting functions' on this
   website https://mc-stan.org/bayesplot/reference/PPC-overview.html")
 
