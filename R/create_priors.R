@@ -33,24 +33,12 @@
 #'@return brmsprior data.frame
 #'
 #'@export
-
-dr_priors <- function(ec50 = NULL,
-                      hill = NULL,
-                      inhibitor = TRUE,
-                      top = NULL,
-                      bottom = NULL) {
-
-  cat("If the function arguments ec50, hill, top, bottom = NULL, pre-set
-  normal distribution priors will be set. If inhibitor = FALSE, hill is positive.
-  If inhibitor = TRUE, hill is negative.
-  If you would like to set a parameter as a constant, enter a numeric value for
-  the function argument.
-  If you would like to set your own distribution, for example, in the function
-  arguments type 'ec50 = brms::prior(distribution(mu,sigma), nlpar = 'ec50')'.
-  For other distribution options, reference
-  http://mc-stan.org/rstanarm/reference/priors.html#arguments.
-      ")
-
+dr_priors <- function(
+  ec50 = NULL,
+  hill = NULL,
+  inhibitor = TRUE,
+  top = NULL,
+  bottom = NULL) {
 
   if (is.null(ec50)) {
     ec50_prior <- brms::prior(normal(-7, 2.5), nlpar = "ec50")
