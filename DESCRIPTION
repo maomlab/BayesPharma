@@ -2,12 +2,12 @@ Package: BayesPharma
 Type: Package
 Title: Tools for Bayesian Analysis of Non-Linear Pharmacology Models
 Version: 0.0.1
-Author@R: person("Madeline", "Martin", email = "martin.mjm105@gmail.com",
+Authors@R: person("Madeline", "Martin", email = "martin.mjm105@gmail.com",
     role = c("aut", "cre"))
 Description: This package contains a collection of R tools to analyze pharmacology
     data using Bayesian statistics.
 Depends:
-    R (>= 4.1.0)
+    R (>= 4.0.0)
 Imports:
     Rcpp,
     brms,
@@ -16,6 +16,9 @@ Imports:
     forcats,
     ggplot2,
     modelr,
+    magrittr,
+    posterior,
+    rlang,
     rstan,
     rstantools,
     StanHeaders,
