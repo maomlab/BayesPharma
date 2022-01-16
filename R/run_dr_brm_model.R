@@ -1,7 +1,6 @@
 
 
 #' stanvar function
-
 dr_stanvar <- brms::stanvar(
   scode = paste(
     "   real sigmoid(",
@@ -81,7 +80,6 @@ dr_formula <- function(multiple_perturbations = FALSE,
 #'@return brmsfit
 #'
 #'@export
-
 dr_model <- function(data,
                      formula = dr_formula(),
                      priors = NULL,
@@ -93,7 +91,6 @@ dr_model <- function(data,
   if (is.null(priors)) {
     stop("priors for ec50, hill, top and bottom are required. Use make_priors function to get default priors.")
   }
-
   brms::brm(
     formula = formula,
     data = data,
