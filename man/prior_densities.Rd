@@ -13,7 +13,12 @@ prior_densities(
 )
 }
 \arguments{
-\item{model}{brmsfit of sample_prior = "only".}
+\item{model}{brmsfit of sample_prior = "only".
+#'@param predictors_col_name string. Name of the column with the perturbations
+that each parameter is being estimated for.}
+
+\item{half_max_label}{string. Label for the half maximal that fits the type of
+experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).}
 
 \item{title_label}{string. Plot title name. (Default = "Prior Density Plot")}
 }

@@ -2,41 +2,31 @@
 % Please edit documentation in R/create_default_inits.R
 \name{dr_inits}
 \alias{dr_inits}
-\title{A list of pre-determined initial values for the parameters}
+\title{Create a list of initial values of the model parameters}
 \usage{
-dr_inits(
-  ec50 = -9,
-  hill = TRUE,
-  inhibitor = TRUE,
-  top = 100,
-  bottom = 0,
-  chains = 4
-)
+
 }
 \arguments{
-\item{ec50}{numeric value. Initial value for ec50 used in brmsfit.
-(default = -9)}
+\item{ec50}{numeric unit of ec50 (default = -9)}
 
 \item{hill}{TRUE, FALSE, or numeric value, TRUE/FALSE sets hill to an
-initial value of 1/-1 or a numeric value can be assigned to hill. Initial
-value for hill used in brmsfit.(default = TRUE)}
+initial value of 1/-1 or a numeric value can be assigned to hill.
+numeric unit of hill (default = TRUE)}
 
 \item{inhibitor}{TRUE/FALSE value that determines if hill is a positive or
 negative slope. If TRUE, the initial condition will be hill = -1. If FALSE,
-hill = 1. (default = TRUE)}
+hill = 1 (default = TRUE)}
 
-\item{top}{numeric value. Initial value for top used in brmsfit.
-(default = 100)}
+\item{top}{numeric unit of top (default = 100)}
 
-\item{bottom}{numeric value. Initial value for bottom used in brmsfit.
-(default = 0)}
+\item{bottom}{numeric unit of bottom (default = 0)}
 
-\item{chain}{the number of chains that will be used for in brmsfit.
-(default = 4)}
+\item{chain}{the number of Markov chains that will be used in brmsfit.(default = 4)}
 }
 \value{
 list of lists
 }
 \description{
-A list of pre-determined initial values for the parameters
+Creating a list of lists containing initial values for the model parameters
+  that will be used as an argument in the dr_model.
 }
