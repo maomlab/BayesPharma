@@ -1,7 +1,6 @@
 
 
 #' stanvar function
-
 dr_stanvar <- brms::stanvar(
   scode = paste(
     "   real sigmoid(",
@@ -55,7 +54,7 @@ dr_formula <- function(multiple_perturbations = FALSE,
   return(sigmoid_formula)
 }
 
-#'
+#' Formula for the constant curve
 #'
 #'@param multiple_perturbations TRUE/FALSE. If FALSE, the model will produce a
 #'singular estimate for each parameter. If TRUE, the parameter will produce
@@ -67,7 +66,6 @@ dr_formula <- function(multiple_perturbations = FALSE,
 #'@return brmsformula
 #'
 #'@export
-
 constant_formula <- function(multiple_perturbations = FALSE,
                        predictors = 0 + predictors,
                        ...){
@@ -112,7 +110,6 @@ constant_formula <- function(multiple_perturbations = FALSE,
 #'@return brmsfit
 #'
 #'@export
-
 dr_model <- function(data,
                      formula = dr_formula(),
                      priors = NULL,
@@ -124,7 +121,6 @@ dr_model <- function(data,
   if (is.null(priors)) {
     warning("priors for ec50, hill, top and bottom are required. Use make_priors function to get default priors.")
   }
-
   brms::brm(
     formula = formula,
     data = data,

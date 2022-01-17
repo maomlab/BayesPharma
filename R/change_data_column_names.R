@@ -16,7 +16,7 @@
 #' @return input data.frame with new column header names for the response column (`response`),
 #'   log_dose column (`log_dose`), and predictors column (`predictors`).
 #'
-#' @example
+#' @examples
 #' # consider the response column name is `normalized_measurement`, log dose column name is `log_10_dose`,
 #' # and predictors column name is `Drug`.
 #' data %>% change_col_names(response_col_name = normalized_measurement,
