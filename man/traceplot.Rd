@@ -2,29 +2,34 @@
 % Please edit documentation in R/plot_trace.R
 \name{traceplot}
 \alias{traceplot}
-\title{Create a plot of MCMC chains and sample value at each MCMC iteration}
+\title{Create a trace plot of MCMC draws}
 \usage{
-traceplot(
-  model,
-  predictors_col_name = "predictors",
-  half_max_label = NULL,
-  title = NULL
-)
+model %>% traceplot(predictors_col_name = <predictors_col_name>,
+                    half_max_label = <label_for_the_half_maximal_effect>,
+                    title = <plot_title_label>)
 }
 \arguments{
-\item{model}{brmsfit}
+\item{model}{brmsfit model.}
 
-\item{predictors_col_name}{string. Name of the column with the perturbations
-that each parameter is being estimated for.}
+\item{predictors_col_name}{string expression for predictors column in the input data.frame (default = "predictors).
+Predictors are the perturbations tested during the experiment (i.e. Drug, Temperature, etc.).}
 
-\item{half_max_label}{string. Label for the half maximal that fits the type of
+\item{half_max_label}{string of the label for the half maximal that fits the type of
 experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).}
 
-\item{title}{string for the plot title (default = NULL)}
+\item{title}{string of the plot title (default = NULL)}
 }
 \value{
-ggplot object
+ggplot2::ggplot object.
 }
 \description{
-Create a plot of MCMC chains and sample value at each MCMC iteration
+Given a brms model, plot a trace plot of MCMC draws.
+}
+\examples{
+Consider a dose response experiment testing multiple activators.
+traceplot(model = my_dr_model,
+          predictors_col_name = "activators",
+          half_max_label = "ec50",
+          title = "Traceplot of Dose Response Activators Experiment")
+
 }

@@ -9,8 +9,9 @@ plot_draws_data(
   n = 100,
   lower = -12,
   upper = -3,
-  predictors_col_name = "predictors",
+  predictor_name,
   data,
+  predictors_col_name = NULL,
   measurement,
   draws,
   pred_response,
@@ -31,10 +32,10 @@ Response (default = -12).}
 \item{upper}{number for the highest log_dose value to be used for calculating
 Response (default = -3).}
 
+\item{data}{is the tibble or dataframe used for the brmsfit.}
+
 \item{predictors_col_name}{name of the column with the predictors used in
 brmsfit.}
-
-\item{data}{is the tibble or dataframe used for the brmsfit.}
 
 \item{measurement}{is the column in 'data' containing response values.}
 
