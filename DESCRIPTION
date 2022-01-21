@@ -37,6 +37,7 @@ Collage:
     'plot_trace.R',
     'data_preparation.R',
     'plot_prior_posterior_check.R'
+    'Pnear_model.R'
 Encoding: UTF-8
 License: MIT + file LICENSE
 Suggests:
