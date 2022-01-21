@@ -2,31 +2,36 @@
 % Please edit documentation in R/plot_prior_posterior_check.R
 \name{plot_pp_check}
 \alias{plot_pp_check}
-\title{Posterior Predictive Check}
+\title{Perform Posterior Predictive Check}
 \usage{
-plot_pp_check(model, plot_type = "dens_overlay", n = 50, ...)
+model %>% plot_pp_check(plot_type = "dens_overlay", n = 50)
 }
 \arguments{
-\item{model}{brmsfit.}
+\item{model}{brmsfit model.}
 
-\item{plot_type}{string. Name of available plot types.}
+\item{plot_type}{String expression of a plot function.}
 
-\item{n}{numeric value. Number of posterior draws to be used.}
+\item{n}{numeric units of posterior draws to be used.}
 }
 \value{
 ggplot object.
 }
 \description{
+Given a brms model, perform a graphical posterior predictive check.
+
 pp_check from the brms package has different plot types to analyze the model
 fit by comparing the observed data with generated data from the model.
-}
-\details{
+
 Here is the documentation for pp_check:
 http://paul-buerkner.github.io/brms/reference/pp_check.brmsfit.html
 
-Here is the documentation for pp_check plot types under PPC plotting functions':
+Here is the documentation for pp_check plot types under PPC plotting functions:
 https://mc-stan.org/bayesplot/reference/PPC-overview.html
+}
+\examples{
+Consider a dose response model with the plot type being 10 box plots
+plot_pp_check(model = my_dose_response_model,
+              plot_type = "box_plot",
+              n = 10)
 
-The plot function can be entered as a string for argument 'plot_type' in the
-function
 }

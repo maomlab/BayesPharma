@@ -2,18 +2,24 @@
 % Please edit documentation in R/plot_fitted_model_draws.R
 \name{n_sample_draws}
 \alias{n_sample_draws}
-\title{Dataframe of posterior samples of modeled parameters from brmsfit}
+\title{Dataframe of posterior samples of modeled parameters from brmsfit model.}
 \usage{
-n_sample_draws(model, n = 100)
+n_sample_draws(model = <brmsfit_model_name>,
+               n = 100)
 }
 \arguments{
-\item{model}{brmsfit.}
+\item{model}{brmsfit model.}
 
-\item{n}{number of samples from the posterior distribution. (default n = 100)}
+\item{n}{numeric units of samples from the posterior distribution (default n = 100).}
 }
 \value{
-df that is required for the 'posterior_response_draws' function.
+data.frame.
 }
 \description{
-Dataframe of posterior samples of modeled parameters from brmsfit
+Given a brms model, extract a sample of values from posterior distribution.
+}
+\examples{
+Consider a brmsfit model named "activator_dr_model" and the number of samples wanted is 50.
+n_sample_draws(model = activator_dr_model, n = 50)
+
 }

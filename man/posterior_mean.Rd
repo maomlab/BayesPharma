@@ -5,13 +5,7 @@
 \title{Tibble of predictors, mean ec50, mean hill, mean top, mean bottom, and
 mean Response of the posterior distribution.}
 \usage{
-posterior_mean(
-  model,
-  n = 100,
-  lower = -12,
-  upper = -3,
-  predictor_col_name = "predictors"
-)
+posterior_mean(model, n = 100, lower = -12, upper = -3, predictor_name = NULL)
 }
 \arguments{
 \item{model}{brmsfit.}
