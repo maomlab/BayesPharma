@@ -128,7 +128,7 @@ posterior_mean <- function(model,
           seq(
             from = log10(1*10^(lower)),
             to = log10(1*10^(upper)),
-            length.out = 100)),
+            length.out = n)),
         predictors = params$predictors,
         ec50 = params$ec50,
         hill = params$hill,
