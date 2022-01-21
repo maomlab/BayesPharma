@@ -119,7 +119,7 @@ dr_model <- function(data,
                      ...) {
 
   if (is.null(priors)) {
-    warning("priors for ec50, hill, top and bottom are required. Use make_priors function to get default priors.")
+    warning("priors for ec50, hill, top and bottom are required. Use dr_priors function to get default priors.")
   }
   brms::brm(
     formula = formula,
