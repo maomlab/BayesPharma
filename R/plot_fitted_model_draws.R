@@ -73,7 +73,7 @@ posterior_response_draws <- function(model,
       )
     }) %>%
     dplyr::mutate(Response = bottom + (top - bottom) / (1 + 10^((ec50 - log_dose) * hill))) %>%
-    dplyr::mutate(predictors = ifelse(is.na(predictors), replace_na(predictors_col_name), predictors))
+    dplyr::mutate(predictors = ifelse(is.na(predictors), tidyr::replace_na(predictors_col_name), predictors))
   }
 
 #' Tibble of predictors, mean ec50, mean hill, mean top, mean bottom, and
@@ -137,7 +137,7 @@ posterior_mean <- function(model,
       )
     }) %>%
     dplyr::mutate(Response = bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))) %>%
-    dplyr::mutate(predictors = ifelse(is.na(predictors), replace_na(predictors_col_name), predictors))
+    dplyr::mutate(predictors = ifelse(is.na(predictors), tidyr::replace_na(predictors_col_name), predictors))
   }
 
 #' Create a plot of the predicted responses from the posterior distribution
