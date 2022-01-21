@@ -4,13 +4,9 @@
 \alias{Pnear}
 \title{Compute the Pnear quality metric for RMSD funnel}
 \usage{
-Pnear(scores, rmsds, lambda = 1.5, kbt = 0.62, verbose = FALSE)
+Pnear(score, rmsd, lambda = 1.5, kbt = 0.62, verbose = FALSE)
 }
 \arguments{
-\item{scores}{a vector of scores e.g. Rosetta energies e.g. in the Ref2015.}
-
-\item{rmsds}{root mean squared deviation values for e.g. backbone atoms}
-
 \item{lambda}{Lambda is a value in Angstroms indicating the breadth of the
 Gaussian used to define "native-like-ness".  The bigger the value, the more
 permissive the calculation is to structures that deviate from native.
@@ -21,36 +17,18 @@ Typical values for peptides range from 1.5 to 2.0, and for proteins from
 energy gap must be in order for a sequence to be said to favour the
 native state. The default value, 0.62, should correspond to physiological
 temperature for ref2015 or any other scorefunction with units of kcal/mol.}
+
+\item{scores}{a vector of scores e.g. Rosetta energies e.g. in the Ref2015.}
+
+\item{rmsds}{root mean squared deviation values for e.g. backbone atoms}
 }
 \description{
 The Pnear metric defined in [(Bhardwaj, et al., Nature, 2016)](https://www.nature.com/articles/nature19791)
 measures the how "funnel-like" a score-vs-rmsd plot is.
+https://github.com/RosettaCommons/main/blob/master/tests/benchmark/util/quality_measures.py#L268
 }
 \details{
-https://github.com/RosettaCommons/main/blob/master/tests/benchmark/util/quality_measures.py#L268
 
-  # in mathemetical notation:
-  Pnear = \frac{\
-    \Sum_{i=1}^N\
-      exp\left(-\frac{rmsd_i^2}{\lambda^2}\right)\
-      \exp\left(-\frac{E_i}{k_BT}\right)}\
-    {\Sum_{j=1}^N\
-      exp\left(-\frac{E_j}{K_BT}\right)}
-
-  # subtract off the min-score as is done in the Rosetta Code
-  scores = scores - min(scores)
-
-  # write down the equation in more code-like notation
-  Pnear = Sum_i[exp(-RMSD[i]^2/lambda^2)*exp(-scores[i]/k_BT)] /
-          Sum_i[exp(                         -scores[i]/k_BT)]
-
-  # combine the terms in the first exponential
-  Pnear = Sum_i[exp(-RMSD[i]^2/lambda^2 - scores[i]/k_BT)] /
-          Sum_i[exp(                     -scores[i]/k_BT)]
-
-  # Use the log-sum-exponential trick
-  log(Pnear) =   log_sum_exp(-RMSD[i]^2/lambda^2  - scores[i]/k_BT)
-               - log_sum_exp(                      -scores[i]/k_BT)
 }
 \note{
 Unlike the Conway discrimination score, the PNear calculation uses no hard cutoffs.  This is
