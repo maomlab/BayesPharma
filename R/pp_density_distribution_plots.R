@@ -113,7 +113,7 @@ basic_stats <- function(model,
 #'@export
 
 posterior_densities <- function(model,
-                                predictors_col_name = "predictors",
+                                predictors_col_name = "_Intercept",
                                 half_max_label = NULL,
                                 title_label = "Posterior Density Plots with Mean and 95% CI") {
   posterior <- dplyr::bind_rows(

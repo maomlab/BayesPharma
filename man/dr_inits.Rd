@@ -4,29 +4,46 @@
 \alias{dr_inits}
 \title{Create a list of initial values of the model parameters}
 \usage{
-
+dr_inits(
+      ec50 = -9,
+      hill = TRUE,
+      inhibitor = TRUE,
+      top = 100,
+      bottom = 0,
+      chains = 4)
 }
 \arguments{
-\item{ec50}{numeric unit of ec50 (default = -9)}
+\item{ec50}{numeric units of ec50 (default = -9).}
 
-\item{hill}{TRUE, FALSE, or numeric value, TRUE/FALSE sets hill to an
-initial value of 1/-1 or a numeric value can be assigned to hill.
-numeric unit of hill (default = TRUE)}
+\item{hill}{TRUE, FALSE, or numeric units, TRUE/FALSE sets hill to an
+initial value of 1/-1 or numeric units can be assigned to hill (default = TRUE).}
 
 \item{inhibitor}{TRUE/FALSE value that determines if hill is a positive or
 negative slope. If TRUE, the initial condition will be hill = -1. If FALSE,
-hill = 1 (default = TRUE)}
+hill = 1 (default = TRUE).}
 
-\item{top}{numeric unit of top (default = 100)}
+\item{top}{numeric units of top (default = 100).}
 
-\item{bottom}{numeric unit of bottom (default = 0)}
+\item{bottom}{numeric units of bottom (default = 0).}
 
-\item{chain}{the number of Markov chains that will be used in brmsfit.(default = 4)}
+\item{chain}{numeric units of Markov chains that will be used in brmsfit (default = 4).}
 }
 \value{
-list of lists
+list of lists.
 }
 \description{
 Creating a list of lists containing initial values for the model parameters
   that will be used as an argument in the dr_model.
+}
+\examples{
+Consider an activator that has a max response around 50\%, EC50 is estimated to be
+around 1uM, minimum response is known to be 0, and 4 MCMC chains will be used by the model.
+
+inits <- BayesPharma::dr_inits(ec50 = -6,
+                               hill = TRUE,
+                               inhibitor = FALSE,
+                               top = 50,
+                               bottom = 0,
+                               chains = 4)
+
 }

@@ -7,7 +7,7 @@ from brmsfit}
 \usage{
 posterior_densities(
   model,
-  predictors_col_name = "predictors",
+  predictors_col_name = "_Intercept",
   half_max_label = NULL,
   title_label = "Posterior Density Plots with Mean and 95\% CI"
 )
