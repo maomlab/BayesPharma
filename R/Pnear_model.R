@@ -78,7 +78,11 @@ Pnear <- function(
   }
 
   score <- score - min(score)
+  # log-sum-exponent trick is to make it more numerically stable
+  # This may be important if there are lots of high-scoring points
   exp(
-    matrixStats::logSumExp(rmsd^2/lambda^2 - nscores/kbt) -
-    matrixStats::logSumExp(-score/kbt))
+    matrixStats::logSumExp(-rmsd^2/lambda^2 - score/kbt) -
+      matrixStats::logSumExp(-score/kbt))
 }
+
+
