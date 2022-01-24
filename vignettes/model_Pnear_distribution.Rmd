@@ -1,0 +1,491 @@
+---
+title: "Modeling the Pnear Distribution"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Modeling the Pnear Distribution}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r set-options}
+
+# inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
+knitr::opts_chunk$set(
+  cache = TRUE,
+  echo = FALSE,
+  fig.path = "model_Pnear_distribution_figures/knitr-",
+  fig.retina = 2, # Control using dpi
+  fig.width = 6,  # generated images
+  fig.pos = "t",  # pdf mode
+  fig.align = "center",
+  dpi = if (knitr::is_latex_output()) 72 else 300, 
+  out.width = "100%",
+  dev = "svg",
+  dev.args = list(png = list(type = "cairo-png")),
+  optipng = "-o1 -quiet")
+
+```
+
+
+```{r load-packages}
+library(tidyverse)
+library(BayesPharma)
+
+```
+# Modeling Folding Funnels
+A common task in molecular modeling is to predict the conformation of the folded
+state for a given molecular system. For example, the Rosetta ab initio, or
+protein-protein-interface docking protocols. To turn the simulation into a prediction
+requires predicting the relative free energy of the folded state relative a reference.
+
+The Rosetta score function can score individual conformations, but doesn't capture
+the free energy of the state. Typically, a researcher will run a series of trajectories
+and generate a **score vs. RMSD plot** and look for a "folding funnel" e.g. lower
+energies for conformations that are closer to a target folded state. Here, RMSD
+is the root-mean squared deviation measuring the euclidean distance of pairs of atom
+defined by the application (for example just the backbone for sequence design or
+interface atoms for docking).
+
+## Pnear score
+To quantify the quality of the folding funnel, recently, there has been interest
+in using the **Pnear score**, which is defined by
+
+    Pnear = Sum_i[exp(-RMSD[i]^2/lambda^2)*exp(-score[i]/k_BT)] /
+            Sum_i[exp(-score[i]/k_BT)]
+
+where *(RMSD[i], score[i])* is the score RMSD and score values for a
+conformation *i*. The parameter *lambda* is measured in Angstroms indicating the
+breadth of the Gaussian used to define "native-like-ness".  The bigger the
+value, the more permissive the calculation is to structures that deviate from
+native. Typical values for peptides range from 1.5 to 2.0, and for proteins from
+2.0 to perhaps 4.0. And finally the parameter *k_BT* is measured in in energy
+units, determines how large an energy gap must be in order for a sequence to be
+said to favour the native state. The default value, 0.62, should correspond to
+physiological temperature for ref2015 or any other scorefunction with units of
+kcal/mol.
+
+## Two state model
+Thinking of the folded and unfolded states as a two-state model and RSMD as
+a reaction coordinate or "collective variable", then the energy gap can be
+modeled by a sigmoidal Boltzmann distribution.
+
+```{r simulate-data}
+
+simulate_score_vs_rmsd <- function(
+  rmsd_min = 0,
+  rmsd_max = 5,
+  energy_near = 0,
+  energy_far = 10,
+  radius = .5,
+  hill = 1,
+  sigma = 5,
+  n_samples = 300) {
+  
+  tibble::tibble(
+    rmsd = runif(n_samples, min=rmsd_min, max=rmsd_max),
+    log_rmsd = log10(rmsd),
+    score_mean = 
+      energy_near + 
+      (energy_far - energy_near) / (1 + 10^((log(radius) - log_rmsd)*hill)),
+    score = rnorm(
+      n = n_samples,
+      mean = score_mean,
+      sd = sigma))
+  }
+
+data_simulated <- simulate_score_vs_rmsd(
+  radius = 1.5,
+  hill=1.8,
+  energy_near = -30,
+  energy_far = -10,
+  sigma = 5) %>%
+  dplyr::mutate(
+    Pnear = BayesPharma::Pnear(
+      score = score,
+      rmsd = rmsd))
+
+```
+
+```{r sigmoidal-cartoon, dependson=c("load-packages", "simulate-data")}
+ggplot2::ggplot(
+  data = data_simulated) +
+  xkcd::theme_xkcd() +
+    ggplot2::ggtitle(
+    "Score vs RMSD") +
+  xkcd::xkcdaxis(
+    xrange = c(0, 5),
+    yrange = c(-35, -5)) +
+  ggplot2::ylab("Score") +
+  ggplot2::xlab(
+    expression("RMSD "*ring(A)*"")) +
+  ggplot2::geom_line(
+    mapping = ggplot2::aes(
+      x = rmsd,
+      y = score_mean),
+    size = 2,
+    color = "blue")
+```
+
+For a principled molecular dynamics or monte carlo simulation that maintains detailed balance, it is in
+theory possible to use thermodynamic integration to quantify the energy gap
+between the two states. However, this is often not computationally feasible for
+proteins of moderate size or in a protein design or screening context where many
+different molecules need to be evaluated given a limited computational budget. So,
+Instead, we will assume that the at least locally around the folded state, the
+degrees of freedom increase exponentially so that the log of the RMSD defines
+a linear reaction coordinate. 
+
+If we simulate, trajectory points from the sigmoid on the log(RMSD) scale,
+with a Normally distributed error we can generate synthetic score-vs-rmsd plots
+
+```{r simulate-score-vs-rmsd-data, dependson=c("load-packages", "simulate-data")}
+
+pnear_score <- BayesPharma::Pnear(
+  score = data_simulated$score,
+  rmsd = data_simulated$rmsd)
+
+ggplot2::ggplot(data = data_simulated) + 
+  ggplot2::theme_bw() +
+  GeomIndicator::geom_indicator(
+    mapping = ggplot2::aes(indicator = paste0("Pnear: ", signif(pnear_score, 2))),
+    xpos = 0.05,
+    ypos = 0.9,
+    group = 0) +
+  ggplot2::geom_line(
+    mapping = ggplot2::aes(
+      x = rmsd,
+      y = score_mean),
+    color = "blue") +
+  ggplot2::geom_point(
+    mapping = ggplot2::aes(
+      x = rmsd,
+      y = score)) +
+  ggplot2::ggtitle(
+    "Simulated score vs RMSD") +
+  ggplot2::scale_y_continuous("Score (REU)") +
+  ggplot2::scale_x_continuous(
+    expression("RMSD ("*ring(A)*")"))
+```
+
+A nice thing about having the parametric model to generate score-vs-rmsd plots,
+is that it allows us to measure measure the sensitivity of the Pnear to differently
+shaped score-vs-rmsd plots. For example we can scann both the radius of 
+
+```{r simulate-data-scan, dependson=c("load-packages", "simulate-data")}
+data_simulated_scanned <- tidyr::expand_grid(
+  radius = c(0.5, 1.5, 3),
+  energy_near = c(-50, -30, -20)) %>%
+  dplyr::rowwise() %>%
+  dplyr::do({
+    params <- .
+   simulate_score_vs_rmsd(
+      radius = params$radius,
+      hill=1.8,
+      energy_near = params$energy_near,
+      energy_far = -10,
+      sigma = 5) %>%
+      dplyr::mutate(
+        radius = params$radius,
+        radius_label = paste0("Radius: ", params$radius),
+        energy_near = params$energy_near,
+        energy_near_label = paste0("Energy Near: ",params$energy_near),
+        Pnear = BayesPharma::Pnear(
+          score = score,
+          rmsd = rmsd))
+  })
+
+ggplot2::ggplot(data = data_simulated_scanned) + 
+  ggplot2::theme_bw() +
+  GeomIndicator::geom_indicator(
+    mapping = ggplot2::aes(
+      indicator = paste0("Pnear: ", signif(Pnear, 2))),
+    xpos = 0.08,
+    ypos = 0.8,
+    group = 0,
+    color = "darkgreen") +
+  ggplot2::geom_line(
+    mapping = ggplot2::aes(
+      x = rmsd,
+      y = score_mean),
+    color = "blue") +
+  ggplot2::geom_point(
+    mapping = ggplot2::aes(
+      x = rmsd,
+      y = score),
+    size = .5,
+    alpha = .8) +
+  ggplot2::facet_grid(
+    cols = dplyr::vars(radius_label),
+    rows = dplyr::vars(energy_near_label)) +
+  ggplot2::ggtitle(
+    "Simulated score vs RMSD") +
+  ggplot2::scale_y_continuous("Score (REU)") +
+  ggplot2::scale_x_continuous(
+    expression("Interface RMSD ("*ring(A)*")"))
+
+```
+
+Another question we can use this model to investigate is how reproducible is the Pnear score?
+
+```{r simulated-replicates, dependson=c("load-packages", "simulate-data")}
+data_simulated_replicates <- tidyr::expand_grid(
+  radius = c(1.5),
+  energy_near = c(-30),
+  replicate = seq(1, 5000)) %>%
+  dplyr::rowwise() %>%
+  dplyr::do({
+    params <- .
+    conformations <- simulate_score_vs_rmsd(
+      radius = params$radius,
+      hill=1.8,
+      energy_near = params$energy_near,
+      energy_far = -10,
+      sigma = 5)
+    data.frame(
+      replicate = params$replicate,
+      Pnear = BayesPharma::Pnear(
+        score = conformations$score,
+        rmsd = conformations$rmsd))
+  })
+
+params <- data.frame(
+  parameter = c(
+    "Energy Near",
+    "Energy Far",
+    "Radius",
+    "Hill"),
+  value = c(-30, -10, 1.5, 1.8))
+  
+ggplot2::ggplot(data = data_simulated_replicates) +
+  ggplot2::theme_bw() +
+  ggplot2::ggtitle(
+    label = "Pnear scores for Simulated Score vs. RMSD") +
+  GeomIndicator::geom_indicator(
+    data = params,
+    mapping = ggplot2::aes(
+      indicator = paste0(parameter, ": ", value),
+      group = parameter),
+    xpos = .02,
+    ypos = "top") +
+  ggplot2::geom_histogram(
+    mapping = ggplot2::aes(
+      x = Pnear),
+      fill = "darkgreen",
+      bins = 150)
+```  
+
+# SnugDock Case study
+As a case study, we can look at the real score-vs-rmsd plots from the 
+SnugDock scientific benchmark. It is evaluates the SnugDock protocol over 6
+protein targets
+
+```{r snugdock-load-data, dependson=c("load-packages")}
+
+data <- data.frame(
+  target = c("1ahw", "1jps", "1mlc", "1ztx", "2aep", "2jel")) %>%
+  dplyr::rowwise() %>%
+  dplyr::do({
+    target <- .$target
+    readr::read_table(
+      file = paste0("/tmp/snugdock/output/", target, "/", target, "_rmsd.sc"),
+      skip = 1) %>%
+      dplyr::mutate(target = target, .before = 1) %>%
+      dplyr::select(target, rmsd = Irms, score = I_sc)
+  }) %>%
+  dplyr::filter(rmsd <= 20) %>%
+  dplyr::mutate(
+    response = score,
+    log_dose = log(rmsd))
+
+pnear_scores <- data %>%
+  dplyr::group_by(target) %>%
+  dplyr::do({
+    data_by_target <- .
+    data.frame(
+      Pnear = BayesPharma::Pnear(
+        score = data_by_target$score,
+        rmsd = data_by_target$rmsd))
+  }) %>%
+  dplyr::mutate(
+    Pnear_label = Pnear %>% signif(2))
+
+```
+
+We can use the fit the sigmoid model to the log(RMSD) using the
+BayesPharma package, which relies on BRMS and Stan
+
+```{r stugdock-fit-model, output=FALSE, dependson=c("load-packages", "stugdock-load-data")}
+model <- data %>%
+  BayesPharma::dr_model(
+    formula = BayesPharma::dr_formula(
+      multiple_perturbations = TRUE,
+      predictors = 0 + target),
+    prior = BayesPharma::dr_priors(
+      ec50 = brms::prior(normal(1.5,2), nlpar = "ec50"),
+      top = brms::prior(normal(-10,10), nlpar = "top"),
+      bottom = brms::prior(normal(-20,10), nlpar = "bottom"),
+      inhibitor = FALSE),
+    chains = 4, cores = 10, backend = "cmdstanr",
+    silent = 1)
+```
+
+Check the model parameter fit and estimated parameters:
+```{r mode-fit, dependson=c("load-packages", "stugdock-fit-model")}
+model
+```
+
+Excitingly, using leave-one-out cross-validation, the sigmoid model fits the
+data very well
+```{r model-fit-loo, dependson=c("load-packages", "stugdock-fit-model")}
+model <- model %>% brms::add_criterion(criterion = "loo")
+model$criteria$loo
+```
+
+
+
+```{r snugdock-collect-draws,  dependson=c("load-packages", "stugdock-fit-model")}
+# collect posterior draws
+
+sigmoid <- Vectorize(function(ec50, hill, top, bottom, log_dose){
+  bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))
+})
+lower <- .01
+upper <- 3
+n <- 100
+
+# Samples of the expected response across RMSD values for draws from the posterior
+ep_data <- model %>%
+  tidybayes::add_epred_draws(
+    newdata = tidyr::expand_grid(
+      log_dose = seq(from = lower, to = upper, length.out = 100),
+      target = data$target %>% unique()),
+    value = "response",
+    ndraws = 30) %>%
+  dplyr::mutate(
+    rmsd = exp(log_dose),
+    score = response)
+
+# Median quantile intervals for the response across RMSD values for draws from the posterior
+pp_data <- model %>%
+  tidybayes::add_predicted_draws(
+    newdata = tidyr::expand_grid(
+      log_dose = seq(from = lower, to = upper, length.out = 100),
+      target = data$target %>% unique()),
+    value = "response") %>%
+  ggdist:: median_qi(.width = c(.5, .8, .95)) %>%
+  dplyr::mutate(
+    rmsd = exp(log_dose),
+    score = response)
+
+```
+
+Visualize the fit as draws from the expected mean and median quantile intvervals on the
+log(RMSD) scale:
+
+```{r plot-data-model, dependson=c("load-packages", "stugdock-fit-model", "snugdock-collect-draws")}
+ggplot2::ggplot(data = data) + 
+  ggplot2::theme_bw() +
+  ggplot2::facet_wrap(
+    facets = dplyr::vars(target)) +
+  ggplot2::scale_y_continuous("Interface Score (REU)") +
+  ggplot2::scale_x_continuous(
+    expression("Interface RMSD ("*ring(A)*")"),
+    breaks = log(c(1, 2, 4, 8, 16)),
+    labels = c(1, 2, 4, 8, 16)) +
+  ggplot2::theme(legend.position = "bottom") +
+  ggplot2::scale_fill_discrete(
+    "Median Quantile Interval",
+    labels = c("90%", "80%", "50%")) +
+  ggplot2::ggtitle(
+    "Snugdock Score vs. RMSD") +
+  GeomIndicator::geom_indicator(
+    data = pnear_scores,
+    mapping = ggplot2::aes(
+      indicator = Pnear_label),
+    xpos = "left",
+    group = 0,
+    ypos = 0.80) +
+  ggplot2::geom_point(
+    mapping = ggplot2::aes(
+      x = log(rmsd),
+      y = score),
+    size = .8,
+    alpha = .8) +
+  ggdist::geom_lineribbon(
+    data = pp_data,
+    mapping = ggplot2::aes(
+      x = log(rmsd),
+      y = score,
+      ymin = score.lower,
+      ymax = score.upper),
+    alpha = 3/30) +
+  ggplot2::geom_line(
+    data = ep_data,
+    mapping = ggplot2::aes(
+      x = log(rmsd),
+      y = score,
+      group = .draw),
+    color = "darkgreen",
+    alpha = 10/30)
+
+ggplot2::ggsave(
+  filename = "two_state_fit.pdf",
+  width = 7,
+  height = 5,
+  useDingbats = FALSE)
+
+
+```
+And on the original RMSD scale:
+
+
+```{r plot-data-model-rmsd, dependson=c("load-packages", "stugdock-fit-model", "snugdock-collect-draws")}
+ggplot2::ggplot(data = data) + 
+  ggplot2::theme_bw() +
+  GeomIndicator::geom_indicator(
+    data = pnear_scores,
+    mapping = ggplot2::aes(
+      indicator = Pnear_label),
+    xpos = "left",
+    group = 0,
+    ypos = 0.80) +
+  ggdist::geom_lineribbon(
+    data = pp_data,
+    mapping = ggplot2::aes(
+      x = rmsd,
+      y = score,
+      ymin = score.lower,
+      ymax = score.upper),
+    color = "darkgreen",
+    alpha = 3/30) +
+  ggplot2::geom_line(
+    data = ep_data,
+    mapping = ggplot2::aes(
+      x = rmsd,
+      y = score,
+      group = .draw),
+    color = "darkgreen",
+    alpha = 10/30) +
+  ggplot2::geom_point(
+    mapping = ggplot2::aes(
+      x = rmsd,
+      y = score),
+    alpha = 0.8,
+    size = 0.8) +
+  ggplot2::facet_wrap(
+    facets = dplyr::vars(target)) +
+  ggplot2::scale_y_continuous(
+    "Interface Score (REU)") +
+  ggplot2::scale_x_continuous(
+    expression("Interface RMSD ("*ring(A)*")"),
+    limits = c(1, 18.5),
+    breaks = c(1, 4, 8, 12, 16)) +
+  ggplot2::scale_fill_discrete(
+    "Median Quantile Interval",
+    labels = c("90%", "80%", "50%")) +
+  ggplot2::theme(legend.position = "bottom") +
+  ggplot2::ggtitle(
+    "Snugdock Score vs. RMSD")
+
+```
+
