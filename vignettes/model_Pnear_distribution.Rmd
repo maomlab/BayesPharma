@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r set-options}
+```{r set-options, echo=FALSE}
 
 # inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
 knitr::opts_chunk$set(
@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
   fig.path = "model_Pnear_distribution_figures/knitr-",
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images
+  fig.height = 5, # generated images
   fig.pos = "t",  # pdf mode
   fig.align = "center",
   dpi = if (knitr::is_latex_output()) 72 else 300, 
@@ -30,6 +31,12 @@ knitr::opts_chunk$set(
 ```{r load-packages}
 library(tidyverse)
 library(BayesPharma)
+library(xkcd)
+library(GeomIndicator)
+
+# cmdstanr is more up-to-date than rstan and runs a little faster
+# but can't expose defined functions for downstream analysis
+stan_backend <- "cmdstanr"
 
 ```
 # Modeling Folding Funnels
@@ -191,7 +198,8 @@ data_simulated_scanned <- tidyr::expand_grid(
         energy_near_label = paste0("Energy Near: ",params$energy_near),
         Pnear = BayesPharma::Pnear(
           score = score,
-          rmsd = rmsd))
+          rmsd = rmsd,
+          kbt = 2))
   })
 
 ggplot2::ggplot(data = data_simulated_scanned) + 
@@ -231,6 +239,8 @@ Another question we can use this model to investigate is how reproducible is the
 data_simulated_replicates <- tidyr::expand_grid(
   radius = c(1.5),
   energy_near = c(-30),
+  lambda = c(0.5, 1.5, 2),
+  kbt = c(0.62, 2, 5),
   replicate = seq(1, 5000)) %>%
   dplyr::rowwise() %>%
   dplyr::do({
@@ -245,7 +255,12 @@ data_simulated_replicates <- tidyr::expand_grid(
       replicate = params$replicate,
       Pnear = BayesPharma::Pnear(
         score = conformations$score,
-        rmsd = conformations$rmsd))
+        rmsd = conformations$rmsd,
+        lambda = params$lambda,
+        kbt = params$kbt),
+      lambda = params$lambda,
+      lambda_label = paste0("Lambda: ", params$lambda),
+      kbt_label = paste0("k_BT: ", params$kbt))
   })
 
 params <- data.frame(
@@ -260,13 +275,16 @@ ggplot2::ggplot(data = data_simulated_replicates) +
   ggplot2::theme_bw() +
   ggplot2::ggtitle(
     label = "Pnear scores for Simulated Score vs. RMSD") +
-  GeomIndicator::geom_indicator(
-    data = params,
-    mapping = ggplot2::aes(
-      indicator = paste0(parameter, ": ", value),
-      group = parameter),
-    xpos = .02,
-    ypos = "top") +
+  ggplot2::facet_grid(
+    cols = dplyr::vars(lambda_label),
+    rows = dplyr::vars(kbt_label)) +
+  # GeomIndicator::geom_indicator(
+  #   data = params,
+  #   mapping = ggplot2::aes(
+  #     indicator = paste0(parameter, ": ", value),
+  #     group = parameter),
+  #   xpos = .02,
+  #   ypos = "top") +
   ggplot2::geom_histogram(
     mapping = ggplot2::aes(
       x = Pnear),
@@ -279,7 +297,7 @@ As a case study, we can look at the real score-vs-rmsd plots from the
 SnugDock scientific benchmark. It is evaluates the SnugDock protocol over 6
 protein targets
 
-```{r snugdock-load-data, dependson=c("load-packages")}
+```{r snugdock-load-data, dependson=c("load-packages"), warning=FALSE, message=FALSE}
 
 data <- data.frame(
   target = c("1ahw", "1jps", "1mlc", "1ztx", "2aep", "2jel")) %>%
@@ -314,7 +332,7 @@ pnear_scores <- data %>%
 We can use the fit the sigmoid model to the log(RMSD) using the
 BayesPharma package, which relies on BRMS and Stan
 
-```{r stugdock-fit-model, output=FALSE, dependson=c("load-packages", "stugdock-load-data")}
+```{r stugdock-fit-model, output=FALSE, dependson=c("load-packages", "stugdock-load-data"), message=FALSE, warning=FALSE, refresh = 0, results="hide"}
 model <- data %>%
   BayesPharma::dr_model(
     formula = BayesPharma::dr_formula(
@@ -327,10 +345,20 @@ model <- data %>%
       inhibitor = FALSE),
     chains = 4, cores = 10, backend = "cmdstanr",
     silent = 1)
+
+if(stan_backend == "cmdstanr") {
+  sigmoid <- Vectorize(function(ec50, hill, top, bottom, log_dose){
+    bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))
+  })
+} else if (stan_backend == "rstan") {
+  model %>% brms::expose_functions()
+} else {
+  stop("Unrecognized stan backend '", stan_backend, "\n", sep = "")
+}
 ```
 
 Check the model parameter fit and estimated parameters:
-```{r mode-fit, dependson=c("load-packages", "stugdock-fit-model")}
+```{r mode-fit-summary, dependson=c("load-packages", "stugdock-fit-model")}
 model
 ```
 
@@ -346,9 +374,7 @@ model$criteria$loo
 ```{r snugdock-collect-draws,  dependson=c("load-packages", "stugdock-fit-model")}
 # collect posterior draws
 
-sigmoid <- Vectorize(function(ec50, hill, top, bottom, log_dose){
-  bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))
-})
+
 lower <- .01
 upper <- 3
 n <- 100
@@ -405,19 +431,13 @@ ggplot2::ggplot(data = data) +
     xpos = "left",
     group = 0,
     ypos = 0.80) +
-  ggplot2::geom_point(
-    mapping = ggplot2::aes(
-      x = log(rmsd),
-      y = score),
-    size = .8,
-    alpha = .8) +
   ggdist::geom_lineribbon(
     data = pp_data,
     mapping = ggplot2::aes(
       x = log(rmsd),
       y = score,
-      ymin = score.lower,
-      ymax = score.upper),
+      ymin = .lower,
+      ymax = .upper),
     alpha = 3/30) +
   ggplot2::geom_line(
     data = ep_data,
@@ -426,7 +446,13 @@ ggplot2::ggplot(data = data) +
       y = score,
       group = .draw),
     color = "darkgreen",
-    alpha = 10/30)
+    alpha = 20/30) +
+  ggplot2::geom_point(
+    mapping = ggplot2::aes(
+      x = log(rmsd),
+      y = score),
+    size = .8,
+    alpha = .8)
 
 ggplot2::ggsave(
   filename = "two_state_fit.pdf",
@@ -439,7 +465,7 @@ ggplot2::ggsave(
 And on the original RMSD scale:
 
 
-```{r plot-data-model-rmsd, dependson=c("load-packages", "stugdock-fit-model", "snugdock-collect-draws")}
+```{r plot-data-model-rmsd, dependson=c("load-packages", "stugdock-fit-model", "snugdock-collect-draws"), warning=FALSE}
 ggplot2::ggplot(data = data) + 
   ggplot2::theme_bw() +
   GeomIndicator::geom_indicator(
@@ -454,8 +480,8 @@ ggplot2::ggplot(data = data) +
     mapping = ggplot2::aes(
       x = rmsd,
       y = score,
-      ymin = score.lower,
-      ymax = score.upper),
+      ymin = .lower,
+      ymax = .upper),
     color = "darkgreen",
     alpha = 3/30) +
   ggplot2::geom_line(
@@ -465,7 +491,7 @@ ggplot2::ggplot(data = data) +
       y = score,
       group = .draw),
     color = "darkgreen",
-    alpha = 10/30) +
+    alpha = 20/30) +
   ggplot2::geom_point(
     mapping = ggplot2::aes(
       x = rmsd,
@@ -488,4 +514,32 @@ ggplot2::ggplot(data = data) +
     "Snugdock Score vs. RMSD")
 
 ```
+
+
+## Quantify Pnear uncertainty
+Using the two-state model fit, it is possible to propagate the posterior uncertainty
+to estimate the uncertainty of the Pnear.
+
+```{r pnear-uncertainty}
+# Median quantile intervals for the response across RMSD values for draws from the posterior
+# pp_data <- model %>%
+#   tidybayes::add_predicted_draws(
+#     newdata = tidyr::expand_grid(
+#       log_dose = seq(from = lower, to = upper, length.out = 100),
+#       target = data$target %>% unique()),
+#     value = "response") %>%
+#   dplyr::group_by(target, .draw) %>%
+#   dplyr::do({
+#     draws <- .
+#     data.frame(
+#       
+#     )
+#   ggdist:: median_qi(.width = c(.5, .8, .95)) %>%
+#   dplyr::mutate(
+#     rmsd = exp(log_dose),
+#     score = response)
+
+
+
+
 
