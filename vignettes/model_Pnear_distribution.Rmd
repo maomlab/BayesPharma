@@ -292,10 +292,10 @@ ggplot2::ggplot(data = data_simulated_replicates) +
       bins = 150)
 ```  
 
-# SnugDock Case study
+# Antibody SnugDock Case study
 As a case study, we can look at the real score-vs-rmsd plots from the 
-SnugDock scientific benchmark. It is evaluates the SnugDock protocol over 6
-protein targets
+Antibody SnugDock scientific benchmark. It is evaluates the SnugDock protocol over 6
+Antibody protein targets
 
 ```{r snugdock-load-data, dependson=c("load-packages"), warning=FALSE, message=FALSE}
 
@@ -305,7 +305,10 @@ data <- data.frame(
   dplyr::do({
     target <- .$target
     readr::read_table(
-      file = paste0("/tmp/snugdock/output/", target, "/", target, "_rmsd.sc"),
+      file = system.file(
+        "extdata", "Pnear", "antibody_snugdock", paste0(target, "_rmsd.sc"),
+        package = "BayesPharma",
+        mustWork = TRUE),
       skip = 1) %>%
       dplyr::mutate(target = target, .before = 1) %>%
       dplyr::select(target, rmsd = Irms, score = I_sc)
