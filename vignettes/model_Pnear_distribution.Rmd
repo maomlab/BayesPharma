@@ -355,6 +355,7 @@ if(stan_backend == "cmdstanr") {
 } else {
   stop("Unrecognized stan backend '", stan_backend, "\n", sep = "")
 }
+
 ```
 
 Check the model parameter fit and estimated parameters:
@@ -438,7 +439,7 @@ ggplot2::ggplot(data = data) +
       y = score,
       ymin = .lower,
       ymax = .upper),
-    alpha = 3/30) +
+    alpha = 4/30) +
   ggplot2::geom_line(
     data = ep_data,
     mapping = ggplot2::aes(
@@ -483,7 +484,7 @@ ggplot2::ggplot(data = data) +
       ymin = .lower,
       ymax = .upper),
     color = "darkgreen",
-    alpha = 3/30) +
+    alpha = 4/30) +
   ggplot2::geom_line(
     data = ep_data,
     mapping = ggplot2::aes(
