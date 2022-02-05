@@ -25,15 +25,6 @@ knitr::opts_chunk$set(
   dev.args = list(png = list(type = "cairo-png")),
   optipng = "-o1 -quiet")
 
-```
-
-
-```{r load-packages}
-library(tidyverse)
-library(BayesPharma)
-library(xkcd)
-library(GeomIndicator)
-
 # cmdstanr is more up-to-date than rstan and runs a little faster
 # but can't expose defined functions for downstream analysis
 if(Sys.info()$machine == "arm64"){
@@ -43,6 +34,14 @@ if(Sys.info()$machine == "arm64"){
   stan_backend <- "rstan"
 }
 
+```
+
+
+```{r load-packages}
+library(tidyverse)
+library(BayesPharma)
+library(xkcd)
+library(GeomIndicator)
 ```
 # Modeling Folding Funnels
 A common task in molecular modeling is to predict the conformation of the folded
