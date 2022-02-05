@@ -350,7 +350,7 @@ model <- data %>%
       top = brms::prior(normal(-10,10), nlpar = "top"),
       bottom = brms::prior(normal(-20,10), nlpar = "bottom"),
       inhibitor = FALSE),
-    chains = 4, cores = 10, backend = "cmdstanr",
+    chains = 4, cores = 10, backend = stan_backend,
     silent = 1)
 
 if(stan_backend == "cmdstanr") {
