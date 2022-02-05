@@ -6,6 +6,7 @@ Authors@R: person("Madeline", "Martin", email = "martin.mjm105@gmail.com",
     role = c("aut", "cre"))
 Description: This package contains a collection of R tools to analyze pharmacology
     data using Bayesian statistics.
+URL: https://api.github.com/repos/maomlab/BayesPharma/pages
 Depends:
     R (>= 4.0.0)
 Imports:
@@ -47,3 +48,4 @@ Suggests:
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 RoxygenNote: 7.1.2
+
