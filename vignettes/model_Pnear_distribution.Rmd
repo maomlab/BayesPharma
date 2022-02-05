@@ -20,15 +20,15 @@ knitr::opts_chunk$set(
   fig.pos = "t",  # pdf mode
   fig.align = "center",
   dpi = if (knitr::is_latex_output()) 72 else 300, 
-  out.width = "100%",
-  dev = "svg",
-  dev.args = list(png = list(type = "cairo-png")),
-  optipng = "-o1 -quiet")
+  out.width = "100%")
+#  dev = "svg",
+#  dev.args = list(png = list(type = "cairo-png")),
+#  optipng = "-o1 -quiet")
 
 # cmdstanr is more up-to-date than rstan and runs a little faster
 # but can't expose defined functions for downstream analysis
 if(Sys.info()["machine"] == "arm64"){
-  cat("rstan does not currently support apple M1 chips, setting stan_backend = 'cmdstanr'")
+  #rstan does not currently support apple M1 chips
   stan_backend <- "cmdstanr"
 } else {
   stan_backend <- "rstan"
@@ -353,15 +353,15 @@ model <- data %>%
     chains = 4, cores = 10, backend = stan_backend,
     silent = 1)
 
-if(stan_backend == "cmdstanr") {
+#if(stan_backend == "cmdstanr") {
   sigmoid <- Vectorize(function(ec50, hill, top, bottom, log_dose){
     bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))
   })
-} else if (stan_backend == "rstan") {
-  model %>% brms::expose_functions()
-} else {
-  stop("Unrecognized stan backend '", stan_backend, "\n", sep = "")
-}
+#} else if (stan_backend == "rstan") {
+#  model %>% brms::expose_functions()
+#} else {
+#  stop("Unrecognized stan backend '", stan_backend, "\n", sep = "")
+#}
 
 ```
 
