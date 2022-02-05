@@ -45,7 +45,10 @@ Suggests:
     testthat (>= 3.0.0),
     rmarkdown,
     knitr,
-    xkcd
+    xkcd,
+    GeomIndicator
+Remotes:  
+    maomlab/GeomIndicator
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 RoxygenNote: 7.1.2
