@@ -4,12 +4,14 @@
 \alias{dr_priors}
 \title{data.frame of pre-determined priors of parameters to be predicted by the model}
 \usage{
+```{r}
 dr_priors(
    ec50 = NULL,
    hill = NULL,
    inhibitor = TRUE,
    top = NULL,
    bottom = NULL)
+```
 }
 \arguments{
 \item{ec50}{NULL, numeric units, or brms::prior. NULL will provide a weakly
