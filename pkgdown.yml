@@ -1,0 +1,11 @@
+pandoc: 2.7.3
+pkgdown: 2.0.2
+pkgdown_sha: ~
+articles:
+  Dose_Response_of_Damgo: Dose_Response_of_Damgo.html
+  model_Pnear_distribution: model_Pnear_distribution.html
+last_built: 2022-02-05T22:42Z
+urls:
+  reference: https://api.github.com/repos/maomlab/BayesPharma/pages/reference
+  article: https://api.github.com/repos/maomlab/BayesPharma/pages/articles
+
