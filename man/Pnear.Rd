@@ -29,25 +29,25 @@ https://github.com/RosettaCommons/main/blob/master/tests/benchmark/util/quality_
 }
 \details{
 ```{r}
-  # subtract off the min-score as is done in the Rosetta Code
-  scores = scores - min(scores)
+# subtract off the min-score as is done in the Rosetta Code
+scores = scores - min(scores)
 
-  # write down the equation in more code-like notation
-  Pnear = Sum_i[exp(-RMSD[i]^2/lambda^2)*exp(-scores[i]/k_BT)] /
-          Sum_i[exp(-scores[i]/k_BT)]
+# write down the equation in more code-like notation
+Pnear <- Sum_i[exp(-RMSD[i]^2/lambda^2)*exp(-scores[i]/k_BT)] /
+         Sum_i[exp(-scores[i]/k_BT)]
 
-  # combine the terms in the first exponential
-  Pnear = Sum_i[exp(-RMSD[i]^2/lambda^2 - scores[i]/k_BT)] /
-          Sum_i[exp(-scores[i]/k_BT)]
+# combine the terms in the first exponential
+Pnear = Sum_i[exp(-RMSD[i]^2/lambda^2 - scores[i]/k_BT)] /
+        Sum_i[exp(-scores[i]/k_BT)]
 
-  let x_i  = RMSD[i]^2/lambda^2 * k_BT/scores[i]
-      beta = -scores[i]
+let x_i  = RMSD[i]^2/lambda^2 * k_BT/scores[i]
+    beta = -scores[i]
 
-  Pnear = Sum_i[exp(-RMSD[i]^2/lambda^2*k_BT/scores])]
+Pnear = Sum_i[exp(-RMSD[i]^2/lambda^2*k_BT/scores])]
 
-  # Use the log-sum-exponential trick
-  log(Pnear) =   log_sum_exp(-RMSD[i]^2/lambda^2 - scores[i]/k_BT)
-               - log_sum_exp(-scores[i]/k_BT)
+# Use the log-sum-exponential trick
+log(Pnear) =   log_sum_exp(-RMSD[i]^2/lambda^2 - scores[i]/k_BT)
+             - log_sum_exp(-scores[i]/k_BT)
 ```
 }
 \note{

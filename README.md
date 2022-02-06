@@ -1,81 +1,60 @@
-# Bayesian Pharmacology Modeling
+  <!-- badges: start -->
+  [![Codecov test coverage](https://codecov.io/gh/maomlab/BayesPharma/branch/main/graph/badge.svg)](https://app.codecov.io/gh/maomlab/BayesPharma?branch=main)
+  <!-- badges: end -->
 
-Introduction
-------------
-This package contains a collection of R tools for analyzing pharmacology data using Bayesian statistics.
+The [BayesPharma](https://maomlab.github.io/BayesPharma) website package contains a collection of R tools for analyzing pharmacology data using Bayesian statistics.
 
+## Package Development Workflows
 
-Installation
-------------
-
-### Pre-requisites
-Follow the instructions to install [rstan](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started)
-
-### Install `BayesPharma`
-In R do
-```{r}
-install.packages("remotes")
-remotes::install_github("maomlab/BayesPharma", build_vignettes = FALSE)
-```
-
-Usage
------
-```{r}
-library(tidyverse)
-library(BayesPharma)
-
-data <- data.frame(
-  response = ...,
-  log_dose = ...,
-  <predictor columns>)
-```
-The predictor columns are typically treatment variables like `drug` or batch
-variable like `well_id`.
-
-If the treatment dose is given in molar concentration, you can convert it to
-`log_dose` using
-
-```{r}
-data <- data %>%
-  dplyr::mutate(
-    log_dose = BayesPharma::calculate_log_dose(dose))
-```
-
-The basic usage is
-
-```{r}
-model <- BayesPharma::dr_model(
-   data = data)
-```
-### Evaluate model fit
-
-#### Traceplot
-```{r}
-model %>% BayesPharma::traceplot()
-```
-#### Basic statistics
-```{r}
-model %>% basic_stats()
-```
-#### Regression plot
-```{r}
-model %>% plot_draws_data()
-```
-#### Prior densities
-```{r}
-model %>% prior_densities()
-model %>% posterior_densities()
-model %>% prior_posterior_densitites()
-```
-#### posterior predictive check
-```{r}
-model %>% brms::pp_check(type = "dens_overlay", ndraws = 50)
-```
-
-### compare model fits
-```{r}
-model <- model %>% BayesPharma::add_loo_criterion()
-model_fit_comparison <- compare_models(model, model_alt)
-```
+### Basic Workflow
+The basic workflow follows the package development practices described in the
+[R Packages book](https://r-pkgs.org/index.html)
 
 
+1) Check out the repository using password-protected SSH keys
+
+    cd ~/opt
+    git clone git@github.com:maomlab/BayesPharma.git
+    cd BayesPharma
+    
+2) Build package the package for the first time
+
+    # try installing package from github to install dependencies
+    install.packages("remotes")
+    remotes::install_github("maomlab/BayesPharma")
+    
+    # build roxygen2 documentation and vignettes
+    # the vignettes take a while to build so don't built them by default
+    devtools::document(vignettes = FALSE)
+
+    # build the package
+    devtools::build()
+    
+    # install the package
+    devtools::install_local(".", force = TRUE)
+    
+    # load the package
+    library(BayesPharma)
+    
+3) After editing the package rebuild/reload the package to test it
+
+    # Run this if you changed function signatures or function documentation
+    devtools::document(vignettes = FALSE)
+    
+    # this rebuilds the package and loads it 
+    devtools::load_all()
+    
+    
+## Package testing and deployment
+
+1) Test the package
+
+    # This runs the tests in `tests/testthat`
+    devtools::test()
+    
+    # Evaluate test coverage
+    covr::codecov()
+
+2) Build the website
+
+    pkgdown::build_site()
