@@ -13,7 +13,7 @@ add_loo_criterion(model, n_params, ...)
 model. i.e. how many parameters have non-constant priors? in the case of dose
 response cureves, are all 4 parameters being predicted by the model?}
 
-\item{...}{extra arguments passed on to `brms::add_criterion``}
+\item{...}{extra arguments passed on to `r brms::add_criterion``}
 }
 \value{
 brmsfit object with loo criterion.

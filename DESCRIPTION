@@ -46,10 +46,10 @@ Suggests:
     rmarkdown,
     knitr,
     xkcd,
-    GeomIndicator
-Remotes:  
+    GeomIndicator,
+    covr
+Remotes: 
     maomlab/GeomIndicator
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 RoxygenNote: 7.1.2
-
