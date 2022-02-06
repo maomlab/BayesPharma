@@ -79,20 +79,20 @@ temperature for ref2015 or any other scorefunction with units of kcal/mol.</p></
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>```r
-  # subtract off the min-score as is done in the Rosetta Code
-  scores = scores - min(scores)</p>
+# subtract off the min-score as is done in the Rosetta Code
+scores = scores - min(scores)</p>
 <p># write down the equation in more code-like notation
-  Pnear = Sum_i[exp(-RMSD[i]^2/lambda^2)*exp(-scores[i]/k_BT)] /
-          Sum_i[exp(-scores[i]/k_BT)]</p>
+Pnear &lt;- Sum_i[exp(-RMSD[i]^2/lambda^2)*exp(-scores[i]/k_BT)] /
+         Sum_i[exp(-scores[i]/k_BT)]</p>
 <p># combine the terms in the first exponential
-  Pnear = Sum_i[exp(-RMSD[i]^2/lambda^2 - scores[i]/k_BT)] /
-          Sum_i[exp(-scores[i]/k_BT)]</p>
+Pnear = Sum_i[exp(-RMSD[i]^2/lambda^2 - scores[i]/k_BT)] /
+        Sum_i[exp(-scores[i]/k_BT)]</p>
 <p>let x_i  = RMSD[i]^2/lambda^2 * k_BT/scores[i]
-      beta = -scores[i]</p>
+    beta = -scores[i]</p>
 <p>Pnear = Sum_i[exp(-RMSD[i]^2/lambda^2*k_BT/scores])]</p>
 <p># Use the log-sum-exponential trick
-  log(Pnear) =   log_sum_exp(-RMSD[i]^2/lambda^2 - scores[i]/k_BT)
-               - log_sum_exp(-scores[i]/k_BT)
+log(Pnear) =   log_sum_exp(-RMSD[i]^2/lambda^2 - scores[i]/k_BT)
+             - log_sum_exp(-scores[i]/k_BT)
 ```</p>
     </div>
     <div class="section level2">

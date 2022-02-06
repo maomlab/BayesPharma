@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   Dose_Response_of_Damgo: Dose_Response_of_Damgo.html
   model_Pnear_distribution: model_Pnear_distribution.html
-last_built: 2022-02-06T18:34Z
+last_built: 2022-02-06T21:24Z
 urls:
   reference: https://api.github.com/repos/maomlab/BayesPharma/pages/reference
   article: https://api.github.com/repos/maomlab/BayesPharma/pages/articles
