@@ -5,20 +5,7 @@ output: html_document
 
 
 ```{r}
-library("Rcpp")
 library("tidyverse")
-library("devtools")
-library("brms")
-library("rstan")
-library("rstantools")
-library("tidybayes")
-library("ggplot2")
-library("readxl")
-library("bayesplot")
-
-```
-
-```{r}
 library("devtools")
 load_all()
 ```
@@ -34,13 +21,22 @@ kor_antag <- readxl::read_excel(xl_kor_antag_dr)
 kor_antag
 ```
 
+```{r}
+kor_antag <- BayesPharma::change_col_names(kor_antag, 
+                                           response_col_name = "normalized_measurement",
+                                           predictors_col_name = "Drug",
+                                           NULL)
+kor_antag
+```
+
+
 PLOT DATA
 
 ```{r}
 ggplot2::ggplot(kor_antag) +
   ggplot2::geom_point(
     aes(x = log_dose,
-        y = normalized_measurement),
+        y = response),
     size = 1.0,
     color = "black") +
   ggplot2::labs(title = "Dose Response",
@@ -48,59 +44,47 @@ ggplot2::ggplot(kor_antag) +
        y = "Response", 
        color = "Drug") + 
   ggplot2::facet_wrap(
-    facets = dplyr::vars(Drug))
+    facets = dplyr::vars(predictors))
 ```
 
 PRIORS
 
 ```{r}
-kor_priors <- dr_priors(agonist = FALSE, top = 100)
+kor_priors <- dr_priors(inhibitor = TRUE, top = 100)
 kor_priors
 ```
 
 INITIAL PARAMETER VALUES
 
 ```{r}
-kor_inits <- dr_inits(agonist = FALSE)
+kor_inits <- dr_inits(inhibitor = TRUE)
 kor_inits
 ```
 
 SAMPLE THE PRIOR
 
 ```{r}
-kor_sample_priors <- dose_response_model(kor_antag, 
-                                         "normalized_measurement", 
-                                         "log_dose", 
-                                         "Drug",
-                                         sigmoid_formula = predictors_dr_formula(),
-                                         priors = kor_priors,
-                                         inits = kor_inits,
-                                         sample_prior = "only")
+kor_sample_priors <- dr_model(kor_antag, 
+                              dr_formula(TRUE), 
+                              priors = kor_priors,
+                              inits = kor_inits,
+                              sample_prior = "only")
 kor_sample_priors
-```
-
-```{r}
-BayesPharma::plot_pp_check(kor_sample_priors)  + 
-  ggplot2::xlim(-200,200) +
-  ggplot2::ylim(0, 0.01)
 ```
 
 VIEW THE PRIOR DISTRIBUTIONS
 
 ```{r}
-prior_densities(kor_sample_priors)
+prior_densities(kor_sample_priors, half_max_label = "ic50")
 ```
 
 RUN BAYESIAN MODEL
 
 ```{r}
-kor_model <- dose_response_model(kor_antag, 
-                                 "normalized_measurement", 
-                                 "log_dose", 
-                                 "Drug",
-                                 sigmoid_formula = predictors_dr_formula(),
-                                 priors = kor_priors,
-                                 inits = kor_inits)
+kor_model <- dr_model(kor_antag, 
+                      dr_formula(TRUE), 
+                      priors = kor_priors,
+                      inits = kor_inits)
 
 kor_model
 ```
@@ -108,28 +92,29 @@ kor_model
 CHECK MODEL CONVERGENCE
 
 ```{r}
-BayesPharma::traceplot(kor_model) 
+BayesPharma::traceplot(kor_model, half_max_label = "ic50") 
 ```
 
 POSTERIOR PREDICTIVE CHECK
 
 ```{r}
 BayesPharma::plot_pp_check(kor_model,
-                           "dens_overlay_grouped", 
+                           plot_type = "dens_overlay_grouped",
                            group = 'predictors',
                            n = 50)
+
 ```
 
 PRIOR POSTERIOR PARAMETER DENSITY DISTRIBUTIONS
 
 ```{r}
-prior_posterior_densities(kor_model)
+prior_posterior_densities(kor_model, half_max_label = "ic50")
 ```
 
 POSTERIOR PARAMETER DENSITY DISTRIBUTIONS
 
 ```{r}
-posterior_densities(kor_model)
+posterior_densities(kor_model, half_max_label = "ic50")
 ```
 
 SAMPLE OF DOSE RESPONSE CURVES FROM THE POSTERIOR DISTRIBUTION
@@ -140,10 +125,9 @@ BayesPharma::plot_draws_data(model = kor_model,
                             n = 100,
                             lower = -12,
                             upper = -3,
-                            predictor_name = NULL,
+                            predictors_col_name = "predictors",
                             data = kor_antag,
-                            predictors_col_name = "Drug",
-                            measurement = kor_antag$normalized_measurement,
+                            measurement = kor_antag$response,
                             draws,
                             pred_response,
                             mean_draws,
@@ -172,33 +156,27 @@ kor_priors2
 SAMPLE THE PRIOR
 
 ```{r}
-kor_sample_priors <- dose_response_model(kor_antag, 
-                                         "normalized_measurement", 
-                                         "log_dose", 
-                                         "Drug",
-                                         sigmoid_formula = predictors_dr_formula(),
-                                         priors = kor_priors2,
-                                         inits = kor_inits,
-                                         sample_prior = "only")
+kor_sample_priors <- dr_model(kor_antag, 
+                      dr_formula(TRUE), 
+                      priors = kor_priors2,
+                      inits = kor_inits,
+                      sample_prior = "only")
 kor_sample_priors
 ```
 
 VIEW THE PRIOR DISTRIBUTIONS
 
 ```{r}
-prior_densities(kor_sample_priors)
+prior_densities(kor_sample_priors, "predictors", "ic50")
 ```
 
 RUN BAYESIAN MODEL
 
 ```{r}
-kor_model2 <- dose_response_model(kor_antag, 
-                                  "normalized_measurement", 
-                                  "log_dose", 
-                                  "Drug",
-                                  sigmoid_formula = predictors_dr_formula(),
-                                  priors = kor_priors2,
-                                  inits = kor_inits)
+kor_model2 <- dr_model(kor_antag, 
+                      dr_formula(TRUE), 
+                      priors = kor_priors2,
+                      inits = kor_inits)
 
 kor_model2
 ```
@@ -207,7 +185,7 @@ kor_model2
 CHECK MODEL CONVERGENCE
 
 ```{r}
-BayesPharma::traceplot(kor_model2) 
+BayesPharma::traceplot(kor_model2, "predictors", "ic50") 
 ```
 
 POSTERIOR PREDICTIVE CHECK
@@ -228,10 +206,15 @@ prior_posterior_densities(kor_model2)
 POSTERIOR PARAMETER DENSITY DISTRIUBTIONS
 
 ```{r}
-posterior_densities(kor_model2)
+posterior_densities(kor_model2, half_max_label = "ic50")
 ```
 
 SAMPLE OF DOSE RESPONSE CURVES FROM THE POSTERIOR DISTRIBUTION
+
+```{r}
+BayesPharma::posterior_response_draws(kor_model2)
+```
+
 
 ```{r}
 
@@ -239,10 +222,9 @@ BayesPharma::plot_draws_data(model = kor_model2,
                             n = 100,
                             lower = -12,
                             upper = -3,
-                            predictor_name = NULL,
+                            predictors_col_name = "predictors",
                             data = kor_antag,
-                            predictors_col_name = "Drug",
-                            measurement = kor_antag$normalized_measurement,
+                            measurement = kor_antag$response,
                             draws,
                             pred_response,
                             mean_draws,
@@ -536,4 +518,21 @@ dplyr::bind_rows(PF_drc_stats, PF_bayes_stats[1:3,]) %>%
   ggplot2::scale_color_manual(values = model) +
   ggplot2::labs(title = "PF")
 ```
+
+---
+```{r}
+kor_antag <- change_col_names(kor_antag, "normalized_measurement", "log_dose", "Drug")
+kor_antag
+```
+
+```{r}
+stanvar_kor_model <- dr_stanvar_model(kor_antag,
+                                      formula = dr_formula(TRUE),
+                                      priors = kor_priors2,
+                                      inits = kor_inits)
+stanvar_kor_model
+```
+
+
+
 

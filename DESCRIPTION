@@ -6,6 +6,7 @@ Authors@R: person("Madeline", "Martin", email = "martin.mjm105@gmail.com",
     role = c("aut", "cre"))
 Description: This package contains a collection of R tools to analyze pharmacology
     data using Bayesian statistics.
+URL: https://api.github.com/repos/maomlab/BayesPharma/pages
 Depends:
     R (>= 4.0.0)
 Imports:
@@ -37,12 +38,18 @@ Collage:
     'plot_trace.R',
     'data_preparation.R',
     'plot_prior_posterior_check.R'
+    'Pnear_model.R'
 Encoding: UTF-8
 License: MIT + file LICENSE
 Suggests:
     testthat (>= 3.0.0),
     rmarkdown,
-    knitr
+    knitr,
+    xkcd,
+    GeomIndicator
+Remotes:  
+    maomlab/GeomIndicator
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
+

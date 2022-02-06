@@ -18,6 +18,7 @@ library("readxl")
 LOAD PACKAGE
 
 ```{r}
+library("tidyverse")
 library("devtools")
 load_all()
 ```
@@ -59,7 +60,7 @@ damgo_priors
 
 INITIAL VALUES FOR PARAMETERS
 ```{r}
-damgo_inits <- dr_inits(agonist = FALSE)
+damgo_inits <- dr_inits(inhibitor = TRUE)
 ```
 
 SAMPLING THE PRIOR
@@ -296,11 +297,96 @@ dr_stanvar_model(data = damgo,
                  inits = damgo_inits)
 ```
 
+---
+```{r}
+library("tidyverse")
+load_all()
+```
+
+LOAD DATA
+
+```{r}
+#library("readxl")
+xl_damgo_dr <- "C:/Users/marti/Downloads/damgo_dr_w_zero_dose.xlsx"
+
+damgo <- readxl::read_excel(xl_damgo_dr)
+
+damgo <- calc_log_dose(damgo, damgo$dose_nM, (1e-9))
+
+damgo
+```
+
+PLOT RAW DATA
+
+```{r}
+ggplot2::ggplot(damgo) +
+  ggplot2::geom_point(
+    ggplot2::aes(x = log_dose,
+        y = response),
+    size = 1.0,
+    color = "black") +
+  ggplot2::labs(title = "Dose Response",
+       x = "Log Dose",
+       y = "Response")
+```
+
+```{r}
+damgo_prior3 <- dr_priors(ec50 = brms::prior(normal(-6, 1.5), 
+                                             nlpar = "ec50"),
+                          hill = brms::prior(normal(-0.5, 0.5), 
+                                            # lb = -2.01,
+                                            # ub = 0.01,
+                                             nlpar = "hill"),
+                          top = brms::prior(normal(100, 2.5),
+                                            nlpar = "top"),
+                          bottom = brms::prior(normal(25, 12.5), 
+                                              nlpar = "bottom"))
+```
 
 
+```{r}
+damgo_model_stanvar <- dr_stanvar_model(data = damgo, 
+                                        prior = damgo_prior3,
+                                        inits = damgo_inits)
+damgo_model_stanvar
+```
 
+```{r}
+BayesPharma::plot_draws_data(model = damgo_model_stanvar,
+                             n = 100,
+                             lower = -9,
+                             upper = -3,
+                             predictor_name = "Damgo",
+                             data = damgo,
+                             predictors_col_name = NULL,
+                             measurement = damgo$response,
+                             draws,
+                             pred_response,
+                             mean_draws,
+                             title = NULL,
+                             xlabel = "Log Dose",
+                             ylabel = "Response"
+                             )
+```
 
+```{r}
+response = damgo$response
 
+log_dose = damgo$log_dose
 
+damgo_drc <- drm(response ~ log_dose,
+                 fct = L.4(fixed = c(NA, NA, NA, NA),
+                            names = c("hill", "bottom", "top", "ec50")))
+summary(damgo_drc)
+```
 
+```{r}
+log_dose <- seq(min(log_dose), max(log_dose), length.out=100)
+pred_value <- predict(damgo_drc, expand.grid(log_dose, 1))
+drc_df <- data.frame(log_dose, pred_value)
+
+ggplot2::ggplot(drc_df) +
+  ggplot2::geom_line(mapping = ggplot2::aes(x = log_dose, y = pred_value)) +
+  ggplot2::geom_point(data = damgo, mapping = ggplot2::aes(x = log_dose, y = response))
+```
 
