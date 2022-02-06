@@ -1,20 +1,38 @@
-#'A list of pre-determined initial values for the parameters
+#' Create a list of initial values of the model parameters
 #'
-#'@param ec50 numeric value. Initial value for ec50 used in brmsfit.
-#'(default = -9)
-#'@param hill TRUE, FALSE, or numeric value, TRUE/FALSE sets hill to an
-#'initial value of 1/-1 or a numeric value can be assigned to hill. Initial
-#'value for hill used in brmsfit.(default = TRUE)
-#'@param inhibitor TRUE/FALSE value that determines if hill is a positive or
-#' negative slope. If TRUE, the initial condition will be hill = -1. If FALSE,
-#' hill = 1. (default = TRUE)
-#'@param top numeric value. Initial value for top used in brmsfit.
-#'(default = 100)
-#'@param bottom numeric value. Initial value for bottom used in brmsfit.
-#'(default = 0)
-#'@param chain the number of chains that will be used for in brmsfit.
-#'(default = 4)
-#'@return list of lists
+#' @description Creating a list of lists containing initial values for the model parameters
+#'   that will be used as an argument in the dr_model.
+#'
+#' @usage
+#'    dr_inits(
+#'       ec50 = -9,
+#'       hill = TRUE,
+#'       inhibitor = TRUE,
+#'       top = 100,
+#'       bottom = 0,
+#'       chains = 4)
+#'
+#' @param ec50 numeric units of ec50 (default = -9).
+#' @param hill TRUE, FALSE, or numeric units, TRUE/FALSE sets hill to an
+#'   initial value of 1/-1 or numeric units can be assigned to hill (default = TRUE).
+#' @param inhibitor TRUE/FALSE value that determines if hill is a positive or
+#'   negative slope. If TRUE, the initial condition will be hill = -1. If FALSE,
+#'   hill = 1 (default = TRUE).
+#' @param top numeric units of top (default = 100).
+#' @param bottom numeric units of bottom (default = 0).
+#' @param chain numeric units of Markov chains that will be used in brmsfit (default = 4).
+#' @return list of lists.
+#'
+#' @examples
+#' Consider an activator that has a max response around 50%, EC50 is estimated to be
+#' around 1uM, minimum response is known to be 0, and 4 MCMC chains will be used by the model.
+#'
+#' inits <- BayesPharma::dr_inits(ec50 = -6,
+#'                                hill = TRUE,
+#'                                inhibitor = FALSE,
+#'                                top = 50,
+#'                                bottom = 0,
+#'                                chains = 4)
 #'
 #'@export
 
@@ -27,10 +45,10 @@ dr_inits <- function(ec50 = -9,
 
   ec50_init <- ec50
 
-  if (hill == TRUE && inhibitor == FALSE) {
+  if (hill == TRUE || hill == FALSE && inhibitor == FALSE) {
     hill_init <- 1
     print("hill is a positive slope.")
-  } else if (hill == TRUE && inhibitor == TRUE) {
+  } else if (hill == TRUE || hill == FALSE && inhibitor == TRUE) {
     print("hill is a negative slope.")
     hill_init <- -1
   } else{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_fitted_model_draws.R
 \name{posterior_response_draws}
 \alias{posterior_response_draws}
-\title{Tibble of draw_id, predictors, ec50, hill, top, bottom, and Response from a
+\title{Data.frame of draw_id, predictors, ec50, hill, top, bottom, and Response from a
 sample of the posterior distribution}
 \usage{
 posterior_response_draws(
@@ -32,6 +32,6 @@ name of the predictor being analyzed is required to avoid "NA" graph subtitle.
 tibble::tibble required for the 'plot_trajectories' function.
 }
 \description{
-Tibble of draw_id, predictors, ec50, hill, top, bottom, and Response from a
+Data.frame of draw_id, predictors, ec50, hill, top, bottom, and Response from a
 sample of the posterior distribution
 }

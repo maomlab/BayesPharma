@@ -2,8 +2,8 @@
 % Please edit documentation in R/run_dr_brm_model.R
 \name{dr_formula}
 \alias{dr_formula}
-\title{Create a formula for a multiple different perturbations/experimental variables
-for the brms model}
+\title{Create a formula for a one or multiple different perturbations/experimental
+variables for the brms model}
 \usage{
 dr_formula(multiple_perturbations = FALSE, predictors = 0 + predictors, ...)
 }
@@ -21,6 +21,6 @@ i.e. cell number, plate number, etc.}
 brmsformula
 }
 \description{
-Create a formula for a multiple different perturbations/experimental variables
-for the brms model
+Create a formula for a one or multiple different perturbations/experimental
+variables for the brms model
 }

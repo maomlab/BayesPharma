@@ -1,7 +1,6 @@
 
 
 #' stanvar function
-
 dr_stanvar <- brms::stanvar(
   scode = paste(
     "   real sigmoid(",
@@ -22,8 +21,8 @@ dr_stanvar <- brms::stanvar(
     "   }", sep = "\n"),
   block = "functions")
 
-#'Create a formula for a multiple different perturbations/experimental variables
-#'for the brms model
+#'Create a formula for a one or multiple different perturbations/experimental
+#'variables for the brms model
 #'
 #'@param multiple_perturbations TRUE/FALSE. If FALSE, the model will produce a
 #'singular estimate for each parameter. If TRUE, the parameter will produce
@@ -55,6 +54,36 @@ dr_formula <- function(multiple_perturbations = FALSE,
   return(sigmoid_formula)
 }
 
+#' Formula for the constant curve
+#'
+#'@param multiple_perturbations TRUE/FALSE. If FALSE, the model will produce a
+#'singular estimate for each parameter. If TRUE, the parameter will produce
+#'parameter estimates for each perturbation.
+#'@param predictors Additional formula objects to specify predictors of non-linear
+#'parameters. i.e. what perturbations/experimental differences should be modeled
+#'separately? (Default: 0 + predictors) should a random effect be taken into consideration?
+#'i.e. cell number, plate number, etc.
+#'@return brmsformula
+#'
+#'@export
+constant_formula <- function(multiple_perturbations = FALSE,
+                       predictors = 0 + predictors,
+                       ...){
+
+  if (multiple_perturbations == FALSE) {
+    constant_eq <- rlang::new_formula(lhs = quote(response),
+                                      rhs = quote(1))
+  } else{
+    constant_eq <- rlang::new_formula(lhs = quote(response),
+                                      rhs = rlang::enexpr(predictors))
+  }
+
+
+  formula <- brms::brmsformula(constant_eq, ...)
+
+  return(formula)
+}
+
 
 
 #'Run Bayesian Regression Model using Stan
@@ -81,7 +110,6 @@ dr_formula <- function(multiple_perturbations = FALSE,
 #'@return brmsfit
 #'
 #'@export
-
 dr_model <- function(data,
                      formula = dr_formula(),
                      priors = NULL,
@@ -91,9 +119,8 @@ dr_model <- function(data,
                      ...) {
 
   if (is.null(priors)) {
-    stop("priors for ec50, hill, top and bottom are required. Use make_priors function to get default priors.")
+    warning("priors for ec50, hill, top and bottom are required. Use dr_priors function to get default priors.")
   }
-
   brms::brm(
     formula = formula,
     data = data,

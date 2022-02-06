@@ -1,7 +1,8 @@
-pandoc: 2.11.2
-pkgdown: 1.6.1
+pandoc: 2.14.0.3
+pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
-  dose_response_of_DAMGO: dose_response_of_DAMGO.html
-last_built: 2021-11-24T02:31Z
+  Dose_Response_of_Damgo: Dose_Response_of_Damgo.html
+  model_Pnear_distribution: model_Pnear_distribution.html
+last_built: 2022-02-05T16:30Z
 
