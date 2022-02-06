@@ -13,48 +13,58 @@ The basic workflow follows the package development practices described in the
 
 1) Check out the repository using password-protected SSH keys
 
-    cd ~/opt
-    git clone git@github.com:maomlab/BayesPharma.git
-    cd BayesPharma
+```{shell}
+cd ~/opt
+git clone git@github.com:maomlab/BayesPharma.git
+cd BayesPharma
+```
     
 2) Build package the package for the first time
 
-    # try installing package from github to install dependencies
-    install.packages("remotes")
-    remotes::install_github("maomlab/BayesPharma")
+```{r}
+# try installing package from github to install dependencies
+install.packages("remotes")
+remotes::install_github("maomlab/BayesPharma")
     
-    # build roxygen2 documentation and vignettes
-    # the vignettes take a while to build so don't built them by default
-    devtools::document(vignettes = FALSE)
+# build roxygen2 documentation and vignettes
+# the vignettes take a while to build so don't built them by default
+devtools::document(vignettes = FALSE)
 
-    # build the package
-    devtools::build()
+# build the package
+devtools::build()
     
-    # install the package
-    devtools::install_local(".", force = TRUE)
+# install the package
+devtools::install_local(".", force = TRUE)
     
-    # load the package
-    library(BayesPharma)
-    
+# load the package
+library(BayesPharma)
+```
+
 3) After editing the package rebuild/reload the package to test it
 
-    # Run this if you changed function signatures or function documentation
-    devtools::document(vignettes = FALSE)
+```{r}
+# Run this if you changed function signatures or function documentation
+devtools::document(vignettes = FALSE)
     
-    # this rebuilds the package and loads it 
-    devtools::load_all()
-    
+# this rebuilds the package and loads it 
+devtools::load_all()
+```    
     
 ## Package testing and deployment
 
 1) Test the package
+```{r}
+# This runs the tests in `tests/testthat`
+devtools::test()
+```
 
-    # This runs the tests in `tests/testthat`
-    devtools::test()
-    
-    # Evaluate test coverage
-    covr::codecov()
+2) Evaluate test coverage
+```{r}
+covr::report()
+```
 
-2) Build the website
+3) Build the website
 
-    pkgdown::build_site()
+```{r}
+pkgdown::build_site()
+```
