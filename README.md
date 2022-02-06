@@ -63,8 +63,12 @@ devtools::test()
 covr::report()
 ```
 
-3) Build the website
+3) Full test for CRAN level of compliance
+```{r}
+devtools::check()
+```
 
+4) Build the website
 ```{r}
 pkgdown::build_site()
 ```
