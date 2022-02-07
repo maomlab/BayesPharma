@@ -81,13 +81,15 @@ prior_densities(kor_sample_priors, half_max_label = "ic50")
 RUN BAYESIAN MODEL
 
 ```{r}
-kor_model <- dr_model(kor_antag, 
-                      dr_formula(TRUE), 
-                      priors = kor_priors,
-                      inits = kor_inits)
+kor_model <- dr_model(kor_antag,
+                            kor_model1,
+                            dr_formula(0 + predictors), 
+                            priors = kor_priors,
+                            inits = kor_inits)
 
 kor_model
 ```
+
 
 CHECK MODEL CONVERGENCE
 
@@ -125,7 +127,7 @@ BayesPharma::plot_draws_data(model = kor_model,
                             n = 100,
                             lower = -12,
                             upper = -3,
-                            predictors_col_name = "predictors",
+                            predictor_name = "predictors",
                             data = kor_antag,
                             measurement = kor_antag$response,
                             draws,
@@ -136,6 +138,17 @@ BayesPharma::plot_draws_data(model = kor_model,
                             ylabel = "Response"
                              )
 ```
+
+---
+
+
+```{r}
+
+
+
+
+```
+
 
 ---
 IMPROVING THE MODEL BY MAKING MORE INFORMATIVE PRIORS PRIORS

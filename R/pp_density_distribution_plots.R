@@ -1,25 +1,45 @@
-#'Create a plot of the prior density distributions of modeled parameters
-#'from brmsfit with sample_prior = "only".
+#' Create a plot of the density distributions of modeled parameters from brmsfit model
 #'
-#'@param model brmsfit of sample_prior = "only".
-#'#'@param predictors_col_name string. Name of the column with the perturbations
-#'that each parameter is being estimated for.
-#'@param half_max_label string. Label for the half maximal that fits the type of
-#'experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
-#'@param title_label string. Plot title name. (Default = "Prior Density Plot")
-#'@return ggplot object.
+#' @description This function is useful to observe the distributions of the priors set for
+#'   the brmsfit model. By adding `sample_prior = "only"` to the dr_model or a brmsfit model,
+#'   the model samples only from the prior distributions and can be observed using this plot function
+#'   to verify that the values intended to be covered are being included.
 #'
-#'@export
+#' @usage
+#'   densities_distribution(model = <model>,
+#'                          predictors_col_name = <predictors_col_name>,
+#'                          half_max_label = <ec50>,
+#'                          title_label = <title_label>,
+#'                          sample_type = <sample_type>)
+#'
+#' @param model brmsfit model.
+#' @param predictors_col_name string expression for predictors column in the input data.frame (default = "_Intercept").
+#'   Predictors are the perturbations tested during the experiment (i.e. Drug, Temperature, etc.).
+#' @param half_max_label string of the label for the half maximal that fits the type of
+#'   experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
+#' @param title_label string of the plot title. (Default = "Prior Density Plot")
+#' @param sample_type string of the type of density distribution (i.e. Prior or Posterior). (default = "Prior")
+#' @return ggplot2::ggplot object.
+#'
+#' @examples
+#'   densities_distribution(model = my_dr_model_priors,
+#'                          predictors_col_name = "predictors",
+#'                          half_max_label = "ic50",
+#'                          title_label = "Parameter Density Distribution Plots",
+#'                          sample_type = "Prior")
+#'
+#' @export
 
-prior_densities <- function(model,
-                            predictors_col_name = "predictors",
-                            half_max_label = NULL,
-                            title_label = "Prior Density Plots") {
+densities_distribution <- function(model,
+                                   predictors_col_name = "_Intercept",
+                                   half_max_label = NULL,
+                                   title_label = "Prior Density Distribution Plots",
+                                   sample_type = "Prior") {
   prior <- dplyr::bind_rows(
     model %>%
       tidybayes::tidy_draws() %>%
       tidybayes::gather_variables() %>%
-      dplyr::mutate(sample_type = "Prior") %>%
+      dplyr::mutate(sample_type = sample_type) %>%
       dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
       dplyr::filter(!stringr::str_detect(.variable, "sigma"))
   ) %>%
@@ -52,18 +72,34 @@ prior_densities <- function(model,
     ggplot2::scale_fill_discrete("Distribution")
 }
 
-#' Displays a tibble of mean, median, standard deviation,
-#' and confidence intervals
+#' Displays a data.frame of basic statistical information about the model results
 #'
-#' @param model brmsfit
-#' #'@param predictors_col_name string. Name of the column with the perturbations
-#'that each parameter is being estimated for.
-#'@param half_max_label string. Label for the half maximal that fits the type of
-#'experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
-#' @param l_ci decimal of the lower confidence interval (default = 0.025)
-#' @param u_ci decimal of the upper confidence interval (default = 0.975)
-#' @return tibble::tibble that is required for the 'posterior_densities'
-#' function
+#' @description data.frame containing summary statistics of brmsfit model.
+#'   The summary statistics included are mean, median, standard deviation,
+#'   lower confidence interval, and upper confidence interval.
+#'
+#' @usage
+#'   basic_stats(model = <model>,
+#'               predictors_col_name = <predictors_col_name>,
+#'               half_max_label = <ec50>,
+#'               l_ci = <l_ci>,
+#'               u_ci = <u_ci>)
+#'
+#' @param model brmsfit model
+#' @param predictors_col_name string expression for predictors column in the input data.frame (default = "predictors").
+#'   Predictors are the perturbations tested during the experiment (i.e. Drug, Temperature, etc.).
+#' @param half_max_label string of the label for the half maximal that fits the type of
+#'   experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
+#' @param l_ci numeric unit of the lower confidence interval (default = 0.025)
+#' @param u_ci numeric unit of the upper confidence interval (default = 0.975)
+#' @return tibble::tibble object.
+#'
+#' @examples
+#'   basic_stats(model = my_dr_model,
+#'               predictors_col_name = "predictors",
+#'               half_max_label = "ic50",
+#'               l_ci = 0.025,
+#'               u_ci = 0.975)
 #'
 #' @export
 
@@ -96,25 +132,44 @@ basic_stats <- function(model,
 }
 
 
-#'Create a plot of the posterior density distributions of modeled parameters
-#'from brmsfit
+#' Create a plot of the posterior density distributions of modeled parameters from brmsfit model
 #'
-#'The 'basic_stats' function is used to plot the mean, lower confidence
-#'interval, and upper confidence interval
+#' @description plots the brmsfit model density distribution of each parameter
+#'   and the mean, lower confidence interval, and upper confidence interval.
 #'
-#'@param model brmsfit.
-#'#'@param predictors_col_name string. Name of the column with the perturbations
-#'that each parameter is being estimated for.
-#'@param half_max_label string. Label for the half maximal that fits the type of
-#'experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
-#'@param title_label string. Plot title name. (Default = "Posterior Density Plot")
-#'@return ggplot object.
+#' @usage
+#'   posterior_densities(model = <model>,
+#'                       predictors_col_name = <predictors_col_name>,
+#'                       half_max_label = <half_max_label>,
+#'                       l_ci = <l_ci>,
+#'                       u_ci = <u_ci>,
+#'                       title_label = <title_label>)
+#'
+#' @param model brmsfit model.
+#' @param predictors_col_name string expression for predictors column in the input data.frame (default = "predictors).
+#'   Predictors are the perturbations tested during the experiment (i.e. Drug, Temperature, etc.).
+#' @param half_max_label string of the label for the half maximal that fits the type of
+#'   experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
+#' @param l_ci numeric unit of the lower confidence interval (default = 0.025)
+#' @param u_ci numeric unit of the upper confidence interval (default = 0.975)
+#' @param title_label string of the plot title. (default = "Posterior Density Plots with Mean and 95% CI")
+#' @return ggplot2::ggplot object.
+#'
+#' @examples
+#'   posterior_densities(model = my_dr_model,
+#'                       predictors_col_name = "predictors",
+#'                       half_max_label = "ic50",
+#'                       l_ci = 0.025,
+#'                       u_ci = 0.975,
+#'                       title_label = "Posterior Density Plots with Mean and 95% CI")
 #'
 #'@export
 
 posterior_densities <- function(model,
                                 predictors_col_name = "_Intercept",
                                 half_max_label = NULL,
+                                l_ci = 0.025,
+                                u_ci = 0.975,
                                 title_label = "Posterior Density Plots with Mean and 95% CI") {
   posterior <- dplyr::bind_rows(
     model %>%
@@ -145,7 +200,7 @@ posterior_densities <- function(model,
       alpha = .9) +
     ggplot2::geom_vline(
       ggplot2::aes(xintercept = mean),
-      basic_stats(model, predictors_col_name, half_max_label),
+      basic_stats(model, predictors_col_name, half_max_label, l_ci = l_ci, u_ci = u_ci),
       color = "red"
     ) +
     ggplot2::geom_rect(
@@ -168,21 +223,35 @@ posterior_densities <- function(model,
     ggplot2::scale_fill_discrete("Distribution")
 }
 
-#'Create a plot of the prior & posterior density distributions of modeled
-#'parameters from brmsfit
+#' Create a plot of the prior & posterior density distributions of modeled parameters from brmsfit model
 #'
-#'@param model brmsfit.
-#'#'@param predictors_col_name string. Name of the column with the perturbations
-#'that each parameter is being estimated for.
-#'@param half_max_label string. Label for the half maximal that fits the type of
-#'experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
-#'@param title_label string. Plot title name. (Default = "Prior Posterior Density Plot")
-#'@return ggplot object.
+#' @description Plot of the prior and posterior density distributions of each parameter from brmsfit model.
+#'   The prior and posterior density distributions will be displayed on the same plot and color labeled.
 #'
-#'@export
+#' @usage
+#'   prior_posterior_densities(model = <model>,
+#'                             predictors_col_name = <predictors_col_name>,
+#'                             half_max_response = <half_max_response>,
+#'                             title_label = <title_label>)
+#'
+#' @param model brmsfit model.
+#' @param predictors_col_name string expression for predictors column in the input data.frame (default = "_Intercept").
+#'   Predictors are the perturbations tested during the experiment (i.e. Drug, Temperature, etc.).
+#' @param half_max_label string of the label for the half maximal that fits the type of
+#'   experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
+#' @param title_label string of the plot title. (default = "Prior Posterior Density Plots")
+#' @return ggplot2::ggplot object.
+#'
+#' @examples
+#'   prior_posterior_densities(model = my_dr_model,
+#'                             predictors_col_name = "predictors",
+#'                             half_max_response = "ic50",
+#'                             title_label = "Prior Posterior Density Plots")
+#'
+#' @export
 
 prior_posterior_densities <- function(model,
-                                      predictors_col_name = "predictors",
+                                      predictors_col_name = "_Intercept",
                                       half_max_label = NULL,
                                       title_label = "Prior Posterior Density Plots") {
 
