@@ -2,34 +2,40 @@
 % Please edit documentation in R/pp_density_distribution_plots.R
 \name{basic_stats}
 \alias{basic_stats}
-\title{Displays a tibble of mean, median, standard deviation,
-and confidence intervals}
+\title{Displays a data.frame of basic statistical information about the model results}
 \usage{
-basic_stats(
-  model,
-  predictors_col_name = "predictors",
-  half_max_label = NULL,
-  l_ci = 0.025,
-  u_ci = 0.975
-)
+basic_stats(model = <model>,
+              predictors_col_name = <predictors_col_name>,
+              half_max_label = <ec50>,
+              l_ci = <l_ci>,
+              u_ci = <u_ci>)
 }
 \arguments{
-\item{model}{brmsfit
-#'@param predictors_col_name string. Name of the column with the perturbations
-that each parameter is being estimated for.}
+\item{model}{brmsfit model}
 
-\item{half_max_label}{string. Label for the half maximal that fits the type of
+\item{predictors_col_name}{string expression for predictors column in the input data.frame (default = "predictors").
+Predictors are the perturbations tested during the experiment (i.e. Drug, Temperature, etc.).}
+
+\item{half_max_label}{string of the label for the half maximal that fits the type of
 experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).}
 
-\item{l_ci}{decimal of the lower confidence interval (default = 0.025)}
+\item{l_ci}{numeric unit of the lower confidence interval (default = 0.025)}
 
-\item{u_ci}{decimal of the upper confidence interval (default = 0.975)}
+\item{u_ci}{numeric unit of the upper confidence interval (default = 0.975)}
 }
 \value{
-tibble::tibble that is required for the 'posterior_densities'
-function
+tibble::tibble object.
 }
 \description{
-Displays a tibble of mean, median, standard deviation,
-and confidence intervals
+data.frame containing summary statistics of brmsfit model.
+  The summary statistics included are mean, median, standard deviation,
+  lower confidence interval, and upper confidence interval.
+}
+\examples{
+  basic_stats(model = my_dr_model,
+              predictors_col_name = "predictors",
+              half_max_label = "ic50",
+              l_ci = 0.025,
+              u_ci = 0.975)
+
 }

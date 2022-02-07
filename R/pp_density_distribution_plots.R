@@ -6,11 +6,11 @@
 #'   to verify that the values intended to be covered are being included.
 #'
 #' @usage
-#'   densities_distribution(model = <model>,
-#'                          predictors_col_name = <predictors_col_name>,
-#'                          half_max_label = <ec50>,
-#'                          title_label = <title_label>,
-#'                          sample_type = <sample_type>)
+#'   density_distributions(model = <model>,
+#'                         predictors_col_name = <predictors_col_name>,
+#'                         half_max_label = <ec50>,
+#'                         title_label = <title_label>,
+#'                         sample_type = <sample_type>)
 #'
 #' @param model brmsfit model.
 #' @param predictors_col_name string expression for predictors column in the input data.frame (default = "_Intercept").
@@ -22,19 +22,19 @@
 #' @return ggplot2::ggplot object.
 #'
 #' @examples
-#'   densities_distribution(model = my_dr_model_priors,
-#'                          predictors_col_name = "predictors",
-#'                          half_max_label = "ic50",
-#'                          title_label = "Parameter Density Distribution Plots",
-#'                          sample_type = "Prior")
+#'   density_distributions(model = my_dr_model_priors,
+#'                         predictors_col_name = "predictors",
+#'                         half_max_label = "ic50",
+#'                         title_label = "Parameter Density Distribution Plots",
+#'                         sample_type = "Prior")
 #'
 #' @export
 
-densities_distribution <- function(model,
-                                   predictors_col_name = "_Intercept",
-                                   half_max_label = NULL,
-                                   title_label = "Prior Density Distribution Plots",
-                                   sample_type = "Prior") {
+density_distributions <- function(model,
+                                  predictors_col_name = "_Intercept",
+                                  half_max_label = NULL,
+                                  title_label = "Prior Density Distribution Plots",
+                                  sample_type = "Prior") {
   prior <- dplyr::bind_rows(
     model %>%
       tidybayes::tidy_draws() %>%

@@ -11,7 +11,6 @@ plot_draws_data(
   upper = -3,
   predictor_name,
   data,
-  predictors_col_name = NULL,
   measurement,
   draws,
   pred_response,
@@ -22,31 +21,23 @@ plot_draws_data(
 )
 }
 \arguments{
-\item{model}{brmsfit.}
+\item{model}{brmsfit model.}
 
 \item{n}{number of samples from the posterior distribution (default n = 100).}
 
-\item{lower}{number for the lowest log_dose value to be used for calculating
-Response (default = -12).}
+\item{lower}{number for the lowest log_dose value to be used for calculating Response (default = -12).}
 
-\item{upper}{number for the highest log_dose value to be used for calculating
-Response (default = -3).}
+\item{upper}{number for the highest log_dose value to be used for calculating Response (default = -3).}
 
-\item{data}{is the tibble or dataframe used for the brmsfit.}
-
-\item{predictors_col_name}{name of the column with the predictors used in
-brmsfit.}
+\item{data}{is the tibble or data.frame used for the brmsfit.}
 
 \item{measurement}{is the column in 'data' containing response values.}
 
-\item{draws}{is the tibble::tibble returned from the posterior_response_draws'
-function.}
+\item{draws}{is the tibble::tibble returned from the posterior_response_draws' function.}
 
-\item{pred_response}{is the 'Response' column in the tibble::tibble returned
-from the 'posterior_response_draws' function.}
+\item{pred_response}{is the 'Response' column in the tibble::tibble returned from the 'posterior_response_draws' function.}
 
-\item{mean_draws}{is the tibble::tibble returned from the 'posterior_mean'
-function.}
+\item{mean_draws}{is the tibble::tibble returned from the 'posterior_mean' function.}
 
 \item{title}{string for the plot title. (default = NULL)}
 
@@ -55,8 +46,7 @@ function.}
 \item{ylabel}{string for the y-axis label. (default = NULL)}
 
 \item{predictors_name}{string. If only one perturbation is being tested, the
-name of the predictor being analyzed is required to avoid "NA" graph subtitle.
-(default = NULL)}
+name of the predictor being analyzed is required to avoid "NA" graph subtitle (default = NULL).}
 }
 \value{
 a ggplot2::ggplot object.

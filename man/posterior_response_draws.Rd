@@ -29,7 +29,7 @@ name of the predictor being analyzed is required to avoid "NA" graph subtitle.
 (default = NULL)}
 }
 \value{
-tibble::tibble required for the 'plot_trajectories' function.
+data.frame.
 }
 \description{
 Data.frame of draw_id, predictors, ec50, hill, top, bottom, and Response from a
