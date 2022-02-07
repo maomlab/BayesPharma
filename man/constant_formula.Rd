@@ -2,27 +2,23 @@
 % Please edit documentation in R/run_dr_brm_model.R
 \name{constant_formula}
 \alias{constant_formula}
-\title{Formula for the constant curve}
+\title{Formula for a curve with a constant response}
 \usage{
-constant_formula(
-  multiple_perturbations = FALSE,
-  predictors = 0 + predictors,
-  ...
-)
+constant_formula(predictors = 1)
 }
 \arguments{
-\item{multiple_perturbations}{TRUE/FALSE. If FALSE, the model will produce a
-singular estimate for each parameter. If TRUE, the parameter will produce
-parameter estimates for each perturbation.}
-
 \item{predictors}{Additional formula objects to specify predictors of non-linear
 parameters. i.e. what perturbations/experimental differences should be modeled
-separately? (Default: 0 + predictors) should a random effect be taken into consideration?
+separately? (Default: 1) should a random effect be taken into consideration?
 i.e. cell number, plate number, etc.}
 }
 \value{
 brmsformula
 }
 \description{
-Formula for the constant curve
+set-up an equation for formula objects with a constant response.
+}
+\examples{
+  constant_formula(predictors = 0 + predictors)
+
 }

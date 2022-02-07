@@ -6,7 +6,7 @@
 \usage{
 plot_trajectories(
   data,
-  predictors_col_name = NULL,
+  predictor_name = NULL,
   measurement,
   draws,
   pred_response,
@@ -18,9 +18,6 @@ plot_trajectories(
 }
 \arguments{
 \item{data}{is the tibble or dataframe used for the brmsfit.}
-
-\item{predictors_col_name}{name of the column with the predictors used in
-brmsfit.}
 
 \item{measurement}{is the column in 'data' containing response values.}
 
@@ -38,6 +35,9 @@ function.}
 \item{xlabel}{string for the x-axis label. (default = NULL)}
 
 \item{ylabel}{string for the y-axis label. (default = NULL)}
+
+\item{predictors_col_name}{name of the column with the predictors used in
+brmsfit.}
 }
 \value{
 a ggplot2::ggplot object.

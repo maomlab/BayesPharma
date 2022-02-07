@@ -34,7 +34,7 @@ add_loo_criterion <- function(model,
 
 #' Compare different model fits against each other using loo compare
 #'
-#' @decription Use the add_loo_criterion function on the models that will be compared before
+#' @description Use the add_loo_criterion function on the models that will be compared before
 #' using this function to compare the models using leave one out.
 #'
 #' @usage
