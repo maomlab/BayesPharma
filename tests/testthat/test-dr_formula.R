@@ -25,7 +25,6 @@ testthat::test_that("dr_formula with a constant predictor", {
 
 testthat::test_that("dr_formula with a substance predictor", {
   formula <- BayesPharma::dr_formula(
-    multiple_perturbations = TRUE,
     predictors = substance)
 
   testthat::expect_true("brmsformula" %in% class(formula))
@@ -49,7 +48,6 @@ testthat::test_that("dr_formula with a substance predictor", {
 
 testthat::test_that("dr_formula with a grouped predictor", {
   formula <- BayesPharma::dr_formula(
-    multiple_perturbations = TRUE,
     predictors = substance + (1 | batch))
 
   testthat::expect_true("brmsformula" %in% class(formula))
