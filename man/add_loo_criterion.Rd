@@ -12,7 +12,7 @@ add_loo_criterion(model = <model>,
 
 \item{model_name}{variable name given to the model.}
 
-\item{...}{extra arguments passed on to `brms::add_criterion`}
+\item{...}{extra arguments passed on to `r brms::add_criterion`}
 }
 \value{
 brmsfit model with loo criterion.
