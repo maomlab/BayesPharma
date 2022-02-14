@@ -20,10 +20,19 @@ knitr::opts_chunk$set(
   fig.pos = "t",  # pdf mode
   fig.align = "center",
   dpi = if (knitr::is_latex_output()) 72 else 300, 
-  out.width = "100%",
-  dev = "svg",
-  dev.args = list(png = list(type = "cairo-png")),
-  optipng = "-o1 -quiet")
+  out.width = "100%")
+#  dev = "svg",
+#  dev.args = list(png = list(type = "cairo-png")),
+#  optipng = "-o1 -quiet")
+
+# cmdstanr is more up-to-date than rstan and runs a little faster
+# but can't expose defined functions for downstream analysis
+if(Sys.info()["machine"] == "arm64"){
+  #rstan does not currently support apple M1 chips
+  stan_backend <- "cmdstanr"
+} else {
+  stan_backend <- "rstan"
+}
 
 ```
 
@@ -33,11 +42,6 @@ library(tidyverse)
 library(BayesPharma)
 library(xkcd)
 library(GeomIndicator)
-
-# cmdstanr is more up-to-date than rstan and runs a little faster
-# but can't expose defined functions for downstream analysis
-stan_backend <- "cmdstanr"
-
 ```
 # Modeling Folding Funnels
 A common task in molecular modeling is to predict the conformation of the folded
@@ -292,10 +296,10 @@ ggplot2::ggplot(data = data_simulated_replicates) +
       bins = 150)
 ```  
 
-# SnugDock Case study
+# Antibody SnugDock Case study
 As a case study, we can look at the real score-vs-rmsd plots from the 
-SnugDock scientific benchmark. It is evaluates the SnugDock protocol over 6
-protein targets
+Antibody SnugDock scientific benchmark. It is evaluates the SnugDock protocol over 6
+Antibody protein targets
 
 ```{r snugdock-load-data, dependson=c("load-packages"), warning=FALSE, message=FALSE}
 
@@ -305,7 +309,10 @@ data <- data.frame(
   dplyr::do({
     target <- .$target
     readr::read_table(
-      file = paste0("/tmp/snugdock/output/", target, "/", target, "_rmsd.sc"),
+      file = system.file(
+        "extdata", "Pnear", "antibody_snugdock", paste0(target, "_rmsd.sc"),
+        package = "BayesPharma",
+        mustWork = TRUE),
       skip = 1) %>%
       dplyr::mutate(target = target, .before = 1) %>%
       dplyr::select(target, rmsd = Irms, score = I_sc)
@@ -343,18 +350,19 @@ model <- data %>%
       top = brms::prior(normal(-10,10), nlpar = "top"),
       bottom = brms::prior(normal(-20,10), nlpar = "bottom"),
       inhibitor = FALSE),
-    chains = 4, cores = 10, backend = "cmdstanr",
+    chains = 4, cores = 10, backend = stan_backend,
     silent = 1)
 
-if(stan_backend == "cmdstanr") {
+#if(stan_backend == "cmdstanr") {
   sigmoid <- Vectorize(function(ec50, hill, top, bottom, log_dose){
     bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))
   })
-} else if (stan_backend == "rstan") {
-  model %>% brms::expose_functions()
-} else {
-  stop("Unrecognized stan backend '", stan_backend, "\n", sep = "")
-}
+#} else if (stan_backend == "rstan") {
+#  model %>% brms::expose_functions()
+#} else {
+#  stop("Unrecognized stan backend '", stan_backend, "\n", sep = "")
+#}
+
 ```
 
 Check the model parameter fit and estimated parameters:
@@ -438,7 +446,7 @@ ggplot2::ggplot(data = data) +
       y = score,
       ymin = .lower,
       ymax = .upper),
-    alpha = 3/30) +
+    alpha = 4/30) +
   ggplot2::geom_line(
     data = ep_data,
     mapping = ggplot2::aes(
@@ -483,7 +491,7 @@ ggplot2::ggplot(data = data) +
       ymin = .lower,
       ymax = .upper),
     color = "darkgreen",
-    alpha = 3/30) +
+    alpha = 4/30) +
   ggplot2::geom_line(
     data = ep_data,
     mapping = ggplot2::aes(

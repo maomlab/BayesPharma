@@ -12,7 +12,7 @@
 #' @param data data.frame containing a column representing a dose in molar units.
 #' @param dose_col expression for dose column in the input data.frame (default = dose).
 #' @param molar_concentration numeric units of molar concentration (default = 1).
-#' @return input data.frame with an additional `log_dose` column.
+#' @return input `r data.frame` with an additional `r log_dose` column.
 #'
 #' @examples
 #' # Consider observations at doses of `1 μM` and `0.1 μM`.
