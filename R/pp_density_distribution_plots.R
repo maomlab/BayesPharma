@@ -32,8 +32,8 @@
 
 density_distributions <- function(model,
                                   predictors_col_name = "_Intercept",
-                                  half_max_label = NULL,
-                                  title_label = "Prior Density Distribution Plots",
+                                  half_max_label = "ec50",
+                                  title_label = "Density Distributions",
                                   sample_type = "Prior") {
   prior <- dplyr::bind_rows(
     model %>%
@@ -105,7 +105,7 @@ density_distributions <- function(model,
 
 basic_stats <- function(model,
                         predictors_col_name = "predictors",
-                        half_max_label = NULL,
+                        half_max_label = "ec50",
                         l_ci = 0.025,
                         u_ci = 0.975) {
 
@@ -167,7 +167,7 @@ basic_stats <- function(model,
 
 posterior_densities <- function(model,
                                 predictors_col_name = "_Intercept",
-                                half_max_label = NULL,
+                                half_max_label = "ec50",
                                 l_ci = 0.025,
                                 u_ci = 0.975,
                                 title_label = "Posterior Density Plots with Mean and 95% CI") {
@@ -252,7 +252,7 @@ posterior_densities <- function(model,
 
 prior_posterior_densities <- function(model,
                                       predictors_col_name = "_Intercept",
-                                      half_max_label = NULL,
+                                      half_max_label = "ec50",
                                       title_label = "Prior Posterior Density Plots") {
 
   model_prior <- model %>%
