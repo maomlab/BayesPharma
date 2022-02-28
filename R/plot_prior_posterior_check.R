@@ -35,8 +35,5 @@ plot_pp_check <- function(model,
 
   brms::expose_functions(model, vectorize = TRUE)
 
-  cat("For other plot options reference 'PPC plotting functions' on this
-  website https://mc-stan.org/bayesplot/reference/PPC-overview.html")
-
   brms::pp_check(model, type = plot_type, ndraws = n, ...)
 }

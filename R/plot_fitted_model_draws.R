@@ -54,8 +54,8 @@ posterior_response_draws <- function(model,
                                                  "b_[a-zA-Z0-9]+") %>%
                     stringr::str_remove("b_"),
                   predictors = stringr::str_extract(Parameters,
-                                                    "predictors.+") %>%
-                    stringr::str_remove("predictors")) %>%
+                                                    paste0(predictor_name,".+")) %>%
+                    stringr::str_remove(paste0(predictor_name))) %>%
     dplyr::mutate() %>%
     dplyr::select(-Parameters) %>%
     tidyr::pivot_wider(id_cols = c("draw_id", "predictors"),
@@ -119,8 +119,9 @@ posterior_mean <- function(model,
     dplyr::filter(!stringr::str_detect(variable, "sigma")) %>%
     dplyr::mutate(b_class = stringr::str_extract(variable, "b_[a-zA-Z0-9]+") %>%
                     stringr::str_remove("b_"),
-                  predictors = stringr::str_extract(variable, "predictors.+") %>%
-                    stringr::str_remove("predictors")) %>%
+                  predictors = stringr::str_extract(variable,
+                                                    paste0(predictor_name,".+")) %>%
+                    stringr::str_remove(paste0(predictor_name))) %>%
     dplyr::select(-variable) %>%
     head(-3) %>%
     tidyr::pivot_wider(id_cols = c("predictors"),
@@ -171,8 +172,8 @@ posterior_mean <- function(model,
 #'@export
 
 plot_trajectories <- function(data,
-                              predictor_name = NULL,
                               measurement,
+                              predictor_name,
                               draws,
                               pred_response,
                               mean_draws,
@@ -180,14 +181,13 @@ plot_trajectories <- function(data,
                               xlabel = "Log Dose",
                               ylabel = "Response") {
 
-
-  input_data <- data %>%
+   input_data <- data %>%
     dplyr::rename(predictors = predictor_name)
 
   ggplot2::ggplot() +
     ggplot2::geom_jitter(data = input_data,
                          mapping=ggplot2::aes(x = log_dose,  y = measurement),
-                         size = 0.8, width=.10, height=0) +
+                         size = 0.8, width = .10, height = 0) +
     ggplot2::geom_line(data = draws,
                        ggplot2::aes(x = log_dose,
                                     y = pred_response,
@@ -260,8 +260,8 @@ plot_draws_data <- function(model,
                                     predictor_name)
 
   draws_plot <- plot_trajectories(data,
-                                  predictor_name,
                                   measurement,
+                                  predictor_name,
                                   draws = resp_draws,
                                   pred_response = resp_draws$Response,
                                   mean_draws = resp_draws_mean,
