@@ -8,26 +8,36 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r set-options, include = FALSE}
+```{r set-options, echo=FALSE}
+# inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-
+  cache = TRUE,
+  echo = FALSE,
+  fig.path = "model_Pnear_distribution_figures/knitr-",
+  fig.retina = 2, # Control using dpi
+  fig.width = 6,  # generated images
+  fig.height = 5, # generated images
+  fig.pos = "t",  # pdf mode
+  fig.align = "center",
+  dpi = if (knitr::is_latex_output()) 72 else 300, 
+  out.width = "100%")
+#  dev = "svg",
+#  dev.args = list(png = list(type = "cairo-png")),
+#  optipng = "-o1 -quiet")
 # cmdstanr is more up-to-date than rstan and runs a little faster
 # but can't expose defined functions for downstream analysis
 if(Sys.info()["machine"] == "arm64"){
-  cat("rstan does not currently support apple M1 chips, 
-      setting stan_backend = 'cmdstanr'")
+  #rstan does not currently support apple M1 chips
   stan_backend <- "cmdstanr"
 } else {
   stan_backend <- "rstan"
 }
-
 ```
 
-```{r setup}
-# library(BayesPharma)
+```{r load-packages}
+library(devtools)
+library(tidyverse)
+library(BayesPharma)
 ```
 
 ---
@@ -50,11 +60,9 @@ variance, and the bottom (min response).
 First, we will load the normalized dose-response data and plot it:
 
 ```{r}
-xl_kor_antag_dr <- "C:/Users/marti/Downloads/kor_antag_dose_response_data.xlsx"
 
-kor_antag <- readxl::read_excel(xl_kor_antag_dr)
-```
-```{r}
+load("../data/kor_antag.rda")
+
 ggplot2::ggplot(kor_antag) +
   ggplot2::theme_bw() +
   ggplot2::geom_point(
@@ -111,9 +119,8 @@ Then, we will set inits to values close to parameter estimates to help with
 model convergence. The inits are the starting values for the mcmc chains of each 
 parameter. The default inits: ec50 = -9, hill = -1, top = 100, bottom = 0
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 kor_inits <- BayesPharma::dr_inits()
-kor_inits
 ```
 
 ### Prior Predictive Check
@@ -123,7 +130,7 @@ cover a plausible range of values for each parameter. To do this, we want to
 sample only from the prior distributions by adding  *sample_prior = "only"* as 
 an argument to the `dr_model` function.
 
-```{r}
+```{r, results='hide', message=FALSE}
 kor_sample_priors <- BayesPharma::dr_model(kor_antag, 
                                            kor1,
                                            dr_formula(), 
@@ -147,7 +154,7 @@ The prior distributions cover a broad plausible range of values.
 To fit the model for each antagonist, we set the *predictors* argument in 
 `dr_formula` to be *predictors = 0 + Drug*. 
 
-```{r}
+```{r, results='hide', message=FALSE}
 kor_model <- BayesPharma::dr_model(data = kor_antag,
                                    model_name = kor_model1,
                                    formula = dr_formula(predictors = 0 + Drug), 
@@ -210,14 +217,14 @@ Displayed below is a plot of the posterior distributions for each parameter
 with the confidence intervals and mean. This is a useful visual of the model 
 results: 
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 BayesPharma::posterior_densities(kor_model, half_max_label = "ic50")
 ```
 
 Displayed below is a plot of a sample of 100 sigmoid dose-response curves from 
 the posterior distribution (purple) and the mean curve (black): 
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 BayesPharma::plot_draws_data(model = kor_model,
                              n = 100,
@@ -256,7 +263,7 @@ kor_priors2
 
 Sampling the Priors:
 
-```{r}
+```{r, results='hide', message=FALSE}
 kor_sample_priors <- dr_model(kor_antag,
                               kor2,
                               dr_formula(), 
@@ -273,7 +280,7 @@ density_distributions(kor_sample_priors, predictors_col_name = "_Intercept",
 
 Running the Model:
 
-```{r}
+```{r, results='hide', message=FALSE}
 kor_model2 <- dr_model(kor_antag,
                        kor_model2,
                        dr_formula((0 + Drug)), 
@@ -310,7 +317,7 @@ prior_posterior_densities(kor_model2,
 
 Plot of the Posterior Distributions with the Mean and Confidence Intervals:
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 posterior_densities(kor_model2, 
                     predictors_col_name = "Drug", 
                     half_max_label = "ic50")
@@ -319,7 +326,7 @@ posterior_densities(kor_model2,
 Sample of Sigmoid Dose-Response Curves from the Posterior Distribution and 
 Mean Curve:
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 BayesPharma::plot_draws_data(model = kor_model2,
                              n = 100,
@@ -341,8 +348,8 @@ The kor_model2, the model with more informative priors, is the preferred model,
 but only by a minute amount.
 
 ```{r}
-kor_model <- add_loo_criterion(kor_model, "kor_model1")
-kor_model2 <- add_loo_criterion(kor_model2, "kor_model2")
+kor_model <- BayesPharma::add_loo_criterion(kor_model, "kor_model1")
+kor_model2 <- BayesPharma::add_loo_criterion(kor_model2, "kor_model2")
 
 compare_models(kor_model, kor_model2)
 ```
@@ -356,7 +363,7 @@ it to the results from the BayesPharma analysis.
 
 We will fix the top to 100 and fit the ic50, hill, and bottom.
 
-```{r}
+```{r load_packages}
 library("drc") 
 # https://rstats4ag.org/dose-response-curves.html#one-dose-response-curve
 ```
@@ -400,7 +407,7 @@ summary(PF_drc)
 Displayed below is a plot of the results for KOR antagonist BTRX_335140 with
 the data points, mean and error bars of the data points at each concentration 
 they were recorded at, and a fitted curve.
-```{r}
+```{r, echo=FALSE}
 
 plot(BTRX_335140_drc,
      log = "", 
@@ -449,7 +456,7 @@ PF_drc_df <- data.frame(log_dose, PF_pred_value)
 
 
 ```
-```{r}
+```{r, echo=FALSE}
 plot_drc <- function(drc_df, 
                      pred_value,
                      data,
@@ -538,7 +545,7 @@ bayesplot::bayesplot_grid(plots = list(BTRX_335140_drc_plot,
   
 ```
 
-```{r}
+```{r, echo=FALSE}
 
 drc_stats <- function(drc_fit, drug) {
   
@@ -566,105 +573,9 @@ JNJ_drc_stats <- drc_stats(JNJ_drc, "JNJ")
 
 PF_drc_stats <- drc_stats(PF_drc, "PF")
 
-#rbind(BTRX_335140_drc_stats, BTRX_395750_drc_stats, JNJ_drc_stats, PF_drc_stats)
 ```
 
-```{r}
-
-basic_stats(kor_model2, predictors_col_name = "Drug", half_max_label = "ic50")
-
-```
-
-```{r}
-
-BTRX_335140_bayes_stats <-
-  basic_stats(kor_model2, predictors_col_name = "Drug", 
-              half_max_label = "ic50")[grepl("BTRX_335140", 
-                                basic_stats(kor_model2, 
-                                            predictors_col_name = "Drug", 
-                                            half_max_label = "ic50")$variables),] %>%
-  dplyr::mutate(variables = stringr::str_extract(variables,
-                                                 "[a-zA-Z0-9]+.{1,100}") %>%
-                    stringr::str_remove("_BTRX_335140"),
-                model = "Bayes")
-
-BTRX_395750_bayes_stats <-
-  basic_stats(kor_model2, predictors_col_name = "Drug", 
-              half_max_label = "ic50")[grepl("BTRX_395750", 
-                                basic_stats(kor_model2)$variables),]%>%
-  dplyr::mutate(variables = stringr::str_extract(variables,
-                                                 "[a-zA-Z0-9]+.{1,100}") %>%
-                    stringr::str_remove("_BTRX_395750"),
-                model = "Bayes")
-
-JNJ_bayes_stats <-
-  basic_stats(kor_model2, predictors_col_name = "Drug", 
-              half_max_label = "ic50")[grepl("JNJ", basic_stats(kor_model2)$variables),] %>%
-  dplyr::mutate(variables = stringr::str_extract(variables,
-                                                 "[a-zA-Z0-9]+.{1,100}") %>%
-                    stringr::str_remove("_JNJ"),
-                model = "Bayes")
-
-PF_bayes_stats <-
-  basic_stats(kor_model2, predictors_col_name = "Drug", 
-              half_max_label = "ic50")[grepl("PF", basic_stats(kor_model2)$variables),] %>%
-  dplyr::mutate(variables = stringr::str_extract(variables,
-                                                 "[a-zA-Z0-9]+.{1,100}") %>%
-                    stringr::str_remove("_PF"),
-                model = "Bayes")
-
-#BTRX_395750_bayes_stats[1:3,]
-```
-
-```{r}
-model = c("drc" = "blue", "Bayes" = "red")
-
-BTRX_335140_interval <- dplyr::bind_rows(BTRX_335140_drc_stats, 
-                                         BTRX_335140_bayes_stats[1:3,]) %>%
-  ggplot2::ggplot(
-    ggplot2::aes(y = variables, x = mean, xmin = l_ci, 
-                 xmax = u_ci,color = model)) +
-  ggdist::geom_pointinterval(position = ggplot2::position_dodge(width = .3)) +
-  ggplot2::scale_color_manual(values = model) +
-  ggplot2::labs(title = "BTRX_335140")
-
-BTRX_39575_interval <- dplyr::bind_rows(BTRX_395750_drc_stats, 
-                                        BTRX_395750_bayes_stats[1:3,]) %>%
-  ggplot2::ggplot(ggplot2::aes(y = variables, x = mean, xmin = l_ci, 
-                               xmax = u_ci, color = model)) +
-  ggdist::geom_pointinterval(position = ggplot2::position_dodge(width = .3)) +
-  ggplot2::scale_color_manual(values = model) +
-  ggplot2::labs(title = "BTRX_395750")
-
-JNJ_interval <- dplyr::bind_rows(JNJ_drc_stats, JNJ_bayes_stats[1:3,]) %>%
-  ggplot2::ggplot(ggplot2::aes(y = variables, x = mean, xmin = l_ci, 
-                               xmax = u_ci, color = model)) +
-  ggdist::geom_pointinterval(position = ggplot2::position_dodge(width = .3)) +
-  ggplot2::scale_color_manual(values = model) +
-  ggplot2::labs(title = "JNJ")
-
-PF_interval <- dplyr::bind_rows(PF_drc_stats, PF_bayes_stats[1:3,]) %>%
-  ggplot2::ggplot(ggplot2::aes(y = variables, x = mean, xmin = l_ci, 
-                               xmax = u_ci, color = model)) +
-  ggdist::geom_pointinterval(position = ggplot2::position_dodge(width = .3)) +
-  ggplot2::scale_color_manual(values = model) +
-  ggplot2::labs(title = "PF")
-
-```
-```{r}
-BTRX_335140_interval
-```
-```{r}
-BTRX_39575_interval
-```
-```{r}
-JNJ_interval
-```
-```{r}
-PF_interval
-```
-
-```{r}
+```{r, echo=FALSE}
 BTRX_335140_drc_stats[3,][BTRX_335140_drc_stats[3,]$variables == "ic50", "variables"] <- "ic50_BTRX_335140"
 BTRX_395750_drc_stats[3,][BTRX_395750_drc_stats[3,]$variables == "ic50", "variables"] <- "ic50_BTRX_395750"
 JNJ_drc_stats[3,][JNJ_drc_stats[3,]$variables == "ic50", "variables"] <- "ic50_JNJ"
@@ -700,9 +611,9 @@ drc_bottom <- dplyr::bind_rows(BTRX_335140_drc_stats[2,],
 Displayed below is the comparison of results from drc and BayesPharma for each 
 parameter of the dose-response curve. Here we see that the Bayesian method 
 provides a distribution curve as evidence and has smaller confidence intervals 
-than the standard errors provided by the drc method. 
+than most of the standard errors provided by the drc method. 
 
-```{r}
+```{r, echo=FALSE}
 bayes_vs_drc <- function(model,
                          filter_label, 
                          predictors_col_name = "_Intercept",
@@ -743,14 +654,17 @@ bayes_vs_drc <- function(model,
     ggplot2::labs(x = "Log[Molar] EM1", color = "model") +
     ggplot2::scale_color_manual(values = model)
 }
-
+```
+```{r}
 bayes_vs_drc(kor_model2, "ec50", "Drug", "ic50", drc_ic50) 
 ```
 
+(The drc results for the hill are displayed as a positive value although the 
+curve has a negative slope.)
 ```{r}
 hill_bd1 <- bayes_vs_drc(kor_model2, "hill", "Drug", "hill", drc_hill) 
 hill_bd2 <- bayes_vs_drc(kor_model2, "hill", "Drug", "hill", drc_hill) +
-  ggplot2::xlim(-8, 15)
+  ggplot2::xlim(-6, 14)
 
 bayesplot::bayesplot_grid(hill_bd1, hill_bd2)
 ```
