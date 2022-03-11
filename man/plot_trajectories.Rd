@@ -6,8 +6,8 @@
 \usage{
 plot_trajectories(
   data,
-  predictor_name = NULL,
   measurement,
+  predictor_name,
   draws,
   pred_response,
   mean_draws,
