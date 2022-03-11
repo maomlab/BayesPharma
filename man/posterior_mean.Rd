@@ -5,7 +5,13 @@
 \title{Tibble of predictors, mean ec50, mean hill, mean top, mean bottom, and
 mean Response of the posterior distribution.}
 \usage{
-posterior_mean(model, n = 100, lower = -12, upper = -3, predictor_name = NULL)
+posterior_mean(
+  model,
+  n = 100,
+  lower = -12,
+  upper = -3,
+  predictors_col_name = "_Intercept"
+)
 }
 \arguments{
 \item{model}{brmsfit.}
@@ -18,9 +24,8 @@ Response. (default = -12)}
 \item{upper}{number for the highest log_dose value to be used for calculating
 Response. (default = -3)}
 
-\item{predictors_name}{string. If only one perturbation is being tested, the
-name of the predictor being analyzed is required to avoid "NA" graph subtitle.
-(default = NULL)}
+\item{predictors_col_name}{string expression for predictors column in the
+input data.frame (default = "_Intercept").}
 }
 \value{
 tibble::tibble required for the 'plot_trajectories' function.

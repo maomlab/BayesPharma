@@ -9,7 +9,7 @@ plot_draws_data(
   n = 100,
   lower = -12,
   upper = -3,
-  predictor_name,
+  predictors_col_name = "_Intercept",
   data,
   measurement,
   draws,
@@ -29,6 +29,9 @@ plot_draws_data(
 
 \item{upper}{number for the highest log_dose value to be used for calculating Response (default = -3).}
 
+\item{predictors_col_name}{string expression for predictors column in the
+input data.frame (default = "_Intercept").}
+
 \item{data}{is the tibble or data.frame used for the brmsfit.}
 
 \item{measurement}{is the column in 'data' containing response values.}
@@ -44,9 +47,6 @@ plot_draws_data(
 \item{xlabel}{string for the x-axis label. (default = NULL)}
 
 \item{ylabel}{string for the y-axis label. (default = NULL)}
-
-\item{predictors_name}{string. If only one perturbation is being tested, the
-name of the predictor being analyzed is required to avoid "NA" graph subtitle (default = NULL).}
 }
 \value{
 a ggplot2::ggplot object.
