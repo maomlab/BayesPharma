@@ -13,7 +13,7 @@ vignette: >
 knitr::opts_chunk$set(
   cache = TRUE,
   echo = FALSE,
-  fig.path = "model_Pnear_distribution_figures/knitr-",
+  fig.path = "model_KOR_Antagonists_figures/knitr-",
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images
   fig.height = 5, # generated images
