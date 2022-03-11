@@ -7,7 +7,7 @@
 plot_trajectories(
   data,
   measurement,
-  predictor_name,
+  predictors_col_name = "_Intercept",
   draws,
   pred_response,
   mean_draws,
@@ -20,6 +20,9 @@ plot_trajectories(
 \item{data}{is the tibble or dataframe used for the brmsfit.}
 
 \item{measurement}{is the column in 'data' containing response values.}
+
+\item{predictors_col_name}{string expression for predictors column in the
+input data.frame (default = "_Intercept").}
 
 \item{draws}{is the tibble::tibble returned from the
 'posterior_response_draws' function.}
@@ -35,9 +38,6 @@ function.}
 \item{xlabel}{string for the x-axis label. (default = NULL)}
 
 \item{ylabel}{string for the y-axis label. (default = NULL)}
-
-\item{predictors_col_name}{name of the column with the predictors used in
-brmsfit.}
 }
 \value{
 a ggplot2::ggplot object.

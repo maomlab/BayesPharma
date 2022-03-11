@@ -13,8 +13,9 @@ basic_stats(model = <model>,
 \arguments{
 \item{model}{brmsfit model}
 
-\item{predictors_col_name}{string expression for predictors column in the input data.frame (default = "predictors").
-Predictors are the perturbations tested during the experiment (i.e. Drug, Temperature, etc.).}
+\item{predictors_col_name}{string expression for predictors column in the
+input data.frame (default = "_Intercept"). Predictors are the perturbations
+tested during the experiment (i.e. Drug, Temperature, etc.).}
 
 \item{half_max_label}{string of the label for the half maximal that fits the type of
 experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).}

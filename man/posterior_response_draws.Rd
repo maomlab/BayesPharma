@@ -10,7 +10,7 @@ posterior_response_draws(
   n = 100,
   lower = -12,
   upper = -3,
-  predictor_name = NULL
+  predictors_col_name = "_Intercept"
 )
 }
 \arguments{
@@ -24,9 +24,8 @@ Response. (default = -12)}
 \item{upper}{number for the highest log_dose value to be used for calculating
 Response. (default = -3)}
 
-\item{predictor_name}{string. If only one perturbation is being tested, the
-name of the predictor being analyzed is required to avoid "NA" graph subtitle.
-(default = NULL)}
+\item{predictors_col_name}{string expression for predictors column in the
+input data.frame (default = "_Intercept").}
 }
 \value{
 data.frame.
