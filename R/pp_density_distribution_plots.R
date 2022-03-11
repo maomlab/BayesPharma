@@ -86,8 +86,9 @@ density_distributions <- function(model,
 #'               u_ci = <u_ci>)
 #'
 #' @param model brmsfit model
-#' @param predictors_col_name string expression for predictors column in the input data.frame (default = "predictors").
-#'   Predictors are the perturbations tested during the experiment (i.e. Drug, Temperature, etc.).
+#' @param predictors_col_name string expression for predictors column in the
+#'   input data.frame (default = "_Intercept"). Predictors are the perturbations
+#'   tested during the experiment (i.e. Drug, Temperature, etc.).
 #' @param half_max_label string of the label for the half maximal that fits the type of
 #'   experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
 #' @param l_ci numeric unit of the lower confidence interval (default = 0.025)
@@ -104,7 +105,7 @@ density_distributions <- function(model,
 #' @export
 
 basic_stats <- function(model,
-                        predictors_col_name = "predictors",
+                        predictors_col_name = "_Intercept",
                         half_max_label = "ec50",
                         l_ci = 0.025,
                         u_ci = 0.975) {
@@ -146,7 +147,7 @@ basic_stats <- function(model,
 #'                       title_label = <title_label>)
 #'
 #' @param model brmsfit model.
-#' @param predictors_col_name string expression for predictors column in the input data.frame (default = "predictors).
+#' @param predictors_col_name string expression for predictors column in the input data.frame (default = "_Intercept").
 #'   Predictors are the perturbations tested during the experiment (i.e. Drug, Temperature, etc.).
 #' @param half_max_label string of the label for the half maximal that fits the type of
 #'   experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).

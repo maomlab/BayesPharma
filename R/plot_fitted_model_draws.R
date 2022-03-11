@@ -31,12 +31,11 @@ n_sample_draws <- function(model,
 #'@param model brmsfit.
 #'@param n number of samples from the posterior distribution. (default n = 100)
 #'@param lower number for the lowest log_dose value to be used for calculating
-#'Response. (default = -12)
+#'   Response. (default = -12)
 #'@param upper number for the highest log_dose value to be used for calculating
-#'Response. (default = -3)
-#'@param predictor_name string. If only one perturbation is being tested, the
-#'name of the predictor being analyzed is required to avoid "NA" graph subtitle.
-#'(default = NULL)
+#'   Response. (default = -3)
+#'@param predictors_col_name string expression for predictors column in the
+#'   input data.frame (default = "_Intercept").
 #'@return data.frame.
 #'
 #'@export
@@ -45,7 +44,7 @@ posterior_response_draws <- function(model,
                                      n = 100,
                                      lower = -12,
                                      upper = -3,
-                                     predictor_name = NULL) {
+                                     predictors_col_name = "_Intercept") {
   n_sample_draws(model, n) %>%
     tidyr::pivot_longer(cols = starts_with("b_"),
                         names_to = "Parameters",
@@ -54,8 +53,8 @@ posterior_response_draws <- function(model,
                                                  "b_[a-zA-Z0-9]+") %>%
                     stringr::str_remove("b_"),
                   predictors = stringr::str_extract(Parameters,
-                                                    paste0(predictor_name,".+")) %>%
-                    stringr::str_remove(paste0(predictor_name))) %>%
+                                                    paste0(predictors_col_name,".+")) %>%
+                    stringr::str_remove(paste0(predictors_col_name))) %>%
     dplyr::mutate() %>%
     dplyr::select(-Parameters) %>%
     tidyr::pivot_wider(id_cols = c("draw_id", "predictors"),
@@ -84,7 +83,7 @@ posterior_response_draws <- function(model,
       )
     }) %>%
     dplyr::mutate(Response = bottom + (top - bottom) / (1 + 10^((ec50 - log_dose) * hill))) %>%
-    dplyr::mutate(predictors = ifelse(is.na(predictors), tidyr::replace_na(predictor_name), predictors))
+    dplyr::mutate(predictors = ifelse(is.na(predictors), tidyr::replace_na(predictors_col_name), predictors))
   }
 
 
@@ -97,9 +96,8 @@ posterior_response_draws <- function(model,
 #'Response. (default = -12)
 #'@param upper number for the highest log_dose value to be used for calculating
 #'Response. (default = -3)
-#'@param predictors_name string. If only one perturbation is being tested, the
-#'name of the predictor being analyzed is required to avoid "NA" graph subtitle.
-#'(default = NULL)
+#'@param predictors_col_name string expression for predictors column in the
+#'   input data.frame (default = "_Intercept").
 #'@return tibble::tibble required for the 'plot_trajectories' function.
 #'
 #'@export
@@ -108,7 +106,7 @@ posterior_mean <- function(model,
                            n = 100,
                            lower = -12,
                            upper = -3,
-                           predictor_name = NULL) {
+                           predictors_col_name = "_Intercept") {
   model %>%
     brms::as_draws_df() %>%
     tidyr::gather(factor_key = TRUE) %>%
@@ -120,8 +118,8 @@ posterior_mean <- function(model,
     dplyr::mutate(b_class = stringr::str_extract(variable, "b_[a-zA-Z0-9]+") %>%
                     stringr::str_remove("b_"),
                   predictors = stringr::str_extract(variable,
-                                                    paste0(predictor_name,".+")) %>%
-                    stringr::str_remove(paste0(predictor_name))) %>%
+                                                    paste0(predictors_col_name,".+")) %>%
+                    stringr::str_remove(paste0(predictors_col_name))) %>%
     dplyr::select(-variable) %>%
     head(-3) %>%
     tidyr::pivot_wider(id_cols = c("predictors"),
@@ -149,14 +147,14 @@ posterior_mean <- function(model,
       )
     }) %>%
     dplyr::mutate(Response = bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))) %>%
-    dplyr::mutate(predictors = ifelse(is.na(predictors), tidyr::replace_na(predictor_name), predictors))
+    dplyr::mutate(predictors = ifelse(is.na(predictors), tidyr::replace_na(predictors_col_name), predictors))
   }
 
 #' Create a plot of the predicted responses from the posterior distribution
 #'
 #'@param data is the tibble or dataframe used for the brmsfit.
-#'@param predictors_col_name name of the column with the predictors used in
-#'brmsfit.
+#'@param predictors_col_name string expression for predictors column in the
+#'   input data.frame (default = "_Intercept").
 #'@param measurement is the column in 'data' containing response values.
 #'@param draws is the tibble::tibble returned from the
 #''posterior_response_draws' function.
@@ -173,7 +171,7 @@ posterior_mean <- function(model,
 
 plot_trajectories <- function(data,
                               measurement,
-                              predictor_name,
+                              predictors_col_name = "_Intercept",
                               draws,
                               pred_response,
                               mean_draws,
@@ -182,7 +180,7 @@ plot_trajectories <- function(data,
                               ylabel = "Response") {
 
    input_data <- data %>%
-    dplyr::rename(predictors = predictor_name)
+    dplyr::rename(predictors = predictors_col_name)
 
   ggplot2::ggplot() +
     ggplot2::geom_jitter(data = input_data,
@@ -217,8 +215,8 @@ plot_trajectories <- function(data,
 #' @param n number of samples from the posterior distribution (default n = 100).
 #' @param lower number for the lowest log_dose value to be used for calculating Response (default = -12).
 #' @param upper number for the highest log_dose value to be used for calculating Response (default = -3).
-#' @param predictors_name string. If only one perturbation is being tested, the
-#'   name of the predictor being analyzed is required to avoid "NA" graph subtitle (default = NULL).
+#' @param predictors_col_name string expression for predictors column in the
+#'   input data.frame (default = "_Intercept").
 #' @param data is the tibble or data.frame used for the brmsfit.
 #' @param measurement is the column in 'data' containing response values.
 #' @param draws is the tibble::tibble returned from the posterior_response_draws' function.
@@ -237,7 +235,7 @@ plot_draws_data <- function(model,
                             n = 100,
                             lower = -12,
                             upper = -3,
-                            predictor_name,
+                            predictors_col_name = "_Intercept",
                             data,
                             measurement,
                             draws,
@@ -251,17 +249,17 @@ plot_draws_data <- function(model,
                                          n,
                                          lower,
                                          upper,
-                                         predictor_name)
+                                         predictors_col_name)
 
   resp_draws_mean <- posterior_mean(model,
                                     n,
                                     lower,
                                     upper,
-                                    predictor_name)
+                                    predictors_col_name)
 
   draws_plot <- plot_trajectories(data,
                                   measurement,
-                                  predictor_name,
+                                  predictors_col_name,
                                   draws = resp_draws,
                                   pred_response = resp_draws$Response,
                                   mean_draws = resp_draws_mean,

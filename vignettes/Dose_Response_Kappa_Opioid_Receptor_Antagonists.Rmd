@@ -218,7 +218,9 @@ with the confidence intervals and mean. This is a useful visual of the model
 results: 
 
 ```{r, message=FALSE, warning=FALSE}
-BayesPharma::posterior_densities(kor_model, half_max_label = "ic50")
+BayesPharma::posterior_densities(kor_model, 
+                                 predictors_col_name = "Drug", 
+                                 half_max_label = "ic50")
 ```
 
 Displayed below is a plot of a sample of 100 sigmoid dose-response curves from 
@@ -230,7 +232,7 @@ BayesPharma::plot_draws_data(model = kor_model,
                              n = 100,
                              lower = -12,
                              upper = -3,
-                             predictor_name = "Drug",
+                             predictors_col_name = "Drug",
                              data = kor_antag,
                              measurement = kor_antag$response,
                              title = NULL,
@@ -295,7 +297,7 @@ kor_model2
 Checking the Model Convergence:
 
 ```{r}
-BayesPharma::traceplot(kor_model2, "predictors", "ic50") 
+BayesPharma::traceplot(kor_model2, "Drug", "ic50") 
 ```
 
 Posterior Predictive Check:
@@ -332,7 +334,7 @@ BayesPharma::plot_draws_data(model = kor_model2,
                              n = 100,
                              lower = -12,
                              upper = -3,
-                             predictor_name = "Drug",
+                             predictors_col_name = "Drug",
                              data = kor_antag,
                              measurement = kor_antag$response,
                              title = NULL,
@@ -672,4 +674,5 @@ bayesplot::bayesplot_grid(hill_bd1, hill_bd2)
 ```{r}
 bayes_vs_drc(kor_model2, "bottom", "Drug", "bottom", drc_bottom) 
 ```
+
 
