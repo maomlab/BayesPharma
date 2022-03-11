@@ -4,17 +4,22 @@
 \alias{add_loo_criterion}
 \title{Add model fit loo criterion to model objects}
 \usage{
-add_loo_criterion(model = <model>,
-                    model_name = <model_name>)
+add_loo_criterion(model, model_name, ...)
 }
 \arguments{
 \item{model}{brmsfit model.}
 
 \item{model_name}{variable name given to the model.}
 
-\item{...}{extra arguments passed on to `r brms::add_criterion`}
+\item{...}{extra arguments passed on to `brms::add_criterion`}
+
+\item{n_params}{numeric value. The number of params being estimated by the
+model. i.e. how many parameters have non-constant priors? in the case of dose
+response cureves, are all 4 parameters being predicted by the model?}
 }
 \value{
+brmsfit object with loo criterion.
+
 brmsfit model with loo criterion.
 }
 \description{
