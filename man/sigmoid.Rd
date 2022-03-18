@@ -2,10 +2,25 @@
 % Please edit documentation in R/sigmoid_formula.R
 \name{sigmoid}
 \alias{sigmoid}
-\title{Sigmoid function}
+\title{Sigmoid Formula}
 \usage{
 sigmoid(ec50, hill, top, bottom, log_dose)
 }
+\arguments{
+\item{ec50}{numeric.}
+
+\item{hill}{numeric.}
+
+\item{top}{numeric.}
+
+\item{bottom}{numeric.}
+
+\item{log_dose}{numeric.}
+}
+\value{
+numeric.
+}
 \description{
-Sigmoid function
+A vectorized function of the sigmoid dose-response curve
+  equation. This may be need if stan backend is cmdstanr
 }
