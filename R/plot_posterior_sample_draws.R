@@ -1,0 +1,101 @@
+
+#' Plot of Posterior Model Fit Draws
+#'
+#' @description A plot of a sample of model fit draws from the posterior
+#' distribution from the expected mean and median quantile intervals.
+#'
+#' @usage
+#'   posterior_draws_plot(model = <model>, data = <data>,
+#'                        predictors_col_name = "na",lower = -12, upper = -3,
+#'                        n = 50, facet_var,
+#'                        title = "Dose-Response Posterior Draws",
+#'                        xlab = "Log[Molar]", ylab = "Response")
+#'
+#' @param model brmsfit model.
+#' @param data data.frame of data inputted into the model.
+#' @param predictors_col_name character. The name of the column containing the
+#'   predictors for the model fit. If there is only one predictor, then any
+#'   character input can be used and will not affect the plot (default = "na").
+#' @param lower numeric value of the lower bound of log_dose to be observed
+#'   (default = -12).
+#' @param upper numeric value of the upper bound of log_dose to be observed
+#'   (default = -3).
+#' @param n numeric value of the number of draws to be observed (default = 50).
+#' @param facet_var defined variable to determine the facets of the plot. For
+#'   models with multiple predictors, include the predictor column name;
+#'   otherwise, include the character name of your choosing.
+#' @param title character name for the plot
+#'   (default = "Dose-Response Posterior Draws").
+#' @param xlab character name for the x-axis label (default = "Log[Molar]").
+#' @param ylab character name for the y-axis label (default = "Response").
+#' @return ggplot2::ggplot object.
+#'
+#' @examples
+#'   # Consider a model named my_model and data named my_data with a column
+#'   # named predictors containing multiple different perturbations.
+#'   posterior_draws_plot(model = my_model, data = my_data,
+#'                        predictors_col_name = "predictors",lower = -12,
+#'                        upper = -3, n = 50, facet_var = predictors,
+#'                        title = "Dose-Response Posterior Draws",
+#'                        xlab = "Log[Molar]", ylab = "Response")
+#'
+#' @export
+
+posterior_draws_plot <- function(model, data, predictors_col_name = "na",
+                                 lower = -12, upper = -3, n = 50,
+                                 facet_var,
+                                 title = "Dose-Response Posterior Draws",
+                                 xlab = "Log[Molar]", ylab = "Response"){
+
+  if (is.character(predictors_col_name) == FALSE) {
+    warning("predictors_col_name must be a character. If there are not a
+            predictors in the data and model, then write
+            predictors_col_name = 'na'.")
+  }
+
+  ep_data <- model %>%
+    tidybayes::add_epred_draws(
+      newdata = tidyr::expand_grid(
+        log_dose = seq(from = lower, to = upper, length.out = 100),
+        {{predictors_col_name}} := data[[predictors_col_name]] %>% unique()),
+      value = "response",
+      ndraws = n)
+
+  pp_data <- model %>%
+    tidybayes::add_predicted_draws(
+      newdata = tidyr::expand_grid(
+        log_dose = seq(from = lower, to = upper, length.out = 100),
+        {{predictors_col_name}} := data[[predictors_col_name]] %>% unique()),
+      value = "response")  %>%
+    ggdist:: median_qi(.width = c(.5, .8, .95))
+
+  ggplot2::ggplot() +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position = "bottom") +
+    ggplot2::scale_fill_discrete(
+      "Median Quantile Interval",
+      labels = c("95%", "80%", "50%")) +
+    ggdist::geom_lineribbon(
+      data = pp_data,
+      ggplot2::aes(x = log_dose,
+                   y = response,
+                   ymin = .lower,
+                   ymax = .upper),
+      alpha = .15) +
+    ggplot2::geom_line(data = ep_data,
+                       ggplot2::aes(x = log_dose,
+                                    y = response,
+                                    group = .draw),
+                       size = 0.4,
+                       alpha = 0.2,
+                       color = "blueviolet") +
+    ggplot2::geom_jitter(data = data,
+                         ggplot2::aes(x = log_dose,
+                                      y = response),
+                         size = 0.8, width = .10, height = 0) +
+    ggplot2::facet_wrap(facets = dplyr::vars({{facet_var}})) +
+    ggplot2::labs(title = title) +
+    ggplot2::xlab(xlab) +
+    ggplot2::ylab(ylab)
+
+}
