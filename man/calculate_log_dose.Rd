@@ -14,7 +14,7 @@ calculate_log_dose(
 
 \item{dose_col}{expression for dose column in the input data.frame (default = dose).}
 
-\item{molar_concentration}{numeric units of molar concentration (default = 1).}
+\item{molar_concentration}{numeric units of molar concentration of the dose column (default = 1).}
 }
 \value{
 input `r data.frame` with an additional `r log_dose` column.
