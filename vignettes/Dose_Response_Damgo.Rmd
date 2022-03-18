@@ -77,9 +77,9 @@ arguments are set to *NULL*.
 - Maybe unneeded ^ -  
 
 ```{r}
-damgo <- BayesPharma::calculate_log_dose(model = damgo, dose_col = dose_nM, 
-                                         molar_concentration = 1)
-damgo <- BayesPharma::change_col_names(model = damgo, 
+damgo <- BayesPharma::calculate_log_dose(data = damgo, dose_col = dose_nM, 
+                                         molar_concentration = 10^(-9))
+damgo <- BayesPharma::change_col_names(data = damgo, 
                                        response_col_name = normalized_response)
 damgo
 ```
@@ -147,7 +147,7 @@ dr_model uses brms and rstan or cmdstanr
 
 ```{r}
 
-damgo_model <- BayesPharma::dr_model(model = damgo,
+damgo_model <- BayesPharma::dr_model(data = damgo,
                                      model_name = damgo1,
                                      formula = dr_formula(),
                                      priors = damgo_priors,
@@ -167,7 +167,9 @@ are high, and the mcmc chains appear to have mixed well throughout the model
 run.
 
 ```{r}
-BayesPharma::traceplot(damgo_model, "_Intercept", half_max_label = "ic50")
+damgo_trace <- BayesPharma::traceplot(damgo_model, 
+                                      half_max_label = "ic50")
+damgo_trace
 ```
 
 ## Posterior Predictive Check
@@ -197,21 +199,15 @@ with the confidence intervals and mean:
 BayesPharma::posterior_densities(damgo_model, half_max_label = "ic50")
 ```
 
-Displayed below is a plot of a sample of 100 sigmoid dose-response curves from 
-the posterior distribution (purple) and the mean curve (black): 
+Displayed below is a plot of a sample of 50 sigmoid dose-response curves from 
+the posterior distribution (purple) and the median quantile intervals: 
+
 
 ```{r}
-
-BayesPharma::plot_draws_data(model = damgo_model,
-                             n = 100,
-                             lower = -9,
-                             upper = -3,
-                             predictor_name = "Damgo",
-                             data = damgo,
-                             measurement = damgo$response,
-                             title = NULL,
-                             xlabel = "Log[Molar]",
-                             ylabel = "% Baseline U-69,593 Effect")
+posterior_draws_plot(model = damgo_model, data = damgo, predictors_col_name = "Damgo",
+                     lower = -10, upper = -3, n = 50, facet_var = "Damgo", 
+                     title = "Dose-Response Posterior Draws",
+                     xlab = "Log[Molar]", ylab = "Response")
 
 ```
 

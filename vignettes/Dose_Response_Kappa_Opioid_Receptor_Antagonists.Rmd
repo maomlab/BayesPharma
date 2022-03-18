@@ -81,9 +81,10 @@ ggplot2::ggplot(kor_antag) +
 
 Before moving forward with the analysis using `BayesPharma`, there are 
 limitations to the package that requires the column containing the response 
-values to be labelled "response" and the dose to be in log scale; therefore, 
-it may be necessary to use the `calculate_log_dose` and `change_col_names` 
-functions before running the model. 
+values to be labeled "response", the column containing perturbation labels 
+(Drug, mutant, etc.) to be labeled predictors, and the dose to be in log scale; 
+therefore, it may be necessary to use the `calculate_log_dose` and 
+`change_col_names` functions before running the model. 
 The loaded data already has a log dose column, so for this data set we don't 
 need to use the `calculate_log_dose` function.
 
@@ -157,7 +158,7 @@ To fit the model for each antagonist, we set the *predictors* argument in
 ```{r, results='hide', message=FALSE}
 kor_model <- BayesPharma::dr_model(data = kor_antag,
                                    model_name = kor_model1,
-                                   formula = dr_formula(predictors = 0 + Drug), 
+                                   formula = dr_formula(0 + Drug), 
                                    priors = kor_priors,
                                    inits = kor_inits)
 ```
@@ -224,21 +225,14 @@ BayesPharma::posterior_densities(kor_model,
 ```
 
 Displayed below is a plot of a sample of 100 sigmoid dose-response curves from 
-the posterior distribution (purple) and the mean curve (black): 
+the posterior distribution (purple) and and the median quantile intervals: 
 
-```{r, message=FALSE, warning=FALSE}
-
-BayesPharma::plot_draws_data(model = kor_model,
-                             n = 100,
-                             lower = -12,
-                             upper = -3,
-                             predictors_col_name = "Drug",
-                             data = kor_antag,
-                             measurement = kor_antag$response,
-                             title = NULL,
-                             xlabel = "Log[Molar]",
-                             ylabel = "% Baseline U-69,593 Effect")
-
+```{r}
+posterior_draws_plot(model = kor_model, data = kor_antag, 
+                     predictors_col_name = "Drug",
+                     lower = -12, upper = -4, n = 50, 
+                     facet_var = Drug, title = "Dose-Response Posterior Draws",
+                     xlab = "Log[Molar]", ylab = "Response")
 ```
 
 
@@ -285,7 +279,7 @@ Running the Model:
 ```{r, results='hide', message=FALSE}
 kor_model2 <- dr_model(kor_antag,
                        kor_model2,
-                       dr_formula((0 + Drug)), 
+                       dr_formula(0 + predictors), 
                        priors = kor_priors2,
                        inits = kor_inits)
 ```
@@ -297,7 +291,7 @@ kor_model2
 Checking the Model Convergence:
 
 ```{r}
-BayesPharma::traceplot(kor_model2, "Drug", "ic50") 
+BayesPharma::traceplot(kor_model2, "predictors", "ic50") 
 ```
 
 Posterior Predictive Check:
@@ -305,7 +299,7 @@ Posterior Predictive Check:
 ```{r}
 BayesPharma::plot_pp_check(kor_model2,
                            "dens_overlay_grouped", 
-                           group = 'Drug',
+                           group = 'predictors',
                            n = 50)
 ```
 
@@ -313,7 +307,7 @@ Plot of the Prior and Posterior Distributions:
 
 ```{r}
 prior_posterior_densities(kor_model2, 
-                          predictors_col_name = "Drug",
+                          predictors_col_name = "predictors",
                           half_max_label = "ic50")
 ```
 
@@ -321,26 +315,19 @@ Plot of the Posterior Distributions with the Mean and Confidence Intervals:
 
 ```{r, message=FALSE, warning=FALSE}
 posterior_densities(kor_model2, 
-                    predictors_col_name = "Drug", 
+                    predictors_col_name = "predictors", 
                     half_max_label = "ic50")
 ```
 
 Sample of Sigmoid Dose-Response Curves from the Posterior Distribution and 
 Mean Curve:
 
-```{r, message=FALSE, warning=FALSE}
-
-BayesPharma::plot_draws_data(model = kor_model2,
-                             n = 100,
-                             lower = -12,
-                             upper = -3,
-                             predictors_col_name = "Drug",
-                             data = kor_antag,
-                             measurement = kor_antag$response,
-                             title = NULL,
-                             xlabel = "Log[Molar]",
-                             ylabel = "% Baseline U-69,593 Effect"
-                             )
+```{r}
+posterior_draws_plot(model = kor_model, data = kor_antag, 
+                     predictors_col_name = "Drug",
+                     lower = -12, upper = -4, n = 50, 
+                     facet_var = Drug, title = "Dose-Response Posterior Draws",
+                     xlab = "Log[Molar]", ylab = "Response")
 ```
 
 ## Comparing the Two Models Using LOO-Comparison:
@@ -371,10 +358,10 @@ library("drc")
 ```
 
 ```{r}
-BTRX_335140_df <- kor_antag[grepl("BTRX_335140", kor_antag$Drug),]
-BTRX_395750_df <- kor_antag[grepl("BTRX_395750", kor_antag$Drug),]
-JNJ_df <- kor_antag[grepl("JNJ", kor_antag$Drug),]
-PF_df <- kor_antag[grepl("PF", kor_antag$Drug),]
+BTRX_335140_df <- kor_antag[grepl("BTRX_335140", kor_antag$predictors),]
+BTRX_395750_df <- kor_antag[grepl("BTRX_395750", kor_antag$predictors),]
+JNJ_df <- kor_antag[grepl("JNJ", kor_antag$predictors),]
+PF_df <- kor_antag[grepl("PF", kor_antag$predictors),]
 ```
 
 Here is the code and results of the drc dose response model:
@@ -484,7 +471,7 @@ kor_post_means <- BayesPharma::posterior_mean(kor_model2,
                                               n = 100,
                                               lower = -12,
                                               upper = -4,
-                                              predictor_name = "Drug") 
+                                              predictor_name = "predictors") 
 
 colors = c("drc" = "blue", "Bayes" = "red")
 
@@ -658,21 +645,21 @@ bayes_vs_drc <- function(model,
 }
 ```
 ```{r}
-bayes_vs_drc(kor_model2, "ec50", "Drug", "ic50", drc_ic50) 
+bayes_vs_drc(kor_model2, "ec50", "predictors", "ic50", drc_ic50) 
 ```
 
 (The drc results for the hill are displayed as a positive value although the 
 curve has a negative slope.)
 ```{r}
-hill_bd1 <- bayes_vs_drc(kor_model2, "hill", "Drug", "hill", drc_hill) 
-hill_bd2 <- bayes_vs_drc(kor_model2, "hill", "Drug", "hill", drc_hill) +
+hill_bd1 <- bayes_vs_drc(kor_model2, "hill", "predictors", "hill", drc_hill) 
+hill_bd2 <- bayes_vs_drc(kor_model2, "hill", "predictors", "hill", drc_hill) +
   ggplot2::xlim(-6, 14)
 
 bayesplot::bayesplot_grid(hill_bd1, hill_bd2)
 ```
 
 ```{r}
-bayes_vs_drc(kor_model2, "bottom", "Drug", "bottom", drc_bottom) 
+bayes_vs_drc(kor_model2, "bottom", "predictors", "bottom", drc_bottom) 
 ```
 
 
