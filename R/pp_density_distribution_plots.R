@@ -57,9 +57,9 @@ density_distributions <- function(model,
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "bottom") +
     ggplot2::geom_density(
-      mapping = ggplot2::aes(
-        x = .value),
-      fill = "hotpink2",
+      ggplot2::aes(x = .value,
+                   group = sample_type,
+                   fill = sample_type),
       color = "black",
       alpha = .9) +
     ggplot2::ggtitle(
@@ -69,7 +69,10 @@ density_distributions <- function(model,
       scales = "free") +
     ggplot2::scale_y_continuous("Density") +
     ggplot2::scale_x_continuous("Parameter Value") +
-    ggplot2::scale_fill_discrete("Distribution")
+    ggplot2::scale_fill_manual(
+      values = c("Posterior" = "cyan2", "posterior" = "cyan2",
+                 "Prior" = "hotpink2", "prior" = "hotpink2"),
+      limits = c(sample_type))
 }
 
 #' Displays a data.frame of basic statistical information about the model results
@@ -153,7 +156,7 @@ basic_stats <- function(model,
 #'   experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
 #' @param l_ci numeric unit of the lower confidence interval (default = 0.025)
 #' @param u_ci numeric unit of the upper confidence interval (default = 0.975)
-#' @param title_label string of the plot title. (default = "Posterior Density Plots with Mean and 95% CI")
+#' @param title_label string of the plot title. (default = "Posterior Density Plots with Mean and 95\% CI")
 #' @return ggplot2::ggplot object.
 #'
 #' @examples
@@ -206,12 +209,12 @@ posterior_densities <- function(model,
     ) +
     ggplot2::geom_rect(
       ggplot2::aes(xmin = -Inf, xmax = l_ci, ymin = -Inf, ymax = Inf),
-      basic_stats(model, predictors_col_name, half_max_label),
+      basic_stats(model, predictors_col_name, half_max_label, l_ci = l_ci, u_ci = u_ci),
       color = "gray",
       alpha = 0.5) +
     ggplot2::geom_rect(
       ggplot2::aes(xmin = u_ci, xmax = Inf, ymin = -Inf, ymax = Inf),
-      basic_stats(model, predictors_col_name, half_max_label),
+      basic_stats(model, predictors_col_name, half_max_label, l_ci = l_ci, u_ci = u_ci),
       color = "gray",
       alpha = 0.5) +
     ggplot2::ggtitle(
@@ -260,7 +263,6 @@ prior_posterior_densities <- function(model,
     brms:::update.brmsfit(sample_prior = "only")
 
   draws <- dplyr::bind_rows(
-
     model_prior %>%
       tidybayes::tidy_draws() %>%
       tidybayes::gather_variables() %>%

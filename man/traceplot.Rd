@@ -15,7 +15,7 @@ model %>% traceplot(predictors_col_name = <predictors_col_name>,
 Predictors are the perturbations tested during the experiment (i.e. Drug, Temperature, etc.).}
 
 \item{half_max_label}{string of the label for the half maximal that fits the type of
-experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).}
+experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.) (default = "ec50").}
 
 \item{title}{string of the plot title (default = NULL)}
 }

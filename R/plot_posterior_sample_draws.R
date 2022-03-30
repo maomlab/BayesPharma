@@ -49,8 +49,8 @@ posterior_draws_plot <- function(model, data, predictors_col_name = "na",
 
   if (is.character(predictors_col_name) == FALSE) {
     warning("predictors_col_name must be a character. If there are not a
-            predictors in the data and model, then write
-            predictors_col_name = 'na'.")
+            predictors in the data and model, then run using the default
+            argument (predictors_col_name = 'na').")
   }
 
   ep_data <- model %>%
