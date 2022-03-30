@@ -27,7 +27,7 @@ Imports:
     tibble,
     tidybayes,
     tidyr,
-    tidyverse,
+    tidymodels,
     bayesplot
 Collage:
     'run_dr_brm_model.R',
