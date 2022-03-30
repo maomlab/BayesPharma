@@ -1,5 +1,5 @@
-
-library(tidyverse)
+library(BayesPharma)
+library(tidymodels)
 
 testthat::test_that("adding log dose to data.frame with units M", {
   data <- data.frame(dose = c(1e-6, 1e-7)) %>%

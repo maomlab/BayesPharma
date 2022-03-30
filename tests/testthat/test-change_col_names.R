@@ -1,5 +1,5 @@
-
-library(tidyverse)
+library(BayesPharma)
+library(tidymodels)
 
 testthat::test_that("changing column names of a data.frame", {
   data <- data.frame(measurement = c(100, 50, 0), log10_dose = c(-12, -9, -6),
