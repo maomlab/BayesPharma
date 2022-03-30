@@ -13,7 +13,7 @@
 #' @param predictors_col_name string expression for predictors column in the input data.frame (default = "_Intercept").
 #'    Predictors are the perturbations tested during the experiment (i.e. Drug, Temperature, etc.).
 #' @param half_max_label string of the label for the half maximal that fits the type of
-#' experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
+#' experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.) (default = "ec50").
 #' @param title string of the plot title (default = NULL)
 #' @return ggplot2::ggplot object.
 #'
@@ -28,8 +28,19 @@
 
 traceplot <- function(model,
                       predictors_col_name = "_Intercept",
-                      half_max_label = NULL,
+                      half_max_label = "ec50",
                       title = NULL) {
+
+  if (is.character(predictors_col_name) == FALSE) {
+    warning("predictors_col_name must be a character. If there are not a
+            predictors in the data and model, then run using the default
+            argument (predictors_col_name = '_Intercept').")
+  }
+  if (is.character(half_max_label) == FALSE) {
+    warning("half_max_label must be a character. Include a label that fits the
+            experiment type (i.e. ic50, ed50, id50, ld50, etc.)
+            (default = 'ec50').")
+  }
 
   model_parnames <- brms::variables(model) %>%
     stringr::str_remove("b_") %>%

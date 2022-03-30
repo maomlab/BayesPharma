@@ -24,7 +24,7 @@ experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).}
 
 \item{u_ci}{numeric unit of the upper confidence interval (default = 0.975)}
 
-\item{title_label}{string of the plot title. (default = "Posterior Density Plots with Mean and 95% CI")}
+\item{title_label}{string of the plot title. (default = "Posterior Density Plots with Mean and 95\% CI")}
 }
 \value{
 ggplot2::ggplot object.
