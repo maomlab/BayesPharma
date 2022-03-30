@@ -1,5 +1,5 @@
-library(tidyverse)
 library(BayesPharma)
+library(tidymodels)
 
 testthat::test_that("dr_formula with a constant predictor", {
   formula <- BayesPharma::dr_formula()

@@ -1,5 +1,5 @@
-library(tidyverse)
 library(BayesPharma)
+library(tidymodels)
 
 
 testthat::test_that("dr_priors with default priors", {

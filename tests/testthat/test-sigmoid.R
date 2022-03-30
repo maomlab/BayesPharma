@@ -1,4 +1,5 @@
-library(tidyverse)
+library(BayesPharma)
+library(tidymodels)
 
 testthat::test_that("sigmoid returns numeric class:", {
   testthat::expect_equal(class(BayesPharma::sigmoid(-9, -1, 100, 0, -10)),
