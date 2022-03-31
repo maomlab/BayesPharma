@@ -32,7 +32,8 @@ testthat::test_that("posterior_densities is a ggplot object",{
 
 
 testthat::test_that("posterior_densities throws error if predictors_col_name and
-                    half_max_label are not characters",{
+                    half_max_label are not characters, and l_ci and u_ci are
+                    not numeric",{
   testthat::expect_error(expect_gg(BayesPharma::posterior_densities(test_model,
     predictors_col_name = NULL)))
   testthat::expect_error(expect_gg(BayesPharma::posterior_densities(test_model,
