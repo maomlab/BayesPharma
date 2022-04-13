@@ -36,7 +36,7 @@ if(Sys.info()["machine"] == "arm64"){
 
 ```{r load-packages}
 library(devtools)
-library(tidyverse)
+library(tidymodels)
 library(BayesPharma)
 ```
 
@@ -132,9 +132,8 @@ sample only from the prior distributions by adding  *sample_prior = "only"* as
 an argument to the `dr_model` function.
 
 ```{r, results='hide', message=FALSE}
-kor_sample_priors <- BayesPharma::dr_model(kor_antag, 
-                                           kor1,
-                                           dr_formula(), 
+kor_sample_priors <- BayesPharma::dr_model(kor_antag,
+                                           BayesPharma::dr_formula(), 
                                            priors = kor_priors,
                                            inits = kor_inits,
                                            sample_prior = "only")
@@ -157,8 +156,7 @@ To fit the model for each antagonist, we set the *predictors* argument in
 
 ```{r, results='hide', message=FALSE}
 kor_model <- BayesPharma::dr_model(data = kor_antag,
-                                   model_name = kor_model1,
-                                   formula = dr_formula(0 + Drug), 
+                                   formula = BayesPharma::dr_formula(0 + Drug), 
                                    priors = kor_priors,
                                    inits = kor_inits)
 ```
@@ -228,11 +226,12 @@ Displayed below is a plot of a sample of 100 sigmoid dose-response curves from
 the posterior distribution (purple) and and the median quantile intervals: 
 
 ```{r}
-posterior_draws_plot(model = kor_model, data = kor_antag, 
-                     predictors_col_name = "Drug",
-                     lower = -12, upper = -4, n = 50, 
-                     facet_var = Drug, title = "Dose-Response Posterior Draws",
-                     xlab = "Log[Molar]", ylab = "Response")
+BayesPharma::posterior_draws_plot(model = kor_model, data = kor_antag, 
+                                  predictors_col_name = "Drug",
+                                  lower = -12, upper = -4, n = 50, 
+                                  facet_var = Drug,
+                                  title = "Dose-Response Posterior Draws",
+                                  xlab = "Log[Molar]", ylab = "Response")
 ```
 
 
@@ -261,8 +260,7 @@ Sampling the Priors:
 
 ```{r, results='hide', message=FALSE}
 kor_sample_priors <- dr_model(kor_antag,
-                              kor2,
-                              dr_formula(), 
+                              BayesPharma::dr_formula(), 
                               priors = kor_priors2,
                               inits = kor_inits,
                               sample_prior = "only")
@@ -278,8 +276,7 @@ Running the Model:
 
 ```{r, results='hide', message=FALSE}
 kor_model2 <- dr_model(kor_antag,
-                       kor_model2,
-                       dr_formula(0 + predictors), 
+                       BayesPharma::dr_formula(0 + Drug), 
                        priors = kor_priors2,
                        inits = kor_inits)
 ```
@@ -306,28 +303,29 @@ BayesPharma::plot_pp_check(kor_model2,
 Plot of the Prior and Posterior Distributions:
 
 ```{r}
-prior_posterior_densities(kor_model2, 
-                          predictors_col_name = "predictors",
-                          half_max_label = "ic50")
+BayesPharma::prior_posterior_densities(kor_model2, 
+                                       predictors_col_name = "predictors",
+                                       half_max_label = "ic50")
 ```
 
 Plot of the Posterior Distributions with the Mean and Confidence Intervals:
 
 ```{r, message=FALSE, warning=FALSE}
-posterior_densities(kor_model2, 
-                    predictors_col_name = "predictors", 
-                    half_max_label = "ic50")
+BayesPharma::posterior_densities(kor_model2, 
+                                 predictors_col_name = "predictors", 
+                                 half_max_label = "ic50")
 ```
 
 Sample of Sigmoid Dose-Response Curves from the Posterior Distribution and 
 Mean Curve:
 
 ```{r}
-posterior_draws_plot(model = kor_model, data = kor_antag, 
-                     predictors_col_name = "Drug",
-                     lower = -12, upper = -4, n = 50, 
-                     facet_var = Drug, title = "Dose-Response Posterior Draws",
-                     xlab = "Log[Molar]", ylab = "Response")
+BayesPharma::posterior_draws_plot(model = kor_model, data = kor_antag, 
+                                  predictors_col_name = "Drug",
+                                  lower = -12, upper = -4, n = 50, 
+                                  facet_var = Drug, 
+                                  title = "Dose-Response Posterior Draws",
+                                  xlab = "Log[Molar]", ylab = "Response")
 ```
 
 ## Comparing the Two Models Using LOO-Comparison:
@@ -337,8 +335,8 @@ The kor_model2, the model with more informative priors, is the preferred model,
 but only by a minute amount.
 
 ```{r}
-kor_model <- BayesPharma::add_loo_criterion(kor_model, "kor_model1")
-kor_model2 <- BayesPharma::add_loo_criterion(kor_model2, "kor_model2")
+kor_model <- BayesPharma::add_loo_criterion(kor_model)
+kor_model2 <- BayesPharma::add_loo_criterion(kor_model2)
 
 compare_models(kor_model, kor_model2)
 ```

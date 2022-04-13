@@ -7,7 +7,7 @@ testthat::test_that("dr_priors with default priors", {
 
   testthat::expect_true("brmsprior" %in% class(priors))
 
-  #"prior"  "class"  "coef"   "group"  "resp"   "dpar"   "nlpar"  "bound"  "source"
+  #"prior" "class" "coef" "group" "resp"  "dpar"  "nlpar" "bound" "source"
   testthat::expect_true(all(
     as.list(priors[1,]) ==
     c("normal(-7, 2.5)", "b", "", "", "", "", "ec50", "", "user")))
@@ -35,7 +35,7 @@ testthat::test_that("dr_priors with constant priors", {
 
   testthat::expect_true("brmsprior" %in% class(priors))
 
-  #"prior"  "class"  "coef"   "group"  "resp"   "dpar"   "nlpar"  "bound"  "source"
+  #"prior"  "class"  "coef"  "group"  "resp"  "dpar" "nlpar"  "bound"  "source"
   testthat::expect_true(all(
     as.list(priors[1,]) ==
       c("constant(-7)", "b", "", "", "", "", "ec50", "", "user")))
@@ -62,10 +62,11 @@ testthat::test_that("dr_priors with custom priors", {
 
   testthat::expect_true("brmsprior" %in% class(priors))
 
-  #"prior"  "class"  "coef"   "group"  "resp"   "dpar"   "nlpar"  "bound"  "source"
+  #"prior"  "class"  "coef"  "group"  "resp"  "dpar"  "nlpar"  "bound"  "source"
   testthat::expect_true(all(
     as.list(priors[1,]) ==
-      c("student_t(3, -7, 3)", "b", "", "", "", "", "ec50", "<upper=-4>", "user")))
+      c("student_t(3, -7, 3)", "b", "", "", "", "", "ec50", "<upper=-4>",
+        "user")))
 
   testthat::expect_true(all(
     as.list(priors[2,]) ==
@@ -81,7 +82,7 @@ testthat::test_that("dr_priors with custom priors", {
 })
 
 testthat::test_that("dr_priors in agonist mode", {
-  priors <- BayesPharma::dr_priors(inhibitor=FALSE)
+  priors <- BayesPharma::dr_priors(inhibitor = FALSE)
   testthat::expect_true("brmsprior" %in% class(priors))
 
   testthat::expect_true(all(
@@ -89,4 +90,3 @@ testthat::test_that("dr_priors in agonist mode", {
       c("normal(1, 1)", "b", "", "", "", "", "hill", "<lower=-0.01>", "user")))
 
 })
-

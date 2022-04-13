@@ -2,8 +2,10 @@ Package: BayesPharma
 Type: Package
 Title: Tools for Bayesian Analysis of Non-Linear Pharmacology Models
 Version: 0.0.1
-Authors@R: person("Madeline", "Martin", email = "martin.mjm105@gmail.com",
-    role = c("aut", "cre"))
+Authors@R: c(person("Madeline", "Martin", email = "mamadeli@umich.edu",
+    role = c("aut", "cre")),
+             person(given="Matthew", family="O'Meara", email = "maom@umich.edu",
+    role = c("aut")))
 Description: This package contains a collection of R tools to analyze pharmacology
     data using Bayesian statistics.
 URL: https://api.github.com/repos/maomlab/BayesPharma/pages
@@ -14,29 +16,30 @@ Imports:
     brms,
     devtools,
     dplyr,
-    forcats,
     ggplot2,
-    modelr,
     magrittr,
     posterior,
     rlang,
     rstan,
     rstantools,
     StanHeaders,
-    stringr,
-    tibble,
-    tidybayes,
     tidyr,
-    tidymodels,
-    bayesplot
+    tidymodels
 Collage:
+    'calculate_log_dose.R',
+    'change_data_column_names.R',
+    'compare_model.R',
+    'create_default_inits.R',
+    'create_priors.R',
+    'data.R',
+    'sigmoid_formuka.R',
+    'util.R',
     'run_dr_brm_model.R',
-    'plot_posterior_density_distributions.R',
-    'plot_fitted_model_draws.R',
+    'pp_density_distribution_plots.R',
+    'plot_posterior_sample_draws.R',
     'create_default_inits.R',
     'create_priors.R',
     'plot_trace.R',
-    'data_preparation.R',
     'plot_prior_posterior_check.R'
     'Pnear_model.R'
 Encoding: UTF-8
@@ -47,9 +50,18 @@ Suggests:
     knitr,
     xkcd,
     GeomIndicator,
-    covr
+    covr,
+    forcats,
+    modelr,
+    stringr,
+    tibble,
+    tidybayes,
+    bayesplot,
+    ggdist,
+    matrixStats
 Remotes: 
     maomlab/GeomIndicator
+LazyData: true
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 RoxygenNote: 7.1.2

@@ -4,11 +4,18 @@
 \alias{posterior_draws_plot}
 \title{Plot of Posterior Model Fit Draws}
 \usage{
-posterior_draws_plot(model = <model>, data = <data>,
-                       predictors_col_name = "na",lower = -12, upper = -3,
-                       n = 50, facet_var,
-                       title = "Dose-Response Posterior Draws",
-                       xlab = "Log[Molar]", ylab = "Response")
+posterior_draws_plot(
+  model,
+  data,
+  predictors_col_name = "na",
+  lower = -12,
+  upper = -3,
+  n = 50,
+  facet_var,
+  title = "Dose-Response Posterior Draws",
+  xlab = "Log[Molar]",
+  ylab = "Response"
+)
 }
 \arguments{
 \item{model}{brmsfit model.}
@@ -46,6 +53,7 @@ A plot of a sample of model fit draws from the posterior
 distribution from the expected mean and median quantile intervals.
 }
 \examples{
+\dontrun{
   # Consider a model named my_model and data named my_data with a column
   # named predictors containing multiple different perturbations.
   posterior_draws_plot(model = my_model, data = my_data,
@@ -53,5 +61,5 @@ distribution from the expected mean and median quantile intervals.
                        upper = -3, n = 50, facet_var = predictors,
                        title = "Dose-Response Posterior Draws",
                        xlab = "Log[Molar]", ylab = "Response")
-
+}
 }
