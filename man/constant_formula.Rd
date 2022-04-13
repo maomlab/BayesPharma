@@ -4,13 +4,13 @@
 \alias{constant_formula}
 \title{Formula for a curve with a constant response}
 \usage{
-constant_formula(predictors = 1)
+constant_formula(predictors = 1, ...)
 }
 \arguments{
-\item{predictors}{Additional formula objects to specify predictors of non-linear
-parameters. i.e. what perturbations/experimental differences should be modeled
-separately? (Default: 1) should a random effect be taken into consideration?
-i.e. cell number, plate number, etc.}
+\item{predictors}{Additional formula objects to specify predictors of
+non-linear parameters. i.e. what perturbations/experimental differences
+should be modeled separately? (Default: 1) should a random effect be taken
+into consideration? i.e. cell number, plate number, etc.}
 }
 \value{
 brmsformula
@@ -19,6 +19,7 @@ brmsformula
 set-up an equation for formula objects with a constant response.
 }
 \examples{
+\dontrun{
   constant_formula(predictors = 0 + predictors)
-
+}
 }

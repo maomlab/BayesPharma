@@ -4,29 +4,30 @@
 \alias{dr_formula}
 \title{Create a sigmoid formula for the brms model}
 \usage{
-dr_formula(predictors = 1)
+dr_formula(predictors = 1, ...)
 }
 \arguments{
-\item{predictors}{Additional formula objects to specify predictors of non-linear
-parameters. i.e. what perturbations/experimental differences should be modeled
-separately? (Default: 1) should a random effect be taken into consideration?
-i.e. cell number, plate number, etc.}
+\item{predictors}{Additional formula objects to specify predictors of
+non-linear parameters. i.e. what perturbations/experimental differences
+should be modeled separately? (Default: 1) should a random effect be taken
+into consideration? i.e. cell number, plate number, etc.}
 }
 \value{
 brmsformula
 }
 \description{
-set-up a sigmoid dose response model formula to define a non-linear
-  model or multilevel non-linear model for ec50, hill, top, and bottom for use in bayesian_model
-  and in the brms package.
+set-up a sigmoid dose response model formula to define a
+  non-linear model or multilevel non-linear model for ec50, hill, top, and
+  bottom for use in bayesian_model and in the brms package.
 }
 \examples{
-  Consider observations made using 4 different drugs and the column header containing the labels
-  for the 4 different drugs is `predictors`.
+\dontrun{
+  Consider observations made using 4 different drugs and the column header
+  containing the labels for the 4 different drugs is `predictors`.
   dr_formula(predictors = 0 + predictors)
 
-  Consider that the cell_ID was recorded and the noise from the cell_ID is to be accounted for.
-  dr_formula(predictors = 0 + predictors + (1|cell_ID))
-
+  Consider that the cell_ID was recorded and the noise from the cell_ID is to
+  be accounted for. dr_formula(predictors = 0 + predictors + (1|cell_ID))
+}
 
 }

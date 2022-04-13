@@ -3,7 +3,7 @@ library(BayesPharma)
 
 load(file = "../testdata/ggplot_test_model.rda")
 
-testthat::test_that("posterior_densities is a ggplot object",{
+testthat::test_that("posterior_densities is a ggplot object", {
   testthat::expect_s3_class(BayesPharma::posterior_densities(test_model),
     "ggplot")
   testthat::expect_s3_class(BayesPharma::posterior_densities(test_model,
@@ -33,7 +33,7 @@ testthat::test_that("posterior_densities is a ggplot object",{
 
 testthat::test_that("posterior_densities throws error if predictors_col_name and
                     half_max_label are not characters, and l_ci and u_ci are
-                    not numeric",{
+                    not numeric", {
   testthat::expect_error(expect_gg(BayesPharma::posterior_densities(test_model,
     predictors_col_name = NULL)))
   testthat::expect_error(expect_gg(BayesPharma::posterior_densities(test_model,
@@ -50,5 +50,3 @@ testthat::test_that("posterior_densities throws error if predictors_col_name and
     u_ci = NULL)))
 
 })
-
-

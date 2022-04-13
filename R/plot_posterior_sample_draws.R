@@ -4,13 +4,6 @@
 #' @description A plot of a sample of model fit draws from the posterior
 #' distribution from the expected mean and median quantile intervals.
 #'
-#' @usage
-#'   posterior_draws_plot(model = <model>, data = <data>,
-#'                        predictors_col_name = "na",lower = -12, upper = -3,
-#'                        n = 50, facet_var,
-#'                        title = "Dose-Response Posterior Draws",
-#'                        xlab = "Log[Molar]", ylab = "Response")
-#'
 #' @param model brmsfit model.
 #' @param data data.frame of data inputted into the model.
 #' @param predictors_col_name character. The name of the column containing the
@@ -31,6 +24,7 @@
 #' @return ggplot2::ggplot object.
 #'
 #' @examples
+#'\dontrun{
 #'   # Consider a model named my_model and data named my_data with a column
 #'   # named predictors containing multiple different perturbations.
 #'   posterior_draws_plot(model = my_model, data = my_data,
@@ -38,14 +32,14 @@
 #'                        upper = -3, n = 50, facet_var = predictors,
 #'                        title = "Dose-Response Posterior Draws",
 #'                        xlab = "Log[Molar]", ylab = "Response")
-#'
+#'}
 #' @export
 
 posterior_draws_plot <- function(model, data, predictors_col_name = "na",
                                  lower = -12, upper = -3, n = 50,
                                  facet_var,
                                  title = "Dose-Response Posterior Draws",
-                                 xlab = "Log[Molar]", ylab = "Response"){
+                                 xlab = "Log[Molar]", ylab = "Response") {
 
   if (is.character(predictors_col_name) == FALSE) {
     warning("predictors_col_name must be a character. If there are not a

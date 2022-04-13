@@ -4,18 +4,22 @@
 \alias{dr_model}
 \title{Run Bayesian Regression Model using Stan}
 \usage{
-dr_model(data = <data>,
-           formula = dr_formula(),
-           priors = dr_prior(),
-           inits = 0,
-           iter = 8000,
-           control = list(adapt_delta = 0.99),
-           stanvar_function = dr_stanvar)
+dr_model(
+  data,
+  formula,
+  priors = NULL,
+  inits = 0,
+  iter = 8000,
+  control = list(adapt_delta = 0.99),
+  stanvar_function = dr_stanvar,
+  ...
+)
 }
 \arguments{
 \item{data}{data.frame of experimental data.}
 
-\item{model_name}{variable name for the model.}
+\item{formula}{brmsformula object. To create a dose-response brmsformula,
+use the \code{dr_formula} function.}
 
 \item{priors}{brmspriors data.frame for ec50, hill, top, and bottom.
 Use one of the priors functions provided to create priors to use here.}
@@ -23,23 +27,26 @@ Use one of the priors functions provided to create priors to use here.}
 \item{inits}{list of lists, numeric value, or "random" for the initial values
 of the parameters being modeled (default = 0).}
 
-\item{iter}{number of iterations the model runs. Increasing iter can help with
-model convergence (default = 8000).}
+\item{iter}{number of iterations the model runs. Increasing iter can help
+with model convergence (default = 8000).}
 
 \item{control}{a named list of parameters to control the sampler's behavior.
 Adding max_treedepth and giving a greater value than 10 can improve model
 convergence (default = list(adapt_delta = 0.99)).}
+
+\item{stanvar_function}{stan code for the model.}
 }
 \value{
 brmsfit model
 }
 \description{
 For additional information on additional function arguments, reference:
-https://paul-buerkner.github.io/brms/reference/brm.html
-or
-https://rdrr.io/cran/rstan/man/stan.html
+  https://paul-buerkner.github.io/brms/reference/brm.html
+  or
+  https://rdrr.io/cran/rstan/man/stan.html
 }
 \examples{
+\dontrun{
   dr_model(data,
    formula = dr_formula(predictors = 1 + predictors),
    priors = dr_priors(),
@@ -47,5 +54,5 @@ https://rdrr.io/cran/rstan/man/stan.html
    iter = 8000,
    control = list(adapt_delta = 0.99),
    stanvar_function = dr_stanvar)
-
+}
 }
