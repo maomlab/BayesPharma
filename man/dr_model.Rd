@@ -6,40 +6,53 @@
 \usage{
 dr_model(
   data,
-  formula = dr_formula(),
+  formula,
   priors = NULL,
   inits = 0,
   iter = 8000,
   control = list(adapt_delta = 0.99),
+  stanvar_function = dr_stanvar,
   ...
 )
 }
 \arguments{
-\item{data}{tibble or data.frame of experimental data.}
+\item{data}{data.frame of experimental data.}
+
+\item{formula}{brmsformula object. To create a dose-response brmsformula,
+use the \code{dr_formula} function.}
 
 \item{priors}{brmspriors data.frame for ec50, hill, top, and bottom.
-Use 'dr_priors' to create priors to use here.}
+Use one of the priors functions provided to create priors to use here.}
 
 \item{inits}{list of lists, numeric value, or "random" for the initial values
-of the parameters being modeled. (default = 0)}
+of the parameters being modeled (default = 0).}
 
-\item{iter}{number of iterations the model runs. Increasing iter can help with
-model convergence. (default = 8000)}
+\item{iter}{number of iterations the model runs. Increasing iter can help
+with model convergence (default = 8000).}
 
 \item{control}{a named list of parameters to control the sampler's behavior.
 Adding max_treedepth and giving a greater value than 10 can improve model
-convergence. (default = list(adapt_delta = 0.99))}
+convergence (default = list(adapt_delta = 0.99)).}
 
-\item{multiple_perturbations}{TRUE/FALSE. If FALSE, the model will produce a
-singular estimate for each parameter. If TRUE, the parameter will produce
-parameter estimates for each perturbation.}
+\item{stanvar_function}{stan code for the model.}
 }
 \value{
-brmsfit
+brmsfit model
 }
 \description{
 For additional information on additional function arguments, reference:
-https://paul-buerkner.github.io/brms/reference/brm.html
-or
-https://rdrr.io/cran/rstan/man/stan.html
+  https://paul-buerkner.github.io/brms/reference/brm.html
+  or
+  https://rdrr.io/cran/rstan/man/stan.html
+}
+\examples{
+\dontrun{
+  dr_model(data,
+   formula = dr_formula(predictors = 1 + predictors),
+   priors = dr_priors(),
+   inits = dr_inits(),
+   iter = 8000,
+   control = list(adapt_delta = 0.99),
+   stanvar_function = dr_stanvar)
+}
 }

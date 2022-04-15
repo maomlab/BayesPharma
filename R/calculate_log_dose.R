@@ -3,18 +3,13 @@
 #' @description Given the dose as a column in a data.frame with a given molar concentration
 #'    add a new column of the log base-10 dose, `log_dose`, in the data.frame and return it.
 #'
-#' @usage
-#' calculate_log_dose(
-#'   data,
-#'   dose_col = 1,
-#'   molar_concentration = 1)
-#'
 #' @param data data.frame containing a column representing a dose in molar units.
 #' @param dose_col expression for dose column in the input data.frame (default = dose).
-#' @param molar_concentration numeric units of molar concentration (default = 1).
+#' @param molar_concentration numeric units of molar concentration of the dose column (default = 1).
 #' @return input `r data.frame` with an additional `r log_dose` column.
 #'
 #' @examples
+#' \dontrun{
 #' # Consider observations at doses of `1 μM` and `0.1 μM`.
 #' # If the doses are given in molar units e.g. `M` then,
 #' data <- data.frame(dose = c(1e-6, 1e-7)) %>%
@@ -25,7 +20,7 @@
 #' data <- data.frame(dose_nM = c(1000, 100)) %>%
 #'   BayesPharma::calculate_log_dose(dose_col = dose_nM, molar_concentration = 1e-9)
 #' data$log_dose == c(-6, -7)
-#'
+#'}
 #'@export
 calculate_log_dose <- function(
     data,

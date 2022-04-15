@@ -3,29 +3,49 @@
 \name{posterior_densities}
 \alias{posterior_densities}
 \title{Create a plot of the posterior density distributions of modeled parameters
-from brmsfit}
+from brmsfit model}
 \usage{
 posterior_densities(
   model,
   predictors_col_name = "_Intercept",
-  half_max_label = NULL,
-  title_label = "Posterior Density Plots with Mean and 95\% CI"
+  half_max_label = "ec50",
+  l_ci = 0.025,
+  u_ci = 0.975,
+  title_label = "Posterior Density Plots w/ Mean & 95\% CI"
 )
 }
 \arguments{
-\item{model}{brmsfit.
-#'@param predictors_col_name string. Name of the column with the perturbations
-that each parameter is being estimated for.}
+\item{model}{brmsfit model.}
 
-\item{half_max_label}{string. Label for the half maximal that fits the type of
-experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).}
+\item{predictors_col_name}{string expression for predictors column in the
+input data.frame (default = "_Intercept"). Predictors are the perturbations
+tested during the experiment (i.e. Drug, Temperature, etc.).}
 
-\item{title_label}{string. Plot title name. (Default = "Posterior Density Plot")}
+\item{half_max_label}{string of the label for the half maximal that fits the
+type of experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).}
+
+\item{l_ci}{numeric unit of the lower confidence interval (default = 0.025)}
+
+\item{u_ci}{numeric unit of the upper confidence interval (default = 0.975)}
+
+\item{title_label}{string of the plot title. (default = "Posterior Density
+Plots with Mean and 95\% CI")}
 }
 \value{
-ggplot object.
+ggplot2::ggplot object.
 }
 \description{
-The 'basic_stats' function is used to plot the mean, lower confidence
-interval, and upper confidence interval
+plots the brmsfit model density distribution of each parameter
+  and the mean, lower confidence interval, and upper confidence interval.
+}
+\examples{
+\dontrun{
+  posterior_densities(model = my_dr_model,
+                      predictors_col_name = "predictors",
+                      half_max_label = "ic50",
+                      l_ci = 0.025,
+                      u_ci = 0.975,
+                      title_label =
+                        "Posterior Density Plots with Mean and 95\% CI")
+}
 }

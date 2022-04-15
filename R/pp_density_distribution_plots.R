@@ -1,25 +1,43 @@
-#'Create a plot of the prior density distributions of modeled parameters
-#'from brmsfit with sample_prior = "only".
+#' Create a plot of the density distributions of modeled parameters from brmsfit
+#' model
 #'
-#'@param model brmsfit of sample_prior = "only".
-#'#'@param predictors_col_name string. Name of the column with the perturbations
-#'that each parameter is being estimated for.
-#'@param half_max_label string. Label for the half maximal that fits the type of
-#'experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
-#'@param title_label string. Plot title name. (Default = "Prior Density Plot")
-#'@return ggplot object.
+#' @description This function is useful to observe the distributions of the
+#'   priors set for the brmsfit model. By adding `sample_prior = "only"` to the
+#'   dr_model or a brmsfit model, the model samples only from the prior
+#'   distributions and can be observed using this plot function to verify that
+#'   the values intended to be covered are being included.
 #'
-#'@export
+#' @param model brmsfit model.
+#' @param predictors_col_name string expression for predictors column in the
+#'   input data.frame (default = "_Intercept"). Predictors are the perturbations
+#'   tested during the experiment (i.e. Drug, Temperature, etc.).
+#' @param half_max_label string of the label for the half maximal that fits the
+#'   type of experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
+#' @param title_label string of the plot title. (Default = "Prior Density Plot")
+#' @param sample_type string of the type of density distribution
+#'   (i.e. Prior or Posterior). (default = "Prior")
+#' @return ggplot2::ggplot object.
+#'
+#' @examples
+#'\dontrun{
+#'   density_distributions(model = my_dr_model_priors,
+#'                         predictors_col_name = "predictors",
+#'                         half_max_label = "ic50",
+#'                         title_label = "Parameter Density Distribution Plots",
+#'                         sample_type = "Prior")
+#'}
+#' @export
 
-prior_densities <- function(model,
-                            predictors_col_name = "predictors",
-                            half_max_label = NULL,
-                            title_label = "Prior Density Plots") {
+density_distributions <- function(model,
+                                  predictors_col_name = "_Intercept",
+                                  half_max_label = "ec50",
+                                  title_label = "Density Distributions",
+                                  sample_type = "Prior") {
   prior <- dplyr::bind_rows(
     model %>%
       tidybayes::tidy_draws() %>%
       tidybayes::gather_variables() %>%
-      dplyr::mutate(sample_type = "Prior") %>%
+      dplyr::mutate(sample_type = sample_type) %>%
       dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
       dplyr::filter(!stringr::str_detect(.variable, "sigma"))
   ) %>%
@@ -37,9 +55,9 @@ prior_densities <- function(model,
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "bottom") +
     ggplot2::geom_density(
-      mapping = ggplot2::aes(
-        x = .value),
-      fill = "hotpink2",
+      ggplot2::aes(x = .value,
+                   group = sample_type,
+                   fill = sample_type),
       color = "black",
       alpha = .9) +
     ggplot2::ggtitle(
@@ -49,32 +67,47 @@ prior_densities <- function(model,
       scales = "free") +
     ggplot2::scale_y_continuous("Density") +
     ggplot2::scale_x_continuous("Parameter Value") +
-    ggplot2::scale_fill_discrete("Distribution")
+    ggplot2::scale_fill_manual(
+      values = c("Posterior" = "cyan2", "posterior" = "cyan2",
+                 "Prior" = "hotpink2", "prior" = "hotpink2"),
+      limits = c(sample_type))
 }
 
-#' Displays a tibble of mean, median, standard deviation,
-#' and confidence intervals
+#' Displays a data.frame of basic statistical information about the model
+#' results
 #'
-#' @param model brmsfit
-#' #'@param predictors_col_name string. Name of the column with the perturbations
-#'that each parameter is being estimated for.
-#'@param half_max_label string. Label for the half maximal that fits the type of
-#'experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
-#' @param l_ci decimal of the lower confidence interval (default = 0.025)
-#' @param u_ci decimal of the upper confidence interval (default = 0.975)
-#' @return tibble::tibble that is required for the 'posterior_densities'
-#' function
+#' @description data.frame containing summary statistics of brmsfit model.
+#'   The summary statistics included are mean, median, standard deviation,
+#'   lower confidence interval, and upper confidence interval.
 #'
+#' @param model brmsfit model
+#' @param predictors_col_name string expression for predictors column in the
+#'   input data.frame (default = "_Intercept"). Predictors are the perturbations
+#'   tested during the experiment (i.e. Drug, Temperature, etc.).
+#' @param half_max_label string of the label for the half maximal that fits the
+#'   type of experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
+#' @param l_ci numeric unit of the lower confidence interval (default = 0.025)
+#' @param u_ci numeric unit of the upper confidence interval (default = 0.975)
+#' @return tibble::tibble object.
+#'
+#' @examples
+#'\dontrun{
+#'   basic_stats(model = my_dr_model,
+#'               predictors_col_name = "predictors",
+#'               half_max_label = "ic50",
+#'               l_ci = 0.025,
+#'               u_ci = 0.975)
+#'}
 #' @export
 
 basic_stats <- function(model,
-                        predictors_col_name = "predictors",
-                        half_max_label = NULL,
+                        predictors_col_name = "_Intercept",
+                        half_max_label = "ec50",
                         l_ci = 0.025,
                         u_ci = 0.975) {
 
   ple_info <- brms::fixef(model, probs = c(l_ci, u_ci))
-  print(paste0("lower CI:", l_ci," upper CI:", u_ci))
+  print(paste0("lower CI:", l_ci, "upper CI:", u_ci))
 
   model %>%
     posterior::summarise_draws("mean",
@@ -96,26 +129,43 @@ basic_stats <- function(model,
 }
 
 
-#'Create a plot of the posterior density distributions of modeled parameters
-#'from brmsfit
+#' Create a plot of the posterior density distributions of modeled parameters
+#' from brmsfit model
 #'
-#'The 'basic_stats' function is used to plot the mean, lower confidence
-#'interval, and upper confidence interval
+#' @description plots the brmsfit model density distribution of each parameter
+#'   and the mean, lower confidence interval, and upper confidence interval.
 #'
-#'@param model brmsfit.
-#'#'@param predictors_col_name string. Name of the column with the perturbations
-#'that each parameter is being estimated for.
-#'@param half_max_label string. Label for the half maximal that fits the type of
-#'experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
-#'@param title_label string. Plot title name. (Default = "Posterior Density Plot")
-#'@return ggplot object.
+#' @param model brmsfit model.
+#' @param predictors_col_name string expression for predictors column in the
+#'   input data.frame (default = "_Intercept"). Predictors are the perturbations
+#'   tested during the experiment (i.e. Drug, Temperature, etc.).
+#' @param half_max_label string of the label for the half maximal that fits the
+#'   type of experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
+#' @param l_ci numeric unit of the lower confidence interval (default = 0.025)
+#' @param u_ci numeric unit of the upper confidence interval (default = 0.975)
+#' @param title_label string of the plot title. (default = "Posterior Density
+#'   Plots with Mean and 95\% CI")
+#' @return ggplot2::ggplot object.
 #'
+#' @examples
+#'\dontrun{
+#'   posterior_densities(model = my_dr_model,
+#'                       predictors_col_name = "predictors",
+#'                       half_max_label = "ic50",
+#'                       l_ci = 0.025,
+#'                       u_ci = 0.975,
+#'                       title_label =
+#'                         "Posterior Density Plots with Mean and 95% CI")
+#'}
 #'@export
 
 posterior_densities <- function(model,
                                 predictors_col_name = "_Intercept",
-                                half_max_label = NULL,
-                                title_label = "Posterior Density Plots with Mean and 95% CI") {
+                                half_max_label = "ec50",
+                                l_ci = 0.025,
+                                u_ci = 0.975,
+                                title_label =
+                                "Posterior Density Plots w/ Mean & 95% CI") {
   posterior <- dplyr::bind_rows(
     model %>%
       tidybayes::tidy_draws() %>%
@@ -145,17 +195,20 @@ posterior_densities <- function(model,
       alpha = .9) +
     ggplot2::geom_vline(
       ggplot2::aes(xintercept = mean),
-      basic_stats(model, predictors_col_name, half_max_label),
+      basic_stats(model, predictors_col_name, half_max_label, l_ci = l_ci,
+                  u_ci = u_ci),
       color = "red"
     ) +
     ggplot2::geom_rect(
       ggplot2::aes(xmin = -Inf, xmax = l_ci, ymin = -Inf, ymax = Inf),
-      basic_stats(model, predictors_col_name, half_max_label),
+      basic_stats(model, predictors_col_name, half_max_label, l_ci = l_ci,
+                  u_ci = u_ci),
       color = "gray",
       alpha = 0.5) +
     ggplot2::geom_rect(
       ggplot2::aes(xmin = u_ci, xmax = Inf, ymin = -Inf, ymax = Inf),
-      basic_stats(model, predictors_col_name, half_max_label),
+      basic_stats(model, predictors_col_name, half_max_label, l_ci = l_ci,
+                  u_ci = u_ci),
       color = "gray",
       alpha = 0.5) +
     ggplot2::ggtitle(
@@ -168,29 +221,42 @@ posterior_densities <- function(model,
     ggplot2::scale_fill_discrete("Distribution")
 }
 
-#'Create a plot of the prior & posterior density distributions of modeled
-#'parameters from brmsfit
+#' Create a plot of the prior & posterior density distributions of modeled
+#' parameters from brmsfit model
 #'
-#'@param model brmsfit.
-#'#'@param predictors_col_name string. Name of the column with the perturbations
-#'that each parameter is being estimated for.
-#'@param half_max_label string. Label for the half maximal that fits the type of
-#'experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
-#'@param title_label string. Plot title name. (Default = "Prior Posterior Density Plot")
-#'@return ggplot object.
+#' @description Plot of the prior and posterior density distributions of each
+#'   parameter from brmsfit model. The prior and posterior density distributions
+#'   will be displayed on the same plot and color labeled.
 #'
-#'@export
+#' @param model brmsfit model.
+#' @param predictors_col_name string expression for predictors column in the
+#'   input data.frame (default = "_Intercept"). Predictors are the perturbations
+#'   tested during the experiment (i.e. Drug, Temperature, etc.).
+#' @param half_max_label string of the label for the half maximal that fits the
+#'   type of experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
+#' @param title_label string of the plot title.
+#'   (default = "Prior Posterior Density Plots")
+#' @return ggplot2::ggplot object.
+#'
+#' @examples
+#'\dontrun{
+#'   prior_posterior_densities(model = my_dr_model,
+#'                             predictors_col_name = "predictors",
+#'                             half_max_response = "ic50",
+#'                             title_label = "Prior Posterior Density Plots")
+#'}
+#' @export
 
 prior_posterior_densities <- function(model,
-                                      predictors_col_name = "predictors",
-                                      half_max_label = NULL,
-                                      title_label = "Prior Posterior Density Plots") {
+                                      predictors_col_name = "_Intercept",
+                                      half_max_label = "ec50",
+                                      title_label = "Prior Posterior Density
+                                        Plots") {
 
   model_prior <- model %>%
     brms:::update.brmsfit(sample_prior = "only")
 
   draws <- dplyr::bind_rows(
-
     model_prior %>%
       tidybayes::tidy_draws() %>%
       tidybayes::gather_variables() %>%
