@@ -2,8 +2,7 @@
 
 Introduction
 ------------
-This package contains a collection of R tools for analyzing pharmacology data using Bayesian statistics.
-
+This package contains a collection of R tools for analyzing pharmacology data using Bayesian statistics and modeling. `BayesPharma` facilitates applying a principled Bayesian workflow to to fit and analyze several foundational pharmacology models, built around the `stan` ecosystem.
 
 Installation
 ------------
