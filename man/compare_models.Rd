@@ -7,14 +7,21 @@
 compare_models(model1, model2, ...)
 }
 \arguments{
-\item{model1}{brmsfit object with loo criterion.}
+\item{model1}{brmsfit model with loo criterion.}
 
-\item{model2}{brmsfit object with loo criterion.}
+\item{model2}{brmsfit model with loo criterion.}
 }
 \value{
 compare.loo object
 }
 \description{
-Use the add_loo_criterion function on the models that will be compared before
-using this function to compare the models.
+Use the add_loo_criterion function on the models that will be
+  compared before using this function to compare the models using
+  leave one out.
+}
+\examples{
+\dontrun{
+  compare_models(model1 = my_dr_model_1,
+                 model2 = my_dr_model_2)
+}
 }
