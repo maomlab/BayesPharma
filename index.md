@@ -35,9 +35,7 @@ If the treatment dose is given in molar concentration, you can convert it to
 `log_dose` using
 
 ```{r}
-data <- data %>%
-  dplyr::mutate(
-    log_dose = BayesPharma::calculate_log_dose(dose))
+data <- data %>% log_dose = BayesPharma::calculate_log_dose(dose)
 ```
 
 The basic usage is
@@ -58,11 +56,11 @@ model %>% basic_stats()
 ```
 #### Regression plot
 ```{r}
-model %>% plot_draws_data()
+model %>% posterior_draws_plot()
 ```
 #### Prior densities
 ```{r}
-model %>% prior_densities()
+model %>% density_distributions()
 model %>% posterior_densities()
 model %>% prior_posterior_densitites()
 ```
