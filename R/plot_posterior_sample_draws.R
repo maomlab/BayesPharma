@@ -37,7 +37,12 @@
 
 posterior_draws_plot <- function(model, data, predictors_col_name = "na",
                                  lower = -12, upper = -3, n = 50,
+<<<<<<< HEAD
                                  facet_var,
+=======
+                                 facet_var, point_size = 0.75,
+                                 jitter_height = 0, jitter_width = 0,
+>>>>>>> Madelines_branch
                                  title = "Dose-Response Posterior Draws",
                                  xlab = "Log[Molar]", ylab = "Response") {
 
@@ -90,7 +95,13 @@ posterior_draws_plot <- function(model, data, predictors_col_name = "na",
     ggplot2::geom_jitter(data = data,
                          ggplot2::aes(x = log_dose,
                                       y = response),
+<<<<<<< HEAD
                          size = 0.8, width = .10, height = 0) +
+=======
+                         size = point_size,
+                         width = jitter_width,
+                         height = jitter_height) +
+>>>>>>> Madelines_branch
     ggplot2::facet_wrap(facets = dplyr::vars({{facet_var}})) +
     ggplot2::labs(title = title) +
     ggplot2::xlab(xlab) +
