@@ -276,16 +276,10 @@ Running the Model:
 
 ```{r, results='hide', message=FALSE}
 kor_model2 <- dr_model(kor_antag,
-<<<<<<< HEAD
-                       BayesPharma::dr_formula(0 + Drug), 
-                       priors = kor_priors2,
-                       inits = kor_inits)
-=======
                        formula = BayesPharma::dr_formula(0 + Drug), 
                        priors = kor_priors2,
                        inits = kor_inits,
                        cores = 2)
->>>>>>> Madelines_branch
 ```
 ```{r}
 kor_model2
@@ -295,11 +289,9 @@ kor_model2
 Checking the Model Convergence:
 
 ```{r}
-<<<<<<< HEAD
-BayesPharma::traceplot(kor_model2, "predictors", "ic50") 
-=======
+
 BayesPharma::traceplot(kor_model2, "Drug", "ic50") 
->>>>>>> Madelines_branch
+
 ```
 
 Posterior Predictive Check:
@@ -307,11 +299,7 @@ Posterior Predictive Check:
 ```{r}
 BayesPharma::plot_pp_check(kor_model2,
                            "dens_overlay_grouped", 
-<<<<<<< HEAD
-                           group = 'predictors',
-=======
                            group = 'Drug',
->>>>>>> Madelines_branch
                            n = 50)
 ```
 
@@ -319,11 +307,7 @@ Plot of the Prior and Posterior Distributions:
 
 ```{r}
 BayesPharma::prior_posterior_densities(kor_model2, 
-<<<<<<< HEAD
-                                       predictors_col_name = "predictors",
-=======
                                        predictors_col_name = "Drug",
->>>>>>> Madelines_branch
                                        half_max_label = "ic50")
 ```
 
@@ -331,11 +315,7 @@ Plot of the Posterior Distributions with the Mean and Confidence Intervals:
 
 ```{r, message=FALSE, warning=FALSE}
 BayesPharma::posterior_densities(kor_model2, 
-<<<<<<< HEAD
-                                 predictors_col_name = "predictors", 
-=======
-                                 predictors_col_name = "Drug", 
->>>>>>> Madelines_branch
+                                 predictors_col_name = "Drug",
                                  half_max_label = "ic50")
 ```
 
@@ -343,11 +323,8 @@ Sample of Sigmoid Dose-Response Curves from the Posterior Distribution and
 Mean Curve:
 
 ```{r}
-<<<<<<< HEAD
-BayesPharma::posterior_draws_plot(model = kor_model, data = kor_antag, 
-=======
+
 BayesPharma::posterior_draws_plot(model = kor_model2, data = kor_antag, 
->>>>>>> Madelines_branch
                                   predictors_col_name = "Drug",
                                   lower = -12, upper = -4, n = 50, 
                                   facet_var = Drug, 
@@ -383,17 +360,11 @@ library("drc")
 ```
 
 ```{r}
-<<<<<<< HEAD
-BTRX_335140_df <- kor_antag[grepl("BTRX_335140", kor_antag$predictors),]
-BTRX_395750_df <- kor_antag[grepl("BTRX_395750", kor_antag$predictors),]
-JNJ_df <- kor_antag[grepl("JNJ", kor_antag$predictors),]
-PF_df <- kor_antag[grepl("PF", kor_antag$predictors),]
-=======
+
 BTRX_335140_df <- kor_antag[grepl("BTRX_335140", kor_antag$Drug),]
 BTRX_395750_df <- kor_antag[grepl("BTRX_395750", kor_antag$Drug),]
 JNJ_df <- kor_antag[grepl("JNJ", kor_antag$Drug),]
 PF_df <- kor_antag[grepl("PF", kor_antag$Drug),]
->>>>>>> Madelines_branch
 ```
 
 Here is the code and results of the drc dose response model:
@@ -503,11 +474,7 @@ kor_post_means <- BayesPharma::posterior_mean(kor_model2,
                                               n = 100,
                                               lower = -12,
                                               upper = -4,
-<<<<<<< HEAD
-                                              predictor_name = "predictors") 
-=======
                                               predictor_name = "Drug") 
->>>>>>> Madelines_branch
 
 colors = c("drc" = "blue", "Bayes" = "red")
 
@@ -516,11 +483,7 @@ BTRX_335140_drc_plot <- plot_drc(BTRX_335140_drc_df,
                                  BTRX_335140_df,
                                  "BTRX_335140") +
   ggplot2::geom_line(data = kor_post_means[grepl("BTRX_335", 
-<<<<<<< HEAD
-                                                 kor_post_means$predictors),],
-=======
                                                  kor_post_means$Drug),],
->>>>>>> Madelines_branch
                      mapping = ggplot2::aes(x = log_dose, 
                                             y = Response,
                                             color = "Bayes"),
@@ -533,11 +496,7 @@ BTRX_395750_drc_plot <- plot_drc(BTRX_395750_drc_df,
                                  BTRX_395750_df,
                                  "BTRX_395750") +
   ggplot2::geom_line(data = kor_post_means[grepl("BTRX_395", 
-<<<<<<< HEAD
-                                                 kor_post_means$predictors),],
-=======
                                                  kor_post_means$Drug),],
->>>>>>> Madelines_branch
                      mapping = ggplot2::aes(x = log_dose, 
                                             y = Response,
                                             color = "Bayes"),
@@ -550,11 +509,7 @@ JNJ_drc_plot <- plot_drc(JNJ_drc_df,
                          JNJ_df,
                          "JNJ") +
   ggplot2::geom_line(data = kor_post_means[grepl("JNJ", 
-<<<<<<< HEAD
-                                                 kor_post_means$predictors),],
-=======
                                                  kor_post_means$Drug),],
->>>>>>> Madelines_branch
                      mapping = ggplot2::aes(x = log_dose, 
                                             y = Response,
                                             color = "Bayes"),
@@ -567,11 +522,7 @@ PF_drc_plot <- plot_drc(PF_drc_df,
                         PF_df,
                         "PF") +
   ggplot2::geom_line(data = kor_post_means[grepl("PF", 
-<<<<<<< HEAD
-                                                 kor_post_means$predictors),],
-=======
                                                  kor_post_means$Drug),],
->>>>>>> Madelines_branch
                      mapping = ggplot2::aes(x = log_dose, 
                                             y = Response,
                                             color = "Bayes"),
@@ -697,34 +648,25 @@ bayes_vs_drc <- function(model,
 }
 ```
 ```{r}
-<<<<<<< HEAD
-bayes_vs_drc(kor_model2, "ec50", "predictors", "ic50", drc_ic50) 
-=======
+
 bayes_vs_drc(kor_model2, "ec50", "Drug", "ic50", drc_ic50) 
->>>>>>> Madelines_branch
+
 ```
 
 (The drc results for the hill are displayed as a positive value although the 
 curve has a negative slope.)
 ```{r}
-<<<<<<< HEAD
-hill_bd1 <- bayes_vs_drc(kor_model2, "hill", "predictors", "hill", drc_hill) 
-hill_bd2 <- bayes_vs_drc(kor_model2, "hill", "predictors", "hill", drc_hill) +
-=======
+
 hill_bd1 <- bayes_vs_drc(kor_model2, "hill", "Drug", "hill", drc_hill) 
 hill_bd2 <- bayes_vs_drc(kor_model2, "hill", "Drug", "hill", drc_hill) +
->>>>>>> Madelines_branch
   ggplot2::xlim(-6, 14)
 
 bayesplot::bayesplot_grid(hill_bd1, hill_bd2)
 ```
 
 ```{r}
-<<<<<<< HEAD
-bayes_vs_drc(kor_model2, "bottom", "predictors", "bottom", drc_bottom) 
-=======
+
 bayes_vs_drc(kor_model2, "bottom", "Drug", "bottom", drc_bottom) 
->>>>>>> Madelines_branch
 ```
 
 
