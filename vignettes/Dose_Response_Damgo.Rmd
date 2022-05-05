@@ -126,7 +126,7 @@ damgo_inits
 ### Parameter Values
 
 ```{r}
-sampling_priors <- BayesPharma::dr_model(model = damgo,
+sampling_priors <- BayesPharma::dr_model(data = damgo,
                                          model_name = damgo1, 
                                          formula = dr_formula(),
                                          priors = damgo_priors,
@@ -149,7 +149,7 @@ dr_model uses brms and rstan or cmdstanr
 
 damgo_model <- BayesPharma::dr_model(data = damgo,
                                      model_name = damgo1,
-                                     formula = dr_formula(),
+                                     formula = BayesPharma::dr_formula(),
                                      priors = damgo_priors,
                                      inits = damgo_inits)
 ```
@@ -170,6 +170,10 @@ run.
 damgo_trace <- BayesPharma::traceplot(damgo_model, 
                                       half_max_label = "ic50")
 damgo_trace
+```
+
+```{r}
+damgo_trace$data
 ```
 
 ## Posterior Predictive Check
@@ -251,7 +255,7 @@ Running the Model:
 ```{r}
 damgo_model2 <- BayesPharma::dr_model(damgo, 
                                       damgo2,
-                                      dr_formula(),
+                                      BayesPharma::dr_formula(),
                                       priors = damgo_prior2,
                                       inits = damgo_inits)
 damgo_model2
