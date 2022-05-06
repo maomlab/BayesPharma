@@ -4,7 +4,7 @@
 \alias{plot_pp_check}
 \title{Perform Posterior Predictive Check}
 \usage{
-model %>% plot_pp_check(plot_type = "dens_overlay", n = 50)
+plot_pp_check(model, plot_type = "dens_overlay", n = 50, ...)
 }
 \arguments{
 \item{model}{brmsfit model.}
@@ -17,7 +17,8 @@ model %>% plot_pp_check(plot_type = "dens_overlay", n = 50)
 ggplot object.
 }
 \description{
-Given a brms model, perform a graphical posterior predictive check.
+Given a brms model, perform a graphical posterior predictive
+  check.
 
 pp_check from the brms package has different plot types to analyze the model
 fit by comparing the observed data with generated data from the model.
@@ -25,13 +26,14 @@ fit by comparing the observed data with generated data from the model.
 Here is the documentation for pp_check:
 http://paul-buerkner.github.io/brms/reference/pp_check.brmsfit.html
 
-Here is the documentation for pp_check plot types under PPC plotting functions:
-https://mc-stan.org/bayesplot/reference/PPC-overview.html
+Here is the documentation for pp_check plot types under PPC plotting
+functions: https://mc-stan.org/bayesplot/reference/PPC-overview.html
 }
 \examples{
+\dontrun{
 Consider a dose response model with the plot type being 10 box plots
 plot_pp_check(model = my_dose_response_model,
               plot_type = "box_plot",
               n = 10)
-
+}
 }

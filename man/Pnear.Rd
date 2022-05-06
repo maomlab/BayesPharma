@@ -7,6 +7,10 @@
 Pnear(score, rmsd, lambda = 1.5, kbt = 0.62, verbose = FALSE)
 }
 \arguments{
+\item{score}{a vector of scores e.g. Rosetta energies e.g. in the Ref2015.}
+
+\item{rmsd}{root mean squared deviation values for e.g. backbone atoms}
+
 \item{lambda}{Lambda is a value in Angstroms indicating the breadth of the
 Gaussian used to define "native-like-ness".  The bigger the value, the more
 permissive the calculation is to structures that deviate from native.
@@ -18,9 +22,10 @@ energy gap must be in order for a sequence to be said to favour the
 native state. The default value, 0.62, should correspond to physiological
 temperature for ref2015 or any other scorefunction with units of kcal/mol.}
 
-\item{scores}{a vector of scores e.g. Rosetta energies e.g. in the Ref2015.}
-
-\item{rmsds}{root mean squared deviation values for e.g. backbone atoms}
+\item{verbose}{give verbose output.}
+}
+\value{
+numeric value.
 }
 \description{
 The Pnear metric defined in [(Bhardwaj, et al., Nature, 2016)](https://www.nature.com/articles/nature19791)
@@ -51,11 +56,20 @@ log(Pnear) =   log_sum_exp(-RMSD[i]^2/lambda^2 - scores[i]/k_BT)
 ```
 }
 \note{
-Unlike the Conway discrimination score, the PNear calculation uses no hard cutoffs.  This is
-advantageous for repeated testing: if the scatter of points on the RMSD plot changes very slightly
-from run to run, the PNear value will only change by a small amount, whereas any metric dependent
-on hard cutoffs could change by a large amount if a low-energy point crosses an RMSD threshold.
+Unlike the Conway discrimination score, the PNear calculation uses no
+hard cutoffs.  This is advantageous for repeated testing: if the scatter of
+points on the RMSD plot changes very slightly from run to run, the PNear
+value will only change by a small amount, whereas any metric dependent on
+hard cutoffs could change by a large amount if a low-energy point crosses an
+RMSD threshold.
+}
+\examples{
+\dontrun{
+ Pnear(score = score_a, rmsd = rmsd_a)
+}
+
 }
 \author{
-Vikram K. Mulligan (vmulligan\@flatironinstitute.org) adapted from Rosetta
+Vikram K. Mulligan (vmulligan\@flatironinstitute.org) adapted from
+  Rosetta
 }

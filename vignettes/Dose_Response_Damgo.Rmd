@@ -1,0 +1,314 @@
+---
+title: "Bayesian Dose Response Modeling and Analysis of Damgo"
+author: "Madeline Martin"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Dose_Response_Damgo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r set-options, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+# cmdstanr is more up-to-date than rstan and runs a little faster
+# but can't expose defined functions for downstream analysis
+if(Sys.info()["machine"] == "arm64"){
+  cat("rstan does not currently support apple M1 chips, setting stan_backend = 'cmdstanr'")
+  stan_backend <- "cmdstanr"
+} else {
+  stan_backend <- "rstan"
+}
+
+```
+
+```{r setup}
+# library(BayesPharma)
+```
+
+---
+
+# Case Study: Analyzing Dose Response of Damgo 
+
+give some background on the data
+
+
+```{r}
+
+xl_damgo_dr <- "C:/Users/marti/Downloads/damgo_dr_reformatted.xlsx"
+
+damgo <- readxl::read_excel(xl_damgo_dr)
+
+```
+```{r}
+ggplot2::ggplot(damgo) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_point(
+    ggplot2::aes(x = dose_nM,
+        y = normalized_response),
+    size = 1.0,
+    color = "black") +
+  ggplot2::labs(title = "Damgo",
+       x = "Dose (nM)",
+       y = "% of baseline U-69,593 effect") + 
+  ggplot2::scale_x_log10()
+```
+
+There are limitations to the package that requires specific column names and the
+dose to be in log scale; therefore, it is necessary to use the 
+`calculate_log_dose` and `change_col_names` functions before running the model. 
+
+- Maybe unneeded V - 
+
+The `calculate_log_dose` function requires the data as an input, the dose column
+name, and the molar concentration. The function creates a new column `log_dose`.
+
+The `change_col_names` function requires data, the response column name, the
+log dose column name, and predictors column name (the column containing the
+different perturbations tested). The `calculate_log_dose` function automatically
+changes the column name to log_dose and for this model, there is only 1
+perturbation being tested; therefore, the *log_dose_col_name* and
+*predictors_col_name* can be left alone because the defaults for the column name
+arguments are set to *NULL*.
+
+- Maybe unneeded ^ -  
+
+```{r}
+damgo <- BayesPharma::calculate_log_dose(data = damgo, dose_col = dose_nM, 
+                                         molar_concentration = 10^(-9))
+damgo <- BayesPharma::change_col_names(data = damgo, 
+                                       response_col_name = normalized_response)
+damgo
+```
+
+## Setting the Priors for the Model
+
+talk about priors for this model (find actual info about Damgo)
+A previous study done on Damgo found an IC50 value of X, a minimal response 
+(bottom) of X, and a hill slope of X.
+
+max response (top) is normalized to 100, therefore, top parameter prior set to a 
+constant value of 100. First, we will run the model with the default weakly 
+informative priors, then build more informative priors based on the information 
+provided by a previous study done on Damgo. 
+
+The default weakly informative priors being used for ec50, hill, and bottom:
+ec50: normal distribution with a mean of -7 and sd of 2.5
+hill: normal distribution mean = -1, sd = 1, upper bound = 0.01
+bottom: normal distribution mean = 0, sd = 25
+
+```{r}
+damgo_priors <- BayesPharma::dr_priors(inhibitor = TRUE, 
+                                       top = 100)
+damgo_priors
+```
+
+### Initial Values for Parameters
+The inits are the starting values for the mcmc chains of each parameter. By 
+setting inits to values close to parameter estimates can help with model 
+convergence. 
+
+The default inits for each parameter are: 
+ec50 = -9
+hill = -1 if inhibitor = TRUE or hill = 1 for inhibitor = FALSE
+top = 100
+bottom = 0
+
+```{r}
+damgo_inits <- BayesPharma::dr_inits(inhibitor = TRUE)
+damgo_inits
+```
+
+### Sampling the Priors to Check if the Prior Distributions Cover Plausible 
+### Parameter Values
+
+```{r}
+sampling_priors <- BayesPharma::dr_model(data = damgo,
+                                         model_name = damgo1, 
+                                         formula = dr_formula(),
+                                         priors = damgo_priors,
+                                         inits = damgo_inits,
+                                         sample_prior = "only")
+
+```
+```{r}
+BayesPharma::density_distributions(sampling_priors, half_max_label = "ic50")
+```
+
+The prior distributions cover the pluasible range of values in the form of a 
+normal distribution. Next step is to run the model!
+
+
+## Running the Bayesian Model
+dr_model uses brms and rstan or cmdstanr
+
+```{r}
+
+damgo_model <- BayesPharma::dr_model(data = damgo,
+                                     model_name = damgo1,
+                                     formula = BayesPharma::dr_formula(),
+                                     priors = damgo_priors,
+                                     inits = damgo_inits)
+```
+
+### Results from the Model
+
+```{r}
+damgo_model
+```
+
+## Checking for Convergence 
+The model ran without any warning messages, Rhat for all parameters is 1.00 
+(NA for top because it was set to a constant value of 100), Bulk and Tail ESS 
+are high, and the mcmc chains appear to have mixed well throughout the model 
+run.
+
+```{r}
+damgo_trace <- BayesPharma::traceplot(damgo_model, 
+                                      half_max_label = "ic50")
+damgo_trace
+```
+
+```{r}
+damgo_trace$data
+```
+
+## Posterior Predictive Check
+This is used to check if the data generated from the posterior distribution 
+fits the observed data. The observed data is the dark blue line and the 
+simulated data are the light blue lines. 
+The simulated data somewhat fits the observed data and contains outliers. 
+This may be due to the weakly informative priors. 
+
+```{r}
+BayesPharma::plot_pp_check(damgo_model)
+```
+
+## Visualizing and Analyzing Results
+
+Displayed below is a plot for the prior and posterior distributions of the 
+parameters. Prior is pink and posterior is teal: 
+
+```{r}
+BayesPharma::prior_posterior_densities(damgo_model, half_max_label = "ic50")
+```
+
+Displayed below is a plot of the posterior distributions for each parameter 
+with the confidence intervals and mean: 
+
+```{r}
+BayesPharma::posterior_densities(damgo_model, half_max_label = "ic50")
+```
+
+Displayed below is a plot of a sample of 50 sigmoid dose-response curves from 
+the posterior distribution (purple) and the median quantile intervals: 
+
+
+```{r}
+posterior_draws_plot(model = damgo_model, data = damgo, predictors_col_name = "Damgo",
+                     lower = -10, upper = -3, n = 50, facet_var = "Damgo", 
+                     title = "Dose-Response Posterior Draws",
+                     xlab = "Log[Molar]", ylab = "Response")
+
+```
+
+---
+
+## Improving the model with more informative priors:
+
+```{r}
+damgo_prior2 <- BayesPharma::dr_priors(ec50 = brms::prior(normal(-6, 1.5), 
+                                                          nlpar = "ec50"),
+                                       hill = brms::prior(normal(-0.5, 0.5),
+                                                          nlpar = "hill"),
+                                                          top = 100,
+                                       bottom = brms::prior(normal(12.5, 6.25), 
+                                                            nlpar = "bottom")
+                                       )
+damgo_prior2
+```
+
+Sampling the Priors:
+
+```{r}
+sample_priors2 <- BayesPharma::dr_model(damgo, 
+                                        damgo2,
+                                        dr_formula(),
+                                        priors = damgo_prior2,
+                                        inits = damgo_inits,
+                                        sample_prior = "only")
+
+```
+
+
+Plot of the Prior Distributions:
+
+```{r}
+BayesPharma::density_distributions(sample_priors2, half_max_label = "ic50")
+```
+
+Running the Model:
+
+```{r}
+damgo_model2 <- BayesPharma::dr_model(damgo, 
+                                      damgo2,
+                                      BayesPharma::dr_formula(),
+                                      priors = damgo_prior2,
+                                      inits = damgo_inits)
+damgo_model2
+```
+
+Checking the Model Convergence:
+
+```{r}
+BayesPharma::traceplot(damgo_model2)
+```
+
+Posterior Predictive Check:
+
+```{r}
+BayesPharma::plot_pp_check(damgo_model2)
+```
+
+Plot of the Prior and Posterior Distributions:
+
+```{r}
+BayesPharma::prior_posterior_densities(damgo_model2)
+```
+
+Plot of the Posterior Distributions with the Mean and Confidence Intervals:
+
+```{r}
+BayesPharma::posterior_densities(damgo_model2)
+```
+
+Sample of Sigmoid Dose-Response Curves from the Posterior Distribution and 
+Mean Curve:
+
+```{r}
+BayesPharma::plot_draws_data(model = damgo_model2,
+                             n = 100,
+                             lower = -9,
+                             upper = -3,
+                             predictor_name = "Damgo",
+                             data = damgo,
+                             measurement = damgo$response,
+                             title = NULL,
+                             xlabel = "Log[Molar]",
+                             ylabel = "% Baseline U-69,593 Effect")
+```
+
+## Comparing the Two Models Using LOO-Comparison:
+
+The model with the greater value is the preferred model. Model damgo2, the model 
+with more informative priors, is the preferred model.
+
+```{r}
+damgo_model <- BayesPharma::add_loo_criterion(damgo_model, damgo1)
+damgo_model2 <- BayesPharma::add_loo_criterion(damgo_model2, damgo2)
+BayesPharma::compare_models(damgo_model, damgo_model2)
+```
+
