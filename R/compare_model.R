@@ -1,24 +1,23 @@
 #' Add model fit loo criterion to model objects
 #'
-#'This is required to use loo compare to compare multiple model fits against
-#'each other.
+#' @description This is required to use loo (leave one out) compare to compare
+#'   multiple model fits against each other.
 #'
-#'@param model brmsfit object
-#'@param n_params numeric value. The number of params being estimated by the
-#'model. i.e. how many parameters have non-constant priors? in the case of dose
-#'response cureves, are all 4 parameters being predicted by the model?
-#'@param ... extra arguments passed on to `r brms::add_criterion``
-#'@return brmsfit object with loo criterion.
+#' @param model brmsfit model.
+#' @param ... extra arguments passed on to `brms::add_criterion`
+#' @return brmsfit model with loo criterion.
 #'
-#'@export
+#' @examples
+#' \dontrun{
+#'   add_loo_criterion(model = test_model)
+#'}
+#' @export
 
 add_loo_criterion <- function(model,
-                              n_params,
                               ...) {
 
   model <- model %>% brms::add_criterion(
     criterion = c("loo"),
-    model_name = paste0(n_params, "param"),
     reloo = TRUE,
     ...)
 
@@ -26,15 +25,21 @@ add_loo_criterion <- function(model,
 
 }
 
-#'Compare different model fits against each other using loo compare
+#' Compare different model fits against each other using loo compare
 #'
-#'Use the add_loo_criterion function on the models that will be compared before
-#'using this function to compare the models.
+#' @description Use the add_loo_criterion function on the models that will be
+#'   compared before using this function to compare the models using
+#'   leave one out.
 #'
-#'@param model1 brmsfit object with loo criterion.
-#'@param model2 brmsfit object with loo criterion.
-#'@return compare.loo object
+#' @param model1 brmsfit model with loo criterion.
+#' @param model2 brmsfit model with loo criterion.
+#' @return compare.loo object
 #'
+#' @examples
+#'\dontrun{
+#'   compare_models(model1 = my_dr_model_1,
+#'                  model2 = my_dr_model_2)
+#'}
 #'@export
 
 compare_models <- function(model1,

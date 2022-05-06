@@ -2,8 +2,7 @@
 
 Introduction
 ------------
-This package contains a collection of R tools for analyzing pharmacology data using Bayesian statistics.
-
+The `BayesPharma` package contains a collection of R tools for analyzing pharmacology data using Bayesian statistics and modeling. `BayesPharma` relies on the `stan` ecosystem and `brms` package. `BayesPharma` facilitates applying a principled Bayesian workflow to to fit and analyze several foundational pharmacology models, such as dose-response modeling, modeling pnear and folding funnels from molecular modeling, and modeling potential docking 'hit-rate' curves as a function of dock score from ultra-large library docking ([Lyu et al. (2019)](https://www.nature.com/articles/s41586-019-0917-9), [Alon et al. (2021)](https://www.nature.com/articles/s41586-021-04175-x)). 
 
 Installation
 ------------
@@ -36,9 +35,7 @@ If the treatment dose is given in molar concentration, you can convert it to
 `log_dose` using
 
 ```{r}
-data <- data %>%
-  dplyr::mutate(
-    log_dose = BayesPharma::calculate_log_dose(dose))
+data <- data %>% log_dose = BayesPharma::calculate_log_dose(dose)
 ```
 
 The basic usage is
@@ -59,11 +56,11 @@ model %>% basic_stats()
 ```
 #### Regression plot
 ```{r}
-model %>% plot_draws_data()
+model %>% posterior_draws_plot()
 ```
 #### Prior densities
 ```{r}
-model %>% prior_densities()
+model %>% density_distributions()
 model %>% posterior_densities()
 model %>% prior_posterior_densitites()
 ```
