@@ -301,40 +301,40 @@ As a case study, we can look at the real score-vs-rmsd plots from the
 Antibody SnugDock scientific benchmark. It is evaluates the SnugDock protocol over 6
 Antibody protein targets
 
-```{r snugdock-load-data, dependson=c("load-packages"), warning=FALSE, message=FALSE}
-
-data <- data.frame(
-  target = c("1ahw", "1jps", "1mlc", "1ztx", "2aep", "2jel")) %>%
-  dplyr::rowwise() %>%
-  dplyr::do({
-    target <- .$target
-    readr::read_table(
-      file = system.file(
-        "extdata", "Pnear", "antibody_snugdock", paste0(target, "_rmsd.sc"),
-        package = "BayesPharma",
-        mustWork = TRUE),
-      skip = 1) %>%
-      dplyr::mutate(target = target, .before = 1) %>%
-      dplyr::select(target, rmsd = Irms, score = I_sc)
-  }) %>%
-  dplyr::filter(rmsd <= 20) %>%
-  dplyr::mutate(
-    response = score,
-    log_dose = log(rmsd))
-
-pnear_scores <- data %>%
-  dplyr::group_by(target) %>%
-  dplyr::do({
-    data_by_target <- .
-    data.frame(
-      Pnear = BayesPharma::Pnear(
-        score = data_by_target$score,
-        rmsd = data_by_target$rmsd))
-  }) %>%
-  dplyr::mutate(
-    Pnear_label = Pnear %>% signif(2))
-
-```
+  ```{r snugdock-load-data, dependson=c("load-packages"), warning=FALSE, message=FALSE}
+  
+  data <- data.frame(
+    target = c("1ahw", "1jps", "1mlc", "1ztx", "2aep", "2jel")) %>%
+    dplyr::rowwise() %>%
+    dplyr::do({
+      target <- .$target
+      readr::read_table(
+        file = system.file(
+          "extdata", "Pnear", "antibody_snugdock", paste0(target, "_rmsd.sc"),
+          package = "BayesPharma",
+          mustWork = TRUE),
+        skip = 1) %>%
+        dplyr::mutate(target = target, .before = 1) %>%
+        dplyr::select(target, rmsd = Irms, score = I_sc)
+    }) %>%
+    dplyr::filter(rmsd <= 20) %>%
+    dplyr::mutate(
+      response = score,
+      log_dose = log(rmsd))
+  
+  pnear_scores <- data %>%
+    dplyr::group_by(target) %>%
+    dplyr::do({
+      data_by_target <- .
+      data.frame(
+        Pnear = BayesPharma::Pnear(
+          score = data_by_target$score,
+          rmsd = data_by_target$rmsd))
+    }) %>%
+    dplyr::mutate(
+      Pnear_label = Pnear %>% signif(2))
+  
+  ```
 
 We can use the fit the sigmoid model to the log(RMSD) using the
 BayesPharma package, which relies on BRMS and Stan
