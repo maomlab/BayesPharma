@@ -4,12 +4,7 @@
 \alias{change_col_names}
 \title{Change column names to be compatible with BayesPharma functions}
 \usage{
-change_col_names(
-  data,
-  response_col_name = NULL,
-  log_dose_col_name = NULL,
-  predictors_col_name = NULL
-)
+change_col_names(data, response_col_name = NULL, log_dose_col_name = NULL)
 }
 \arguments{
 \item{data}{data.frame.}
@@ -20,29 +15,22 @@ data.frame (default = NULL).}
 \item{log_dose_col_name}{expression for log_dose column in the input
 data.frame (default = NULL). if log_dose hasn't been calculated yet,
 calculate log_dose, use the \code{calculate_log_dose} function.}
-
-\item{predictors_col_name}{expression for predictors column in the input
-data.frame (default = NULL). Predictors are the perturbations tested
-during the experiment (i.e. Drug, Temperature, etc.).}
 }
 \value{
 input data.frame with new column header names for the response
-   column (`response`), log_dose column (`log_dose`), and predictors column
-   (`predictors`).
+   column (`response`) and log_dose column (`log_dose`).
 }
 \description{
 Given the response, log_dose, and predictors column of a
-  data.frame, change the column names to `response`, `log_dose`,
-  and `predictors` in the data.frame and return it.
+  data.frame, change the column names to `response` and `log_dose` in the 
+  data.frame and return it.
 }
 \examples{
 \dontrun{
-# consider the response column name is `normalized_measurement`, log dose
-# column name is `log_10_dose`,
-# and predictors column name is `Drug`.
+# consider the response column name is `normalized_measurement` and log dose
+# column name is `log_10_dose`.
 data \%>\% BayesPharma::change_col_names(
   response_col_name = normalized_measurement,
-  log_dose_col_name = log_10_dose,
-  predictors_col_name = Drug)
+  log_dose_col_name = log_10_dose)
 }
 }
