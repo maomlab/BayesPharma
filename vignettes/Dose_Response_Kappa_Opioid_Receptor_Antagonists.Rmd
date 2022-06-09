@@ -35,8 +35,6 @@ if(Sys.info()["machine"] == "arm64"){
 ```
 
 ```{r load-packages}
-library(devtools)
-library(tidymodels)
 library(BayesPharma)
 ```
 
