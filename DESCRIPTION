@@ -24,7 +24,7 @@ Imports:
     rstantools,
     StanHeaders,
     tidyr,
-    tidymodels
+    tidyverse
 Collage:
     'calculate_log_dose.R',
     'change_data_column_names.R',
