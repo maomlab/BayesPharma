@@ -144,6 +144,7 @@ BayesPharma::density_distributions(kor_sample_priors,
                                    title_label = "Prior Density Distributions")
 ```
 
+
 The prior distributions cover a broad plausible range of values.
 
 
@@ -221,7 +222,7 @@ BayesPharma::posterior_densities(kor_model,
 ```
 
 Displayed below is a plot of a sample of 100 sigmoid dose-response curves from 
-the posterior distribution (purple) and and the median quantile intervals: 
+the posterior distribution (purple) and the median quantile intervals: 
 
 ```{r}
 BayesPharma::posterior_draws_plot(model = kor_model, data = kor_antag, 

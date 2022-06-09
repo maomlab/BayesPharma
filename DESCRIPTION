@@ -24,7 +24,7 @@ Imports:
     rstantools,
     StanHeaders,
     tidyr,
-    tidyverse
+    tidymodels
 Collage:
     'calculate_log_dose.R',
     'change_data_column_names.R',
@@ -64,4 +64,4 @@ Remotes:
 LazyData: true
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
