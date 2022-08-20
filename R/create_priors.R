@@ -53,7 +53,8 @@ dr_priors <- function(
   hill = NULL,
   inhibitor = TRUE,
   top = NULL,
-  bottom = NULL) {
+  bottom = NULL, 
+  ...) {
 
   if (is.null(ec50)) {
     ec50_prior <- brms::prior(normal(-7, 2.5), nlpar = "ec50")
@@ -106,6 +107,6 @@ dr_priors <- function(
     bottom_prior <- bottom
   }
 
-  priors <- c(ec50_prior, hill_prior, top_prior, bottom_prior)
+  priors <- c(ec50_prior, hill_prior, top_prior, bottom_prior, ...)
   return(priors)
 }
