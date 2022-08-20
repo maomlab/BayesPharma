@@ -1,0 +1,651 @@
+---
+title: "Modeling enzyme kinetics"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Modeling enzyme kinetics}
+  %\VignetteEncoding{UTF-8}
+---
+  
+```{r set-options, echo=FALSE}
+knitr::opts_chunk$set(
+  cache = TRUE,
+  echo = FALSE,
+  fig.path = "model_Enzyme_Kinetics/knitr-",
+  fig.retina = 2, # Control using dpi
+  fig.width = 6,  # generated images
+  fig.height = 5, # generated images
+  fig.pos = "t",  # pdf mode
+  fig.align = "center",
+  dpi = if (knitr::is_latex_output()) 72 else 300, 
+  out.width = "100%")
+
+output_path <- "/tmp/model_stan_tQ_multiple"
+if(!dir.exists(output_path)){
+  dir.create(output_path)
+}
+```
+
+
+```{r load-packages}
+library(tidymodels)
+library(deSolve)
+library(brms)
+library(tidybayes)
+library(deSolve)
+```
+## Enzyme Kinetic Modeling
+Enzymes are proteins that catalyze chemical reactions. Not only do they
+facilitate producing virtual all biological matter, but they are crucial for
+regulating biological processes. In the early 20th century Michaels and Menten
+described a foundational kinematic model for enzymes, where the substrate and
+enzyme reversibly bind, the substrate is converted to the product and then
+released.
+                  kf
+                 --->     kcat
+          E + S  <---  C --->  E + P
+                  kb
+
+where the free enzyme (E) reversibly binds to the stubstrate (S) to form
+a complex (C) with forward and backward rate constants of kf and kb, which is 
+irreversibly catalyzed into the product (P), with rate constant of kcat,
+releasing the enzyme to catalyze additional substrate. The total enzyme
+concentration is defined to be the `ET := E + C`. The total substrate and
+product concentration is defined to be `ST := S + C + P`. The Michaelis
+constant is the defined to be the `kM := (kb + kcat) / kf`. The `kcat` rate
+constant determines the maximum turn over at saturating substrate
+concentrations, `Vmax := kcat * ET`. The rate constants `kcat` and `kM` can be
+estimated by monitoring the product accumulation over time (enzyme progress
+curves), by varying the enzyme and substrate concentrations.
+
+By assuming that the enzyme concentration is very low (ET << ST), they derived
+their celebrated Michaelis-Menten kinetics. Since their work, a number of groups
+have developed models for enzyme kinetics that make less stringent assumptions.
+Recently (Choi, et al., 2017), described a Bayesian model for the total QSSA
+model. To make their model more accessible, we have re-implemented it in the
+Stan/BRMS framework and made it available through the `BayesPharma` package.
+
+## Outline for Vignette
+Next we will formally define the problem and formulate the model as the
+solution to an ordinary differential equation. To illustrate, we will consider a
+a toy system where we assuming the `kcat` and `kM` are known and simulate a
+sequence of measurements using deSolve. We will then implement the ODE in
+Stan/BRMS using stanvars and show how the parameters of the toy system can be
+estimated. Since it is common to vary the enzyme and substrate concentrations in
+order to better estimate the kinematic parameters, we will show how we can
+improve the Stan/BRMS model to allow multiple observations, each with an
+arbitrary number of measurements. Then finally, we will consider a real enzyme
+kinetics dataset and use the Stan/BRMS model to estimate the kinematic
+parameters. We will compare estimated parameters with those fit using
+standard approaches.
+
+
+## Problem Statement
+Implement the total QSSA model in stan/BRMS, a refinement of the classical
+Michaelis-Menten enzyme kinetics ordinary differential equation described in
+(Choi, et al., 2017, DOI: 10.1038/s41598-017-17072-z). From their equation 2:
+
+    Observed data:
+      M     = number of measurements # The product concentration Pt is measured
+      t[M]  = time                   # at M time points t
+      Pt[M] = product                # 
+      ST    = substrate total conc.  # Substrate and enzyme concentrations are
+      ET    = enzyme total conc.     # assumed to be given for each observation
+
+    Model parameters:
+      kcat    # catalytic constant
+      kM      # Michaelis constant
+
+    ODE formulation:
+      dPdt = kcat * (                # Change in product concentration at time t
+        ET + kM + ST - Pt +          
+        -sqrt((ET + kM + ST - Pt)^2 - 2* ET * (ST - Pt))) / 2
+      initial condition:
+        P := 0                       # There is zero product at time 0
+
+In (Choi, et al. 2017) they prove, that the tQ model is valid when
+ 
+     K/(2*ST) * (ET+kM+ST) / sqrt((ET+kM+ST+P)^2 - 4*ET(ST-P)) << 1,
+
+where `K = kb/kf` is the dissociation constant.
+
+## Simulate one observation
+Using the `deSolve` package we can simulate data following the total QSSA model.
+Measurements are made with random Gaussian noise with mean `0` and variance of
+`0.5`.
+```{r data-single, echo = TRUE, deps = c("load-packages")}
+simulate_tQ_model <- function(time, kcat, kM, ET, ST){
+  ode_tQ <- function(time, Pt, theta){
+    list(c(theta[1] * (
+      ET + theta[2] + ST - Pt +
+      -sqrt((ET + theta[2] + ST - Pt)^2 - 4 * ET * (ST - Pt))) / 2))
+  }
+  deSolve::ode(y = 0, times = time, func = ode_tQ, parms = c(kcat, kM))
+}
+
+data_single <- simulate_tQ_model(
+  time = seq(0.00, 3, by=.05),
+  kcat = 3,
+  kM = 5,
+  ET = 10,
+  ST = 10) %>%
+  as.data.frame() %>%
+  dplyr::rename(P_true = 2) %>%
+  dplyr::mutate(
+    P = rnorm(dplyr::n(), P_true, 0.5), # add some observational noise
+    ST = 10, ET = 10)
+head(data_single)
+```
+To visualize, the true enzyme progress curve is shown in
+<span style="color:blue">blue</span>, and the enzyme progress curve fit to the
+noisy measurements with a smooth `loess` spline is shown in
+<span style="color:orange">orange</span>. While the smooth fits well, we
+cannot estimate the parameters for the curve from it.
+```{r data-single-plot, deps = c("simulate-single")}
+ggplot2::ggplot(data = data_single) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_line(
+    mapping = ggplot2::aes(x = time, y = P_true),
+    color = "blue",
+    size = 1.2) +
+  ggplot2::geom_smooth(
+    mapping = ggplot2::aes(x = time, y = P),
+    method = "loess", formula = y ~ x,
+    color = "darkorange",
+    alpha = 0.7) +
+  ggplot2::geom_point(
+    mapping = ggplot2::aes(x = time, y = P)) +
+  ggplot2::scale_x_continuous("time (s)") +
+  ggplot2::scale_y_continuous("Product (nM)")
+
+```
+
+## Fitting a single ODE observation in BRMS
+
+To implement in BRMS, we can use the `stanvars` to define custom functions. The
+key idea is call the ODE solver, in this case the backward differentiation
+formula (bdf) used to solve stiff ODEs, passing a function `ode_tQ` that
+returns `dP/dt`, the change in product at time `t`. The `ode_tQ` function
+depends on the the product at time `t` as the state vector, the kinematic
+parameters to be estimated `kcat` and `kM` and the user-provided data of the
+enzyme and substrate concentrations `ET` and `ST`. To call `ode_dbf` we pass in
+the initial product concentration and time (both equal to zero), measured
+time-points, parameters and user defied data. Finally we, extract the vector of
+sampled vector of product concentrations which we return.
+
+```{r stanvars-ode-tQ}
+#| echo = TRUE,
+#| deps = c(
+#|   "load-packages")
+
+stanvars_tQ_ode <- brms::stanvar(scode = paste("
+vector tQ_ode(
+   real time,
+   vector state,
+   vector params,
+   data real ET,
+   data real ST) {
+   
+   real Pt = state[1];   // product at time t
+   real kcat = params[1];
+   real kM = params[2];
+   vector[1] dPdt;
+   dPdt[1] = kcat * (
+     ET + kM + ST - Pt
+     -sqrt((ET + kM + ST - Pt)^2 - 4 * ET * (ST - Pt))) / 2;
+   return(dPdt);
+}
+", sep = "\n"),
+block = "functions")
+
+```
+
+```{r stanvars-tQ-single, echo = TRUE, deps = c("load-packages")}
+stanvars_tQ_single <- brms::stanvar(scode = paste("
+vector tQ_single(
+  data vector time,
+  vector vkcat,
+  vector vkM,
+  data vector vET,
+  data vector vST) {
+  
+  vector[2] params;
+  params[1] = vkcat[1];
+  params[2] = vkM[1];
+  vector[1] initial_state;
+  initial_state[1] = 0.0;
+  real initial_time = 0.0;
+  int M = size(time);
+
+  vector[1] P_ode[M] = ode_bdf(     // Function signature:
+    tQ_ode,                         // function ode
+    initial_state,                  // vector initial_state
+    initial_time,                   // real initial_time
+    to_array_1d(time),              // array[] real time
+    params,                         // vector params
+    vET[1],                         // ...
+    vST[1]);                        // ...
+  
+  vector[M] P;                      // Need to return a vector not array
+  for(i in 1:M) P[i] = P_ode[i,1];
+  return(P);
+}
+", sep = "\n"),
+block = "functions")
+```
+
+To use this function, we define `kcat` and `kM` as parameters and that
+we wish to sample `P ~ tQ(...)`. Since all the data points define a single
+observation, we set `loop = FALSE`. We use `gamma` priors for `kcat` and
+`kM` with the shape parameter `alpha=4` and the rate parameter `beta=1`. The
+prior mean is `alpha/beta = 4/1 = 4` and the variance is
+`alpha/beta^2 = 4/1 = 4`. We also bound the parameters from below by `0`. We
+initialize each chain at the prior mean and use `cmdstanr` version 2.29.2 as the
+backend, and use the default warmup of `1000`
+
+```{r brms-params, echo = TRUE}
+brms_params <- list(
+  cores = 4,
+  seed = 52L,
+  backend = 'cmdstanr')
+```
+
+
+```{r model-single}
+#| echo = TRUE,
+#| deps = c(
+#|    "set-options",
+#|    "load-packages",
+#|    "simulate-single",
+#|    "brms-params",
+#|    "stanvars-ode-tQ",
+#|    "stanvars-tQ-single")
+
+
+model_single <- do.call(what = brms::brm, args = c(list(
+  formula = brms::brmsformula(
+    P ~ tQ_single(time, kcat, kM, ET, ST),
+    kcat + kM ~ 1,
+    nl = TRUE,
+    loop=FALSE),
+  data = data_single %>% dplyr::filter(time > 0),
+  prior = c(
+    brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kcat"),
+    brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kM")),
+  init = function() list(kcat = 4, kM = 4),
+  stanvars = c(
+    stanvars_tQ_ode,
+    stanvars_tQ_single)),
+  brms_params))
+``` 
+Fitting the model takes ~15 seconds, with `Rhat = 1` and
+effective sample size for the bulk and tail greater than `1400` for
+both parameters. The estimates and 95% confidence intervals are good.
+```{r model-single-summary}
+#| deps = c("model-single")
+model_single
+```
+
+To visualize the posterior distribution vs. the prior distribution, we first
+sample from the prior, using the same `brms::brm` call with
+`sample_prior = "only"` the argument.
+```{r model-single-prior, echo = TRUE, deps = c("set-options", "model-single")}
+model_single_prior <- do.call(what = brms::brm, args = c(list(
+  formula = brms::brmsformula(
+    P ~ tQ_single(time, kcat, kM, ET, ST),
+    kcat + kM ~ 1,
+    nl = TRUE,
+    loop=FALSE),
+  data = data_single %>% dplyr::filter(time > 0),
+  prior = c(
+    brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kcat"),
+    brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kM")),
+  init = function() list(kcat = 4, kM = 4),
+  stanvars = c(
+    stanvars_tQ_ode,
+    stanvars_tQ_single),
+  sample_prior = "only"),
+  brms_params))
+```
+
+And to plot, we use `tidybayes` to gather the draws and `ggplot2` to map them to
+curves, with the prior as the<span style="color:orange">orange curve</span>,
+posterior as the <span style="color:blue">blue curve</span>, and the true
+parameter marked as a vertical line.
+```{r model-single-draws, deps = c("set-options", "model-single-prior", "model-single")}
+draws_single_prior <- model_single_prior %>%
+  tidybayes::tidy_draws() %>%
+  tidybayes::gather_variables() %>%
+  dplyr::filter(.variable %in% c("b_kcat_Intercept", "b_kM_Intercept"))
+
+draws_single_posterior <- model_single %>%
+  tidybayes::tidy_draws() %>%
+  tidybayes::gather_variables() %>%
+  dplyr::filter(.variable %in% c("b_kcat_Intercept", "b_kM_Intercept"))
+```
+
+```{r prior-posterior-single-marginal-plot}
+#| echo = FALSE,
+#| deps = c("model-single-draws"),
+#| fig.height = 3
+ggplot2::ggplot() +
+  ggplot2::geom_vline(
+    data = data.frame(
+      .variable = c("b_kcat_Intercept", "b_kM_Intercept"),
+      .value = c(3, 5)),
+    mapping = ggplot2::aes(
+      xintercept = .value),
+    color = "black",
+    size = 1.5) +
+  ggplot2::geom_density(
+    data = draws_single_prior,
+    mapping = ggplot2::aes(
+      x = .value),
+    color = "orange") +
+  ggplot2::geom_density(
+    data = draws_single_posterior,
+    mapping = ggplot2::aes(
+      x = .value),
+    color = "blue") +
+  ggplot2::facet_wrap(
+    facets = dplyr::vars(.variable),
+    scales = "free")
+```
+
+Next, we plot the prior and posterior samples as a scatter plot. Note that
+the high correlation of the `kcat` and `kM` parameters in the posterior. This is
+expected, and typically better estimates require varying the enzyme and
+substrate concentrations.
+```{r prior-posterior-single-scatter}
+#| deps = c("model-single-draws")
+draws_single_prior_pairs <- draws_single_prior %>%
+  tidyr::pivot_wider(
+    id_cols = c(".chain", ".iteration", ".draw"),
+    names_from = ".variable",
+    values_from = ".value")
+
+draws_single_posterior_pairs <- draws_single_posterior %>%
+  tidyr::pivot_wider(
+    id_cols = c(".chain", ".iteration", ".draw"),
+    names_from = ".variable",
+    values_from = ".value")
+
+ggplot2::ggplot() +
+  ggplot2::theme_bw() +
+  ggplot2::geom_point(
+    data = draws_single_prior_pairs,
+    mapping = ggplot2::aes(
+      x = b_kcat_Intercept,
+      y = b_kM_Intercept),
+    color = "orange",
+    size = 0.8,
+    shape = 16,
+    alpha = .6) +
+    ggplot2::geom_point(
+    data = draws_single_posterior_pairs,
+    mapping = ggplot2::aes(
+      x = b_kcat_Intercept,
+      y = b_kM_Intercept),
+    color = "blue",
+    size = .8,
+    shape = 16,
+    alpha = .3) +
+  ggplot2::geom_point(
+    data = data.frame(b_kcat_Intercept = 3, b_kM_Intercept = 5),
+    mapping = ggplot2::aes(
+      x = b_kcat_Intercept,
+      y = b_kM_Intercept),
+    color = "black",
+    shape = 16,
+    size = 4) +
+  ggplot2::coord_equal() +
+  ggplot2::scale_x_continuous("catalytic constant (kcat)") +
+  ggplot2::scale_y_continuous("Michaelis constant (kM)")
+
+```
+
+## Fitting multiple observations
+
+Next we will extend the BRMS model to allow fitting common `kcat`, `kM`
+concentrations based on multiple replicas, or varying substrate/enzyme
+concentrations using BRMS. To demonstrate, we varying the enzyme and substrate
+concentrations, to better fit the kinematic parameters.
+```{r data-multiple, echo = TRUE, deps = c("set-options", "simulate-single")}
+data_multiple <- tidyr::expand_grid(
+  kcat = 3,
+  kM =  5,
+  ET = c(3, 10, 30),
+  ST = c(3, 10, 30)) %>%
+  dplyr::mutate(observation_index = dplyr::row_number()) %>%
+  dplyr::rowwise() %>%
+  dplyr::do({
+    data <- .
+    time <- seq(0.05, 3, by=.05)
+    data <- data.frame(data,
+      time = time,
+      P = simulate_tQ_model(
+        time = time,
+        kcat = data$kcat,
+        kM = data$kM,
+        ET = data$ET,
+        ST = data$ST)[,2])
+  }) %>%
+  dplyr::mutate(
+    P = rnorm(dplyr::n(), P, 0.5))
+```
+
+```{r data-multiple-plot, deps = c("data-multiple")}
+ggplot2::ggplot(data = data_multiple %>%
+    dplyr::mutate(ET_label = paste0("ET: ", ET) %>% forcats::fct_inorder())) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_point(
+    mapping = ggplot2::aes(x = time, y = P, color = log(ST)),
+    shape = 16,
+    alpha = .6) +
+  ggplot2::geom_smooth(
+    mapping = ggplot2::aes(x = time, y = P, group = ST),
+    method = "loess", formula = y ~ x,
+    color = "orange",
+    alpha = 0.1) +
+  ggplot2::scale_x_continuous("time (s)") +
+  ggplot2::scale_y_continuous("Product (nM)") +
+  ggplot2::facet_wrap(facets = dplyr::vars(ET_label), nrow = 1) +
+  ggplot2::theme(legend.position = "bottom") +
+  ggplot2::scale_color_continuous(
+    "ST:",
+    breaks = log(c(3, 10, 30)),
+    labels = c("3", "10", "30"),
+    limits = log(c(2.5, 35)))
+```
+
+```{r stanvars-tQ-multiple, echo = TRUE}
+stanvars_tQ_multiple <- brms::stanvar(scode = paste("
+vector tQ_multiple(
+  array[] int replica,
+  data vector time,
+  vector vkcat,
+  vector vkM,
+  data vector vET,
+  data vector vST) {
+
+  int N = size(time);
+  vector[N] P;
+  int begin = 1;
+  int current_replica = replica[1];
+  for (i in 1:N){
+    if(current_replica != replica[i]){
+      P[begin:i-1] = tQ_single(
+        time[begin:i-1],
+        vkcat,
+        vkM,
+        vET[begin:i-1],
+        vST[begin:i-1]);
+      begin = i;
+      current_replica = replica[i];
+    }
+  }
+  P[begin:N] = tQ_single(time[begin:N], vkcat, vkM, vET[begin:N], vST[begin:N]);
+  return(P);
+}", sep = "\n"),
+block = "functions")
+```
+
+```{r model-multiple}
+#| echo = TRUE,
+#| deps=c(
+#|   "data-multiple",
+#|   "stanvars-tQ-ode",
+#|   "stanvars-tQ-single",
+#|   "stanvars-tQ-multiple")
+
+model_multiple <- do.call(what = brms::brm, args = c(list(
+  formula = brms::brmsformula(
+    P ~ tQ_multiple(observation_index, time, kcat, kM, ET, ST),
+    kcat + kM ~ 1,
+    nl = TRUE,
+    loop=FALSE),
+  data = data_multiple,
+  prior = c(
+    brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kcat"),
+    brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kM")),
+  init = function() list(kcat = 4, kM = 4),
+  stanvars = c(
+    stanvars_tQ_ode,
+    stanvars_tQ_single,
+    stanvars_tQ_multiple)),
+  brms_params))
+model_multiple
+```
+
+```{r model-multiple-prior|}
+#| deps = c("model-multiple")
+model_multiple_prior <- model_multiple %>%
+  brms:::update.brmsfit(sample_prior = "only")
+```
+
+```{r model-multiple-draws, deps=c("model-multiple", "model-multiple-prior")}
+draws_multiple_prior <- model_multiple_prior %>%
+  tidybayes::tidy_draws() %>%
+  tidybayes::gather_variables() %>%
+  dplyr::filter(.variable %in% c("b_kcat_Intercept", "b_kM_Intercept"))
+
+draws_multiple_posterior <- model_multiple%>%
+  tidybayes::tidy_draws() %>%
+  tidybayes::gather_variables() %>%
+  dplyr::filter(.variable %in% c("b_kcat_Intercept", "b_kM_Intercept"))
+```
+
+```{r prior-posterior-multiple-scatter, deps=c("model-multiple-draws")}
+draws_multiple_prior_pairs <- draws_multiple_prior %>%
+  tidyr::pivot_wider(
+    id_cols = c(".chain", ".iteration", ".draw"),
+    names_from = ".variable",
+    values_from = ".value")
+
+draws_multiple_posterior_pairs <- draws_multiple_posterior %>%
+  tidyr::pivot_wider(
+    id_cols = c(".chain", ".iteration", ".draw"),
+    names_from = ".variable",
+    values_from = ".value")
+
+ggplot2::ggplot() +
+  ggplot2::theme_bw() +
+  ggplot2::geom_point(
+    data = draws_multiple_prior_pairs,
+    mapping = ggplot2::aes(
+      x = b_kcat_Intercept,
+      y = b_kM_Intercept),
+    color = "orange",
+    size = 0.8,
+    shape = 16,
+    alpha = .6) +
+    ggplot2::geom_point(
+    data = draws_multiple_posterior_pairs,
+    mapping = ggplot2::aes(
+      x = b_kcat_Intercept,
+      y = b_kM_Intercept),
+    color = "blue",
+    size = .8,
+    shape = 16,
+    alpha = .3) +
+  ggplot2::geom_point(
+    data = data.frame(b_kcat_Intercept = 3, b_kM_Intercept = 5),
+    mapping = ggplot2::aes(
+      x = b_kcat_Intercept,
+      y = b_kM_Intercept),
+    color = "black",
+    shape = 16,
+    size = 4) +
+  ggplot2::coord_equal() +
+  ggplot2::scale_x_continuous("catalytic constant (kcat)") +
+  ggplot2::scale_y_continuous("Michaelis constant (kM)")
+```
+
+
+Next we will sample enzyme progress curves from the posterior
+
+```{r model-multiple-curves, deps = c("model-multiple-draws")}
+sample_multiple <- draws_multiple_posterior %>%
+  dplyr::transmute(
+    draw = .draw,
+    variable = .variable %>%
+      stringr::str_replace("b_", "") %>%
+      stringr::str_replace("_Intercept", ""),
+    value = .value) %>%
+  tidyr::pivot_wider(
+    id_cols = "draw",
+    names_from = "variable",
+    values_from = "value") %>%
+  dplyr::slice_sample(n = 50) %>%
+  dplyr::rowwise() %>%
+  dplyr::do({
+    data <- .
+    tidyr::expand_grid(
+      draw = data$draw,
+      kcat = data$kcat,
+      kM =  data$kM,
+      ET = c(3, 10, 30),
+      ST = c(3, 10, 30)) %>%
+    dplyr::rowwise() %>%
+    dplyr::do({
+      data <- .
+      time <- seq(0.05, 3, by=.05)
+      data <- data.frame(data,
+        time = time,
+        P = simulate_tQ_model(
+          time = time,
+         kcat = data$kcat,
+         kM = data$kM,
+         ET = data$ET,
+         ST = data$ST)[,2])
+    })
+  })
+
+ggplot2::ggplot() +
+  ggplot2::theme_bw() +
+  ggplot2::geom_point(
+    data = data_multiple %>%
+      dplyr::mutate(
+        ET_label = paste0("ET: ", ET) %>% forcats::fct_inorder(),
+        ST_label = paste0("ST: ", ST) %>% forcats::fct_inorder()),
+    mapping = ggplot2::aes(x = time, y = P),
+    shape = 16,
+    alpha = .6) +
+  ggplot2::geom_line(
+    data = sample_multiple %>%
+      dplyr::mutate(
+        ET_label = paste0("ET: ", ET) %>% forcats::fct_inorder(),
+        ST_label = paste0("ST: ", ST) %>% forcats::fct_inorder()),
+    mapping = ggplot2::aes(x = time, y = P, group = draw),
+    color = "orange",
+    alpha = 0.1) +
+  ggplot2::scale_x_continuous("time (s)") +
+  ggplot2::scale_y_continuous("Product (nM)") +
+  ggplot2::facet_grid(
+    rows = dplyr::vars(ET_label),
+    cols = dplyr::vars(ST_label))
+```
+
+
+
+

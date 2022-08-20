@@ -12,6 +12,9 @@ posterior_draws_plot(
   upper = -3,
   n = 50,
   facet_var,
+  point_size = 0.75,
+  jitter_height = 0,
+  jitter_width = 0,
   title = "Dose-Response Posterior Draws",
   xlab = "Log[Molar]",
   ylab = "Response"
@@ -38,6 +41,14 @@ character input can be used and will not affect the plot (default = "na").}
 models with multiple predictors, include the predictor column name;
 otherwise, include the character name of your choosing.}
 
+\item{point_size}{numeric. geom_jitter point size (default = 0.75).}
+
+\item{jitter_height}{numeric. the height distance between overlapping points
+(default = 0).}
+
+\item{jitter_width}{numeric. the width distance between overlapping points
+(default = 0).}
+
 \item{title}{character name for the plot
 (default = "Dose-Response Posterior Draws").}
 
@@ -59,6 +70,7 @@ distribution from the expected mean and median quantile intervals.
   posterior_draws_plot(model = my_model, data = my_data,
                        predictors_col_name = "predictors",lower = -12,
                        upper = -3, n = 50, facet_var = predictors,
+                       jitter_width = 0.10,
                        title = "Dose-Response Posterior Draws",
                        xlab = "Log[Molar]", ylab = "Response")
 }

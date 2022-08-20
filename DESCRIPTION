@@ -35,6 +35,7 @@ Collage:
     'sigmoid_formuka.R',
     'util.R',
     'run_dr_brm_model.R',
+    'run_tQ_model.R',
     'pp_density_distribution_plots.R',
     'plot_posterior_sample_draws.R',
     'create_default_inits.R',
@@ -58,7 +59,8 @@ Suggests:
     tidybayes,
     bayesplot,
     ggdist,
-    matrixStats
+    matrixStats,
+    deSolve
 Remotes: 
     maomlab/GeomIndicator
 LazyData: true
