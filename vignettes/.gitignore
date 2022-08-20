@@ -1,2 +1,6 @@
 *.html
 *.R
+*.rds
+*_cache
+*_figures
+*/*.png
