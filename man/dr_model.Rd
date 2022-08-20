@@ -8,7 +8,7 @@ dr_model(
   data,
   formula,
   priors = NULL,
-  inits = 0,
+  init = 0,
   iter = 8000,
   control = list(adapt_delta = 0.99),
   stanvar_function = dr_stanvar,
@@ -16,7 +16,9 @@ dr_model(
 )
 }
 \arguments{
-\item{data}{data.frame of experimental data.}
+\item{data}{data.frame of experimental data.
+must contain columns \code{response} and any predictors specified in
+the formula.}
 
 \item{formula}{brmsformula object. To create a dose-response brmsformula,
 use the \code{dr_formula} function.}
@@ -24,7 +26,7 @@ use the \code{dr_formula} function.}
 \item{priors}{brmspriors data.frame for ec50, hill, top, and bottom.
 Use one of the priors functions provided to create priors to use here.}
 
-\item{inits}{list of lists, numeric value, or "random" for the initial values
+\item{init}{list of lists, numeric value, or "random" for the initial values
 of the parameters being modeled (default = 0).}
 
 \item{iter}{number of iterations the model runs. Increasing iter can help
@@ -48,7 +50,7 @@ For additional information on additional function arguments, reference:
 \examples{
 \dontrun{
   dr_model(data,
-   formula = dr_formula(predictors = 1 + predictors),
+   formula = dr_formula(predictors = 0 + predictors),
    priors = dr_priors(),
    inits = dr_inits(),
    iter = 8000,

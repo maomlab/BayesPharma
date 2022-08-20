@@ -6,12 +6,12 @@
 \usage{
 posterior_draws_plot(
   model,
-  data,
+  data = NULL,
   predictors_col_name = "na",
-  lower = -12,
-  upper = -3,
+  lower = NULL,
+  upper = NUL,
   n = 50,
-  facet_var,
+  facet_var = NULL,
   point_size = 0.75,
   jitter_height = 0,
   jitter_width = 0,
@@ -30,10 +30,10 @@ predictors for the model fit. If there is only one predictor, then any
 character input can be used and will not affect the plot (default = "na").}
 
 \item{lower}{numeric value of the lower bound of log_dose to be observed
-(default = -12).}
+(default = smallest data$log_dose value > -Inf).}
 
 \item{upper}{numeric value of the upper bound of log_dose to be observed
-(default = -3).}
+(default = greatest data$log_dose value < Inf).}
 
 \item{n}{numeric value of the number of draws to be observed (default = 50).}
 
