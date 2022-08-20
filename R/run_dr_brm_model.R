@@ -75,11 +75,13 @@ constant_formula <- function(predictors = 1,
 #'   https://rdrr.io/cran/rstan/man/stan.html
 #'
 #' @param data data.frame of experimental data.
+#'   must contain columns \code{response} and any predictors specified in
+#'   the formula.
 #' @param formula brmsformula object. To create a dose-response brmsformula,
 #'   use the \code{dr_formula} function.
 #' @param priors brmspriors data.frame for ec50, hill, top, and bottom.
 #'   Use one of the priors functions provided to create priors to use here.
-#' @param inits list of lists, numeric value, or "random" for the initial values
+#' @param init list of lists, numeric value, or "random" for the initial values
 #'   of the parameters being modeled (default = 0).
 #' @param iter number of iterations the model runs. Increasing iter can help
 #'   with model convergence (default = 8000).
@@ -92,7 +94,7 @@ constant_formula <- function(predictors = 1,
 #' @examples
 #'\dontrun{
 #'   dr_model(data,
-#'    formula = dr_formula(predictors = 1 + predictors),
+#'    formula = dr_formula(predictors = 0 + predictors),
 #'    priors = dr_priors(),
 #'    inits = dr_inits(),
 #'    iter = 8000,
@@ -104,7 +106,7 @@ constant_formula <- function(predictors = 1,
 dr_model <- function(data,
                      formula,
                      priors = NULL,
-                     inits = 0,
+                     init = 0,
                      iter = 8000,
                      control = list(adapt_delta = 0.99),
                      stanvar_function = dr_stanvar,
@@ -114,11 +116,17 @@ dr_model <- function(data,
     warning("priors for each parameter is required. Use prior functions provided
              to get default priors.")
   }
+  
+  if(!("response" %in% names(data))){
+    warning(
+      "There needs to be a column 'response' in the input 'data' data.frame\n")
+  }
+  
   brms::brm(
     formula = formula,
     data = data,
     prior = priors,
-    inits = inits,
+    init = init,
     iter = iter,
     control = control,
     stanvars = stanvar_function,
