@@ -35,8 +35,6 @@ if(Sys.info()["machine"] == "arm64"){
 ```
 
 ```{r load-packages}
-library(devtools)
-library(tidymodels)
 library(BayesPharma)
 ```
 
@@ -81,12 +79,12 @@ ggplot2::ggplot(kor_antag) +
 
 Before moving forward with the analysis using `BayesPharma`, there are 
 limitations to the package that requires the column containing the response 
-values to be labeled "response", the column containing perturbation labels 
-(Drug, mutant, etc.) to be labeled predictors, and the dose to be in log scale; 
+values to be labeled "response", and the dose to be in log scale; 
 therefore, it may be necessary to use the `calculate_log_dose` and 
 `change_col_names` functions before running the model. 
-The loaded data already has a log dose column, so for this data set we don't 
-need to use the `calculate_log_dose` function.
+The loaded data already has a log dose column labelled "log_dose", so for this 
+data set we don't need to use the `calculate_log_dose` function or change the
+log dose column name.
 
 ```{r}
 kor_antag <- BayesPharma::change_col_names(kor_antag,
@@ -99,9 +97,13 @@ kor_antag
 
 ## Setting the Priors for the Model
 
-First, we will run the analysis with top (max response) parameter prior set to 
-a constant value of 100 because top is normalized to 100 and the default weakly 
-informative priors for ic50, hill and bottom. 
+For the priors, we are going to use a normal distribution because the response
+values are continuous. 
+First, We will run the analysis with top (max response) parameter prior set to 
+a constant value of 100 because top is normalized to 100 and the default broad
+priors for ic50, hill and bottom. Broad priors represent unbiased uncertainty 
+and provide an opportunity for extreme responses.
+
 Then, we will fit another model with more informative priors using the 
 information from the research paper, and compare the two models. 
 
@@ -130,6 +132,8 @@ Before running the model, we will verify that the prior distributions
 cover a plausible range of values for each parameter. To do this, we want to 
 sample only from the prior distributions by adding  *sample_prior = "only"* as 
 an argument to the `dr_model` function.
+We will use the default response distribution of the model 
+(*family = gaussian()*).
 
 ```{r, results='hide', message=FALSE}
 kor_sample_priors <- BayesPharma::dr_model(kor_antag,
@@ -146,7 +150,10 @@ BayesPharma::density_distributions(kor_sample_priors,
                                    title_label = "Prior Density Distributions")
 ```
 
-The prior distributions cover a broad plausible range of values.
+
+We can use this to evaluate the prior distributions for each parameter. The 
+priors appear to cover a broad range of response values including extreme 
+responses.
 
 
 ## Fitting the Model
@@ -168,10 +175,10 @@ kor_model
 ```
 
 ## Checking for Convergence 
-The model ran without any warning messages, Rhat for all parameters is 1.00 
-(NA for top because it was set to a constant value of 100), Bulk and Tail ESS 
-are high, and the mcmc chains appear to have mixed well throughout the model 
-run. Therefore, we are in good shape to move forward with the analysis. 
+The model ran without warning messages meaning there were no parameter value 
+problems or mcmc conflicts. The bulk and tail ESS indicate high resolution and 
+stability. The R-hat for each parameter equals 1.00 and the traceplot shows the 
+chains mixed well indicating the chains converged.
 
 ```{r}
 BayesPharma::traceplot(kor_model, 
@@ -186,7 +193,7 @@ posterior distribution fits the observed data. The observed data is the dark
 blue line and the simulated data are the light blue lines. 
 
 The simulated data fits some antagonist models better than others. The models 
-for BTRX-395750 and JNJ fits the structure of the data pretty well, the model 
+for BTRX-395750 and JNJ fits the structure of the data decently well, the model 
 for BTRX-335140 fits well but has a higher level of uncertainty, and the 
 simulated data for the PF model is less structured, is an okay fit, and has
 the highest level of uncertainty of the 4 drugs.
@@ -202,8 +209,8 @@ BayesPharma::plot_pp_check(kor_model,
 ## Visualizing and Analyzing Results
 
 Displayed below is a plot for the prior and posterior distributions of the 
-parameters (prior is pink and posterior is teal). this can be useful if you are
-interested in comparing the initial prior with the posterior distribution 
+parameters (prior is pink and posterior is teal). this can be useful for 
+comparing the density distribution of the prior and posterior.
 produced by the model:
 
 ```{r}
@@ -214,7 +221,7 @@ BayesPharma::prior_posterior_densities(kor_model,
 
 Displayed below is a plot of the posterior distributions for each parameter 
 with the confidence intervals and mean. This is a useful visual of the model 
-results: 
+results and to highlight the mode and high density intervals: 
 
 ```{r, message=FALSE, warning=FALSE}
 BayesPharma::posterior_densities(kor_model, 
@@ -223,7 +230,7 @@ BayesPharma::posterior_densities(kor_model,
 ```
 
 Displayed below is a plot of a sample of 100 sigmoid dose-response curves from 
-the posterior distribution (purple) and and the median quantile intervals: 
+the posterior distribution (purple) and the median quantile intervals: 
 
 ```{r}
 BayesPharma::posterior_draws_plot(model = kor_model, data = kor_antag, 

@@ -39,7 +39,8 @@ density_distributions <- function(model,
       tidybayes::gather_variables() %>%
       dplyr::mutate(sample_type = sample_type) %>%
       dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
-      dplyr::filter(!stringr::str_detect(.variable, "sigma"))
+      dplyr::filter(!stringr::str_detect(.variable, "sigma")) %>%
+      dplyr::filter(!stringr::str_detect(.variable, "lprior"))
   ) %>%
     dplyr::mutate(.variable = stringr::str_extract(.variable,
                                                    "b_[a-zA-Z0-9]+.{1,100}") %>%
@@ -115,6 +116,7 @@ basic_stats <- function(model,
                                "median") %>%
     dplyr::filter(!stringr::str_detect(variable, "__$")) %>%
     dplyr::filter(!stringr::str_detect(variable, "sigma")) %>%
+    dplyr::filter(!stringr::str_detect(variable, "lprior")) %>%
     dplyr::select(-variable) %>%
     cbind(l_ci = c(ple_info[, 3]),
           u_ci = c(ple_info[, 4])) %>%
@@ -171,7 +173,8 @@ posterior_densities <- function(model,
       tidybayes::tidy_draws() %>%
       tidybayes::gather_variables() %>%
       dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
-      dplyr::filter(!stringr::str_detect(.variable, "sigma"))
+      dplyr::filter(!stringr::str_detect(.variable, "sigma")) %>%
+      dplyr::filter(!stringr::str_detect(.variable, "lprior"))
   ) %>%
     dplyr::rename(variables = .variable) %>%
     dplyr::mutate(variables = stringr::str_extract(variables,
@@ -262,14 +265,16 @@ prior_posterior_densities <- function(model,
       tidybayes::gather_variables() %>%
       dplyr::mutate(sample_type = "Prior") %>%
       dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
-      dplyr::filter(!stringr::str_detect(.variable, "sigma")),
+      dplyr::filter(!stringr::str_detect(.variable, "sigma")) %>%
+      dplyr::filter(!stringr::str_detect(.variable, "lprior")),
     model %>%
       tidybayes::tidy_draws() %>%
       tidybayes::gather_variables() %>%
       dplyr::mutate(sample_type = "Posterior") %>%
       dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
-      dplyr::filter(!stringr::str_detect(.variable, "sigma"))
-  ) %>%
+      dplyr::filter(!stringr::str_detect(.variable, "sigma")) %>%
+      dplyr::filter(!stringr::str_detect(.variable, "lprior"))
+    ) %>%
     dplyr::mutate(.variable = stringr::str_extract(.variable,
                                                    "b_[a-zA-Z0-9]+.{1,100}") %>%
                     stringr::str_remove("b_")) %>%
