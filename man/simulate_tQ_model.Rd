@@ -14,9 +14,9 @@ simulate_tQ_model(time, kcat, kM, ET, ST, ...)
 }
 \description{
 kf
-                <---     kcat
-          E + S  --->  C --->  E + P
-                 kb
+                 --->    kcat
+          E + S  <---  C --->  E + P
+                  kb
 }
 \details{
 where the free enzyme (E) reversibly binds to the stubstrate (S) to form
@@ -27,9 +27,9 @@ concentration is defined to be the `ET := E + C`. The total substrate and
 product concentration is defined to be `ST := S + C + P`. The Michaelis
 constant is the defined to be the `kM := (kb + kcat) / kf`. The kcat rate
 constant determines the maximum turn over at saturating substrate
-concentrations, `Vmax := kcat * ET`. The rate constants kcat and kM can be
-estimated by monitoring the product accumulation over time (enzyme progress
-curves), by varying the enzyme and substrate concentrations.
+concentrations, `Vmax := kcat * ET`. The rate constants `kcat` and `kM` can
+be estimated by monitoring the product accumulation over time (enzyme
+progress curves), by varying the enzyme and substrate concentrations.
 
 From (Choi, et al, 2017, equation 2, the total quasi-steady-state
 approximation (tQ) differential equation is defined by

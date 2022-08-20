@@ -10,14 +10,15 @@ dr_priors(
   hill = NULL,
   inhibitor = TRUE,
   top = NULL,
-  bottom = NULL
+  bottom = NULL,
+  ...
 )
 }
 \arguments{
 \item{ec50}{NULL, numeric units, or brms::prior. NULL will provide a weakly
-informative prior. Setting ec50 to a numeric value will set the ec50 prior
-to a constant value of the given numeric value. A prior of choice can be
-set using brms::prior(). (default = NULL)}
+informative prior with mean of 100 nM. Setting ec50 to a numeric value will
+set the ec50 prior to a constant value of the given numeric value. A prior
+of choice can be set using brms::prior(). (default = NULL)}
 
 \item{hill}{NULL, numeric value, or brms::prior. NULL will provide a weakly
 informative prior. Setting hill to a numeric value will set the hill prior
