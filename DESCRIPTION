@@ -32,6 +32,7 @@ Collage:
     'create_default_inits.R',
     'create_priors.R',
     'data.R',
+    'helpers-testthat.R',
     'sigmoid_formuka.R',
     'util.R',
     'run_dr_brm_model.R',
