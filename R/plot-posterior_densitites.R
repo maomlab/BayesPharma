@@ -35,14 +35,14 @@ posterior_densities <- function(
     l_ci = 0.025,
     u_ci = 0.975,
     title_label = "Posterior Density Plots w/ Mean & 95% CI") {
+  
   posterior <- dplyr::bind_rows(
     model %>%
       tidybayes::tidy_draws() %>%
       tidybayes::gather_variables() %>%
       dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
       dplyr::filter(!stringr::str_detect(.variable, "sigma")) %>%
-      dplyr::filter(!stringr::str_detect(.variable, "lprior"))
-  ) %>%
+      dplyr::filter(!stringr::str_detect(.variable, "lprior"))) %>%
     dplyr::rename(variables = .variable) %>%
     dplyr::mutate(
       variables = variables %>%
@@ -53,42 +53,34 @@ posterior_densities <- function(
         stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
         stringr::str_replace("ec50", half_max_label))
   
-  ggplot2::ggplot(data = posterior) +
+  summary_stats <- basic_stats(
+    model = model,
+    predictors_col_name = predictors_col_name,
+    half_max_label = half_max_label,
+    l_ci = l_ci,
+    u_ci = u_ci)
+  
+  ggplot2::ggplot() +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "bottom") +
     ggplot2::geom_density(
-      mapping = ggplot2::aes(
-        x = .value),
+      data = posterior,
+      mapping = ggplot2::aes(x = .value),
       fill = "cyan2",
       color = "black",
       alpha = .9) +
     ggplot2::geom_vline(
+      data = summary_stats,
       ggplot2::aes(xintercept = mean),
-      basic_stats(
-        model = model,
-        predictors_col_name = predictors_col_name,
-        half_max_label = half_max_label,
-        l_ci = l_ci,
-        u_ci = u_ci),
       color = "red") +
     ggplot2::geom_rect(
-      ggplot2::aes(xmin = -Inf, xmax = l_ci, ymin = -Inf, ymax = Inf),
-      basic_stats(
-        model = model,
-        predictors_col_name = predictors_col_name,
-        half_max_label = half_max_label,
-        l_ci = l_ci,
-        u_ci = u_ci),
+      data = summary_stats,
+      mapping = ggplot2::aes(xmin = -Inf, xmax = l_ci, ymin = -Inf, ymax = Inf),
       color = "gray",
       alpha = 0.5) +
     ggplot2::geom_rect(
+      data = summary_stats,
       ggplot2::aes(xmin = u_ci, xmax = Inf, ymin = -Inf, ymax = Inf),
-      basic_stats(
-        model = model,
-        predictors_col_name = predictors_col_name,
-        half_max_label = half_max_label,
-        l_ci = l_ci,
-        u_ci = u_ci),
       color = "gray",
       alpha = 0.5) +
     ggplot2::ggtitle(label = paste0(title_label)) +
