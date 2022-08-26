@@ -33,8 +33,8 @@ basic_stats <- function(
     l_ci = 0.025,
     u_ci = 0.975) {
   
-  ple_info <- brms::fixef(model, probs = c(l_ci, u_ci))
-  print(paste0("lower CI:", l_ci, "upper CI:", u_ci))
+  ple_info <- model %>% brms::fixef(probs = c(l_ci, u_ci))
+  print(paste0("lower CI:", l_ci, " upper CI:", u_ci))
   
   model %>%
     posterior::summarise_draws(
@@ -47,10 +47,10 @@ basic_stats <- function(
           u_ci = c(ple_info[, 4])) %>%
     tibble::rownames_to_column("variables") %>%
     dplyr::mutate(
-      variables = stringr::str_extract(variables, "[a-zA-Z0-9]+.{1,100}") %>%
-        stringr::str_remove(predictors_col_name)) %>%
-    dplyr::mutate(variables = stringr::str_extract(variables,
-                                                   "[a-zA-Z0-9]+.{1,100}") %>%
-                    stringr::str_replace("ec50", half_max_label))
+      variables = variable %>%
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
+        stringr::str_remove(predictors_col_name) %>%
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
+        stringr::str_replace("ec50", half_max_label))
   
 }
