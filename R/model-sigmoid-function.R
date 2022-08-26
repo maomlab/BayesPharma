@@ -1,5 +1,5 @@
 
-#' Sigmoid Formula
+#' Sigmoid Function
 #'
 #' @description A vectorized function of the sigmoid dose-response curve
 #'   equation. This may be need if stan backend is cmdstanr
