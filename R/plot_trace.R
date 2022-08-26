@@ -16,17 +16,19 @@
 #' @examples
 #'\dontrun{
 #' Consider a dose response experiment testing multiple activators.
-#' traceplot(model = my_dr_model,
-#'           predictors_col_name = "activators",
-#'           half_max_label = "ec50",
-#'           title = "Traceplot of Dose Response Activators Experiment")
+#' traceplot(
+#'   model = my_dr_model,
+#'   predictors_col_name = "activators",
+#'   half_max_label = "ec50",
+#'   title = "Traceplot of Dose Response Activators Experiment")
 #'}
 #'@export
 
-traceplot <- function(model,
-                      predictors_col_name = "_Intercept",
-                      half_max_label = "ec50",
-                      title = NULL) {
+traceplot <- function(
+    model,
+    predictors_col_name = "_Intercept",
+    half_max_label = "ec50",
+    title = NULL) {
 
   if (is.character(predictors_col_name) == FALSE) {
     warning("predictors_col_name must be a character. If there are not a
@@ -51,6 +53,5 @@ traceplot <- function(model,
 
   bayesplot::mcmc_trace(model_array) +
     ggplot2::ggtitle(
-      label = paste0("Trace Plot:", title)
-    )
+      label = paste0("Trace Plot:", title))
 }

@@ -1,7 +1,7 @@
 ---
 title: "Bayesian Dose Response Modeling and Analysis of Four Kappa Opioid Receptor Antagonists"
 author: "Madeline Martin"
-output: rmarkdown::html_vignette
+output: html_vignette
 vignette: >
   %\VignetteIndexEntry{Dose_Response_Kappa_Opioid_Receptor_Antagonists}
   %\VignetteEngine{knitr::rmarkdown}
@@ -363,9 +363,9 @@ but only by a minute amount.
 
 ```{r}
 kor_model <- kor_model %>%
-  brms::add_criterion(criterion = c("loo"), reloo = TRUE, ...)
+  brms::add_criterion(criterion = c("loo"), reloo = TRUE)
 kor_model2 <- kor_model2 %>%
-  brms::add_criterion(criterion = c("loo"), reloo = TRUE, ...)
+  brms::add_criterion(criterion = c("loo"), reloo = TRUE)
 
 brms::loo_compare(
   kor_model,
