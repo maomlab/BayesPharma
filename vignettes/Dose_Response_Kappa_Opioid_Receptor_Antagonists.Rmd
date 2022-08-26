@@ -202,7 +202,6 @@ BayesPharma::plot_pp_check(
   plot_type = "dens_overlay_grouped",
   group = 'Drug',
   n = 50)
-
 ```
 
 ## Visualizing and Analyzing Results

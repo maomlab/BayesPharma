@@ -20,18 +20,19 @@
 #' @examples
 #'\dontrun{
 #' Consider a dose response model with the plot type being 10 box plots
-#' plot_pp_check(model = my_dose_response_model,
-#'               plot_type = "box_plot",
-#'               n = 10)
+#' plot_pp_check(
+#'   model = my_dose_response_model,
+#'   plot_type = "box_plot",
+#'   n = 10)
 #'}
 #' @export
 
-plot_pp_check <- function(model,
-                          plot_type = "dens_overlay",
-                          n = 50,
-                          ...) {
+plot_pp_check <- function(
+    model,
+    plot_type = "dens_overlay",
+    n = 50,
+    ...) {
 
   brms::expose_functions(model, vectorize = TRUE)
-
   brms::pp_check(model, type = plot_type, ndraws = n, ...)
 }

@@ -37,13 +37,16 @@ Collage:
     'util.R',
     'run_dr_brm_model.R',
     'run_tQ_model.R',
-    'pp_density_distribution_plots.R',
+    'plot-density_distributions.R',
+    'plot-posterior_densities.R',
+    'plot-prior_posterior_densities.R',
     'plot_posterior_sample_draws.R',
     'create_default_inits.R',
     'create_priors.R',
     'plot_trace.R',
     'plot_prior_posterior_check.R'
-    'Pnear_model.R'
+    'Pnear_model.R',
+    'summary-basic_stats.R'
 Encoding: UTF-8
 License: MIT + file LICENSE
 Suggests:
