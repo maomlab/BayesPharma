@@ -19,48 +19,48 @@
 #' @examples
 #'\dontrun{
 #' Consider an activator that has a max response around 50%, EC50 is estimated
-#' to be around 1uM, minimum response is known to be 0, and 4 MCMC chains will
+#' to be around 1 uM, minimum response is known to be 0, and 4 MCMC chains will
 #' be used by the model.
 #'
-#' inits <- BayesPharma::dr_inits(ec50 = -6,
-#'                                hill = TRUE,
-#'                                inhibitor = FALSE,
-#'                                top = 50,
-#'                                bottom = 0,
-#'                                chains = 4)
+#' inits <- BayesPharma::dr_inits(
+#'   ec50 = -6,
+#'   hill = TRUE,
+#'   inhibitor = FALSE,
+#'   top = 50,
+#'   bottom = 0,
+#'   chains = 4)
 #'}
 #'@export
 
-dr_inits <- function(ec50 = -9,
-                     hill = TRUE,
-                     inhibitor = TRUE,
-                     top = 100,
-                     bottom = 0,
-                     chains = 4) {
+dr_inits <- function(
+    ec50 = -9,
+    hill = TRUE,
+    inhibitor = TRUE,
+    top = 100,
+    bottom = 0,
+    chains = 4) {
   
   ec50_init <- ec50
   
   if (inhibitor == FALSE && hill == TRUE || hill == FALSE) {
     hill_init <- 1
-    print("hill is a positive slope.")
+    cat("hill is a positive slope.\n")
   } else if (inhibitor == TRUE && hill == TRUE || hill == FALSE) {
-    print("hill is a negative slope.")
+    cat("hill is a negative slope.\n")
     hill_init <- -1
   } else{
     hill_init <- hill
   }
   
   top_init <- top
-  
   bottom_init <- bottom
   
-  init_list <- list(ec50 = ec50_init,
-                    hill = hill_init,
-                    top = top_init,
-                    bottom = bottom_init)
+  init_list <- list(
+    ec50 = ec50_init,
+    hill = hill_init,
+    top = top_init,
+    bottom = bottom_init)
   
   inits <- rep(list(init_list), chains)
-  
   return(inits)
-  
 }
