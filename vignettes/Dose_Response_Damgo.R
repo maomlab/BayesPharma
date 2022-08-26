@@ -1,0 +1,19 @@
+## ----set-options, include = FALSE---------------------------------------------
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+# cmdstanr is more up-to-date than rstan and runs a little faster
+# but can't expose defined functions for downstream analysis
+if(Sys.info()["machine"] == "arm64"){
+  cat("rstan does not currently support apple M1 chips, setting stan_backend = 'cmdstanr'")
+  stan_backend <- "cmdstanr"
+} else {
+  stan_backend <- "rstan"
+}
+
+
+## ----setup--------------------------------------------------------------------
+# library(BayesPharma)
+
