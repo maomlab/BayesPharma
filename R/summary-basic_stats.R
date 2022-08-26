@@ -47,7 +47,7 @@ basic_stats <- function(
           u_ci = c(ple_info[, 4])) %>%
     tibble::rownames_to_column("variables") %>%
     dplyr::mutate(
-      variables = variable %>%
+      variables = variables %>%
         stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
         stringr::str_remove(predictors_col_name) %>%
         stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
