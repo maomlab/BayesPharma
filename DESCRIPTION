@@ -28,7 +28,6 @@ Imports:
 Collage:
     'calculate_log_dose.R',
     'change_data_column_names.R',
-    'compare_model.R',
     'data.R',
     'helpers-testthat.R',
     'model-sigmoid-init.R',
