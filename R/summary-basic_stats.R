@@ -34,7 +34,7 @@ basic_stats <- function(
     u_ci = 0.975) {
   
   ple_info <- model %>% brms::fixef(probs = c(l_ci, u_ci))
-  cat("lower CI:", l_ci, " upper CI:", u_ci, "\n", sep = "",  )
+  cat("lower CI:", l_ci, " upper CI:", u_ci, "\n", sep = "")
   
   model %>%
     posterior::summarise_draws(
