@@ -32,8 +32,9 @@ functions: https://mc-stan.org/bayesplot/reference/PPC-overview.html
 \examples{
 \dontrun{
 Consider a dose response model with the plot type being 10 box plots
-plot_pp_check(model = my_dose_response_model,
-              plot_type = "box_plot",
-              n = 10)
+plot_pp_check(
+  model = my_dose_response_model,
+  plot_type = "box_plot",
+  n = 10)
 }
 }
