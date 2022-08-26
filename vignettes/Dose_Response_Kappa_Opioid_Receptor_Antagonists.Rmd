@@ -1,14 +1,16 @@
 ---
 title: "Bayesian Dose Response Modeling and Analysis of Four Kappa Opioid Receptor Antagonists"
 author: "Madeline Martin"
-output: html_vignette
+output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Dose_Response_Kappa_Opioid_Receptor_Antagonists}
+  %\VignetteIndexEntry{Bayesian Dose Response Modeling and Analysis of Four Kappa Opioid Receptor Antagonists}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+
 ---
 
-```{r set-options, echo=FALSE}
+```{r set-options}
+#| echo=FALSE
 options(rmarkdown.html_vignette.check_title = FALSE)
 
 # inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
@@ -37,17 +39,14 @@ if(Sys.info()["machine"] == "arm64"){
 ```
 
 ```{r load-packages}
+#| echo=FALSE
+
 library(tidymodels)
 library(BayesPharma)
 library(drc) 
-
-library(extrafont)
-extrafont::font_import()
 ```
 
----
 # Dose Response Analysis of Four Novel Kappa Opioid Receptor Antagonists
-
 In this case study we are going to reanalyze the dose response of 4 kappa opioid 
 receptor (KOR) antagonists using the `BayesPharma` package from from a study 
 done by Margolis et al. (2020). Whole cell electrophysiology in acute rat 
@@ -61,7 +60,6 @@ normalized to % baseline then fit to a 4-parameter log-logistic dose response
 model, setting the top (max response) to 100% and estimating the IC50, its 
 variance, and the bottom (min response).
 
----
 First, we will load the normalized dose-response data and plot it:
 
 ```{r load-data}
@@ -76,6 +74,8 @@ kor_antag
 ```
 
 ```{r plot-data}
+#| dependson=c("load-data")
+
 ggplot2::ggplot(kor_antag) +
   ggplot2::theme_bw() +
   ggplot2::geom_point(
@@ -92,9 +92,7 @@ ggplot2::ggplot(kor_antag) +
     facets = dplyr::vars(Drug)) 
 ```
 
-
 ## Setting the Priors for the Model
-
 For the priors, we are going to use a normal distribution because the response
 values are continuous. 
 First, We will run the analysis with top (max response) parameter prior set to 
@@ -109,7 +107,8 @@ The level of informativeness of the priors will affect how much influence the
 priors have on the model. Here is more [information on prior choice 
 recommendations.](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
 
-```{r priors}
+```{r default-priors}
+
 kor_priors <- BayesPharma::dr_priors(
   inhibitor = TRUE,
   top = 100)
@@ -117,17 +116,17 @@ kor_priors
 ```
 
 ### Initial Values for Parameters
-
 Then, we will set inits to values close to parameter estimates to help with 
 model convergence. The inits are the starting values for the mcmc chains of each 
 parameter. The default inits: ec50 = -9, hill = -1, top = 100, bottom = 0
 
-```{r default-init, warning=FALSE, message=FALSE}
+```{r default-init}
+#| warning=FALSE,
+#| message=FALSE
 kor_inits <- BayesPharma::dr_inits()
 ```
 
 ### Prior Predictive Check
-
 Before running the model, we will verify that the prior distributions
 cover a plausible range of values for each parameter. To do this, we want to 
 sample only from the prior distributions by adding  *sample_prior = "only"* as 
@@ -135,7 +134,11 @@ an argument to the `dr_model` function.
 We will use the default response distribution of the model 
 (*family = gaussian()*).
 
-```{r sample-prior, results='hide', message=FALSE, cache=TRUE}
+```{r sample-prior}
+#| results='hide',
+#| message=FALSE,
+#| dependson=c("load-data", "default-priors", "default-inits")
+
 kor_sample_priors <- BayesPharma::dr_model(
   kor_antag,
   BayesPharma::dr_formula(), 
@@ -146,6 +149,8 @@ kor_sample_priors <- BayesPharma::dr_model(
 
 Plot of the Prior Distributions:
 ```{r plot-prior-density}
+#| dependson=c("sample-prior")
+
 BayesPharma::density_distributions(
   kor_sample_priors, 
   half_max_label = "ic50",
@@ -163,7 +168,10 @@ responses.
 To fit the model for each antagonist, we set the *predictors* argument in 
 `dr_formula` to be *predictors = 0 + Drug*. 
 
-```{r model, results='hide', message=FALSE, cache=TRUE}
+```{r model}
+#| results='hide',
+#| message=FALSE,
+#| dependson=c("load-data", "default-priors", "default-inits")
 kor_model <- BayesPharma::dr_model(
   data = kor_antag,
   formula = BayesPharma::dr_formula(0 + Drug), 
@@ -174,6 +182,8 @@ kor_model <- BayesPharma::dr_model(
 ### Results from the Model
 
 ```{r model-summary}
+#| dependson=c("model")
+
 kor_model
 ```
 
@@ -184,6 +194,8 @@ stability. The R-hat for each parameter equals 1.00 and the traceplot shows the
 chains mixed well indicating the chains converged.
 
 ```{r model-traceplot}
+#| dependson=c("model")
+
 BayesPharma::traceplot(
   kor_model, 
   predictors_col_name = "Drug", 
@@ -203,6 +215,8 @@ simulated data for the PF model is less structured, is an okay fit, and has
 the highest level of uncertainty of the 4 drugs.
 
 ```{r model-pp-check}
+#| dependson=c("model")
+
 BayesPharma::plot_pp_check(
   kor_model,
   plot_type = "dens_overlay_grouped",
@@ -218,6 +232,8 @@ comparing the density distribution of the prior and posterior.
 produced by the model:
 
 ```{r model-prior-posterior-densities}
+#| dependson=c("model")
+
 BayesPharma::prior_posterior_densities(
   kor_model,
   predictors_col_name = "Drug",
@@ -228,7 +244,11 @@ Displayed below is a plot of the posterior distributions for each parameter
 with the confidence intervals and mean. This is a useful visual of the model 
 results and to highlight the mode and high density intervals: 
 
-```{r model-posterior-densities, message=FALSE, warning=FALSE}
+```{r model-posterior-densities}
+#| message=FALSE,
+#| warning=FALSE,
+#| dependson=c("model")
+
 BayesPharma::posterior_densities(
   kor_model, 
   predictors_col_name = "Drug", 
@@ -239,9 +259,10 @@ Displayed below is a plot of a sample of 100 sigmoid dose-response curves from
 the posterior distribution (purple) and the median quantile intervals: 
 
 ```{r model-posterior-draws}
+#| dependson=c("model")
+
 BayesPharma::posterior_draws_plot(
   model = kor_model,
-  data = kor_antag, 
   predictors_col_name = "Drug",
   lower = -12,
   upper = -4,
@@ -252,10 +273,7 @@ BayesPharma::posterior_draws_plot(
   ylab = "Response")
 ```
 
-
----
 ## Improving the Model with More Informative Priors
-
 Below are the dose-response results discussed in the paper:
 BTRX-335140: ic50 = 1.2 +/- 0.9 nM (-8.9 +/- 0.2 M), bottom = 1.3%
 BTRX-395750: ic50 = 1.2 +/- 1.3 nM (-8.9 +/- 0.3 M), bottom = 28.0%
@@ -273,7 +291,11 @@ kor_priors2
 
 Sampling the Priors:
 
-```{r model2, results='hide', message=FALSE, cache=TRUE}
+```{r model2-sample-prior}
+#| results='hide',
+#| message=FALSE,
+#| dependson=c("load-data", "default-inits", "model-priors2")
+
 kor_sample_priors <- BayesPharma::dr_model(
   kor_antag,
   BayesPharma::dr_formula(), 
@@ -284,6 +306,7 @@ kor_sample_priors <- BayesPharma::dr_model(
 
 Plot of the Prior Distributions:
 ```{r model2-prior-density}
+#| dependson=c("model2")
 BayesPharma::density_distributions(
   kor_sample_priors,
   predictors_col_name = "_Intercept",
@@ -361,7 +384,7 @@ The model with an elpd_diff and an se_diff of 0 is the preferred model.
 The kor_model2, the model with more informative priors, is the preferred model,
 but only by a minute amount.
 
-```{r}
+```{r add-loo, cache=TRUE}
 kor_model <- kor_model %>%
   brms::add_criterion(criterion = c("loo"), reloo = TRUE)
 kor_model2 <- kor_model2 %>%
@@ -656,7 +679,7 @@ parameter of the dose-response curve. Here we see that the Bayesian method
 provides a distribution curve as evidence and has smaller confidence intervals 
 than most of the standard errors provided by the drc method. 
 
-```{r, echo=FALSE}
+```{r bayes-vs-drc, echo=FALSE}
 bayes_vs_drc <- function(
     model,
     filter_label, 
@@ -670,40 +693,51 @@ bayes_vs_drc <- function(
       tidybayes::gather_variables() %>%
       dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
       dplyr::filter(!stringr::str_detect(.variable, "sigma")) %>%
-      dplyr::filter(stringr::str_detect(.variable, filter_label))
-  ) %>%
+      dplyr::filter(stringr::str_detect(.variable, filter_label))) %>%
     dplyr::rename(variables = .variable) %>%
-    dplyr::mutate(variables = stringr::str_extract(variables,
-                                                   "b_[a-zA-Z0-9]+.{1,100}") %>%
-                    stringr::str_remove("b_")) %>%
-    dplyr::mutate(variables = stringr::str_extract(variables,
-                                                   "[a-zA-Z0-9]+.{1,100}") %>%
-                    stringr::str_remove(predictors_col_name)) %>%
-    dplyr::mutate(variables = stringr::str_extract(variables,
-                                                   "[a-zA-Z0-9]+.{1,100}") %>%
-                    stringr::str_replace(filter_label, half_max_label))
+    dplyr::mutate(
+      variables = variables %>%
+        stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") %>%
+        stringr::str_remove("b_") %>%
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
+        stringr::str_remove(predictors_col_name) %>%
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
+        stringr::str_replace(filter_label, half_max_label))
   
   model <- c("Bayes" = "blue", "drc" = "red")
 
   ggplot2::ggplot() +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "right") +
-    tidybayes::stat_halfeye(data = posterior,
-                  ggplot2::aes(x = .value, y = variables, color = "Bayes"), 
-                  .width = c(0.66, 0.95)) +
-    tidybayes::geom_pointinterval(data = drc,
-                    ggplot2::aes(y = variables, x = mean, xmin = l_ci, 
-                                 xmax = u_ci, color = "drc"),
-                    position = ggplot2::position_nudge(y = -0.1),
-                    size = 3) +
-    ggplot2::labs(x = "Log[Molar] EM1", color = "model") +
+    tidybayes::stat_halfeye(
+      data = posterior,
+      mapping = ggplot2::aes(
+        x = .value,
+        y = variables,
+        color = "Bayes"), 
+      .width = c(0.66, 0.95)) +
+    tidybayes::geom_pointinterval(
+      data = drc,
+      ggplot2::aes(
+        y = variables,
+        x = mean,
+        xmin = l_ci, 
+        xmax = u_ci,
+        color = "drc"),
+      position = ggplot2::position_nudge(y = -0.1),
+      size = 3) +
+    ggplot2::labs(
+      x = "Log[Molar] EM1",
+      color = "model") +
     ggplot2::scale_color_manual(values = model)
 }
 ```
-```{r}
+
+
+```{r model2-bayes-vs-drc}
+#| dependson=c("model2", "bayes-vs-drc")
 
 bayes_vs_drc(kor_model2, "ec50", "Drug", "ic50", drc_ic50) 
-
 ```
 
 (The drc results for the hill are displayed as a positive value although the 

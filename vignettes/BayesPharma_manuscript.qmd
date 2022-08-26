@@ -46,6 +46,32 @@ header-includes: |
   \definecolor{shape}{rgb}{0.4570312,0.4375000,0.6992188}
   
 ---
+```{r set-options}
+#| echo=FALSE
+# inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
+knitr::opts_chunk$set(
+  cache = TRUE,
+  echo = FALSE,
+  fig.path = "BayesPharma_manuscript/quarto-",
+  fig.retina = 2, # Control using dpi
+  fig.width = 6,  # generated images
+  fig.height = 5, # generated images
+  fig.pos = "t",  # pdf mode
+  fig.align = "center",
+  dpi = if (knitr::is_latex_output()) 72 else 300, 
+  out.width = "100%")
+#  dev = "svg",
+#  dev.args = list(png = list(type = "cairo-png")),
+#  optipng = "-o1 -quiet")
+# cmdstanr is more up-to-date than rstan and runs a little faster
+# but can't expose defined functions for downstream analysis
+if(Sys.info()["machine"] == "arm64"){
+  #rstan does not currently support apple M1 chips
+  stan_backend <- "cmdstanr"
+} else {
+  stan_backend <- "rstan"
+}
+```
 
 # Introduction
 As pharmacology experiments increase in complexity, it becomes increasingly challenging to analyze them. While there are many frameworks for fitting common curves in pharmacology ranging from the user friendly GraphPad Prism, the \texttt{drc} dose response curves \texttt{R} package\ref{}, to generic \texttt{nlm} packages, a principled approach is to use Bayesian statistics to quantify model uncertainty before and after collecting data. In practice this requires defining a functional form, a prior distribution over the model parameters, and likelihood function that models the data generation process. Then using Markov Chain Monte-Carlo (MCMC) or variational inference the prior and the likelihood are combined to generate samples from the posterior distribution over the parameters. 
@@ -83,7 +109,33 @@ To provide data to the BayesPharma package, the user provides a R \texttt{data.f
 In this section we will consider several models as case studies: the sigmoidal hill model in #{sec:hill}, the MuSyC synergy model in {#sec:MuSyC}, Michaelis-Menten enzyme progress curve in #{sec:michaelis_menten}. For each we will implement it, and apply it to example data by fitting different models and then we will compare the models based on their fit of the data and inferences that can be made.
 
 ## Hill Equation {#hill}
-{{< Dose_Response_Kappa_Opioid_Receptor_antagonists.rmd >}}
+In this case study we are going to reanalyze the dose response of 4 Kappa Opioid 
+receptor (KOR) antagonists using the `BayesPharma` package from from a study 
+done by Margolis et al. (-@Margolis2020-bm). Whole cell electrophysiology in acute rat midbrain slices was used to evaluate pharmacological properties of four novel KOR antagonists: BTRX-335140, BTRX-395750, PF-04455242, and JNJ-67953964
+
+Originally paper, the dose-response data analysis was done by using the `drc` package in R which implements the minimization of negative log likelihood function and reduces to least square estimation for a continuous response. The data was normalized to % baseline then fit to a 4-parameter log-logistic dose response model, setting the top (max response) to 100% and estimating the IC50, its variance, and the bottom (min response).
+
+```{r kor-model-prep}
+load("../data/kor_antag.rda")
+kor_antag <- kor_antag |> dplyr::transmute(
+  substance_id = Drug,
+  cell_id = cell_number,
+  log_dose = log_dose,
+  response = normalized_measurement)
+```
+
+```{r kor-model}
+#| echo=TRUE,
+#| results='hide',
+#| message=FALSE,
+#| dependson = c("kor-model-prep")
+kor_model <- BayesPharma::dr_model(
+  data = kor_antag |> dplyr::select(
+    substance_id, cell_id, log_dose, response),
+  formula = BayesPharma::dr_formula(predictors = 0 + substance_id), 
+  priors = BayesPharma::dr_priors(inhibitor = TRUE, top = 100),
+  init = BayesPharma::dr_inits())
+```
 
 
 
