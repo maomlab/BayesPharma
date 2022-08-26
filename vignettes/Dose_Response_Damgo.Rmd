@@ -77,10 +77,13 @@ arguments are set to *NULL*.
 - Maybe unneeded ^ -  
 
 ```{r}
-damgo <- BayesPharma::calculate_log_dose(data = damgo, dose_col = dose_nM, 
-                                         molar_concentration = 10^(-9))
-damgo <- BayesPharma::change_col_names(data = damgo, 
-                                       response_col_name = normalized_response)
+damgo <- BayesPharma::calculate_log_dose(
+  data = damgo,
+  dose_col = dose_nM, 
+  molar_concentration = 10^(-9))
+damgo <- BayesPharma::change_col_names(
+  data = damgo, 
+  response_col_name = normalized_response)
 damgo
 ```
 
