@@ -41,14 +41,15 @@ Creating a list of lists containing initial values for the
 \examples{
 \dontrun{
 Consider an activator that has a max response around 50\%, EC50 is estimated
-to be around 1uM, minimum response is known to be 0, and 4 MCMC chains will
+to be around 1 uM, minimum response is known to be 0, and 4 MCMC chains will
 be used by the model.
 
-inits <- BayesPharma::dr_inits(ec50 = -6,
-                               hill = TRUE,
-                               inhibitor = FALSE,
-                               top = 50,
-                               bottom = 0,
-                               chains = 4)
+inits <- BayesPharma::dr_inits(
+  ec50 = -6,
+  hill = TRUE,
+  inhibitor = FALSE,
+  top = 50,
+  bottom = 0,
+  chains = 4)
 }
 }
