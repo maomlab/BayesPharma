@@ -35,6 +35,7 @@ if(Sys.info()["machine"] == "arm64"){
 ```
 
 ```{r load-packages}
+library(tidymodels)
 library(BayesPharma)
 ```
 
@@ -61,10 +62,20 @@ First, we will load the normalized dose-response data and plot it:
 
 load("../data/kor_antag.rda")
 
+# The BayesPharma uses columns log_dose and response
+kor_antag <- kor_antag %>%
+  dplyr::mutate(
+    response = normalized_measurement)
+kor_antag
+```
+
+```{r plot-data}
 ggplot2::ggplot(kor_antag) +
   ggplot2::theme_bw() +
   ggplot2::geom_point(
-    ggplot2::aes(x = log_dose, y = normalized_measurement),
+    mapping = ggplot2::aes(
+      x = log_dose,
+      y = response),
     size = 1.0,
     color = "black") +
   ggplot2::labs(title = "",
@@ -73,25 +84,6 @@ ggplot2::ggplot(kor_antag) +
        color = "Drug") + 
   ggplot2::facet_wrap(
     facets = dplyr::vars(Drug)) 
-```
-
----
-
-Before moving forward with the analysis using `BayesPharma`, there are 
-limitations to the package that requires the column containing the response 
-values to be labeled "response", and the dose to be in log scale; 
-therefore, it may be necessary to use the `calculate_log_dose` and 
-`change_col_names` functions before running the model. 
-The loaded data already has a log dose column labelled "log_dose", so for this 
-data set we don't need to use the `calculate_log_dose` function or change the
-log dose column name.
-
-```{r}
-kor_antag <- BayesPharma::change_col_names(kor_antag,
-                                           response_col_name = 
-                                             "normalized_measurement")
-                                           
-kor_antag
 ```
 
 
@@ -112,7 +104,9 @@ priors have on the model. Here is more [information on prior choice
 recommendations.](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
 
 ```{r}
-kor_priors <- BayesPharma::dr_priors(inhibitor = TRUE, top = 100)
+kor_priors <- BayesPharma::dr_priors(
+  inhibitor = TRUE,
+  top = 100)
 kor_priors
 ```
 
@@ -136,18 +130,20 @@ We will use the default response distribution of the model
 (*family = gaussian()*).
 
 ```{r, results='hide', message=FALSE}
-kor_sample_priors <- BayesPharma::dr_model(kor_antag,
-                                           BayesPharma::dr_formula(), 
-                                           priors = kor_priors,
-                                           inits = kor_inits,
-                                           sample_prior = "only")
+kor_sample_priors <- BayesPharma::dr_model(
+  kor_antag,
+  BayesPharma::dr_formula(), 
+  priors = kor_priors,
+  init = kor_inits,
+  sample_prior = "only")
 ```
 
 Plot of the Prior Distributions:
 ```{r}
-BayesPharma::density_distributions(kor_sample_priors, 
-                                   half_max_label = "ic50",
-                                   title_label = "Prior Density Distributions")
+BayesPharma::density_distributions(
+  kor_sample_priors, 
+  half_max_label = "ic50",
+  title_label = "Prior Density Distributions")
 ```
 
 
@@ -162,10 +158,11 @@ To fit the model for each antagonist, we set the *predictors* argument in
 `dr_formula` to be *predictors = 0 + Drug*. 
 
 ```{r, results='hide', message=FALSE}
-kor_model <- BayesPharma::dr_model(data = kor_antag,
-                                   formula = BayesPharma::dr_formula(0 + Drug), 
-                                   priors = kor_priors,
-                                   inits = kor_inits)
+kor_model <- BayesPharma::dr_model(
+  data = kor_antag,
+  formula = BayesPharma::dr_formula(0 + Drug), 
+  priors = kor_priors,
+  inits = kor_inits)
 ```
 
 ### Results from the Model
@@ -181,9 +178,10 @@ stability. The R-hat for each parameter equals 1.00 and the traceplot shows the
 chains mixed well indicating the chains converged.
 
 ```{r}
-BayesPharma::traceplot(kor_model, 
-                       predictors_col_name = "Drug", 
-                       half_max_label = "ic50") 
+BayesPharma::traceplot(
+  kor_model, 
+  predictors_col_name = "Drug", 
+  half_max_label = "ic50") 
 ```
 
 ## Posterior Predictive Check
@@ -199,10 +197,11 @@ simulated data for the PF model is less structured, is an okay fit, and has
 the highest level of uncertainty of the 4 drugs.
 
 ```{r}
-BayesPharma::plot_pp_check(kor_model,
-                           plot_type = "dens_overlay_grouped",
-                           group = 'Drug',
-                           n = 50)
+BayesPharma::plot_pp_check(
+  kor_model,
+  plot_type = "dens_overlay_grouped",
+  group = 'Drug',
+  n = 50)
 
 ```
 
@@ -214,9 +213,10 @@ comparing the density distribution of the prior and posterior.
 produced by the model:
 
 ```{r}
-BayesPharma::prior_posterior_densities(kor_model,
-                                       predictors_col_name = "Drug",
-                                       half_max_label = "ic50")
+BayesPharma::prior_posterior_densities(
+  kor_model,
+  predictors_col_name = "Drug",
+  half_max_label = "ic50")
 ```
 
 Displayed below is a plot of the posterior distributions for each parameter 
@@ -224,21 +224,27 @@ with the confidence intervals and mean. This is a useful visual of the model
 results and to highlight the mode and high density intervals: 
 
 ```{r, message=FALSE, warning=FALSE}
-BayesPharma::posterior_densities(kor_model, 
-                                 predictors_col_name = "Drug", 
-                                 half_max_label = "ic50")
+BayesPharma::posterior_densities(
+  kor_model, 
+  predictors_col_name = "Drug", 
+  half_max_label = "ic50")
 ```
 
 Displayed below is a plot of a sample of 100 sigmoid dose-response curves from 
 the posterior distribution (purple) and the median quantile intervals: 
 
 ```{r}
-BayesPharma::posterior_draws_plot(model = kor_model, data = kor_antag, 
-                                  predictors_col_name = "Drug",
-                                  lower = -12, upper = -4, n = 50, 
-                                  facet_var = Drug,
-                                  title = "Dose-Response Posterior Draws",
-                                  xlab = "Log[Molar]", ylab = "Response")
+BayesPharma::posterior_draws_plot(
+  model = kor_model,
+  data = kor_antag, 
+  predictors_col_name = "Drug",
+  lower = -12,
+  upper = -4,
+  n = 50, 
+  facet_var = Drug,
+  title = "Dose-Response Posterior Draws",
+  xlab = "Log[Molar]",
+  ylab = "Response")
 ```
 
 
@@ -252,43 +258,43 @@ JNJ-67953964: ic50 = 3.0 +/- 4.6 nM (-8.5 +/- 0.4 M), bottom = -27%
 PF-04455242: ic50 = 6.7 +/- 15.1 nM (-8.2 +/- 0.5 M), bottom = 45%
 
 ```{r}
-kor_priors2 <- BayesPharma::dr_priors(ec50 = brms::prior(normal(-8.5, 0.5), 
-                                                         nlpar = "ec50"),
-                                      hill = brms::prior(normal(-1,0.5), 
-                                                         ub = 0.01, 
-                                                         nlpar = "hill"),
-                                      top = 100,
-                                      bottom = brms::prior(normal(10,15), 
-                                                           nlpar = "bottom"))
+kor_priors2 <- BayesPharma::dr_priors(
+  ec50 = brms::prior(normal(-8.5, 0.5), nlpar = "ec50"),
+  hill = brms::prior(normal(-1, 0.5), ub = 0.01, nlpar = "hill"),
+  top = 100,
+  bottom = brms::prior(normal(10, 15), nlpar = "bottom"))
 kor_priors2
 ```
 
 Sampling the Priors:
 
 ```{r, results='hide', message=FALSE}
-kor_sample_priors <- dr_model(kor_antag,
-                              BayesPharma::dr_formula(), 
-                              priors = kor_priors2,
-                              inits = kor_inits,
-                              sample_prior = "only")
+kor_sample_priors <- BayesPharma::dr_model(
+  kor_antag,
+  BayesPharma::dr_formula(), 
+  priors = kor_priors2,
+  inits = kor_inits,
+  sample_prior = "only")
 ```
 
 Plot of the Prior Distributions:
 ```{r}
-density_distributions(kor_sample_priors, predictors_col_name = "_Intercept",
-                      half_max_label = "ic50")
+BayesPharma::density_distributions(
+  kor_sample_priors,
+  predictors_col_name = "_Intercept",
+  half_max_label = "ic50")
 ```
 
 Running the Model:
 
 ```{r, results='hide', message=FALSE}
-kor_model2 <- dr_model(kor_antag,
-                       formula = BayesPharma::dr_formula(0 + Drug), 
-                       priors = kor_priors2,
-                       inits = kor_inits,
-                       cores = 2)
-```
-```{r}
+kor_model2 <- dr_model(
+  kor_antag,
+  formula = BayesPharma::dr_formula(0 + Drug), 
+  priors = kor_priors2,
+  inits = kor_inits,
+  cores = 2)
+
 kor_model2
 ```
 
@@ -296,47 +302,52 @@ kor_model2
 Checking the Model Convergence:
 
 ```{r}
-
 BayesPharma::traceplot(kor_model2, "Drug", "ic50") 
-
 ```
 
 Posterior Predictive Check:
 
 ```{r}
-BayesPharma::plot_pp_check(kor_model2,
-                           "dens_overlay_grouped", 
-                           group = 'Drug',
-                           n = 50)
+BayesPharma::plot_pp_check(
+  kor_model2,
+  "dens_overlay_grouped", 
+  group = 'Drug',
+  n = 50)
 ```
 
 Plot of the Prior and Posterior Distributions:
 
 ```{r}
-BayesPharma::prior_posterior_densities(kor_model2, 
-                                       predictors_col_name = "Drug",
-                                       half_max_label = "ic50")
+BayesPharma::prior_posterior_densities(
+  kor_model2, 
+  predictors_col_name = "Drug",
+  half_max_label = "ic50")
 ```
 
 Plot of the Posterior Distributions with the Mean and Confidence Intervals:
 
 ```{r, message=FALSE, warning=FALSE}
-BayesPharma::posterior_densities(kor_model2, 
-                                 predictors_col_name = "Drug",
-                                 half_max_label = "ic50")
+BayesPharma::posterior_densities(
+  kor_model2, 
+  predictors_col_name = "Drug",
+  half_max_label = "ic50")
 ```
 
 Sample of Sigmoid Dose-Response Curves from the Posterior Distribution and 
 Mean Curve:
 
 ```{r}
-
-BayesPharma::posterior_draws_plot(model = kor_model2, data = kor_antag, 
-                                  predictors_col_name = "Drug",
-                                  lower = -12, upper = -4, n = 50, 
-                                  facet_var = Drug, 
-                                  title = "Dose-Response Posterior Draws",
-                                  xlab = "Log[Molar]", ylab = "Response")
+BayesPharma::posterior_draws_plot(
+  model = kor_model2,
+  data = kor_antag, 
+  predictors_col_name = "Drug",
+  lower = -12,
+  upper = -4,
+  n = 50, 
+  facet_var = Drug, 
+  title = "Dose-Response Posterior Draws",
+  xlab = "Log[Molar]",
+  ylab = "Response")
 ```
 
 ## Comparing the Two Models Using LOO-Comparison:
@@ -376,25 +387,29 @@ PF_df <- kor_antag[grepl("PF", kor_antag$Drug),]
 
 Here is the code and results of the drc dose response model:
 ```{r}
-BTRX_335140_drc <- drm(response ~ log_dose,
-                       data = BTRX_335140_df,
-                       fct = L.4(fixed = c(NA, NA, 100, NA),
-                                 names = c("hill", "bottom", "top", "ic50")))
+BTRX_335140_drc <- drc::drm(
+  response ~ log_dose,
+  data = BTRX_335140_df,
+  fct = L.4(fixed = c(NA, NA, 100, NA),
+  names = c("hill", "bottom", "top", "ic50")))
 
-BTRX_395750_drc <- drm(response ~ log_dose,
-                       data = BTRX_395750_df,
-                       fct = L.4(fixed = c(NA, NA, 100, NA),
-                                 names = c("hill", "bottom", "top", "ic50")))
+BTRX_395750_drc <- drc::drm(
+  response ~ log_dose,
+  data = BTRX_395750_df,
+  fct = L.4(fixed = c(NA, NA, 100, NA),
+  names = c("hill", "bottom", "top", "ic50")))
 
-JNJ_drc <- drm(response ~ log_dose,
-                       data = JNJ_df,
-                       fct = L.4(fixed = c(NA, NA, 100, NA),
-                                 names = c("hill", "bottom", "top", "ic50")))
+JNJ_drc <- drc::drm(
+  response ~ log_dose,
+  data = JNJ_df,
+  fct = L.4(fixed = c(NA, NA, 100, NA),
+  names = c("hill", "bottom", "top", "ic50")))
 
-PF_drc <- drm(response ~ log_dose,
-                       data = PF_df,
-                       fct = L.4(fixed = c(NA, NA, 100, NA),
-                                 names = c("hill", "bottom", "top", "ic50")))
+PF_drc <- drm(
+  response ~ log_dose,
+  data = PF_df,
+  fct = L.4(fixed = c(NA, NA, 100, NA),
+  names = c("hill", "bottom", "top", "ic50")))
 
 summary(BTRX_335140_drc)
 summary(BTRX_395750_drc)
