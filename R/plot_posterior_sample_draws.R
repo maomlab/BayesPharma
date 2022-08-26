@@ -82,7 +82,7 @@ posterior_draws_plot <- function(
   ep_data <- model %>%
     tidybayes::add_epred_draws(
       newdata = tidyr::expand_grid(
-        log_dose = seq(from = lower, to = upper, length.out = n),
+        log_dose = seq(from = lower, to = upper, length.out = 50),
         {{predictors_col_name}} := data[[predictors_col_name]] %>% unique()),
       value = "response",
       re_formula = NA,
@@ -91,10 +91,11 @@ posterior_draws_plot <- function(
   pp_data <- model %>%
     tidybayes::add_predicted_draws(
       newdata = tidyr::expand_grid(
-        log_dose = seq(from = lower, to = upper, length.out = n),
+        log_dose = seq(from = lower, to = upper, length.out = 50),
         {{predictors_col_name}} := data[[predictors_col_name]] %>% unique()),
       value = "response",
-      re_formula = NA)  %>%
+      re_formula = NA,
+      ndraws = n)  %>%
     ggdist:: median_qi(.width = c(.5, .8, .95))
 
   plot <- ggplot2::ggplot() +
