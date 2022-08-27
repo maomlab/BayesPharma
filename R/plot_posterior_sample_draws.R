@@ -56,6 +56,12 @@ posterior_draws_plot <- function(
     xlab = "Log[Molar]",
     ylab = "Response") {
 
+  if(class(model) != "brmsfit"){
+    warning(paste0(
+      "posterior_draws_plot expects model to be of class 'brmsfit',",
+      " instead it is of class ", class(model)))
+  }
+  
   if (is.character(predictors_col_name) == FALSE) {
     warning("predictors_col_name must be a character. If there are not a
             predictors in the data and model, then run using the default
@@ -64,6 +70,18 @@ posterior_draws_plot <- function(
     warning("predictors_col_name is set to default argument 'na'. If predictors
             are present in the data and model, assign the column name to
             predictors_col_name.")
+  }
+  
+  if(!exists("sigmoid")){
+    if(model$backend == "rstan"){
+      brms::expose_functions(model)
+    } else if(model$backend == "cmdstanr") {
+      # add the sigmoid function to the current environment
+      sigmoid <- BayesPharma::sigmoid
+    } else {
+      warning(
+        paste0("Unrecognized model backend '", model$backend, "'\n", sep = ""))
+    }
   }
   
   if(is.null(data)){
@@ -79,23 +97,24 @@ posterior_draws_plot <- function(
     purrr::pluck("log_dose") |>
     max(na.rm = TRUE)
   
+  # this makes the "hair"
   ep_data <- model %>%
     tidybayes::add_epred_draws(
       newdata = tidyr::expand_grid(
-        log_dose = seq(from = lower, to = upper, length.out = 50),
+        log_dose = seq(from = lower, to = upper, length.out = 100),
         {{predictors_col_name}} := data[[predictors_col_name]] %>% unique()),
       value = "response",
       re_formula = NA,
       ndraws = n)
 
+  # this makes the ribbon
   pp_data <- model %>%
     tidybayes::add_predicted_draws(
       newdata = tidyr::expand_grid(
-        log_dose = seq(from = lower, to = upper, length.out = 50),
+        log_dose = seq(from = lower, to = upper, length.out = 100),
         {{predictors_col_name}} := data[[predictors_col_name]] %>% unique()),
       value = "response",
-      re_formula = NA,
-      ndraws = n)  %>%
+      re_formula = NA)  %>%
     ggdist:: median_qi(.width = c(.5, .8, .95))
 
   plot <- ggplot2::ggplot() +
