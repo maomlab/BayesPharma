@@ -1,28 +1,63 @@
 ---
 title: "BayesPharma: Bayesian methods for pharmacology models"
+format:
+  jss-pdf:
+    keep-tex: true  
+  jss-html: default
 author:
   - name: Madeline J. Martin
     email: martin.mjm105@gmail.com
-    affiliation: 1
+    affiliations:
+      - ref: knight
   - name: Elayne Vieira Diaz
     email: Elayne.Vieiradias@ucsf.edu
-    affiliation: 2
+    affiliations:
+      - ref: weill
   - name: P. Walter German
     email: p.walter.german@gmail.com
-    affiliation: 2
+    affiliations:
+      - ref: weill
   - name: Elyssa B. Margolis
     email: elyssa.margolis@ucsf.edu
-    affiliation: 2, 3
+    orcid: 0000-0001-8777-302X
+    affiliations:
+      - ref: weill
+      - ref: ucsf_ngp
   - name: Matthew J. O'Meara
     email: maom@umich.edu
-    affiliation: 4
-affiliation:
-  - Knight Campus Center for Accelerating Scientific Impact, University of Oregon, Eugene OR 97403, USA
-  - UCSF Weill Institute for Neurosciences, Department of Neurology, University of California, San Francisco, CA, USA
-  - Neuroscience Graduate Program, University of California, San Francisco, CA, USA
-  - Department of Computational Medicine and Bioinformatics, University of Michigan, Ann Arbor, USA
-keywords: Bayesian, R Package, Pharmacology
-abstract:
+    orcid: 0000-0002-3128-5331
+    attributes:
+      corresponding: true
+    affiliations:
+      - ref: dcmb
+affiliations:
+  - id: knight
+    name: University of Oregon
+    department: Knight Campus Center for Accelerating Scientific Impact
+    city: Eugene
+    state: OR
+    postal-code: 97403
+    country: USA
+  - id: weill
+    name: University of California, San Francisco
+    department: UCSF Weill Institute for Neurosciences, Department of Neurology 
+    city: San Francisco
+    state: CA
+    postal-code: 94158
+    country: USA
+  - id: ucsf_ngp
+    name: University of California, San Francisco
+    department: Neuroscience Graduate Program
+    city: San Francisco
+    state: CA
+    country: USA
+  - id: dcmb
+    name: University of Michigan
+    department: Department of Computational Medicine and Bioinformatics
+    city: Ann Arbor
+    state: MI
+    country: USA
+abstract: |
   In pharmacology, many experiments seek to measure how a reductive biological
   system responds to one or more treatments. Here we present BayesPharma, a
   collection of Bayesian methods to help analyze these experiments. BayesPharma
@@ -32,11 +67,6 @@ abstract:
   pharmacology models; as a pedagogical framework for learning Bayesian methods;
   and as a starting point for building and analyzing sophisticated
   pharmacological models.  
-format:
-  pdf:
-    documentclass: article
-    papersize: letter
-    classoption: [twocolumn]
 bibliography: BayesPharma_manuscript_references.bib
 editor: visual
 header-includes: |
@@ -44,7 +74,9 @@ header-includes: |
   \definecolor{dose}{rgb}{0.10546875,0.6171875,0.46484375}
   \definecolor{response}{rgb}{0.8476562,0.3710938,0.0078125}
   \definecolor{shape}{rgb}{0.4570312,0.4375000,0.6992188}
-  
+
+keywords: [Bayesian, Pharmacology, R]
+keywords-formatted: [Bayesian, Pharmacology, "[R]{.proglang}"]
 ---
 ```{r set-options}
 #| echo=FALSE
@@ -124,18 +156,19 @@ kor_antag <- kor_antag |> dplyr::transmute(
   response = normalized_measurement)
 ```
 
-```{r kor-model}
+```{r kor-model, eval=FALSE}
 #| echo=TRUE,
 #| results='hide',
 #| message=FALSE,
 #| dependson = c("kor-model-prep")
 kor_model <- BayesPharma::dr_model(
-  data = kor_antag |> dplyr::select(
-    substance_id, cell_id, log_dose, response),
+  data = kor_antag |> dplyr::select(substance_id, log_dose, response),
   formula = BayesPharma::dr_formula(predictors = 0 + substance_id), 
   priors = BayesPharma::dr_priors(inhibitor = TRUE, top = 100),
-  init = BayesPharma::dr_inits())
+  init = BayesPharma::dr_inits(),
+  backend="cmdstanr")
 ```
+
 
 
 
