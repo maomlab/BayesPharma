@@ -33,13 +33,13 @@ progress curves), by varying the enzyme and substrate concentrations.
 
 From (Choi, et al, 2017, equation 2, the total quasi-steady-state
 approximation (tQ) differential equation is defined by
-  
+
   Observed data:
-     M     = number of measurements        # number of measurements 
+     M     = number of measurements        # number of measurements
      t[M]  = time                          # measured in seconds
      Pt[M] = product                       # product produced at time t
      ST    = substrate total concentration # specified for each experiment
-     ET    = enzyme total concentration    # specified for each experiment 
+     ET    = enzyme total concentration    # specified for each experiment
 
   Model parameters:
     kcat    # catalytic constant (min^-1)
