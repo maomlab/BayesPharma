@@ -67,7 +67,7 @@ abstract: |
   pharmacology models; as a pedagogical framework for learning Bayesian methods;
   and as a starting point for building and analyzing sophisticated
   pharmacological models.  
-bibliography: BayesPharma_manuscript_references.bib
+bibliography: references.bib
 editor: visual
 header-includes: |
   % https://colorbrewer2.org/#type=qualitative&scheme=Dark2&n=3
@@ -158,12 +158,13 @@ values are continuous. First, We will run the analysis with top (max response) p
 priors for ic50, hill and bottom. Broad priors represent unbiased uncertainty and provide an opportunity for extreme responses.
 
 The level of informativeness of the priors will affect how much influence the priors have on the model. Here is more [information on prior choice recommendations.](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
+\scriptsize
 ```{r kor-priors}
 #| echo=TRUE
 kor_priors <- BayesPharma::dr_priors(inhibitor = TRUE, top = 100)
 kor_priors
 ```
-
+\normalsize
 
 #### Prior predictive checks
 Following the Bayesian workflow, before fitting the model it is good to check the prior predictive distributions to see if they are compatible with the domain expertise. So, before running the model, we will verify that the prior distributions cover a plausible range of values for each parameter. To do this, we want to  sample only from the prior distributions by adding  *sample_prior = "only"* as  an argument to the `dr_model` function. We will use the default response distribution of the model  (*family = gaussian()*).
@@ -203,6 +204,7 @@ And then plot of the prior predictive distributions:
 #| fig.width = 9,
 #| fig.height = 2.6,
 #| fig.cap="KOR antagonists prior distribution"
+
 BayesPharma::density_distributions(
   kor_sample_priors, 
   half_max_label = "ic50",
@@ -227,6 +229,7 @@ kor_model <- BayesPharma::dr_model(
   formula = BayesPharma::dr_formula(predictors = 0 + substance_id), 
   priors = kor_priors,
   init = BayesPharma::dr_inits())
+brms::expose_functions(kor_model, vectorize=TRUE)
 ```
 \normalsize
 
@@ -270,7 +273,7 @@ Displayed below is a plot for the prior and posterior distributions of the  para
 #| results='hide',
 #| message=FALSE,
 #| fig.width = 9,
-#| fig.height = 2.6,
+#| fig.height = 5,
 #| fig.cap="KOR antagonists model, compare prior and posterior distributions for each substance"
 
 BayesPharma::prior_posterior_densities(
@@ -285,12 +288,12 @@ with the confidence intervals and mean. This is a useful visual of the model
 results and to highlight the mode and high density intervals: 
   
 ```{r kor-model-posterior-densities}
-#| dependson=c("kor-model")
+#| dependson=c("kor-model"),
 #| echo=TRUE,
 #| message=FALSE,
 #| warning=FALSE,
 #| fig.width=9,
-#| fig.height=2.6,
+#| fig.height=5,
 #| fig.cap="KOR Antagonists, posterior distribution for each substance"
 
 BayesPharma::posterior_densities(
@@ -305,10 +308,12 @@ the posterior distribution (purple) and the median quantile intervals:
 
 ```{r kor-model-posterior-draws}
 #| echo=TRUE,
+#| results='hide',
 #| message=FALSE,
 #| warning=FALSE,
-#| dependson=c("kor-model")
-brms::expose_functions(kor_model, vectorize=TRUE)
+#| dependson=c("kor-model"),
+#| fig.cap="KOR antagonists, posterior draws"
+
 BayesPharma::posterior_draws_plot(
   model = kor_model,
   predictors_col_name = "substance_id",
@@ -316,7 +321,7 @@ BayesPharma::posterior_draws_plot(
   upper = -4,
   n = 50, 
   facet_var = substance_id,
-  title = "Dose-Response Posterior Draws",
+  title = "",
   xlab = "Log[Molar]",
   ylab = "Response")
 ```
@@ -353,7 +358,10 @@ kor_model2
 ```
 \normalsize
 
-## MuSyC synergy model} {#MuSyC}
+
+
+
+## MuSyC synergy model {#MuSyC}
 When two independent treatments are combined they may synergize to effect the response. A typical use case is combining to different drugs to determine if there is signaling epistasis or to assess the value of combining them as a combination therapy. Alternatively for ion channels, a drug and voltage can be combined to evaluate the effect on the membrane potential.
 
 When two treatments are combined they can influence each other in different ways. The combine treatment can elicit a stronger or weaker effect than either treatment separately, or in the presence of one drug, the the dose at which the the other effects the outcome may be shifted. These different forms of synergy are modeled by the classical Bliss and Loewe models of synergy, respectively. Recently XXX derived the MuSyC model that combines these different forms of synergy.  
