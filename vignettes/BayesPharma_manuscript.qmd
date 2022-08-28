@@ -74,6 +74,18 @@ header-includes: |
   \definecolor{dose}{rgb}{0.10546875,0.6171875,0.46484375}
   \definecolor{response}{rgb}{0.8476562,0.3710938,0.0078125}
   \definecolor{shape}{rgb}{0.4570312,0.4375000,0.6992188}
+knitr:
+  opts_knit:
+    verbose: true
+  opts_chunk: 
+    cache: true
+    echo: false
+    fit.path: "BayesPharma_manuscript/quarto-"
+    fig.width: 6
+    fig.height: 5
+    fig.pos: "t"
+    fig.align: "center"
+    out.width: "100%"
 
 keywords: [Bayesian, Pharmacology, R]
 keywords-formatted: [Bayesian, Pharmacology, "[R]{.proglang}"]
@@ -82,16 +94,7 @@ keywords-formatted: [Bayesian, Pharmacology, "[R]{.proglang}"]
 #| echo=FALSE
 # inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
 knitr::opts_chunk$set(
-  cache = TRUE,
-  echo = FALSE,
-  fig.path = "BayesPharma_manuscript/quarto-",
-  fig.retina = 2, # Control using dpi
-  fig.width = 6,  # generated images
-  fig.height = 5, # generated images
-  fig.pos = "t",  # pdf mode
-  fig.align = "center",
-  dpi = if (knitr::is_latex_output()) 72 else 300, 
-  out.width = "100%")
+  dpi = if (knitr::is_latex_output()) 72 else 300)
 #  dev = "svg",
 #  dev.args = list(png = list(type = "cairo-png")),
 #  optipng = "-o1 -quiet")
@@ -147,8 +150,27 @@ done by Margolis et al. (-@Margolis2020-bm). Whole cell electrophysiology in acu
 
 Originally paper, the dose-response data analysis was done by using the `drc` package in R which implements the minimization of negative log likelihood function and reduces to least square estimation for a continuous response. The data was normalized to % baseline then fit to a 4-parameter log-logistic dose response model, setting the top (max response) to 100% and estimating the IC50, its variance, and the bottom (min response).
 
-```{r kor-model-prep}
-load("../data/kor_antag.rda")
+### Fitting the sigmoid model
+Using the BayesPharma package, we can re-fit the sigmoid model with a negative slope, and fixing the top parameter to 100 as the response is normalized to a no-drug baseline.
+
+For the priors, we are going to use a normal distribution because the response
+values are continuous. First, We will run the analysis with top (max response) parameter prior set to a constant value of 100 because top is normalized to 100 and the default broad
+priors for ic50, hill and bottom. Broad priors represent unbiased uncertainty and provide an opportunity for extreme responses.
+
+The level of informativeness of the priors will affect how much influence the priors have on the model. Here is more [information on prior choice recommendations.](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
+```{r kor-priors}
+#| echo=TRUE
+kor_priors <- BayesPharma::dr_priors(inhibitor = TRUE, top = 100)
+kor_priors
+```
+
+
+#### Prior predictive checks
+Following the Bayesian workflow, before fitting the model it is good to check the prior predictive distributions to see if they are compatible with the domain expertise. So, before running the model, we will verify that the prior distributions cover a plausible range of values for each parameter. To do this, we want to  sample only from the prior distributions by adding  *sample_prior = "only"* as  an argument to the `dr_model` function. We will use the default response distribution of the model  (*family = gaussian()*).
+
+
+```{r kor-data}
+load("/Users/maom/opt/BayesPharma/data/kor_antag.rda")
 kor_antag <- kor_antag |> dplyr::transmute(
   substance_id = Drug,
   cell_id = cell_number,
@@ -156,20 +178,140 @@ kor_antag <- kor_antag |> dplyr::transmute(
   response = normalized_measurement)
 ```
 
-```{r kor-model, eval=FALSE}
+```{r kor-prior-sample}
 #| echo=TRUE,
 #| results='hide',
 #| message=FALSE,
-#| dependson = c("kor-model-prep")
+#| dependson=c("kor-priors")
+
+kor_sample_priors <- BayesPharma::dr_model(
+  data = kor_antag |> dplyr::select(substance_id, log_dose, response),
+  BayesPharma::dr_formula(), 
+  priors = kor_priors,
+  sample_prior = "only")
+```
+And then plot of the prior predictive distributions:
+```{r kor-prior-density-plot}
+#| echo=TRUE,
+#| results='show',
+#| dependson=c("kor-prior-sample")
+
+BayesPharma::density_distributions(
+  kor_sample_priors, 
+  half_max_label = "ic50",
+  title_label = "Prior Density Distributions")
+```
+
+To sample from the model we will the Stan NUTs Hamiltonian Monte Carlo, and initialize the parameters to the prior means to help with model convergence, using the default values of ec50 = -9, hill = -1, top = 100, bottom = 0.
+
+```{r kor-model}
+#| echo=TRUE,
+#| dependson = c("kor-data"),
+#| results='hide',
+#| message=FALSE
 kor_model <- BayesPharma::dr_model(
   data = kor_antag |> dplyr::select(substance_id, log_dose, response),
   formula = BayesPharma::dr_formula(predictors = 0 + substance_id), 
-  priors = BayesPharma::dr_priors(inhibitor = TRUE, top = 100),
-  init = BayesPharma::dr_inits(),
-  backend="cmdstanr")
+  priors = kor_priors,
+  init = BayesPharma::dr_inits())
+```
+### Analyzing model fit
+The BRMS generated model summary shows the formula that the expected response is sigmoid function of the log_dose with four parameters, and a shared Gaussian distribution. Each parameter is dependent on the substance_id. Since want to fit a separate model for each substance we include a `0 +` to indicate that there is no common intercept.  The consists of 73 data points and the posterior sampling was done in 4 chains each with 8000 steps with 4000 steps of warm-up. The population effects for each parameter summarize marginal posterior distributions, as well as the effective sample size in the bulk and tail. This gives an indication of the sampling quality, with an ESS of > 500 samples being good for this type of model. 
+```{r kor-model-summary}
+#| dependson=c("kor-model")
+kor_model
 ```
 
+#### Traceplot
+The model ran without warning messages meaning there were no parameter value 
+problems or mcmc conflicts. The bulk and tail ESS indicate high resolution and 
+stability. The R-hat for each parameter equals 1.00 and the traceplot shows the 
+chains mixed well indicating the chains converged.
 
+```{r kor-model-traceplot}
+#| echo=TRUE,
+#| dependson=c("kor-model")
+
+BayesPharma::traceplot(
+  kor_model, 
+  predictors_col_name = "substance_id", 
+  half_max_label = "ic50") 
+```
+
+#### Compare prior and posterior marginal distributions
+Displayed below is a plot for the prior and posterior distributions of the  parameters (prior is pink and posterior is teal). this can be useful for  comparing the density distribution of the prior and posterior. produced by the model:
+
+```{r kor-model-prior-posterior-densities}
+#| echo=TRUE,
+#| dependson=c("kor-model")
+
+BayesPharma::prior_posterior_densities(
+  kor_model,
+  predictors_col_name = "substance_id",
+  half_max_label = "ic50")
+```
+Displayed below is a plot of the posterior distributions for each parameter 
+with the confidence intervals and mean. This is a useful visual of the model 
+results and to highlight the mode and high density intervals: 
+
+```{r kor-model-posterior-densities}
+#| echo=TRUE,
+#| message=FALSE,
+#| warning=FALSE,
+#| dependson=c("model")
+
+BayesPharma::posterior_densities(
+  kor_model, 
+  predictors_col_name = "substance_id", 
+  half_max_label = "ic50")
+```
+
+Displayed below is a plot of a sample of 100 sigmoid dose-response curves from 
+the posterior distribution (purple) and the median quantile intervals: 
+
+```{r kor-model-posterior-draws}
+#| echo=TRUE,
+#| dependson=c("kor-model")
+brms::expose_functions(kor_model, vectorize=TRUE)
+
+BayesPharma::posterior_draws_plot(
+  model = kor_model,
+  predictors_col_name = "substance_id",
+  lower = -12,
+  upper = -4,
+  n = 50, 
+  facet_var = substance_id,
+  title = "Dose-Response Posterior Draws",
+  xlab = "Log[Molar]",
+  ylab = "Response")
+```
+
+### Comparing alternative models
+
+To test the sensitivity of the analysis to the priors, we can re-fit the model with more informative priors:
+```{r model-priors2}
+kor_priors2 <- BayesPharma::dr_priors(
+  ec50 = brms::prior(normal(-8.5, 0.5), nlpar = "ec50"),
+  hill = brms::prior(normal(-1, 0.5), ub = 0.01, nlpar = "hill"),
+  top = 100,
+  bottom = brms::prior(normal(10, 15), nlpar = "bottom"))
+kor_priors2
+```
+
+Re-fitting the model
+
+```{r kor-model2}
+#| results='hide',
+#| message=FALSE
+
+kor_model2 <- BayesPharma::dr_model(
+  data = kor_antag |> dplyr::select(substance_id, log_dose, response),
+  formula = BayesPharma::dr_formula(0 + substance_id), 
+  priors = kor_priors2,
+  init = BayesPharma::dr_inits())
+
+kor_model2
+```
 
 
 ## MuSyC synergy model} {#MuSyC}
