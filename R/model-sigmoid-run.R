@@ -1,4 +1,3 @@
-
 #' Create a sigmoid formula for the brms model
 #'
 #' @description set-up a sigmoid dose response model formula to define a
@@ -22,17 +21,20 @@
 #'}
 #'
 #'@export
+dr_formula <- function(
+  predictors = 1,
+  ...) {
 
-dr_formula <- function(predictors = 1,
-                       ...) {
 
-
-    predictor_eq <- rlang::new_formula(lhs = quote(ec50 + hill + top + bottom),
-                                       rhs = rlang::enexpr(predictors))
+  predictor_eq <- rlang::new_formula(
+    lhs = quote(ec50 + hill + top + bottom),
+    rhs = rlang::enexpr(predictors))
 
   sigmoid_formula <- brms::brmsformula(
     response ~ sigmoid(ec50, hill, top, bottom, log_dose),
-    predictor_eq, nl = TRUE, ...)
+    predictor_eq,
+    nl = TRUE,
+    ...)
 
   return(sigmoid_formula)
 }
@@ -52,13 +54,13 @@ dr_formula <- function(predictors = 1,
 #'   constant_formula(predictors = 0 + predictors)
 #'}
 #' @export
+constant_formula <- function(
+  predictors = 1,
+  ...) {
 
-
-constant_formula <- function(predictors = 1,
-                       ...) {
-
-    constant_eq <- rlang::new_formula(lhs = quote(response),
-                                      rhs = rlang::enexpr(predictors))
+  constant_eq <- rlang::new_formula(
+    lhs = quote(response),
+    rhs = rlang::enexpr(predictors))
 
   formula <- brms::brmsformula(constant_eq, ...)
 
@@ -102,26 +104,26 @@ constant_formula <- function(predictors = 1,
 #'    stanvar_function = dr_stanvar)
 #'}
 #' @export
-
-dr_model <- function(data,
-                     formula,
-                     priors = NULL,
-                     init = 0,
-                     iter = 8000,
-                     control = list(adapt_delta = 0.99),
-                     stanvar_function = dr_stanvar,
-                     ...) {
+dr_model <- function(
+   data,
+   formula,
+   priors = NULL,
+   init = 0,
+   iter = 8000,
+   control = list(adapt_delta = 0.99),
+   stanvar_function = dr_stanvar,
+   ...) {
 
   if (is.null(priors)) {
     warning("priors for each parameter is required. Use prior functions provided
              to get default priors.")
   }
-  
+
   if(!("response" %in% names(data))){
     warning(
       "There needs to be a column 'response' in the input 'data' data.frame\n")
   }
-  
+
   brms::brm(
     formula = formula,
     data = data,

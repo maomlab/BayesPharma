@@ -1,5 +1,3 @@
-
-
 #' Create a plot of the prior & posterior density distributions of modeled
 #' parameters from brmsfit model
 #'
@@ -19,18 +17,19 @@
 #'
 #' @examples
 #'\dontrun{
-#'   prior_posterior_densities(model = my_dr_model,
-#'                             predictors_col_name = "predictors",
-#'                             half_max_response = "ic50",
-#'                             title_label = "Prior Posterior Density Plots")
+#'   prior_posterior_densities(
+#'     model = my_dr_model,
+#'     predictors_col_name = "predictors",
+#'     half_max_response = "ic50",
+#'     title_label = "Prior Posterior Density Plots")
 #'}
 #' @export
-
-prior_posterior_densities <- function(model,
-                                      predictors_col_name = "_Intercept",
-                                      half_max_label = "ec50",
-                                      title_label = "Prior Posterior Density
-                                        Plots") {
+prior_posterior_densities <- function(
+  model,
+  predictors_col_name = "_Intercept",
+  half_max_label = "ec50",
+  title_label = "Prior Posterior Density
+  Plots") {
 
   model_prior <- model %>%
     brms:::update.brmsfit(sample_prior = "only")
@@ -49,25 +48,24 @@ prior_posterior_densities <- function(model,
       dplyr::mutate(sample_type = "Posterior") %>%
       dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
       dplyr::filter(!stringr::str_detect(.variable, "sigma")) %>%
-      dplyr::filter(!stringr::str_detect(.variable, "lprior"))
-    ) %>%
-    dplyr::mutate(.variable = stringr::str_extract(.variable,
-                                                   "b_[a-zA-Z0-9]+.{1,100}") %>%
-                    stringr::str_remove("b_")) %>%
-    dplyr::mutate(.variable = stringr::str_extract(.variable,
-                                                   "[a-zA-Z0-9]+.{1,100}") %>%
-                    stringr::str_remove(predictors_col_name)) %>%
-    dplyr::mutate(.variable = stringr::str_extract(.variable,
-                                                   "[a-zA-Z0-9]+.{1,100}") %>%
-                    stringr::str_replace("ec50", half_max_label))
+      dplyr::filter(!stringr::str_detect(.variable, "lprior"))) %>%
+    dplyr::mutate(
+      .variable = .variable %>%
+        stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") %>%
+        stringr::str_remove("b_") %>%
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
+        stringr::str_remove(predictors_col_name) %>%
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
+        stringr::str_replace("ec50", half_max_label))
 
   ggplot2::ggplot(data = draws) +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "bottom") +
     ggplot2::geom_density(
-      ggplot2::aes(x = .value,
-                    group = sample_type,
-                    fill = sample_type),
+      mapping = ggplot2::aes(
+         x = .value,
+         group = sample_type,
+         fill = sample_type),
       color = "black",
       alpha = .7) +
     ggplot2::ggtitle(

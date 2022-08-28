@@ -282,7 +282,7 @@ fit_MuSyC_score_by_dose <- function(
       max_treedepth = 12),
     model_evaluation_criteria = c("loo", "bayes_R2"),
     ...) {
-  
+
   if (is.data.frame(well_scores)) {
     grouped_data <- well_scores %>%
       dplyr::group_by(!!!group_vars) %>%
@@ -292,11 +292,11 @@ fit_MuSyC_score_by_dose <- function(
       tidyr::nest() %>%
       dplyr::ungroup()
   }
-  
+
   if (verbose) {
     cat("Fitting MuSyC model\n")
   }
-  
+
   model <- brms::brm_multiple(
     formula = brms::brmsformula(
       n_positive | trials(count) ~ (
@@ -362,7 +362,7 @@ fit_MuSyC_score_by_dose <- function(
     stan_model_args = stan_model_args,
     control = control,
     ...)
-  
+
   if (!is.null(model_evaluation_criteria)) {
     # evalate fits
     model <- model %>%
@@ -505,16 +505,16 @@ MuSyC_genquant_stanvar <- brms::stanvar(
 #'
 #'
 #' Combined:
-#'      sample1 = 
+#'      sample1 =
 #'
-#' 
+#'
 #'      nlp_logE0 = X_logE0 * b_logE0
 #'                  _______   _______
 #'                     = 1    = param
 #'
 #'      nlp_logE1 = X_logE1 * b_logE0
 #'                  _______   ______
-#'                  =sample1  
+#'                  =sample1
 #'@export
 fit_MuSyC_score_by_dose_robust <- function(
     well_scores,
@@ -531,12 +531,12 @@ fit_MuSyC_score_by_dose_robust <- function(
       max_treedepth = 12),
     debug = FALSE,
     ...) {
-  
+
   if (verbose) {
     cat("Fitting MuSyC model\n")
   }
-  
-  
+
+
   if(class(formula) == "brmsformula"){
     # use the formula as provided
     inits_fn <- inits
@@ -560,7 +560,7 @@ fit_MuSyC_score_by_dose_robust <- function(
     brms_fn <- function(...) {
       brms::brms_multiple(combine = FALSE, ...)}
     family <- binomial("identity")
-    
+
   } else if (formula == "MuSyC_combined") {
     data <- well_scores
     inits_fn <- inits(
@@ -583,7 +583,7 @@ fit_MuSyC_score_by_dose_robust <- function(
       nl = TRUE)
     brms_fn <- brms::brm
     family <- binomial(link = "identity")
-    
+
   } else if (formula == "MuSyC_combined_od") {
     data <- well_scores
     inits_fn <- inits(
@@ -608,8 +608,8 @@ fit_MuSyC_score_by_dose_robust <- function(
     family <- brms::negbinomial(
       link = "log",
       link_shape = "log")
-  }    
-  
+  }
+
   if (debug) {
     model_code <- brms::make_stancode(
       formula = formula,
@@ -623,8 +623,8 @@ fit_MuSyC_score_by_dose_robust <- function(
     cat(model_code)
     browser()
   }
-  
-  
+
+
   model <- brms_fn(
     formula = formula,
     data = data,
@@ -640,4 +640,3 @@ fit_MuSyC_score_by_dose_robust <- function(
     control = control,
     ...)
 }
-

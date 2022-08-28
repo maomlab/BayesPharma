@@ -53,7 +53,7 @@ dr_priors <- function(
   hill = NULL,
   inhibitor = TRUE,
   top = NULL,
-  bottom = NULL, 
+  bottom = NULL,
   ...) {
 
   if (is.null(ec50)) {

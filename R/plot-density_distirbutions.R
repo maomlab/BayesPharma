@@ -35,7 +35,7 @@ density_distributions <- function(
     half_max_label = "ec50",
     title_label = "Density Distributions",
     sample_type = "Prior") {
-  
+
   prior <- dplyr::bind_rows(
     model %>%
       tidybayes::tidy_draws() %>%
@@ -52,7 +52,7 @@ density_distributions <- function(
         stringr::str_remove(predictors_col_name) %>%
         stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
         stringr::str_replace("ec50", half_max_label))
-  
+
   ggplot2::ggplot(data = prior) +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "bottom") +

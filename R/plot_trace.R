@@ -1,4 +1,3 @@
-
 #' Create a trace plot of MCMC draws
 #'
 #' @description Given a brms model, plot a trace plot of MCMC draws.
@@ -23,7 +22,6 @@
 #'   title = "Traceplot of Dose Response Activators Experiment")
 #'}
 #'@export
-
 traceplot <- function(
     model,
     predictors_col_name = "_Intercept",
