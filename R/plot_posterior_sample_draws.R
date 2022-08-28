@@ -1,4 +1,3 @@
-
 #' Plot of Posterior Model Fit Draws
 #'
 #' @description A plot of a sample of model fit draws from the posterior
@@ -40,7 +39,6 @@
 #'                        xlab = "Log[Molar]", ylab = "Response")
 #'}
 #' @export
-
 posterior_draws_plot <- function(
     model,
     data = NULL,
@@ -56,12 +54,12 @@ posterior_draws_plot <- function(
     xlab = "Log[Molar]",
     ylab = "Response") {
 
-  if(class(model) != "brmsfit"){
+  if (class(model) != "brmsfit") {
     warning(paste0(
       "posterior_draws_plot expects model to be of class 'brmsfit',",
       " instead it is of class ", class(model)))
   }
-  
+
   if (is.character(predictors_col_name) == FALSE) {
     warning("predictors_col_name must be a character. If there are not a
             predictors in the data and model, then run using the default
@@ -71,23 +69,24 @@ posterior_draws_plot <- function(
             are present in the data and model, assign the column name to
             predictors_col_name.")
   }
-  
-  if(!exists("sigmoid")){
-    if(model$backend == "rstan"){
+
+  if (!exists("sigmoid")) {
+    if (model$backend == "rstan") {
       brms::expose_functions(model, vectorize = TRUE)
-    } else if(model$backend == "cmdstanr") {
+    } else if (model$backend == "cmdstanr") {
       # add the sigmoid function to the current environment
+      # nolint
       sigmoid <- BayesPharma::sigmoid
     } else {
       warning(
         paste0("Unrecognized model backend '", model$backend, "'\n", sep = ""))
     }
   }
-  
-  if(is.null(data)){
+
+  if (is.null(data)) {
     data <- model$data
   }
-  
+
   lower <- data |>
     dplyr::filter(log_dose > -Inf) |>
     purrr::pluck("log_dose") |>
@@ -96,7 +95,7 @@ posterior_draws_plot <- function(
     dplyr::filter(log_dose < Inf) |>
     purrr::pluck("log_dose") |>
     max(na.rm = TRUE)
-  
+
   # this makes the "hair"
   ep_data <- model %>%
     tidybayes::add_epred_draws(
@@ -151,8 +150,8 @@ posterior_draws_plot <- function(
     ggplot2::labs(title = title) +
     ggplot2::xlab(xlab) +
     ggplot2::ylab(ylab)
-  
-  if(!is.null(substitute(facet_var))){
+
+  if (!is.null(substitute(facet_var))) {
     plot <- plot +
       ggplot2::facet_wrap(facets = dplyr::vars({{facet_var}}))
   }

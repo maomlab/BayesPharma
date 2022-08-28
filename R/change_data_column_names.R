@@ -1,7 +1,7 @@
 #' Change column names to be compatible with BayesPharma functions
 #'
 #' @description Given the response, log_dose, and predictors column of a
-#'   data.frame, change the column names to `response` and `log_dose` in the 
+#'   data.frame, change the column names to `response` and `log_dose` in the
 #'   data.frame and return it.
 #'
 #' @param data data.frame.
@@ -29,5 +29,5 @@ change_col_names <- function(data,
   data %>%
     dplyr::rename(response = {{response_col_name}}) %>%
     dplyr::rename(log_dose = {{log_dose_col_name}})
-  
+
 }

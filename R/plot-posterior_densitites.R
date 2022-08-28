@@ -35,7 +35,7 @@ posterior_densities <- function(
     l_ci = 0.025,
     u_ci = 0.975,
     title_label = "Posterior Density Plots w/ Mean & 95% CI") {
-  
+
   posterior <- dplyr::bind_rows(
     model %>%
       tidybayes::tidy_draws() %>%
@@ -52,14 +52,14 @@ posterior_densities <- function(
         stringr::str_remove(predictors_col_name) %>%
         stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
         stringr::str_replace("ec50", half_max_label))
-  
+
   summary_stats <- basic_stats(
     model = model,
     predictors_col_name = predictors_col_name,
     half_max_label = half_max_label,
     l_ci = l_ci,
     u_ci = u_ci)
-  
+
   ggplot2::ggplot() +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "bottom") +

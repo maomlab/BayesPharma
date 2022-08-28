@@ -1,17 +1,15 @@
-
-
 library(deSolve)
 
 #' Simulate data from the total QSSA model a refinement of the classical
 #' Michaelis-Menten enzyme kinetics ordinary differential equation described in
 #' (Choi, et al., 2017, DOI: 10.1038/s41598-017-17072-z). Consider the kinetic
 #' rate equation
-#' 
+#'
 #'                   kf
 #'                  --->    kcat
 #'           E + S  <---  C --->  E + P
 #'                   kb
-#' 
+#'
 #' where the free enzyme (E) reversibly binds to the stubstrate (S) to form
 #' a complex (C) with forward and backward rate constants of kf and kb, which is
 #' irreversibly catalyzed into the product (P), with rate constant of kcat,
@@ -23,38 +21,38 @@ library(deSolve)
 #' concentrations, `Vmax := kcat * ET`. The rate constants `kcat` and `kM` can
 #' be estimated by monitoring the product accumulation over time (enzyme
 #' progress curves), by varying the enzyme and substrate concentrations.
-#' 
+#'
 #' From (Choi, et al, 2017, equation 2, the total quasi-steady-state
 #' approximation (tQ) differential equation is defined by
-#'   
+#'
 #'   Observed data:
-#'      M     = number of measurements        # number of measurements 
+#'      M     = number of measurements        # number of measurements
 #'      t[M]  = time                          # measured in seconds
 #'      Pt[M] = product                       # product produced at time t
 #'      ST    = substrate total concentration # specified for each experiment
-#'      ET    = enzyme total concentration    # specified for each experiment 
-#' 
+#'      ET    = enzyme total concentration    # specified for each experiment
+#'
 #'   Model parameters:
 #'     kcat    # catalytic constant (min^-1)
 #'     kM      # Michaelis constant ()
-#' 
+#'
 #'   ODE formulation:
 #'     dPdt = kcat * (
 #'              ET + kM + ST - Pt +
 #'              -sqrt((ET + kM + ST - Pt)^2 - 2 * ET * (ST - Pt))) / 2
-#' 
+#'
 #'   initial condition:
 #'      P := 0
-#' 
+#'
 #' In (Choi, et al. 2017) they prove, that the tQ model is valid when
-#' 
+#'
 #'     K/(2*ST) * (ET+kM+ST) / sqrt((ET+kM+ST+P)^2 - 4*ET(ST-P)) << 1,
 #'
 #' where K = kb/kf is the dissociation constant.
-#'  
-#'@param time numeric vector of increasing time points.  
-#'  
-#'  
+#'
+#'@param time numeric vector of increasing time points.
+#'
+#'
 #' @export
 simulate_tQ_model <- function(time, kcat, kM, ET, ST, ...){
   ode_tQ <- function(time, Pt, theta){
@@ -73,9 +71,9 @@ simulate_tQ_model <- function(time, kcat, kM, ET, ST, ...){
 
 
 #' stanvars for the tQ enzyme kinetics model
-#' 
+#'
 #' @usage Pass to calls to `brms::brm`
-#' 
+#'
 #' @export
 tQ_stanvars <- brms::stanvar(
   scode = paste("
@@ -85,7 +83,7 @@ vector tQ_ode(
    vector params,
    data real ET,
    data real ST) {
-   
+
    real Pt = state[1];   // product at time t
    real kcat = params[1];
    real kM = params[2];
@@ -102,7 +100,7 @@ vector tQ_single(
   vector vkM,
   data vector vET,
   data vector vST) {
-  
+
   vector[2] params;
   params[1] = vkcat[1];
   params[2] = vkM[1];
@@ -119,10 +117,10 @@ vector tQ_single(
     params,                         // vector params
     vET[1],                         // ...
     vST[1]);                        // ...
-  
+
   vector[M] P;                      // Need to return a vector not array
-  
-  //for( j in 1:3){
+
+  //for( j in 1:3) {
   //  print(
   //  \"tQ_single: \",
   //  \"time:\", time[j], \" \",
@@ -132,7 +130,7 @@ vector tQ_single(
   //  \"ST:\", vST[1], \" \",
   //  \"product:\", P_ode[j,1]);
   //}
-  
+
   for(i in 1:M) P[i] = P_ode[i,1];
   return(P);
 }
@@ -149,16 +147,16 @@ vector tQ_multiple(
   vector[N] P;
   int begin = 1;
   int current_series = series_index[1];
-  for (i in 1:N){
-    if(current_series != series_index[i]){
+  for (i in 1:N) {
+    if(current_series != series_index[i]) {
       P[begin:i-1] = tQ_single(
         time[begin:i-1],
         vkcat[begin:i-1],
         vkM[begin:i-1],
         vET[begin:i-1],
         vST[begin:i-1]);
-        
-      // for(j in 1:3){
+
+      // for(j in 1:3) {
       //  print(
       //    \"tQ_multiple: \",
       //    \"time:\", time[begin+j], \" \",
@@ -167,8 +165,8 @@ vector tQ_multiple(
       //    \"ET:\", vET[begin+j], \" \",
       //    \"ST:\", vST[begin+j], \" \",
       //    \"product:\", P[begin+j]);
-      //}  
-        
+      //}
+
       begin = i;
       current_series = series_index[i];
     }
@@ -180,7 +178,7 @@ vector tQ_multiple(
 block = "functions")
 
 #' Define formula for the tQ enzyme kinetics model
-#' 
+#'
 #' @param multiple_perturbations (default FALSE)
 #' @param predictors predictors to use for kcat and kM
 #'
@@ -189,7 +187,7 @@ block = "functions")
 tQ_formula <- function(
     multiple_perturbations = FALSE,
     predictors = 0 + predictors,
-    ...){
+    ...) {
 
   if (multiple_perturbations == FALSE) {
     predictor_eq <- rlang::new_formula(
@@ -212,17 +210,17 @@ tQ_formula <- function(
 
 
 #' Define priors for the tQ enzyme kinetics model
-#' 
+#'
 #' Default priors are gamma(4, 1) for both `kcat` and `kM`. We use the gamma
 #' distribution because it is naturally lower bounded by 0. The first parameter
 #' is the shape, `alpha=4`, and the second is the rate, `beta=1`. The mean of
 #' gamma distributions is `alpha/beta` and the variance is `alpha/beta^2`.
-#' 
+#'
 #' @param kcat prior for kcat parameter (Default: NULL). Given a numeric value,
 #'   it will be used as a constant and not estimated.
 #' @param kM prior for kM parameter (Default: NULL). Given a numeric value,
 #'   it will be used as a constant and not estimated.
-#' 
+#'
 #' @export
 tQ_prior <- function(
     kcat = NULL,
@@ -280,7 +278,7 @@ tQ_init <- function(
   return(inits)
 }
 
-#' BRMS model for the tQ enzyme kinetics model 
+#' BRMS model for the tQ enzyme kinetics model
 #' @export
 tQ_model <- function(
     data,
@@ -294,7 +292,7 @@ tQ_model <- function(
   if (is.null(prior)) {
     warning("priors for kcat and kM are required. Use tQ_priors function to get default priors.")
   }
-  
+
   brms::brm(
     formula = formula,
     data = data,

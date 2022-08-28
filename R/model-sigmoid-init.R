@@ -39,9 +39,9 @@ dr_inits <- function(
     top = 100,
     bottom = 0,
     chains = 4) {
-  
+
   ec50_init <- ec50
-  
+
   if (inhibitor == FALSE && hill == TRUE || hill == FALSE) {
     hill_init <- 1
     cat("hill is a positive slope.\n")
@@ -51,16 +51,16 @@ dr_inits <- function(
   } else{
     hill_init <- hill
   }
-  
+
   top_init <- top
   bottom_init <- bottom
-  
+
   init_list <- list(
     ec50 = ec50_init,
     hill = hill_init,
     top = top_init,
     bottom = bottom_init)
-  
+
   inits <- rep(list(init_list), chains)
   return(inits)
 }

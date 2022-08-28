@@ -25,17 +25,17 @@
 #'     u_ci = 0.975)
 #'}
 #' @export
-
 basic_stats <- function(
     model,
     predictors_col_name = "_Intercept",
     half_max_label = "ec50",
     l_ci = 0.025,
     u_ci = 0.975) {
-  
-  ple_info <- model %>% brms::fixef(probs = c(l_ci, u_ci))
+
+  ple_info <- model %>%
+     brms::fixef(probs = c(l_ci, u_ci))
   cat("lower CI:", l_ci, " upper CI:", u_ci, "\n", sep = "")
-  
+
   model %>%
     posterior::summarise_draws(
       "mean", "sd", "median") %>%
@@ -52,5 +52,5 @@ basic_stats <- function(
         stringr::str_remove(predictors_col_name) %>%
         stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
         stringr::str_replace("ec50", half_max_label))
-  
+
 }
