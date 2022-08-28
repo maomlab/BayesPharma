@@ -74,7 +74,7 @@ posterior_draws_plot <- function(
   
   if(!exists("sigmoid")){
     if(model$backend == "rstan"){
-      brms::expose_functions(model)
+      brms::expose_functions(model, vectorize = TRUE)
     } else if(model$backend == "cmdstanr") {
       # add the sigmoid function to the current environment
       sigmoid <- BayesPharma::sigmoid
