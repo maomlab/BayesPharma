@@ -22,7 +22,7 @@ input data.frame with new column header names for the response
 }
 \description{
 Given the response, log_dose, and predictors column of a
-  data.frame, change the column names to `response` and `log_dose` in the 
+  data.frame, change the column names to `response` and `log_dose` in the
   data.frame and return it.
 }
 \examples{
