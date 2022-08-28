@@ -71,6 +71,7 @@ density_distributions <- function(
     ggplot2::scale_y_continuous("Density") +
     ggplot2::scale_x_continuous("Parameter Value") +
     ggplot2::scale_fill_manual(
+      "Sample Type",
       values = c(
         "Posterior" = "cyan2",
         "posterior" = "cyan2",
