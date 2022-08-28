@@ -178,6 +178,7 @@ kor_antag <- kor_antag |> dplyr::transmute(
   response = normalized_measurement)
 ```
 
+\scriptsize
 ```{r kor-prior-sample}
 #| echo=TRUE,
 #| results='hide',
@@ -190,20 +191,32 @@ kor_sample_priors <- BayesPharma::dr_model(
   priors = kor_priors,
   sample_prior = "only")
 ```
+\normalsize
+
 And then plot of the prior predictive distributions:
+
+\scriptsize
 ```{r kor-prior-density-plot}
 #| echo=TRUE,
 #| results='show',
-#| dependson=c("kor-prior-sample")
-
+#| dependson=c("kor-prior-sample"),
+#| fig.width = 9,
+#| fig.height = 2.6,
+#| fig.cap="KOR antagonists prior distribution"
 BayesPharma::density_distributions(
   kor_sample_priors, 
   half_max_label = "ic50",
-  title_label = "Prior Density Distributions")
+  title_label = "") +
+  ggplot2::facet_wrap(
+    facets = dplyr::vars(.variable),
+    scales = "free",
+    nrow = 1)
 ```
+\normalsize
 
 To sample from the model we will the Stan NUTs Hamiltonian Monte Carlo, and initialize the parameters to the prior means to help with model convergence, using the default values of ec50 = -9, hill = -1, top = 100, bottom = 0.
 
+\scriptsize
 ```{r kor-model}
 #| echo=TRUE,
 #| dependson = c("kor-data"),
@@ -215,12 +228,17 @@ kor_model <- BayesPharma::dr_model(
   priors = kor_priors,
   init = BayesPharma::dr_inits())
 ```
+\normalsize
+
 ### Analyzing model fit
 The BRMS generated model summary shows the formula that the expected response is sigmoid function of the log_dose with four parameters, and a shared Gaussian distribution. Each parameter is dependent on the substance_id. Since want to fit a separate model for each substance we include a `0 +` to indicate that there is no common intercept.  The consists of 73 data points and the posterior sampling was done in 4 chains each with 8000 steps with 4000 steps of warm-up. The population effects for each parameter summarize marginal posterior distributions, as well as the effective sample size in the bulk and tail. This gives an indication of the sampling quality, with an ESS of > 500 samples being good for this type of model. 
+\scriptsize
 ```{r kor-model-summary}
-#| dependson=c("kor-model")
+#| dependson=c("kor-model"),
+#| R.options = list(width = 350)
 kor_model
 ```
+\normalsize
 
 #### Traceplot
 The model ran without warning messages meaning there were no parameter value 
@@ -228,8 +246,11 @@ problems or mcmc conflicts. The bulk and tail ESS indicate high resolution and
 stability. The R-hat for each parameter equals 1.00 and the traceplot shows the 
 chains mixed well indicating the chains converged.
 
+\scriptsize
 ```{r kor-model-traceplot}
 #| echo=TRUE,
+#| fig.height=6,
+#| fig.width=12,
 #| dependson=c("kor-model")
 
 BayesPharma::traceplot(
@@ -237,33 +258,46 @@ BayesPharma::traceplot(
   predictors_col_name = "substance_id", 
   half_max_label = "ic50") 
 ```
+\normalsize
 
 #### Compare prior and posterior marginal distributions
 Displayed below is a plot for the prior and posterior distributions of the  parameters (prior is pink and posterior is teal). this can be useful for  comparing the density distribution of the prior and posterior. produced by the model:
 
+\scriptsize
 ```{r kor-model-prior-posterior-densities}
+#| dependson=c("kor-model"),
 #| echo=TRUE,
-#| dependson=c("kor-model")
+#| results='hide',
+#| message=FALSE,
+#| fig.width = 9,
+#| fig.height = 2.6,
+#| fig.cap="KOR antagonists model, compare prior and posterior distributions for each substance"
 
 BayesPharma::prior_posterior_densities(
   kor_model,
   predictors_col_name = "substance_id",
-  half_max_label = "ic50")
+  half_max_label = "ic50",
+  title_label="")
 ```
+\normalsize
 Displayed below is a plot of the posterior distributions for each parameter 
 with the confidence intervals and mean. This is a useful visual of the model 
 results and to highlight the mode and high density intervals: 
-
+  
 ```{r kor-model-posterior-densities}
+#| dependson=c("kor-model")
 #| echo=TRUE,
 #| message=FALSE,
 #| warning=FALSE,
-#| dependson=c("model")
+#| fig.width=9,
+#| fig.height=2.6,
+#| fig.cap="KOR Antagonists, posterior distribution for each substance"
 
 BayesPharma::posterior_densities(
   kor_model, 
   predictors_col_name = "substance_id", 
-  half_max_label = "ic50")
+  half_max_label = "ic50",
+  title_label = "")
 ```
 
 Displayed below is a plot of a sample of 100 sigmoid dose-response curves from 
@@ -271,9 +305,10 @@ the posterior distribution (purple) and the median quantile intervals:
 
 ```{r kor-model-posterior-draws}
 #| echo=TRUE,
+#| message=FALSE,
+#| warning=FALSE,
 #| dependson=c("kor-model")
 brms::expose_functions(kor_model, vectorize=TRUE)
-
 BayesPharma::posterior_draws_plot(
   model = kor_model,
   predictors_col_name = "substance_id",
@@ -289,7 +324,8 @@ BayesPharma::posterior_draws_plot(
 ### Comparing alternative models
 
 To test the sensitivity of the analysis to the priors, we can re-fit the model with more informative priors:
-```{r model-priors2}
+\scriptsize
+```{r kor-model-priors2}
 kor_priors2 <- BayesPharma::dr_priors(
   ec50 = brms::prior(normal(-8.5, 0.5), nlpar = "ec50"),
   hill = brms::prior(normal(-1, 0.5), ub = 0.01, nlpar = "hill"),
@@ -297,12 +333,15 @@ kor_priors2 <- BayesPharma::dr_priors(
   bottom = brms::prior(normal(10, 15), nlpar = "bottom"))
 kor_priors2
 ```
+\normalsize
 
 Re-fitting the model
 
+\scriptsize
 ```{r kor-model2}
 #| results='hide',
-#| message=FALSE
+#| message=FALSE,
+#| dependson=c("kor-model-priors2")
 
 kor_model2 <- BayesPharma::dr_model(
   data = kor_antag |> dplyr::select(substance_id, log_dose, response),
@@ -312,7 +351,7 @@ kor_model2 <- BayesPharma::dr_model(
 
 kor_model2
 ```
-
+\normalsize
 
 ## MuSyC synergy model} {#MuSyC}
 When two independent treatments are combined they may synergize to effect the response. A typical use case is combining to different drugs to determine if there is signaling epistasis or to assess the value of combining them as a combination therapy. Alternatively for ion channels, a drug and voltage can be combined to evaluate the effect on the membrane potential.
