@@ -307,6 +307,7 @@ kor_sample_priors <- BayesPharma::dr_model(
 Plot of the Prior Distributions:
 ```{r model2-prior-density}
 #| dependson=c("model2")
+
 BayesPharma::density_distributions(
   kor_sample_priors,
   predictors_col_name = "_Intercept",
@@ -315,7 +316,10 @@ BayesPharma::density_distributions(
 
 Running the Model:
 
-```{r, results='hide', message=FALSE}
+```{r kor-model2}
+#| results='hide',
+#| message=FALSE
+
 kor_model2 <- BayesPharma::dr_model(
   kor_antag,
   formula = BayesPharma::dr_formula(0 + Drug), 
@@ -329,16 +333,19 @@ kor_model2
 
 Checking the Model Convergence:
 
-```{r}
-BayesPharma::traceplot(kor_model2, "Drug", "ic50") 
+```{r kor-model2-traceplot}
+BayesPharma::traceplot(
+  model = kor_model2,
+  predictors_col_name = "Drug",
+  half_max_label = "ic50") 
 ```
 
 Posterior Predictive Check:
 
 ```{r}
 BayesPharma::plot_pp_check(
-  kor_model2,
-  "dens_overlay_grouped", 
+  model = kor_model2,
+  plot_type = "dens_overlay_grouped", 
   group = 'Drug',
   n = 50)
 ```
