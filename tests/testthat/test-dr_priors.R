@@ -9,22 +9,22 @@ testthat::test_that("dr_priors with default priors", {
 
   #"prior" "class" "coef" "group" "resp"  "dpar"  "nlpar" "lb" "ub" "source"
   testthat::expect_true(all(
-    as.list(priors[1,]) == 
+    as.list(priors[1, ]) ==
     c("normal(-7, 2.5)", "b", "", "", "", "", "ec50", NA, NA, "user"),
     na.rm = TRUE))
 
   testthat::expect_true(all(
-    as.list(priors[2,]) ==
+    as.list(priors[2, ]) ==
     c("normal(-1, 1)", "b", "", "", "", "", "hill", NA, "0.01", "user"),
     na.rm = TRUE))
 
   testthat::expect_true(all(
-    as.list(priors[3,]) ==
+    as.list(priors[3, ]) ==
     c("normal(100, 25)", "b", "", "", "", "", "top", NA, NA, "user"),
     na.rm = TRUE))
-      
+
   testthat::expect_true(all(
-    as.list(priors[4,]) ==
+    as.list(priors[4, ]) ==
     c("normal(0, 25)", "b", "", "", "", "", "bottom", NA, NA, "user"),
     na.rm = TRUE))
 })
@@ -41,22 +41,22 @@ testthat::test_that("dr_priors with constant priors", {
 
   #"prior" "class" "coef" "group" "resp" "dpar" "nlpar" "lb" "ub" "source"
   testthat::expect_true(all(
-    as.list(priors[1,]) ==
+    as.list(priors[1, ]) ==
       c("constant(-7)", "b", "", "", "", "", "ec50", NA, NA, "user"),
     na.rm = TRUE))
 
   testthat::expect_true(all(
-    as.list(priors[2,]) ==
+    as.list(priors[2, ]) ==
       c("constant(-1)", "b", "", "", "", "", "hill", NA, NA, "user"),
     na.rm = TRUE))
 
   testthat::expect_true(all(
-    as.list(priors[3,]) ==
+    as.list(priors[3, ]) ==
       c("constant(100)", "b", "", "", "", "", "top", NA, NA, "user"),
     na.rm = TRUE))
 
   testthat::expect_true(all(
-    as.list(priors[4,]) ==
+    as.list(priors[4, ]) ==
       c("constant(0)", "b", "", "", "", "", "bottom", NA, NA, "user"),
     na.rm = TRUE))
 })
@@ -72,22 +72,22 @@ testthat::test_that("dr_priors with custom priors", {
 
   #"prior" "class" "coef" "group" "resp" "dpar" "nlpar" "lb" "ub" "source"
   testthat::expect_true(all(
-    as.list(priors[1,]) ==
+    as.list(priors[1, ]) ==
       c("student_t(3, -7, 3)", "b", "", "", "", "", "ec50", NA, -4, "user"),
     na.rm = TRUE))
 
   testthat::expect_true(all(
-    as.list(priors[2,]) ==
+    as.list(priors[2, ]) ==
       c("constant(-1)", "b", "", "", "", "", "hill", NA, NA, "user"),
     na.rm = TRUE))
 
   testthat::expect_true(all(
-    as.list(priors[3,]) ==
+    as.list(priors[3, ]) ==
       c("beta(10, 1)", "b", "", "", "", "", "top", NA, NA, "user"),
     na.rm = TRUE))
 
   testthat::expect_true(all(
-    as.list(priors[4,]) ==
+    as.list(priors[4, ]) ==
       c("beta(1, 10)", "b", "", "", "", "", "bottom", NA, NA, "user"),
     na.rm = TRUE))
 })
@@ -97,7 +97,7 @@ testthat::test_that("dr_priors in agonist mode", {
   testthat::expect_true("brmsprior" %in% class(priors))
 
   testthat::expect_true(all(
-    as.list(priors[2,]) ==
+    as.list(priors[2, ]) ==
       c("normal(1, 1)", "b", "", "", "", "", "hill", -0.01, NA, "user"),
     na.rm = TRUE))
 

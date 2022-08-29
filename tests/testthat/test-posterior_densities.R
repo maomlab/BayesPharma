@@ -16,7 +16,7 @@ testthat::test_that(
       l_ci = 0.025,
       u_ci = 0.975,
       title_label = "Posterior Density Plots with Mean and 95% CI"))
-  
+
   expect_gg(BayesPharma::posterior_densities(
     model = test_model,
     predictors_col_name = "_Intercept",
@@ -24,7 +24,7 @@ testthat::test_that(
     l_ci = 0.05,
     u_ci = 0.95,
     title_label = "Posterior Density Plots with Mean and 90% CI"))
-  
+
   expect_gg(BayesPharma::posterior_densities(
     model = test_model,
     predictors_col_name = "_Intercept",
@@ -45,19 +45,19 @@ testthat::test_that(
     BayesPharma::posterior_densities(
       model = test_model,
       predictors_col_name = NULL))
-  
+
   testthat::expect_error(
     BayesPharma::posterior_densities(
       model = test_model,
       predictors_col_name = NULL,
       l_ci = NULL))
-  
+
   testthat::expect_error(
     BayesPharma::posterior_densities(
       model = test_model,
       half_max_label = NULL,
       u_ci = NULL))
-  
+
   testthat::expect_error(
     BayesPharma::posterior_densities(
       model = test_model,
@@ -67,7 +67,7 @@ testthat::test_that(
     BayesPharma::posterior_densities(
       model = test_model,
       l_ci = NULL))
-  
+
   testthat::expect_error(
     BayesPharma::posterior_densities(
       model = test_model,

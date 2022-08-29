@@ -1,8 +1,8 @@
-library(tidyverse)
-library(BayesPharma)
+# library(tidyverse)
+# library(BayesPharma)
 
 # testthat::test_that("Sigmoid model fit with ideal data", {
-#   sigmoid <- function(ec50, hill, top, bottom, log_dose){
+#   sigmoid <- function(ec50, hill, top, bottom, log_dose) {
 #     # simple version that doesn't handle 0-doses
 #     bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))
 #   }
@@ -20,7 +20,7 @@ library(BayesPharma)
 # })
 #
 # testthat::test_that("Sigmoid model fit with zero doses", {
-#   sigmoid <- function(ec50, hill, top, bottom, log_dose){
+#   sigmoid <- function(ec50, hill, top, bottom, log_dose) {
 #     # simple version that doesn't handle 0-doses
 #     bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))
 #   }
@@ -38,6 +38,3 @@ library(BayesPharma)
 #       formula = BayesPharma::dr_formula(),
 #       priors = BayesPharma::dr_priors())
 #})
-
-
-

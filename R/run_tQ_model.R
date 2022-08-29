@@ -54,8 +54,8 @@ library(deSolve)
 #'
 #'
 #' @export
-simulate_tQ_model <- function(time, kcat, kM, ET, ST, ...){
-  ode_tQ <- function(time, Pt, theta){
+simulate_tQ_model <- function(time, kcat, kM, ET, ST, ...) {
+  ode_tQ <- function(time, Pt, theta) {
     list(c(theta[1] * (
       ET + theta[2] + ST - Pt +
         -sqrt((ET + theta[2] + ST - Pt)^2 - 4 * ET * (ST - Pt))) / 2))
@@ -290,7 +290,10 @@ tQ_model <- function(
     ...) {
 
   if (is.null(prior)) {
-    warning("priors for kcat and kM are required. Use tQ_priors function to get default priors.")
+    warning(
+      paste0(
+        "priors for kcat and kM are required. ",
+        "Use tQ_priors function to get default priors."))
   }
 
   brms::brm(

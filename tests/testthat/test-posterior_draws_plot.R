@@ -10,7 +10,7 @@ testthat::test_that("posterior_draws_plot returns ggplot object", {
       model = test_model,
       data = test_data,
       facet_var = "test"))
-  
+
   expect_gg(
     BayesPharma::posterior_draws_plot(
       model = test_model,
@@ -44,14 +44,14 @@ testthat::test_that(
         model = test_model,
         data = test_data,
         lower = NULL)))
-  
+
   testthat::expect_error(
     expect_gg(
       BayesPharma::posterior_draws_plot(
         model = test_model,
         data = test_data,
         upper = "negative three")))
-    
+
   testthat::expect_error(
     expect_gg(
       BayesPharma::posterior_draws_plot(
