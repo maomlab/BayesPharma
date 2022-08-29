@@ -76,7 +76,8 @@ dplyr::vars(...) columns to over when fitting synergy model}
 
 \item{E2_prior}{prior distribution for Ed when d1=0, d2=Inf}
 
-\item{E3_alpha_prior}{prior distribution for Ed scaled by alpha when d1=Inf, d2=Inf}
+\item{E3_alpha_prior}{prior distribution for Ed scaled by alpha when d1=Inf,
+d2=Inf}
 
 \item{C1_init}{initial sampling distribution for the C1 parameter}
 
@@ -110,7 +111,8 @@ dplyr::vars(...) columns to over when fitting synergy model}
 
 The
 
-   bernoulli_inf(n_positive / count) = Ed ~ MuSyC(d1, d2, C_params, E_params, s_params, alpha)
+   bernoulli_inf(n_positive / count) =
+     Ed ~ MuSyC(d1, d2, C_params, E_params, s_params, alpha)
 
    To improve numeric stability, the d1 and d2 and C1 and C2 variables
    are scaled to improve numeric stability:
@@ -151,7 +153,8 @@ Ed = (C2^h2 * E0 + d2^h2 * E2) / (C2^h2 + d2^h2)
    = E2
 
 When d1>0 and d2 -> Inf then Ed
-Ed = (C1^h1 * C2^h2 * E0 + C1^h1 * C2^h2 * E2) / (C1^h1 * C2^h2 + C1^h1 * C2^h2)
+Ed = (C1^h1 * C2^h2 * E0 + C1^h1 * C2^h2 * E2) /
+     (C1^h1 * C2^h2 + C1^h1 * C2^h2)
    = (E0 + E2) / 2}
 }
 \description{

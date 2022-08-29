@@ -38,11 +38,11 @@
 #'
 #'
 #'@export
-MuSyC_si_to_hi <- function(si, Ci, E0, Ei){
+MuSyC_si_to_hi <- function(si, Ci, E0, Ei) {
   si * 4 * Ci / (E0 + Ei)
 }
 
-#' Convert from slope parametrization to the exponent parametrization for drug i#
+#' Convert slope parametrization to exponent parametrization for drug i
 #'
 #' This can be used for setting priors and interpreting parameter estimates
 #' see MuSyC_si_to_hi for details
@@ -54,7 +54,7 @@ MuSyC_si_to_hi <- function(si, Ci, E0, Ei){
 #' @return hi the exponent in the MuSyC equation for drug i
 #'
 #'@export
-MuSyC_hi_to_si <- function(hi, Ci, E0, Ei){
+MuSyC_hi_to_si <- function(hi, Ci, E0, Ei) {
   hi * (E0 + Ei) / (4 * Ci)
 }
 
@@ -137,7 +137,7 @@ generate_MuSyC_effects <- function(
     d1^h1 * C2^h2 +
     C1^h1 * d2^h2 +
     d1^h1 * d2^h2 * alpha
-  response <- numerator / denominator
+  numerator / denominator
 }
 
 #' Generate MuSyC Ed scores using a robust functional form
@@ -153,19 +153,21 @@ generate_MuSyC_effects_robust <- function(
     logE3,
     logalpha) {
   numerator_parts <- c(
-    h1*logC1 + h2*logC2 + logE0,
-    h1*logd1 + h2*logC2 + logE1,
-    h1*logC1 + h2*logd2 + logE2,
-    h1*logd1 + h2*logd2 + logE3 + logalpha)
+    h1 * logC1 + h2 * logC2 + logE0,
+    h1 * logd1 + h2 * logC2 + logE1,
+    h1 * logC1 + h2 * logd2 + logE2,
+    h1 * logd1 + h2 * logd2 + logE3 + logalpha)
   numerator_max <- max(numerator_parts)
-  log_numerator <- numerator_max + log(sum(exp(numerator_parts - numerator_max)))
+  log_numerator <- numerator_max +
+    log(sum(exp(numerator_parts - numerator_max)))
   denominator_parts <- c(
-    h1*logC1 + h2*logC2,
-    h1*logd1 + h2*logC2,
-    h1*logC1 + h2*logd2,
-    h1*logd1 + h2*logd2 + logalpha)
+    h1 * logC1 + h2 * logC2,
+    h1 * logd1 + h2 * logC2,
+    h1 * logC1 + h2 * logd2,
+    h1 * logd1 + h2 * logd2 + logalpha)
   denominator_max <- max(denominator_parts)
-  log_denominator <- denominator_max + log(sum(exp(denominator_parts - denominator_max)))
+  log_denominator <- denominator_max +
+    log(sum(exp(denominator_parts - denominator_max)))
   exp(log_numerator - log_denominator)
 }
 
@@ -185,7 +187,8 @@ generate_MuSyC_effects_robust <- function(
 #' @param E0_prior prior distribution for Ed when d1=0, d2=0
 #' @param E1_prior prior distribution for Ed when d1=Inf, d2=0
 #' @param E2_prior prior distribution for Ed when d1=0, d2=Inf
-#' @param E3_alpha_prior prior distribution for Ed scaled by alpha when d1=Inf, d2=Inf
+#' @param E3_alpha_prior prior distribution for Ed scaled by alpha when d1=Inf,
+#'        d2=Inf
 #' @param C1_init initial sampling distribution for the C1 parameter
 #' @param C2_init initial sampling distribution for the C2 parameter
 #' @param s1_init initial sampling distribution for the s1 parameter
@@ -205,7 +208,8 @@ generate_MuSyC_effects_robust <- function(
 #'
 #' The
 #'
-#'    bernoulli_inf(n_positive / count) = Ed ~ MuSyC(d1, d2, C_params, E_params, s_params, alpha)
+#'    bernoulli_inf(n_positive / count) =
+#'      Ed ~ MuSyC(d1, d2, C_params, E_params, s_params, alpha)
 #'
 #'    To improve numeric stability, the d1 and d2 and C1 and C2 variables
 #'    are scaled to improve numeric stability:
@@ -247,7 +251,8 @@ generate_MuSyC_effects_robust <- function(
 #'
 #; Claim: When d1=0 and d2=C2 then Ed = (E0 + E2) / 2
 #' When d1>0 and d2 -> Inf then Ed
-#' Ed = (C1^h1 * C2^h2 * E0 + C1^h1 * C2^h2 * E2) / (C1^h1 * C2^h2 + C1^h1 * C2^h2)
+#' Ed = (C1^h1 * C2^h2 * E0 + C1^h1 * C2^h2 * E2) /
+#'      (C1^h1 * C2^h2 + C1^h1 * C2^h2)
 #'    = (E0 + E2) / 2
 #'
 #'@export
@@ -263,15 +268,24 @@ fit_MuSyC_score_by_dose <- function(
     E1_prior = brms::prior(beta(1, 1), nlpar = "E1", lb = 0, ub = 1),
     E2_prior = brms::prior(beta(1, 1), nlpar = "E2", lb = 0, ub = 1),
     E3_alpha_prior = brms::prior(normal(0, 2), nlpar = "E3alpha", lb = 0),
-    C1_init = function() {as.array(runif(1, 0, 2))},
-    C2_init = function() {as.array(runif(1, 0, 2))},
-    s1_init = function() {as.array(runif(1, -0.1, 2))},
-    s2_init = function() {as.array(runif(1, -0.1, 2))},
-    log10alpha_init = function() {as.array(0)},
-    E0_init = function() {as.array(rbeta(1, 1, 1))},
-    E1_init = function() {as.array(rbeta(1, 1, 1))},
-    E2_init = function() {as.array(rbeta(1, 1, 1))},
-    E3_alpha_init = function() {as.array(rnorm(1, 0, 2))},
+    C1_init = function() {
+      as.array(runif(1, 0, 2))},
+    C2_init = function() {
+      as.array(runif(1, 0, 2))},
+    s1_init = function() {
+      as.array(runif(1, -0.1, 2))},
+    s2_init = function() {
+      as.array(runif(1, -0.1, 2))},
+    log10alpha_init = function() {
+      as.array(0)},
+    E0_init = function() {
+      as.array(rbeta(1, 1, 1))},
+    E1_init = function() {
+      as.array(rbeta(1, 1, 1))},
+    E2_init = function() {
+      as.array(rbeta(1, 1, 1))},
+    E3_alpha_init = function() {
+      as.array(rnorm(1, 0, 2))},
     combine = FALSE,
     verbose = FALSE,
     iter = 8000,
@@ -413,11 +427,15 @@ MuSyC_default_prior <- function() {
       prior = paste0("normal(0, 3)"),
       nlpar = "logC2"),
     brms::prior_string(
-      prior = paste0("normal(", signif(MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 1, Ei = 0), 4), ", 5)"),
+      prior = paste0(
+        "normal(",
+        signif(MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 1, Ei = 0), 4), ", 5)"),
       nlpar = "h1",
       lb = .1),
     brms::prior_string(
-      prior = paste0("normal(", signif(MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 1, Ei = 0), 4), ", 5)"),
+      prior = paste0(
+        "normal(",
+        signif(MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 1, Ei = 0), 4), ", 5)"),
       nlpar = "h2",
       lb = .1),
     brms::prior_string(
@@ -430,22 +448,42 @@ MuSyC_default_inits <- function(
     n_plates = 1,
     n_sample1 = 1,
     n_sample2 = 1) {
-  cat("Generating default inits for ", n_sample1, " x ", n_sample2, " samples\n", sep = "")
+  cat(
+    "Generating default inits for ",
+    n_sample1, " x ", n_sample2, " samples\n", sep = "")
   inits_fn <- function() {
     list(
-      b_logE0 = 0.5 %>% log() %>% rep(times = n_plates) %>% as.array(),
-      b_logC1 = 0.0 %>% rep(times = n_sample1) %>% as.array(),
-      b_logE1 = 0.25 %>% log() %>% rep(times = n_sample1) %>% as.array(),
+      b_logE0 = 0.5 %>%
+        log() %>%
+        rep(times = n_plates) %>%
+        as.array(),
+      b_logC1 = 0.0 %>%
+        rep(times = n_sample1) %>%
+        as.array(),
+      b_logE1 = 0.25 %>%
+        log() %>%
+        rep(times = n_sample1) %>%
+        as.array(),
       b_h1 = MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 1, Ei = 0.0) %>%
         rep(times = n_sample1) %>%
         as.array(),
-      b_logC2 = 0.0 %>% rep(times = n_sample2) %>% as.array(),
-      b_logE2 = 0.25 %>% log() %>% rep(times = n_sample2) %>% as.array(),
+      b_logC2 = 0.0 %>%
+        rep(times = n_sample2) %>%
+        as.array(),
+      b_logE2 = 0.25 %>%
+        log() %>%
+        rep(times = n_sample2) %>%
+        as.array(),
       b_h2 = MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 1, Ei = 0.0) %>%
         rep(times = n_sample2) %>%
         as.array(),
-      b_logalpha = 0.0 %>% rep(times = n_sample1*n_sample2) %>% as.array(),
-      b_logE3 = 0.25 %>% log() %>% rep(times = n_sample1*n_sample2) %>% as.array)
+      b_logalpha = 0.0 %>%
+        rep(times = n_sample1 * n_sample2) %>%
+        as.array(),
+      b_logE3 = 0.25 %>%
+        log() %>%
+        rep(times = n_sample1 * n_sample2) %>%
+        as.array())
   }
 }
 
@@ -475,14 +513,17 @@ MuSyC_function_stanvar <- brms::stanvar(
     "        numerator_parts[3] = negative_infinity();",
     "        denominator_parts[3] = negative_infinity();",
     "      }",
-    "      if( (logd1 > negative_infinity()) && (logd2 > negative_infinity())) {",
+    "      if(",
+    "        (logd1 > negative_infinity()) && ",
+    "        (logd2 > negative_infinity())) {",
     "        numerator_parts[4] = h1*logd1 + h2*logd2 + logE3 + logalpha;",
     "        denominator_parts[4] = h1*logd1 + h2*logd2 + logalpha;",
     "      } else {",
     "        numerator_parts[4] = negative_infinity();",
     "        denominator_parts[4] = negative_infinity();",
     "      }",
-    "      return exp(log_sum_exp(numerator_parts) - log_sum_exp(denominator_parts));",
+    "      return exp(log_sum_exp(numerator_parts) -",
+    "         log_sum_exp(denominator_parts));",
     "  }", sep = "\n"),
   block = "functions")
 
@@ -536,8 +577,7 @@ fit_MuSyC_score_by_dose_robust <- function(
     cat("Fitting MuSyC model\n")
   }
 
-
-  if(class(formula) == "brmsformula"){
+  if (class(formula) == "brmsformula") {
     # use the formula as provided
     inits_fn <- inits
   } else if (formula == "MuSyC_separate") {
@@ -558,7 +598,8 @@ fit_MuSyC_score_by_dose_robust <- function(
       tidyr::nest() %>%
       dplyr::ungroup()
     brms_fn <- function(...) {
-      brms::brms_multiple(combine = FALSE, ...)}
+      brms::brms_multiple(combine = FALSE, ...)
+    }
     family <- binomial("identity")
 
   } else if (formula == "MuSyC_combined") {

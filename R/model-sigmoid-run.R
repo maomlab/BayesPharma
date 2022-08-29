@@ -119,7 +119,7 @@ dr_model <- function(
              to get default priors.")
   }
 
-  if(!("response" %in% names(data))){
+  if (!("response" %in% names(data))) {
     warning(
       "There needs to be a column 'response' in the input 'data' data.frame\n")
   }
@@ -152,7 +152,8 @@ dr_stanvar <- brms::stanvar(
     "      real bottom,",
     "      real log_dose) {",
     "        if( log_dose > negative_infinity() ) {",
-    "          return (bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill)));",
+    "          return (bottom + (top - bottom) /",
+    "            (1 + 10^((ec50 - log_dose)*hill)));",
     "        } else { ",
     "           if( hill > 0) {",
     "            return bottom;",
