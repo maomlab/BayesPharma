@@ -1,0 +1,49 @@
+---
+title: "TidyModels_demo"
+format: html
+---
+```{r load-packages}
+library(tidymodels)
+library(bayesian)
+```
+
+
+```{r kor-data}
+load("/Users/maom/opt/BayesPharma/data/kor_antag.rda")
+kor_antag <- kor_antag |> dplyr::transmute(
+  substance_id = Drug,
+  cell_id = cell_number,
+  log_dose = log_dose,
+  response = normalized_measurement)
+```
+
+
+```{r tidymodels}
+
+kor_recipe <- kor_antag |>
+  recipes::recipe() |>
+  recipes::update_role(response, new_role = "outcome") |>
+  recipes::update_role(log_dose, new_role = "predictor") |>
+  recipes::update_role(substance_id, new_role = "predictor")
+  
+kor_model <- bayesian::bayesian(
+  cores = 4,
+  chains = 4,
+  iter = 8000,
+  control = list(adapt_delta = 0.99),
+  stanvars = BayesPharma:::dr_stanvar,
+  init = BayesPharma::dr_inits(),
+  prior = BayesPharma::dr_priors(inhibitor = TRUE, top = 100)) |>
+  #parsnip::set_engine("brms") |>
+  #parsnip::set_mode("regression") |>
+  recipes::update(formula.override = bayesian::bayesian_formula(
+    ..y ~ sigmoid(ec50, hill, top, bottom, log_dose),
+    ec50 + hill + top + bottom ~ 0 + substance_id,
+    nl = TRUE))
+
+kor_workflow <- workflows::workflow() |>
+  workflows::add_recipe(kor_recipe) |>
+  workflows::add_model(spec = kor_model) |>
+  parsnip::fit(data = kor_antag)
+
+```
