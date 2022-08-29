@@ -13,7 +13,7 @@ Depends:
     R (>= 4.0.0)
 Imports:
     Rcpp,
-    brms (>= 2.17.5),
+    brms,
     devtools,
     dplyr,
     ggplot2,
