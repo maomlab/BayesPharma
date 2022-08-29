@@ -416,12 +416,13 @@ drc_models |>
 ```
 \normalsize
 
-Displayed below is the comparison of results from drc and BayesPharma for each parameter of the dose-response curve. Here we see that the Bayesian method provides a distribution curve as evidence and has smaller confidence intervals than most of the standard errors provided by the drc method. 
+Displayed below is the comparison of results from `drc` and `BayesPharma` for each parameter of the dose-response curve. Here we see that the Bayesian method provides a distribution curve as evidence and has smaller confidence intervals than most of the standard errors provided by the drc method. 
 
 ```{r}
 #| dependson = c("kor-drc-model", "kor-model"),
 #| fig.width = 9,
-#| fig.height = 3
+#| fig.height = 3,
+#| fig.cap="KOR antagonists conditional effects. The blue lines are samples from the BayesPharma kor_model posterior distribution, the orange line is the conditional mean, and the purple line is the conditional mean for the DRC model fit."
 drc_model_conditional_effects <- drc_models |>
   dplyr::mutate(
     response = model |> purrr::map(
