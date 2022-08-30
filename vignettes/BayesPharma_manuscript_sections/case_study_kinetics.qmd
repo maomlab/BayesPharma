@@ -21,6 +21,7 @@ Implement the total QSSA model in stan/BRMS, a refinement of the classical
 Michaelis-Menten enzyme kinetics ordinary differential equation described in
 (Choi, et al., 2017, DOI: 10.1038/s41598-017-17072-z). From their equation 2:
 
+\scriptsize
 ```
     Observed data:
       M     = number of measurements # The product concentration Pt is measured
@@ -40,6 +41,7 @@ Michaelis-Menten enzyme kinetics ordinary differential equation described in
       initial condition:
         P := 0                       # There is zero product at time 0
 ```
+\normalsize
 
 In [@Choi2017-ew] they prove, that the tQ model is valid when
 $$
@@ -48,19 +50,24 @@ $$
 where `K = kb/kf` is the dissociation constant.
 
 ## Simulate one observation
-Using the `deSolve` package we can simulate data following the total QSSA model.
-Measurements are made with random Gaussian noise with mean `0` and variance of
-`0.5`.
+Using the `deSolve` package we can simulate data following the total QSSA model. Measurements are made with random Gaussian noise with mean `0` and variance of `0.5`. To visualize, the true enzyme progress curve is shown in blue, and the enzyme progress curve fit to the noisy measurements with a smooth `loess` spline is shown in orange. While the smooth fits well, we cannot estimate the parameters for the curve from it.
+
 
 \scriptsize
-```{r tQ-simulate-data-single, echo = TRUE}
-simulate_tQ_model <- function(time, kcat, kM, ET, ST) {
-  ode_tQ <- function(time, Pt, theta){
+```{r tQ-simulate-data-single}
+#| echo=TRUE
+simulate_tQ_model <- function(
+    time, kcat, kM, ET, ST) {
+  ode_tQ <- function(time, Pt, theta) {
     list(c(theta[1] * (
-      ET + theta[2] + ST - Pt +
-      -sqrt((ET + theta[2] + ST - Pt)^2 - 4 * ET * (ST - Pt))) / 2))
+      ET + theta[2] + ST - Pt -
+      sqrt(
+        (ET + theta[2] + ST - Pt)^2 -
+        4 * ET * (ST - Pt))) / 2))
   }
-  deSolve::ode(y = 0, times = time, func = ode_tQ, parms = c(kcat, kM))
+  deSolve::ode(
+    y = 0, times = time, func = ode_tQ,
+    parms = c(kcat, kM))
 }
 
 data_single <- simulate_tQ_model(
@@ -76,12 +83,11 @@ head(data_single)
 ```
 \normalsize
 
-To visualize, the true enzyme progress curve is shown in blue, and the enzyme progress curve fit to the noisy measurements with a smooth `loess` spline is shown in orange. While the smooth fits well, we cannot estimate the parameters for the curve from it.
-
 ```{r data-single-plot}
 #| dependson=c("tQ-simulate-data-single"),
 #| fig.width=5,
-#| fig.height=4,
+#| fig.height=2.8,
+#| out.width="%50",
 #| fig.cap="Simulated enzyme progress curve with parameters kcat=3, kM=5, and total substrace and enzyme concentrations to 10 nM, simulated over 3 seconds"
 ggplot2::ggplot(data = data_single) +
   ggplot2::theme_bw() +
@@ -101,11 +107,13 @@ ggplot2::ggplot(data = data_single) +
   ggplot2::scale_y_continuous("Product (nM)")
 ```
 
+
 ## Fitting a single ODE observation in BRMS
 To implement in BRMS, we can use the `stanvars` to define custom functions. The key idea is call the ODE solver, in this case the backward differentiation formula (bdf) used to solve stiff ODEs, passing a function `ode_tQ` that returns `dP/dt`, the change in product at time `t`. The `ode_tQ` function depends on the the product at time `t` as the state vector, the kinematic parameters to be estimated `kcat` and `kM` and the user-provided data of the enzyme and substrate concentrations `ET` and `ST`. To call `ode_dbf` we pass in the initial product concentration and time (both equal to zero), measured time-points, parameters and user defied data. Finally we, extract the vector of sampled vector of product concentrations which we return.
 
+\scriptsize
 ```{r tQ-stanvars-ode}
-#| echo = TRUE
+#| echo=TRUE
 
 stanvars_tQ_ode <- brms::stanvar(scode = paste("
 vector tQ_ode(
@@ -130,7 +138,7 @@ block = "functions")
 ```
 
 ```{r tQ-stanvars-single}
-#| echo = TRUE
+#| echo=TRUE
 
 stanvars_tQ_single <- brms::stanvar(scode = paste("
 vector tQ_single(
@@ -164,12 +172,16 @@ vector tQ_single(
 ", sep = "\n"),
 block = "functions")
 ```
+\normalsize
 
 To use this function, we define `kcat` and `kM` as parameters and that we wish to sample `P ~ tQ(...)`. Since all the data points define a single observation, we set `loop = FALSE`. We use `gamma` priors for `kcat` and `kM` with the shape parameter `alpha=4` and the rate parameter `beta=1`. The prior mean is `alpha/beta = 4/1 = 4` and the variance is `alpha/beta^2 = 4/1 = 4`. We also bound the parameters from below by `0`. We initialize each chain at the prior mean and use `cmdstanr` version 2.29.2 as the backend, and use the default warmup of `1000`
 
+\scriptsize
 ```{r tQ-model-single}
 #| echo = TRUE,
-#| dependson = c("tQ-simulate-data-single", "stanvars-ode-tQ", "stanvars-tQ-single")
+#| results='hide',
+#| message=FALSE,
+#| dependson = c("tQ-simulate-data-single", "tQ-stanvars-ode", "tQ-stanvars-single")
 
 model_single <- brms::brm(
   formula = brms::brmsformula(
@@ -186,18 +198,29 @@ model_single <- brms::brm(
     stanvars_tQ_ode,
     stanvars_tQ_single))
 ``` 
+\normalsize
+
 Fitting the model takes ~15 seconds, with `Rhat = 1` and effective sample size for the bulk and tail greater than `1400` for both parameters. The estimates and 95% confidence intervals are good.
+
+\scriptsize
 ```{r tQ-model-single-summary}
 #| dependson = c("tQ-model-single")
 model_single
 ```
+\normalsize
 
 To visualize the posterior distribution vs. the prior distribution, we first sample from the prior, using the same `brms::brm` call with `sample_prior = "only"` the argument.
+
+\scriptsize
 ```{r tQ-model-single-prior}
 #| dependson = c("tQ-model-single"),
-#| echo=TRUE
+#| echo=TRUE,
+#| results='hide',
+#| message=FALSE
+
 model_single_prior <- model_single |> update(sample_prior = "only")
 ```
+\normalsize
 
 And to plot, we use `tidybayes` to gather the draws and `ggplot2` to map them to curves, with the prior as the orange curve, posterior as the blue curve, and the true parameter marked as a vertical line.
 ```{r tQ-model-single-draws}
@@ -214,9 +237,9 @@ draws_single_posterior <- model_single |>
 ```
 
 ```{r tQ-prior-posterior-single-marginal-plot}
-#| echo = FALSE,
 #| dependson = c("tQ-model-single-draws"),
-#| fig.height = 3
+#| fig.height=3,
+#| fig.width=7
 ggplot2::ggplot() +
   ggplot2::geom_vline(
     data = data.frame(
@@ -243,7 +266,7 @@ ggplot2::ggplot() +
 
 Next, we plot the prior and posterior samples as a scatter plot. Note that the high correlation of the `kcat` and `kM` parameters in the posterior. This is expected, and typically better estimates require varying the enzyme and substrate concentrations.
 ```{r tQ-prior-posterior-single-scatter}
-#| deps = c("model-single-draws")
+#| dependson = c("tQ-model-single-draws")
 draws_single_prior_pairs <- draws_single_prior |>
   tidyr::pivot_wider(
     id_cols = c(".chain", ".iteration", ".draw"),
@@ -292,10 +315,9 @@ ggplot2::ggplot() +
 
 ## Fitting multiple observations
 
-Next we will extend the BRMS model to allow fitting common `kcat`, `kM`
-concentrations based on multiple replicas, or varying substrate/enzyme
-concentrations using BRMS. To demonstrate, we varying the enzyme and substrate
-concentrations, to better fit the kinematic parameters.
+Next we will extend the BRMS model to allow fitting common `kcat`, `kM` concentrations based on multiple replicas, or varying substrate/enzyme concentrations using BRMS. To demonstrate, we varying the enzyme and substrate concentrations, to better fit the kinematic parameters.
+
+\scriptsize
 ```{r tQ-data-multiple}
 #| echo = TRUE,
 #| dependson = c("tQ-simulate-single")
@@ -320,9 +342,10 @@ data_multiple <- tidyr::expand_grid(
   }) |>
   dplyr::mutate(P = rnorm(dplyr::n(), P, 0.5))
 ```
+\normalsize
 
 ```{r data-multiple-plot}
-#| depsendson = c("tQ-data-multiple")
+#| dependson = c("tQ-data-multiple")
 ggplot2::ggplot(data = data_multiple |>
     dplyr::mutate(ET_label = paste0("ET: ", ET) |> forcats::fct_inorder())) +
   ggplot2::theme_bw() +
@@ -345,7 +368,9 @@ ggplot2::ggplot(data = data_multiple |>
     labels = c("3", "10", "30"),
     limits = log(c(2.5, 35)))
 ```
+Next we will implement `tQ_multiple` as a `brms::stanvar` object.
 
+\scriptsize
 ```{r tQ-stanvars-multiple}
 #| echo = TRUE
 stanvars_tQ_multiple <- brms::stanvar(scode = paste("
@@ -378,12 +403,17 @@ vector tQ_multiple(
 }", sep = "\n"),
 block = "functions")
 ```
+\normalsize
 
+Then we will use it to fit multiple measurements for the same enzyme
+\scriptsize
 ```{r model-multiple}
 #| echo = TRUE,
+#| results='hide',
+#| message=FALSE,
 #| dependson=c("tQ-data-multiple", "tQ-stanvars-ode", "tQ-stanvars-single", "tQ-stanvars-multiple")
 
-model_multiple <- do.call(what = brms::brm, args = c(list(
+model_multiple <- brms::brm(
   formula = brms::brmsformula(
     P ~ tQ_multiple(observation_index, time, kcat, kM, ET, ST),
     kcat + kM ~ 1,
@@ -397,15 +427,23 @@ model_multiple <- do.call(what = brms::brm, args = c(list(
   stanvars = c(
     stanvars_tQ_ode,
     stanvars_tQ_single,
-    stanvars_tQ_multiple)),
-  brms_params))
+    stanvars_tQ_multiple))
+
 model_multiple
 ```
+\normalsize
 
+To assess the model fit, we will re-fit the model just sampling from the prior
+\scriptsize
 ```{r tQ-model-multiple-prior}
+#| echo=TRUE,
+#| results='hide',
+#| message=FALSE,
 #| dependson = c("tQ-model-multiple")
-model_multiple_prior <- model_multiple |> brms:::update(sample_prior = "only")
+model_multiple_prior <- model_multiple |> update(sample_prior = "only")
 ```
+\normalsize
+
 
 ```{r model-multiple-draws}
 #| dependson=c("tQ-model-multiple", "tQ-model-multiple-prior")
