@@ -57,6 +57,7 @@ affiliations:
     city: Ann Arbor
     state: MI
     country: USA
+highlight-style: github
 abstract: |
   In pharmacology, many experiments seek to measure how a reductive biological
   system responds to one or more treatments. Here we present BayesPharma, a
