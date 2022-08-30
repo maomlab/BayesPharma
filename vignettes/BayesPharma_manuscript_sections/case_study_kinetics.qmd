@@ -223,6 +223,7 @@ model_single_prior <- model_single |> update(sample_prior = "only")
 \normalsize
 
 And to plot, we use `tidybayes` to gather the draws and `ggplot2` to map them to curves, with the prior as the orange curve, posterior as the blue curve, and the true parameter marked as a vertical line.
+
 ```{r tQ-model-single-draws}
 #| dependson = c("tQ-model-single-prior", "tQ-model-single")
 draws_single_prior <- model_single_prior |>
@@ -238,7 +239,7 @@ draws_single_posterior <- model_single |>
 
 ```{r tQ-prior-posterior-single-marginal-plot}
 #| dependson = c("tQ-model-single-draws"),
-#| fig.height=3,
+#| fig.height=2.5,
 #| fig.width=7
 ggplot2::ggplot() +
   ggplot2::geom_vline(
@@ -265,8 +266,12 @@ ggplot2::ggplot() +
 ```
 
 Next, we plot the prior and posterior samples as a scatter plot. Note that the high correlation of the `kcat` and `kM` parameters in the posterior. This is expected, and typically better estimates require varying the enzyme and substrate concentrations.
+
 ```{r tQ-prior-posterior-single-scatter}
-#| dependson = c("tQ-model-single-draws")
+#| dependson = c("tQ-model-single-draws"),
+#| fig.width=5,
+#| fig.height=5,
+#| out.width="%50"
 draws_single_prior_pairs <- draws_single_prior |>
   tidyr::pivot_wider(
     id_cols = c(".chain", ".iteration", ".draw"),
@@ -345,7 +350,9 @@ data_multiple <- tidyr::expand_grid(
 \normalsize
 
 ```{r data-multiple-plot}
-#| dependson = c("tQ-data-multiple")
+#| dependson=c("tQ-data-multiple"),
+#| fig.width=8,
+#| fig.height=3
 ggplot2::ggplot(data = data_multiple |>
     dplyr::mutate(ET_label = paste0("ET: ", ET) |> forcats::fct_inorder())) +
   ggplot2::theme_bw() +
@@ -406,6 +413,7 @@ block = "functions")
 \normalsize
 
 Then we will use it to fit multiple measurements for the same enzyme
+
 \scriptsize
 ```{r model-multiple}
 #| echo = TRUE,
@@ -434,6 +442,7 @@ model_multiple
 \normalsize
 
 To assess the model fit, we will re-fit the model just sampling from the prior
+
 \scriptsize
 ```{r tQ-model-multiple-prior}
 #| echo=TRUE,
@@ -459,7 +468,10 @@ draws_multiple_posterior <- model_multiple |>
 ```
 
 ```{r prior-posterior-multiple-scatter}
-#| dependson=c("tQ-model-multiple-draws")
+#| dependson=c("tQ-model-multiple-draws"),
+#| fig.width=6,
+#| fig.height=4,
+#| out.width="%50"
 draws_multiple_prior_pairs <- draws_multiple_prior |>
   tidyr::pivot_wider(
     id_cols = c(".chain", ".iteration", ".draw"),
@@ -507,8 +519,12 @@ ggplot2::ggplot() +
 
 
 Next we will sample enzyme progress curves from the posterior
+
 ```{r model-multiple-curves}
-#| dependson = c("tQ-model-multiple-draws")
+#| dependson = c("tQ-model-multiple-draws"),
+#| fig.width=6,
+#| fig.height=5,
+#| out.width="%50"
 sample_multiple <- draws_multiple_posterior |>
   dplyr::transmute(
     draw = .draw,
