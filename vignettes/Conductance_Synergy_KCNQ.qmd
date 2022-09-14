@@ -1,0 +1,109 @@
+---
+title: "Untitled"
+format: html
+---
+
+
+```{r}
+read_range <- function(
+    sheet,
+    range,
+    treatment,
+    dose_uM,
+    is_control){
+  readxl::read_excel(
+    path = "../data/KCNQ2-CR-raw data of Fig1b&d.xlsx",
+    sheet = {{sheet}},
+    range = range,
+    col_names = FALSE) |>
+    dplyr::mutate(
+      treatment = {{treatment}},
+      dose_uM = {{dose_uM}},
+      is_control = {{is_control}},
+      voltage = seq(-90, 60, by = 10),
+      .before = 1) |>
+    tidyr::pivot_longer(
+      cols = c(-treatment, -dose_uM, -is_control, -voltage),
+      names_to = "replica",
+      values_to = "conductance")
+}
+
+data <- dplyr::bind_rows(
+  read_range(
+    sheet = "fig1b", range = "E3:I18",
+    treatment = "ztz240", dose_uM = 10, is_control = TRUE),
+  read_range(
+    sheet = "fig1b", range = "L3:P18",
+    treatment = "ztz240", dose_uM = 10, is_control = FALSE),
+  read_range(
+    sheet = "fig1b", range = "E22:I37",
+    treatment = "ztz240", dose_uM = 5, is_control = TRUE),
+  read_range(
+    sheet = "fig1b", range = "L22:P37",
+    treatment = "ztz240", dose_uM = 5, is_control = FALSE),  
+  read_range(
+    sheet = "fig1b", range = "E40:I55",
+    treatment = "ztz240", dose_uM = 3, is_control = TRUE),
+  read_range(
+    sheet = "fig1b", range = "L40:P55",
+    treatment = "ztz240", dose_uM = 3, is_control = FALSE), 
+  read_range(
+    sheet = "fig1b", range = "E58:J73",
+    treatment = "ztz240", dose_uM = 1, is_control = TRUE),
+  read_range(
+    sheet = "fig1b", range = "L58:Q73",
+    treatment = "ztz240", dose_uM = 1, is_control = FALSE),   
+  read_range(
+    sheet = "fig1b", range = "E77:I92",
+    treatment = "ztz240", dose_uM = 0.1, is_control = TRUE),
+  read_range(
+    sheet = "fig1b", range = "L77:P92",
+    treatment = "ztz240", dose_uM = 0.1, is_control = FALSE),
+
+  read_range(
+    sheet = "fig 1d", range = "D2:I17",
+    treatment = "retigabine", dose_uM = 30, is_control = TRUE),
+  read_range(
+    sheet = "fig 1d", range = "M2:R17",
+    treatment = "retigabine", dose_uM = 30, is_control = FALSE),
+  read_range(
+    sheet = "fig 1d", range = "D20:I35",
+    treatment = "retigabine", dose_uM = 10, is_control = TRUE),
+  read_range(
+    sheet = "fig 1d", range = "M20:R35",
+    treatment = "retigabine", dose_uM = 10, is_control = FALSE),  
+  read_range(
+    sheet = "fig 1d", range = "D39:H54",
+    treatment = "retigabine", dose_uM = 5, is_control = TRUE),
+  read_range(
+    sheet = "fig 1d", range = "M39:Q54",
+    treatment = "retigabine", dose_uM = 5, is_control = FALSE), 
+  read_range(
+    sheet = "fig 1d", range = "D57:H72",
+    treatment = "retigabine", dose_uM = 3, is_control = TRUE),
+  read_range(
+    sheet = "fig 1d", range = "M57:Q72",
+    treatment = "retigabine", dose_uM = 3, is_control = FALSE),   
+  read_range(
+    sheet = "fig 1d", range = "D76:H91",
+    treatment = "retigabine", dose_uM = 1, is_control = TRUE),
+  read_range(
+    sheet = "fig 1d", range = "M76:Q91",
+    treatment = "retigabine", dose_uM = 1, is_control = FALSE),
+  read_range(
+    sheet = "fig 1d", range = "D95:H110",
+    treatment = "retigabine", dose_uM = 0.3, is_control = TRUE),
+  read_range(
+    sheet = "fig 1d", range = "M95:Q110",
+    treatment = "retigabine", dose_uM = 0.3, is_control = FALSE))
+    
+```
+
+You can add options to executable code like this 
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
