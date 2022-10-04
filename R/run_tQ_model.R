@@ -185,19 +185,12 @@ block = "functions")
 #'
 #' @export
 tQ_formula <- function(
-    multiple_perturbations = FALSE,
-    predictors = 0 + predictors,
+    predictors = 1,
     ...) {
 
-  if (multiple_perturbations == FALSE) {
-    predictor_eq <- rlang::new_formula(
-      lhs = quote(kcat + kM),
-      rhs = quote(1))
-  } else{
-    predictor_eq <- rlang::new_formula(
-      lhs = quote(kcat + kM),
-      rhs = rlang::enexpr(predictors))
-  }
+  predictor_eq <- rlang::new_formula(
+    lhs = quote(kcat + kM),
+    rhs = rlang::enexpr(predictors))
 
   brms::brmsformula(
     P ~ tQ_multiple(

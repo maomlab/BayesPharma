@@ -4,12 +4,12 @@
 \alias{tQ_formula}
 \title{Define formula for the tQ enzyme kinetics model}
 \usage{
-tQ_formula(multiple_perturbations = FALSE, predictors = 0 + predictors, ...)
+tQ_formula(predictors = 1, ...)
 }
 \arguments{
-\item{multiple_perturbations}{(default FALSE)}
-
 \item{predictors}{predictors to use for kcat and kM}
+
+\item{multiple_perturbations}{(default FALSE)}
 }
 \description{
 Define formula for the tQ enzyme kinetics model
