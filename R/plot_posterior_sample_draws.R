@@ -44,7 +44,7 @@ posterior_draws_plot <- function(
     data = NULL,
     predictors_col_name = "na",
     lower = NULL,
-    upper = NUL,
+    upper = NULL,
     n = 50,
     facet_var = NULL,
     point_size = 0.75,
