@@ -99,11 +99,62 @@ data <- dplyr::bind_rows(
     
 ```
 
-You can add options to executable code like this 
 
-```{r}
-#| echo: false
-2 * 2
+```{r model-MuSyC}
+model_data <- data |>
+  dplyr::filter(
+    treatment == "ztz240",
+    is_control == FALSE) |>
+  dplyr::transmute(
+    response = conductance,
+    logd1 = log10(dose_uM) - 6,
+    logd2 = voltage/100)
+
+
+model_meanfield <- BayesPharma::fit_MuSyC_model(
+  data = model_data,
+  algorithm = "meanfield")
+
+model <- BayesPharma::fit_MuSyC_model(
+  data = model_data)
+
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+
+```{plot-checkerboard}
+
+plot_data <- data |>
+  dplyr::filter(
+    treatment == "ztz240",
+    is_control == FALSE) |>
+  dplyr::transmute(
+    response = conductance,
+    dose1 = dose_uM,
+    dose2 = 10^(voltage),
+
+BayesPharma::plot_synergy_checkerboard(
+  data = plot_data,
+  treatment_1_label = "ztz240",
+  treatment_1_units = "uM",
+  treatment_2_label = "Voltage",
+  treatment_2_units = "mV") +
+  ggplot2::coord_cartesian(default = TRUE) +
+  ggplot2::scale_y_continuous(
+    "Voltage (mV)",
+    breaks = data$voltage |> unique() |> sort(),
+    labels = signif(d2_label, 3),
+      expand = c(0, 0)) +
+```
+
+```{r overlay_model_fit}
+
+brms::expose_functions(model)
+
+model_predict <- predict(
+  model,
+  newdata = tidyr::expand_grid(
+    logd1 = seq(-1, 1, length.out = 100),
+    logd2 = unique(data$voltage) / 100,
+    logd1scale = model$data$logd1scale[1],
+    logd2scale = model$data$logd2scale[2]))
+

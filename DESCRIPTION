@@ -51,8 +51,7 @@ Collage:
     'plot-prior-posterior-densities.R',
     'plot-synergy-checkerboard.R',
     'plot-trace.R',
-    'summary-basic-stats.R',
-    'util.R',
+    'summary-basic-stats.R'
 Encoding: UTF-8
 License: MIT + file LICENSE
 Suggests:

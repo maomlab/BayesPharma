@@ -35,7 +35,7 @@ If the treatment dose is given in molar concentration, you can convert it to
 `log_dose` using
 
 ```{r}
-data <- data %>% log_dose = BayesPharma::calculate_log_dose(dose)
+data <- data |> log_dose = BayesPharma::calculate_log_dose(dose)
 ```
 
 The basic usage is
@@ -48,31 +48,31 @@ model <- BayesPharma::dr_model(
 
 #### Traceplot
 ```{r}
-model %>% BayesPharma::traceplot()
+model |> BayesPharma::traceplot()
 ```
 #### Basic statistics
 ```{r}
-model %>% basic_stats()
+model |> BayesPharma::basic_stats()
 ```
 #### Regression plot
 ```{r}
-model %>% posterior_draws_plot()
+model |> BayesPharma::posterior_draws_plot()
 ```
 #### Prior densities
 ```{r}
-model %>% density_distributions()
-model %>% posterior_densities()
-model %>% prior_posterior_densitites()
+model |> BayesPharma::density_distributions()
+model |> BayesPharma::posterior_densities()
+model |> BayesPharma::prior_posterior_densitites()
 ```
 #### posterior predictive check
 ```{r}
-model %>% brms::pp_check(type = "dens_overlay", ndraws = 50)
+model |> brms::pp_check(type = "dens_overlay", ndraws = 50)
 ```
 
 ### compare model fits
 ```{r}
-model <- model %>% BayesPharma::add_loo_criterion()
-model_fit_comparison <- compare_models(model, model_alt)
+model <- model |> brms::add_loo_criterion()
+model_fit_comparison <- brms::compare_models(model, model_alt)
 ```
 
 

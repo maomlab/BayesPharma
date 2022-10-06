@@ -29,8 +29,9 @@ Given the response, log_dose, and predictors column of a
 \dontrun{
 # consider the response column name is `normalized_measurement` and log dose
 # column name is `log_10_dose`.
-data \%>\% BayesPharma::change_col_names(
-  response_col_name = normalized_measurement,
-  log_dose_col_name = log_10_dose)
+data |>
+  BayesPharma::change_col_names(
+    response_col_name = normalized_measurement,
+    log_dose_col_name = log_10_dose)
 }
 }

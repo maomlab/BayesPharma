@@ -24,17 +24,17 @@ plot_synergy_checkerboard <- function(
     plot_zero_dose = TRUE,
     contour_color = "gold") {
   
-  d1 <- d1_label <- data$dose1 %>% unique() %>% sort()
-  d2 <- d2_label <- data$dose2 %>% unique() %>% sort()
+  d1 <- d1_label <- data$dose1 |> unique() |> sort()
+  d2 <- d2_label <- data$dose2 |> unique() |> sort()
   if (plot_zero_dose) {
     if (d1[1] == 0) {
       d1[1] <- 10 ^ (log10(d1[2]) - 1.05 * (log10(d1[3]) - log10(d1[2])))
-      data <- data %>%
+      data <- data |>
         dplyr::mutate(dose1 = ifelse(dose1 != 0, dose1, d1[1]))
     }
     if (d2[1] == 0) {
       d2[1] <- 10 ^ (log10(d2[2]) - 1.05 * (log10(d2[3]) - log10(d2[2])))
-      data <- data %>%
+      data <- data |>
         dplyr::mutate(dose2 = ifelse(dose2 != 0, dose2, d2[1]))
     }
   }

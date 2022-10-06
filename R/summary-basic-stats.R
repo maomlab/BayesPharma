@@ -32,25 +32,25 @@ basic_stats <- function(
     l_ci = 0.025,
     u_ci = 0.975) {
 
-  ple_info <- model %>%
+  ple_info <- model |>
      brms::fixef(probs = c(l_ci, u_ci))
   cat("lower CI:", l_ci, " upper CI:", u_ci, "\n", sep = "")
 
-  model %>%
+  model |>
     posterior::summarise_draws(
-      "mean", "sd", "median") %>%
-    dplyr::filter(!stringr::str_detect(variable, "__$")) %>%
-    dplyr::filter(!stringr::str_detect(variable, "sigma")) %>%
-    dplyr::filter(!stringr::str_detect(variable, "lprior")) %>%
-    dplyr::select(-variable) %>%
+      "mean", "sd", "median") |>
+    dplyr::filter(!stringr::str_detect(variable, "__$")) |>
+    dplyr::filter(!stringr::str_detect(variable, "sigma")) |>
+    dplyr::filter(!stringr::str_detect(variable, "lprior")) |>
+    dplyr::select(-variable) |>
     cbind(l_ci = c(ple_info[, 3]),
-          u_ci = c(ple_info[, 4])) %>%
-    tibble::rownames_to_column("variables") %>%
+          u_ci = c(ple_info[, 4])) |>
+    tibble::rownames_to_column("variables") |>
     dplyr::mutate(
-      variables = variables %>%
-        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
-        stringr::str_remove(predictors_col_name) %>%
-        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
+      variables = variables |>
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
+        stringr::str_remove(predictors_col_name) |>
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
         stringr::str_replace("ec50", half_max_label))
 
 }

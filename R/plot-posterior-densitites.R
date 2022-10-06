@@ -37,20 +37,20 @@ posterior_densities <- function(
     title_label = "Posterior Density Plots w/ Mean & 95% CI") {
 
   posterior <- dplyr::bind_rows(
-    model %>%
-      tidybayes::tidy_draws() %>%
-      tidybayes::gather_variables() %>%
-      dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
-      dplyr::filter(!stringr::str_detect(.variable, "sigma")) %>%
-      dplyr::filter(!stringr::str_detect(.variable, "lprior"))) %>%
-    dplyr::rename(variables = .variable) %>%
+    model |>
+      tidybayes::tidy_draws() |>
+      tidybayes::gather_variables() |>
+      dplyr::filter(!stringr::str_detect(.variable, "__$")) |>
+      dplyr::filter(!stringr::str_detect(.variable, "sigma")) |>
+      dplyr::filter(!stringr::str_detect(.variable, "lprior"))) |>
+    dplyr::rename(variables = .variable) |>
     dplyr::mutate(
-      variables = variables %>%
-        stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") %>%
-        stringr::str_remove("b_") %>%
-        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
-        stringr::str_remove(predictors_col_name) %>%
-        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
+      variables = variables |>
+        stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") |>
+        stringr::str_remove("b_") |>
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
+        stringr::str_remove(predictors_col_name) |>
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
         stringr::str_replace("ec50", half_max_label))
 
   summary_stats <- basic_stats(

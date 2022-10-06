@@ -18,33 +18,35 @@ MuSyC_init(
 }
 \arguments{
 \item{logE0}{numeric or function returning array of length 1. Initial value
-for the logE0 parameter. Default: log(0.5)}
+for the `logE0` parameter. Default: `log(0.5)`}
 
 \item{logC1}{numeric or function returning array of length 1. Initial value
-for the logC1 parameter. Default: 0 = log(1)}
+for the `logC1` parameter. Default: `0 = log(1)``}
 
 \item{logE1}{numeric or function returning array of length 1. Initial value
-for the logE1 parameter. Default: log(0.5)}
+for the `logE1` parameter. Default: log(0.5)}
 
 \item{h1}{numeric or function returning array of length 1. Initial value
-for the h1 parameter. Default: 4 = MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)
-the exponent for treatment 1 corresponding to a slope of 1}
+for the `h1` parameter. Default: `4 =
+MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)` the exponent for treatment `1``
+corresponding to a slope of `1`}
 
 \item{logC2}{numeric or function returning array of length 1. Initial value
-for the logC2 parameter. Default: 0 = log(1)}
+for the `logC2` parameter. Default: `0 = log(1)`}
 
 \item{logE2}{numeric or function returning array of length 1. Initial value
-for the logE2 parameter. Default: log(0.5)}
+for the `logE2` parameter. Default: `log(0.5)`}
 
 \item{h2}{numeric or function returning array of length 1. Initial value
-for the h2 parameter. Default: 4 = MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)
-the exponent for treatment 1 corresponding to a slope of 1}
+for the `h2` parameter. Default: `4 =
+MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)` the exponent for treatment `1``
+corresponding to a slope of 1}
 
 \item{logE3}{numeric or function returning array of length 1. Initial value
-for the logE3 parameter. Default: log(0.5)}
+for the `logE3` parameter. Default: `log(0.5)`}
 
-\item{logalpha}{numeric or function returning array of length 1. Initial value
-for the logalpha parameter. Default: 0 =  log(1)}
+\item{logalpha}{numeric or function returning array of length 1. Initial
+value for the `logalpha` parameter. Default: `0 =  log(1)`}
 }
 \value{
 input for `BayesPharma::model_MuSyC(init = ...)` parameter.

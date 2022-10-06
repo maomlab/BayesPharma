@@ -39,9 +39,9 @@ traceplot <- function(
             (default = 'ec50').")
   }
 
-  model_parnames <- brms::variables(model) %>%
-    stringr::str_remove("b_") %>%
-    stringr::str_remove(predictors_col_name) %>%
+  model_parnames <- brms::variables(model) |>
+    stringr::str_remove("b_") |>
+    stringr::str_remove(predictors_col_name) |>
     stringr::str_replace("ec50", half_max_label)
 
   model_parnames <- head(model_parnames, -3)
