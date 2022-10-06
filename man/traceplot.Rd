@@ -34,7 +34,7 @@ Given a brms model, plot a trace plot of MCMC draws.
 \dontrun{
 Consider a dose response experiment testing multiple activators.
 traceplot(
-  model = my_dr_model,
+  model = my_sigmoid_model,
   predictors_col_name = "activators",
   half_max_label = "ec50",
   title = "Traceplot of Dose Response Activators Experiment")

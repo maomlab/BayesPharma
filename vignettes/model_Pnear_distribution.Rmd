@@ -341,11 +341,11 @@ BayesPharma package, which relies on BRMS and Stan
 
 ```{r stugdock-fit-model, output=FALSE, dependson=c("load-packages", "stugdock-load-data"), message=FALSE, warning=FALSE, refresh = 0, results="hide"}
 model <- data %>%
-  BayesPharma::dr_model(
-    formula = BayesPharma::dr_formula(
+  BayesPharma::sgmoid_model(
+    formula = BayesPharma::sigmoid_formula(
       multiple_perturbations = TRUE,
       predictors = 0 + target),
-    prior = BayesPharma::dr_priors(
+    prior = BayesPharma::sigmoid_prior(
       ec50 = brms::prior(normal(1.5,2), nlpar = "ec50"),
       top = brms::prior(normal(-10,10), nlpar = "top"),
       bottom = brms::prior(normal(-20,10), nlpar = "bottom"),

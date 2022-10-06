@@ -40,7 +40,7 @@
 #' Consider an activator that has a max response around 50%, EC50 is estimated
 #' to be around 1 uM, and minimum response is known to be 0.
 #' 
-#' priors <- dr_priors(
+#' priors <- sigmoid_prior(
 #'   ec50 = brms::prior(normal(-6, 0.5), nlpar = "ec50"),
 #'   hill = NULL,
 #'   inhibitor = FALSE,
@@ -48,8 +48,7 @@
 #'   bottom = 0)
 #'}
 #' @export
-
-dr_priors <- function(
+sigmoid_prior <- function(
   ec50 = NULL,
   hill = NULL,
   inhibitor = TRUE,
@@ -128,6 +127,6 @@ dr_priors <- function(
     assertthat::assert_that(bottom_prior$nlpar == "bottom")
   }
 
-  priors <- c(ec50_prior, hill_prior, top_prior, bottom_prior, ...)
-  return(priors)
+  prior <- c(ec50_prior, hill_prior, top_prior, bottom_prior, ...)
+  return(prior)
 }

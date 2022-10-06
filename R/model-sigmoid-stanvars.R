@@ -6,7 +6,7 @@
 #' is positive, then the bottom value is returned. If hill is negative, then the
 #' top value is returned.
 #'
-dr_stanvar <- brms::stanvar(
+sigmoid_stanvar <- brms::stanvar(
   scode = paste(
     "   real sigmoid(",
     "      real ec50,",

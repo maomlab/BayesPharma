@@ -38,9 +38,9 @@ give some background on the data
 
 ```{r}
 
-xl_damgo_dr <- "C:/Users/marti/Downloads/damgo_dr_reformatted.xlsx"
+xl_damgo_sigmoid <- "C:/Users/marti/Downloads/damgo_dr_reformatted.xlsx"
 
-damgo <- readxl::read_excel(xl_damgo_dr)
+damgo <- readxl::read_excel(xl_damgo_sigmoid)
 
 ```
 ```{r}
@@ -104,7 +104,7 @@ hill: normal distribution mean = -1, sd = 1, upper bound = 0.01
 bottom: normal distribution mean = 0, sd = 25
 
 ```{r}
-damgo_priors <- BayesPharma::dr_priors(inhibitor = TRUE, 
+damgo_priors <- BayesPharma::sigmoid_prior(inhibitor = TRUE, 
                                        top = 100)
 damgo_priors
 ```
@@ -121,40 +121,43 @@ top = 100
 bottom = 0
 
 ```{r}
-damgo_inits <- BayesPharma::dr_inits(inhibitor = TRUE)
-damgo_inits
+damgo_init <- BayesPharma::sigmoid_init(inhibitor = TRUE)
+damgo_init
 ```
 
 ### Sampling the Priors to Check if the Prior Distributions Cover Plausible 
 ### Parameter Values
 
 ```{r}
-sampling_priors <- BayesPharma::dr_model(data = damgo,
-                                         model_name = damgo1, 
-                                         formula = dr_formula(),
-                                         priors = damgo_priors,
-                                         inits = damgo_inits,
-                                         sample_prior = "only")
+sampling_priors <- BayesPharma::sigmoid_model(
+  data = damgo,
+  model_name = damgo1, 
+  formula = BayesPharma::sigmoid_formula(),
+  priors = damgo_prior,
+  init = damgo_init,
+  sample_prior = "only")
 
 ```
 ```{r}
-BayesPharma::density_distributions(sampling_priors, half_max_label = "ic50")
+BayesPharma::density_distributions(
+  sampling_priors, half_max_label = "ic50")
 ```
 
 The prior distributions cover the pluasible range of values in the form of a 
 normal distribution. Next step is to run the model!
 
 
-## Running the Bayesian Model
-dr_model uses brms and rstan or cmdstanr
+## Running the Bayesian Sigmoid Model
+sigmoid_model uses `brms` and `rstan` or `cmdstanr`
 
 ```{r}
 
-damgo_model <- BayesPharma::dr_model(data = damgo,
-                                     model_name = damgo1,
-                                     formula = BayesPharma::dr_formula(),
-                                     priors = damgo_priors,
-                                     inits = damgo_inits)
+damgo_model <- BayesPharma::sigmoid_model(
+  data = damgo,
+  model_name = damgo1,
+  formula = BayesPharma::sigmoid_formula(),
+  priors = damgo_prior,
+  inits = damgo_init)
 ```
 
 ### Results from the Model
@@ -223,13 +226,11 @@ posterior_draws_plot(model = damgo_model, data = damgo, predictors_col_name = "D
 ## Improving the model with more informative priors:
 
 ```{r}
-damgo_prior2 <- BayesPharma::dr_priors(ec50 = brms::prior(normal(-6, 1.5), 
-                                                          nlpar = "ec50"),
-                                       hill = brms::prior(normal(-0.5, 0.5),
-                                                          nlpar = "hill"),
-                                                          top = 100,
-                                       bottom = brms::prior(normal(12.5, 6.25), 
-                                                            nlpar = "bottom")
+damgo_prior2 <- BayesPharma::sigmoid_priors(
+  ec50 = brms::prior(normal(-6, 1.5), nlpar = "ec50"),
+  hill = brms::prior(normal(-0.5, 0.5), nlpar = "hill"),
+  top = 100,
+  bottom = brms::prior(normal(12.5, 6.25), nlpar = "bottom")
                                        )
 damgo_prior2
 ```
@@ -237,12 +238,13 @@ damgo_prior2
 Sampling the Priors:
 
 ```{r}
-sample_priors2 <- BayesPharma::dr_model(damgo, 
-                                        damgo2,
-                                        dr_formula(),
-                                        priors = damgo_prior2,
-                                        inits = damgo_inits,
-                                        sample_prior = "only")
+sample_priors2 <- BayesPharma::sigmoid_model(
+  damgo, 
+  damgo2,
+  formula = BayesPharma::sigmoid_formula(),
+  prior = damgo_prior2,
+  init = damgo_init,
+  sample_prior = "only")
 
 ```
 
@@ -256,11 +258,12 @@ BayesPharma::density_distributions(sample_priors2, half_max_label = "ic50")
 Running the Model:
 
 ```{r}
-damgo_model2 <- BayesPharma::dr_model(damgo, 
-                                      damgo2,
-                                      BayesPharma::dr_formula(),
-                                      priors = damgo_prior2,
-                                      inits = damgo_inits)
+damgo_model2 <- BayesPharma::sigmoid_model(
+  damgo, 
+  damgo2,
+  BayesPharma::sigmoid_formula(),
+  prior = damgo_prior2,
+  init = damgo_init)
 damgo_model2
 ```
 

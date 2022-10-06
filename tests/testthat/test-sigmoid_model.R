@@ -14,9 +14,9 @@
 #         rnorm(sd = .2))
 #
 #   model <- data |>
-#     BayesPharma::dr_model(
-#       formula = BayesPharma::dr_formula(),
-#       priors = BayesPharma::dr_priors())
+#     BayesPharma::sigmoid_model(
+#       formula = BayesPharma::sigmoid_formula(),
+#       priors = BayesPharma::sigmoid_priors())
 # })
 #
 # testthat::test_that("Sigmoid model fit with zero doses", {
@@ -34,7 +34,7 @@
 #       data.frame(log_dose = -Inf, response = 0))
 #
 #   model <- data |>
-#     BayesPharma::dr_model(
-#       formula = BayesPharma::dr_formula(),
-#       priors = BayesPharma::dr_priors())
+#     BayesPharma::sigmoid_model(
+#       formula = BayesPharma::sigmoid_formula(),
+#       priors = BayesPharma::sigmoid_priors())
 #})

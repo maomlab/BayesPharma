@@ -41,7 +41,7 @@ data <- data |> log_dose = BayesPharma::calculate_log_dose(dose)
 The basic usage is
 
 ```{r}
-model <- BayesPharma::dr_model(
+model <- BayesPharma::sigmoid_model(
    data = data)
 ```
 ### Evaluate model fit

@@ -14,14 +14,17 @@
 #'\dontrun{
 #'   Consider observations made using 4 different drugs and the column header
 #'   containing the labels for the 4 different drugs is `predictors`.
-#'   dr_formula(predictors = 0 + predictors)
+#'   
+#'     `BayesPharma::sigmoid_formula(predictors = 0 + predictors)`
 #'
 #'   Consider that the cell_ID was recorded and the noise from the cell_ID is to
-#'   be accounted for. dr_formula(predictors = 0 + predictors + (1|cell_ID))
+#'   be accounted for. 
+#'   
+#'     `BayesPharma::sigmoid_formula(predictors = 0 + predictors + (1|cell_ID))`
 #'}
 #'
 #'@export
-dr_formula <- function(
+sigmoid_formula <- function(
     predictors = 1,
     ...) {
   
@@ -29,6 +32,7 @@ dr_formula <- function(
     lhs = quote(ec50 + hill + top + bottom),
     rhs = rlang::enexpr(predictors))
   
+  # the sigmoid function is defined in BayesPharma:::igmoid_stanvar
   sigmoid_formula <- brms::brmsformula(
     response ~ sigmoid(ec50, hill, top, bottom, log_dose),
     predictor_eq,

@@ -18,7 +18,7 @@
 #' @examples
 #'\dontrun{
 #'   basic_stats(
-#'     model = my_dr_model,
+#'     model = my_sigmoid_model,
 #'     predictors_col_name = "predictors",
 #'     half_max_label = "ic50",
 #'     l_ci = 0.025,
