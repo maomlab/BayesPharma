@@ -2,8 +2,7 @@
 % Please edit documentation in R/model-sigmoid-priors.R
 \name{dr_priors}
 \alias{dr_priors}
-\title{data.frame of pre-determined priors of parameters to be predicted by
-the model}
+\title{Default priors for the sigmoid model}
 \usage{
 dr_priors(
   ec50 = NULL,
@@ -28,43 +27,45 @@ set using brms::prior(). (default = NULL)}
 \item{inhibitor}{TRUE/FALSE value. This determines if a positive or negative
 slope is used for the hill prior. (default = TRUE)}
 
-\item{top}{NULL, numeric value, or brms::prior. NULL will provide a weakly
+\item{top}{NULL, numeric value, or `brms::prior`. NULL will provide a weakly
 informative prior. Setting top to a numeric value will set the top prior to
 a constant value of the given numeric value. A prior of choice can be set
-using brms::prior(). (default = NULL)}
+using `brms::prior()`. (default = NULL)}
 
-\item{bottom}{NULL, numeric value, or brms::prior. NULL will provide a
+\item{bottom}{NULL, numeric value, or `brms::prior`. NULL will provide a
 weakly
   informative prior. Setting bottom to a numeric value will set the bottom
   prior to a constant value of the given numeric value. A prior of choice can
-  be set using brms::prior(). (default = NULL)}
+  be set using `brms::prior()`. (default = NULL)}
 }
 \value{
 brmsprior data.frame
 }
 \description{
-Creating a data.frame of priors of the dose response parameters
-   required for the model.
+Creates a data.frame of priors for the sigmoid model
 
-If the function arguments ec50, hill, top, bottom = NULL, pre-set
+If the function arguments ec50, hill, top, bottom = NULL, default
 normal distribution priors will be set.
+
 If inhibitor = TRUE, hill is positive. If inhibitor = FALSE, hill is
 negative.
+
 If you would like to set a parameter as a constant, enter a numeric value for
 the function argument.
-If you would like to set your own distribution, for example, in the function
-arguments type 'ec50 = brms::prior(distribution(mu,sigma), nlpar = 'ec50')'.
+
 For other distribution options, reference
 http://mc-stan.org/rstanarm/reference/priors.html#arguments.
 }
 \examples{
 \dontrun{
 Consider an activator that has a max response around 50\%, EC50 is estimated
-to be around 1uM, and minimum response is known to be 0.
-priors <- dr_priors(ec50 = brms::prior(normal(-6,0.5), nlpar = "ec50"),
-                    hill = NULL,
-                    inhibitor = FALSE,
-                    top = brms::prior(normal(50,2.5), nlpar = "top"),
-                    bottom = 0)
+to be around 1 uM, and minimum response is known to be 0.
+
+priors <- dr_priors(
+  ec50 = brms::prior(normal(-6, 0.5), nlpar = "ec50"),
+  hill = NULL,
+  inhibitor = FALSE,
+  top = brms::prior(normal(50, 2.5), nlpar = "top"),
+  bottom = 0)
 }
 }
