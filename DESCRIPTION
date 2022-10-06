@@ -49,6 +49,7 @@ Collage:
     'plot_posterior-sample-draws.R',
     'plot-prior-posterior-check.R',
     'plot-prior-posterior-densities.R',
+    'plot-synergy-checkerboard.R',
     'plot-trace.R',
     'summary-basic-stats.R',
     'util.R',
