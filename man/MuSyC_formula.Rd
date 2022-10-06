@@ -24,10 +24,13 @@ setup a defaulMuSyC synergy model formula to predict
 \dontrun{
   Consider observations made using 4 different drugs and the column header
   containing the labels for the 4 different drugs is `predictors`.
-  dr_formula(predictors = 0 + predictors)
+
+    `sigmoid_formula(predictors = 0 + predictors)`
 
   Consider that the cell_ID was recorded and the noise from the cell_ID is to
-  be accounted for. dr_formula(predictors = 0 + predictors + (1|cell_ID))
+  be accounted for. 
+  
+   `sigmoid_formula(predictors = 0 + predictors + (1|cell_ID))`
 }
 
 }

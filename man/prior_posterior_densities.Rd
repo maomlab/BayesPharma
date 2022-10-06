@@ -36,7 +36,7 @@ Plot of the prior and posterior density distributions of each
 \examples{
 \dontrun{
   prior_posterior_densities(
-    model = my_dr_model,
+    model = my_sigmoid_model,
     predictors_col_name = "predictors",
     half_max_response = "ic50",
     title_label = "Prior Posterior Density Plots")

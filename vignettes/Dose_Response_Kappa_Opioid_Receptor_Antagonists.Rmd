@@ -92,58 +92,60 @@ ggplot2::ggplot(kor_antag) +
     facets = dplyr::vars(Drug)) 
 ```
 
-## Setting the Priors for the Model
-For the priors, we are going to use a normal distribution because the response
+## Setting the Prior for the Model
+For the prior, we are going to use a normal distribution because the response
 values are continuous. 
 First, We will run the analysis with top (max response) parameter prior set to 
 a constant value of 100 because top is normalized to 100 and the default broad
-priors for ic50, hill and bottom. Broad priors represent unbiased uncertainty 
-and provide an opportunity for extreme responses.
+prior for `ic50`, `hill` and `bottom`. A broad prior represent unbiased
+uncertainty and provide an opportunity for extreme responses.
 
-Then, we will fit another model with more informative priors using the 
+Then, we will fit another model with a more informative prior using the 
 information from the research paper, and compare the two models. 
 
-The level of informativeness of the priors will affect how much influence the
-priors have on the model. Here is more [information on prior choice 
-recommendations.](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
+The level of informativeness of the prior will affect how much influence the
+prior has on the model. Here is more [information on prior choice 
+recommendations.](
+https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
 
-```{r default-priors}
+```{r default-prior}
 
-kor_priors <- BayesPharma::dr_priors(
+kor_prior <- BayesPharma::sigmoid_prior(
   inhibitor = TRUE,
   top = 100)
-kor_priors
+kor_prior
 ```
 
 ### Initial Values for Parameters
-Then, we will set inits to values close to parameter estimates to help with 
-model convergence. The inits are the starting values for the mcmc chains of each 
-parameter. The default inits: ec50 = -9, hill = -1, top = 100, bottom = 0
+Then, we will set the initial to values close to parameter estimates to help
+with model convergence. The initial values are the starting values for the
+Monte Carlo Marko Chains of each parameter. The default initial values are:
+`ec50 = -9`, `hill = -1`, `top = 100`, and `bottom = 0`.
 
 ```{r default-init}
 #| warning=FALSE,
 #| message=FALSE
-kor_inits <- BayesPharma::dr_inits()
+kor_init <- BayesPharma::sigmoid_init()
 ```
 
 ### Prior Predictive Check
 Before running the model, we will verify that the prior distributions
 cover a plausible range of values for each parameter. To do this, we want to 
 sample only from the prior distributions by adding  *sample_prior = "only"* as 
-an argument to the `dr_model` function.
+an argument to the `sigmoid_model` function.
 We will use the default response distribution of the model 
 (*family = gaussian()*).
 
 ```{r sample-prior}
 #| results='hide',
 #| message=FALSE,
-#| dependson=c("load-data", "default-priors", "default-inits")
+#| dependson=c("load-data", "default-prior", "default-init")
 
-kor_sample_priors <- BayesPharma::dr_model(
+kor_sample_prior <- BayesPharma::sigmoid_model(
   kor_antag,
-  BayesPharma::dr_formula(), 
-  priors = kor_priors,
-  init = kor_inits,
+  BayesPharma::sigmoid_formula(), 
+  prior = kor_prior,
+  init = kor_init,
   sample_prior = "only")
 ```
 
@@ -152,31 +154,31 @@ Plot of the Prior Distributions:
 #| dependson=c("sample-prior")
 
 BayesPharma::density_distributions(
-  kor_sample_priors, 
+  kor_sample_prior, 
   half_max_label = "ic50",
   title_label = "Prior Density Distributions")
 ```
 
 
 We can use this to evaluate the prior distributions for each parameter. The 
-priors appear to cover a broad range of response values including extreme 
+prior appears to cover a broad range of response values including extreme 
 responses.
 
 
 ## Fitting the Model
 
 To fit the model for each antagonist, we set the *predictors* argument in 
-`dr_formula` to be *predictors = 0 + Drug*. 
+`sigmoid_formula` to be *predictors = 0 + Drug*. 
 
 ```{r model}
 #| results='hide',
 #| message=FALSE,
-#| dependson=c("load-data", "default-priors", "default-inits")
-kor_model <- BayesPharma::dr_model(
+#| dependson=c("load-data", "default-prior", "default-init")
+kor_model <- BayesPharma::sigmoid_model(
   data = kor_antag,
-  formula = BayesPharma::dr_formula(0 + Drug), 
-  priors = kor_priors,
-  init = kor_inits)
+  formula = BayesPharma::sigmoid_formula(0 + Drug), 
+  prior = kor_prior,
+  init = kor_init)
 ```
 
 ### Results from the Model
@@ -273,34 +275,34 @@ BayesPharma::posterior_draws_plot(
   ylab = "Response")
 ```
 
-## Improving the Model with More Informative Priors
+## Improving the Model with a More Informative Prior
 Below are the dose-response results discussed in the paper:
 BTRX-335140: ic50 = 1.2 +/- 0.9 nM (-8.9 +/- 0.2 M), bottom = 1.3%
 BTRX-395750: ic50 = 1.2 +/- 1.3 nM (-8.9 +/- 0.3 M), bottom = 28.0%
 JNJ-67953964: ic50 = 3.0 +/- 4.6 nM (-8.5 +/- 0.4 M), bottom = -27%
 PF-04455242: ic50 = 6.7 +/- 15.1 nM (-8.2 +/- 0.5 M), bottom = 45%
 
-```{r model-priors2}
-kor_priors2 <- BayesPharma::dr_priors(
+```{r model-prior2}
+kor_prior2 <- BayesPharma::sigmoid_prior(
   ec50 = brms::prior(normal(-8.5, 0.5), nlpar = "ec50"),
   hill = brms::prior(normal(-1, 0.5), ub = 0.01, nlpar = "hill"),
   top = 100,
   bottom = brms::prior(normal(10, 15), nlpar = "bottom"))
-kor_priors2
+kor_prior2
 ```
 
-Sampling the Priors:
+Sampling the prior:
 
 ```{r model2-sample-prior}
 #| results='hide',
 #| message=FALSE,
-#| dependson=c("load-data", "default-inits", "model-priors2")
+#| dependson=c("load-data", "default-init", "model-prior2")
 
-kor_sample_priors <- BayesPharma::dr_model(
+kor_sample_prior <- BayesPharma::sigmoid_model(
   kor_antag,
-  BayesPharma::dr_formula(), 
-  priors = kor_priors2,
-  init = kor_inits,
+  BayesPharma::sigmoid_formula(), 
+  prior = kor_prior2,
+  init = kor_init,
   sample_prior = "only")
 ```
 
@@ -309,7 +311,7 @@ Plot of the Prior Distributions:
 #| dependson=c("model2")
 
 BayesPharma::density_distributions(
-  kor_sample_priors,
+  kor_sample_prior,
   predictors_col_name = "_Intercept",
   half_max_label = "ic50")
 ```
@@ -320,11 +322,11 @@ Running the Model:
 #| results='hide',
 #| message=FALSE
 
-kor_model2 <- BayesPharma::dr_model(
+kor_model2 <- BayesPharma::sigmoid_model(
   kor_antag,
-  formula = BayesPharma::dr_formula(0 + Drug), 
-  priors = kor_priors2,
-  init = kor_inits,
+  formula = BayesPharma::sigmoid_formula(0 + Drug), 
+  prior = kor_prior2,
+  init = kor_init,
   cores = 2)
 
 kor_model2
@@ -387,8 +389,8 @@ BayesPharma::posterior_draws_plot(
 
 ## Comparing the Two Models Using LOO-Comparison:
 
-The model with an elpd_diff and an se_diff of 0 is the preferred model. 
-The kor_model2, the model with more informative priors, is the preferred model,
+The model with an `elpd_diff` and an `se_diff` of 0 is the preferred model. 
+The `kor_model2`, the model with a more informative prior, is the preferred model,
 but only by a minute amount.
 
 ```{r add-loo, cache=TRUE}

@@ -34,14 +34,14 @@ ggplot2::ggplot object.
 \description{
 This function is useful to observe the distributions of the
   priors set for the brmsfit model. By adding `sample_prior = "only"` to the
-  dr_model or a brmsfit model, the model samples only from the prior
+  sigmoid_model or a brmsfit model, the model samples only from the prior
   distributions and can be observed using this plot function to verify that
   the values intended to be covered are being included.
 }
 \examples{
 \dontrun{
   density_distributions(
-    model = my_dr_model_priors,
+    model = my_sigmoid_model_priors,
     predictors_col_name = "predictors",
     half_max_label = "ic50",
     title_label = "Parameter Density Distribution Plots",

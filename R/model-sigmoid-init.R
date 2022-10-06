@@ -1,7 +1,7 @@
 #' Create initialization for the sigmoid model 
 #'
 #' @description Creating initial values for the sigmoid model parameters that
-#'   can be passed to the `dr_model`
+#'   can be passed to the `sigmoid_model`
 #'
 #' @param ec50 numeric or numeric returning function units log_dose
 #'   (default = -9)
@@ -23,7 +23,7 @@
 #' to be around 1 uM, minimum response is known to be 0, and 4 MCMC chains will
 #' be used by the model.
 #'
-#' inits <- BayesPharma::dr_inits(
+#' init <- BayesPharma::sigmoid_init(
 #'   ec50 = -6,
 #'   hill = TRUE,
 #'   inhibitor = FALSE,
@@ -32,8 +32,7 @@
 #'   chains = 4)
 #'}
 #'@export
-
-dr_inits <- function(
+sigmoid_init <- function(
     ec50 = -9,
     hill = TRUE,
     inhibitor = TRUE,
@@ -62,6 +61,6 @@ dr_inits <- function(
     top = top_init,
     bottom = bottom_init)
 
-  inits <- rep(list(init_list), chains)
-  return(inits)
+  init <- rep(list(init_list), chains)
+  return(init)
 }

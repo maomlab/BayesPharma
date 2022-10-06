@@ -41,7 +41,7 @@ plots the brmsfit model density distribution of each parameter
 \examples{
 \dontrun{
   posterior_densities(
-    model = my_dr_model,
+    model = my_sigmoid_model,
     predictors_col_name = "predictors",
     half_max_label = "ic50",
     l_ci = 0.025,

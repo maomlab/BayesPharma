@@ -1,32 +1,3 @@
-#' Formula for a curve with a constant response
-#'
-#' @description set-up an equation for formula objects with a constant response.
-#'
-#' @param predictors Additional formula objects to specify predictors of
-#'   non-linear parameters. i.e. what perturbations/experimental differences
-#'   should be modeled separately? (Default: 1) should a random effect be taken
-#'   into consideration? i.e. cell number, plate number, etc.
-#' @return brmsformula
-#'
-#' @examples
-#'\dontrun{
-#'   constant_formula(predictors = 0 + predictors)
-#'}
-#' @export
-constant_formula <- function(
-  predictors = 1,
-  ...) {
-
-  constant_eq <- rlang::new_formula(
-    lhs = quote(response),
-    rhs = rlang::enexpr(predictors))
-
-  formula <- brms::brmsformula(constant_eq, ...)
-
-  return(formula)
-}
-
-
 #' Run Bayesian Regression Model using Stan
 #'
 #' @description
@@ -39,7 +10,7 @@ constant_formula <- function(
 #'   must contain columns \code{response} and any predictors specified in
 #'   the formula.
 #' @param formula brmsformula object. To create a dose-response brmsformula,
-#'   use the \code{dr_formula} function.
+#'   use the \code{sigmoid_formula} function.
 #' @param priors brmspriors data.frame for ec50, hill, top, and bottom.
 #'   Use one of the priors functions provided to create priors to use here.
 #' @param init list of lists, numeric value, or "random" for the initial values
@@ -54,26 +25,21 @@ constant_formula <- function(
 #'
 #' @examples
 #'\dontrun{
-#'   dr_model(data,
-#'    formula = dr_formula(predictors = 0 + predictors),
-#'    priors = dr_priors(),
-#'    inits = dr_inits(),
-#'    iter = 8000,
-#'    control = list(adapt_delta = 0.99),
-#'    stanvar_function = dr_stanvar)
+#'   sigmoid_model(data,
+#'    formula = sigmoid_formula(predictors = 0 + drug))
 #'}
 #' @export
-dr_model <- function(
+sigmoid_model <- function(
    data,
-   formula,
-   priors = NULL,
-   init = 0,
+   formula = sigmoid_formula(),
+   prior = sigmoid_prior(),
+   init = sigmoid_init(),
    iter = 8000,
    control = list(adapt_delta = 0.99),
-   stanvar_function = dr_stanvar,
+   stanvar_function = sigmoid_stanvar,
    ...) {
 
-  if (is.null(priors)) {
+  if (is.null(prior)) {
     warning("priors for each parameter is required. Use prior functions provided
              to get default priors.")
   }
@@ -86,7 +52,7 @@ dr_model <- function(
   brms::brm(
     formula = formula,
     data = data,
-    prior = priors,
+    prior = prior,
     init = init,
     iter = iter,
     control = control,
