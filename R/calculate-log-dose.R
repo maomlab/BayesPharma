@@ -12,12 +12,12 @@
 #' \dontrun{
 #' # Consider observations at doses of `1 μM` and `0.1 μM`.
 #' # If the doses are given in molar units e.g. `M` then,
-#' data <- data.frame(dose = c(1e-6, 1e-7)) %>%
+#' data <- data.frame(dose = c(1e-6, 1e-7)) |>
 #'    BayesPharma::calculate_log_dose(dose_col = dose, molar_concentration = 1)
 #' data$log_dose == c(-6, -7)
 #'
 #' # If the doses are given with in units of nanomolar units e.g. `nM` then
-#' data <- data.frame(dose_nM = c(1000, 100)) %>%
+#' data <- data.frame(dose_nM = c(1000, 100)) |>
 #'   BayesPharma::calculate_log_dose(dose_col = dose_nM, molar_concentration = 1e-9)
 #' data$log_dose == c(-6, -7)
 #'}
@@ -31,6 +31,7 @@ calculate_log_dose <- function(
     warning("Calculating log_dose but a log_dose column already exists, overwriting.")
   }
 
-  data %>% dplyr::mutate(log_dose = log10({{dose_col}} * molar_concentration))
+  data |> 
+    dplyr::mutate(log_dose = log10({{dose_col}} * molar_concentration))
 
 }

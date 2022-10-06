@@ -97,23 +97,23 @@ posterior_draws_plot <- function(
     max(na.rm = TRUE)
 
   # this makes the "hair"
-  ep_data <- model %>%
+  ep_data <- model |>
     tidybayes::add_epred_draws(
       newdata = tidyr::expand_grid(
         log_dose = seq(from = lower, to = upper, length.out = 100),
-        {{predictors_col_name}} := data[[predictors_col_name]] %>% unique()),
+        {{predictors_col_name}} := data[[predictors_col_name]] |> unique()),
       value = "response",
       re_formula = NA,
       ndraws = n)
 
   # this makes the ribbon
-  pp_data <- model %>%
+  pp_data <- model |>
     tidybayes::add_predicted_draws(
       newdata = tidyr::expand_grid(
         log_dose = seq(from = lower, to = upper, length.out = 100),
-        {{predictors_col_name}} := data[[predictors_col_name]] %>% unique()),
+        {{predictors_col_name}} := data[[predictors_col_name]] |> unique()),
       value = "response",
-      re_formula = NA)  %>%
+      re_formula = NA)  |>
     ggdist:: median_qi(.width = c(.5, .8, .95))
 
   plot <- ggplot2::ggplot() +

@@ -37,20 +37,20 @@ density_distributions <- function(
     sample_type = "Prior") {
 
   prior <- dplyr::bind_rows(
-    model %>%
-      tidybayes::tidy_draws() %>%
-      tidybayes::gather_variables() %>%
-      dplyr::mutate(sample_type = sample_type) %>%
-      dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
-      dplyr::filter(!stringr::str_detect(.variable, "sigma")) %>%
-      dplyr::filter(!stringr::str_detect(.variable, "lprior"))) %>%
+    model |>
+      tidybayes::tidy_draws() |>
+      tidybayes::gather_variables() |>
+      dplyr::mutate(sample_type = sample_type) |>
+      dplyr::filter(!stringr::str_detect(.variable, "__$")) |>
+      dplyr::filter(!stringr::str_detect(.variable, "sigma")) |>
+      dplyr::filter(!stringr::str_detect(.variable, "lprior"))) |>
     dplyr::mutate(
-      .variable = .variable %>%
-        stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") %>%
-        stringr::str_remove("b_") %>%
-        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
-        stringr::str_remove(predictors_col_name) %>%
-        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
+      .variable = .variable |>
+        stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") |>
+        stringr::str_remove("b_") |>
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
+        stringr::str_remove(predictors_col_name) |>
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
         stringr::str_replace("ec50", half_max_label))
 
   ggplot2::ggplot(data = prior) +

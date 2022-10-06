@@ -7,13 +7,13 @@
 #     bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))
 #   }
 #   data <- data.frame(
-#     log_dose = seq(-7, -5, length.out = 30)) %>%
+#     log_dose = seq(-7, -5, length.out = 30)) |>
 #     dplyr::mutate(
-#       response = log_dose %>%
-#         sigmoid(ec50 = -6, hill = 1, top = 1, bottom = 0, log_dose = .) %>%
+#       response = log_dose |>
+#         sigmoid(ec50 = -6, hill = 1, top = 1, bottom = 0, log_dose = .) |>
 #         rnorm(sd = .2))
 #
-#   model <- data %>%
+#   model <- data |>
 #     BayesPharma::dr_model(
 #       formula = BayesPharma::dr_formula(),
 #       priors = BayesPharma::dr_priors())
@@ -25,15 +25,15 @@
 #     bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))
 #   }
 #   data <- data.frame(
-#     log_dose = seq(-7, -5, length.out = 30)) %>%
+#     log_dose = seq(-7, -5, length.out = 30)) |>
 #     dplyr::mutate(
-#       response = log_dose %>%
-#         sigmoid(ec50 = -6, hill = 1, top = 1, bottom = 0, log_dose = .) %>%
-#         rnorm(sd = 0.2)) %>%
+#       response = log_dose |>
+#         sigmoid(ec50 = -6, hill = 1, top = 1, bottom = 0, log_dose = .) |>
+#         rnorm(sd = 0.2)) |>
 #     dplyr::bind_rows(
 #       data.frame(log_dose = -Inf, response = 0))
 #
-#   model <- data %>%
+#   model <- data |>
 #     BayesPharma::dr_model(
 #       formula = BayesPharma::dr_formula(),
 #       priors = BayesPharma::dr_priors())

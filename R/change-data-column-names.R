@@ -17,17 +17,20 @@
 #'\dontrun{
 #' # consider the response column name is `normalized_measurement` and log dose
 #' # column name is `log_10_dose`.
-#' data %>% BayesPharma::change_col_names(
-#'   response_col_name = normalized_measurement,
-#'   log_dose_col_name = log_10_dose)
+#' data |>
+#'   BayesPharma::change_col_names(
+#'     response_col_name = normalized_measurement,
+#'     log_dose_col_name = log_10_dose)
 #'}
 #'@export
 
-change_col_names <- function(data,
-                             response_col_name = NULL,
-                             log_dose_col_name = NULL) {
-  data %>%
-    dplyr::rename(response = {{response_col_name}}) %>%
+change_col_names <- function(
+    data,
+    response_col_name = NULL,
+    log_dose_col_name = NULL) {
+  
+  data |>
+    dplyr::rename(response = {{response_col_name}}) |>
     dplyr::rename(log_dose = {{log_dose_col_name}})
 
 }
