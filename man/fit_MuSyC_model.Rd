@@ -8,7 +8,7 @@
 fit_MuSyC_model(
   data,
   prior = MuSyC_prior(),
-  inits = MuSyC_inits(),
+  init = MuSyC_init(),
   formula = MuSyC_formula(),
   control = list(adapt_delta = 0.99, max_treedepth = 12),
   ...
