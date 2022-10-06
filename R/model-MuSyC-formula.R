@@ -40,14 +40,12 @@ MuSyC_formula <- function(
   
   brms::brmsformula(
     response ~ MuSyC(
-      logd1, logd2,
+      logd1 - logd1scale, logd2 - logd2scale,
       logE0,
       logC1, logE1, h1,
       logC2, logE2, h2,
       logE3, logalpha),
-    brms::nlf(logd1 ~ log(dose1 / d1_scale_factor)),
-    brms::nlf(logd2 ~ log(dose2 / d2_scale_factor)),
-    predictors_eq,
+    predictor_eq,
     nl = TRUE,
     ...)
 }
