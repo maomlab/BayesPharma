@@ -1,6 +1,6 @@
 #' Plot synergy checkerboard
 #' 
-#' @param treatment_scores data.frame with columns [dose1, dose2, score]
+#' @param data data.frame with columns [dose1, dose2, response]
 #' @param treatment_1_label used to make default title and axis labels
 #' @param treatment_2_label used to make default title and axis labels
 #' @param treatment_1_units used to make default axis labels
@@ -15,29 +15,30 @@
 #'     plot can be saved with `ggplot2::ggsave()`
 #' 
 #' @export
-plot_checkerboard_score_by_dose <- function(
-    treatment_scores,
-    treatment_1_label,
-    treatment_2_label,
-    treatment_1_units,
-    treatment_2_units,
+plot_synergy_checkerboard <- function(
+    data,
+    treatment_1_label = "Treatment 1",
+    treatment_2_label = "Treatment 2",
+    treatment_1_units = NULL,
+    treatment_2_units = NULL,
     plot_zero_dose = TRUE,
     contour_color = "gold") {
-  d1 <- d1_label <- treatment_scores$dose1 %>% unique() %>% sort()
-  d2 <- d2_label <- treatment_scores$dose2 %>% unique() %>% sort()
+  
+  d1 <- d1_label <- data$dose1 %>% unique() %>% sort()
+  d2 <- d2_label <- data$dose2 %>% unique() %>% sort()
   if (plot_zero_dose) {
     if (d1[1] == 0) {
       d1[1] <- 10 ^ (log10(d1[2]) - 1.05 * (log10(d1[3]) - log10(d1[2])))
-      treatment_scores <- treatment_scores %>%
+      data <- data %>%
         dplyr::mutate(dose1 = ifelse(dose1 != 0, dose1, d1[1]))
     }
     if (d2[1] == 0) {
       d2[1] <- 10 ^ (log10(d2[2]) - 1.05 * (log10(d2[3]) - log10(d2[2])))
-      treatment_scores <- treatment_scores %>%
+      data <- data %>%
         dplyr::mutate(dose2 = ifelse(dose2 != 0, dose2, d2[1]))
     }
   }
-  ggplot2::ggplot(data = treatment_scores) +
+  ggplot2::ggplot(data = data) +
     ggplot2::theme_bw() +
     ggplot2::theme(
       legend.position = "bottom",
@@ -48,12 +49,12 @@ plot_checkerboard_score_by_dose <- function(
       mapping = ggplot2::aes(
         x = log10(dose1),
         y = log10(dose2),
-        fill = score)) +
+        fill = response)) +
     ggplot2::geom_contour(
       mapping = ggplot2::aes(
         x = log10(dose1),
         y = log10(dose2),
-        z = score),
+        z = response),
       color = contour_color) +
     ggplot2::coord_fixed() +
     ggplot2::ggtitle(
