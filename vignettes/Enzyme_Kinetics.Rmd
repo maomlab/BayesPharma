@@ -49,8 +49,8 @@ library(tidybayes)
 data_path <- "~/opt/BayesPharma/inst/extdata/Enzyme Kinetics/Hettiaratchi_2020.xlsx"
 
 data <- tibble::tibble(
-  sheet_name = readxl::excel_sheets(data_path)[2:7]) %>%
-  dplyr::rowwise() %>%
+  sheet_name = readxl::excel_sheets(data_path)[2:7]) |>
+  dplyr::rowwise() |>
   dplyr::do({
     sheet_name <- .$sheet_name
     cat("Parsing sheet: '", sheet_name, "' ...\n", sep = "")
@@ -58,31 +58,31 @@ data <- tibble::tibble(
       path = data_path,
       sheet = sheet_name,
       range = "R2C2:R65C18",
-      col_names = TRUE) %>%
+      col_names = TRUE) |>
       dplyr::mutate(
-        substrate_concentration_mg_ml = sheet_name %>%
-          stringr::str_extract("^[0-9.]+") %>%
+        substrate_concentration_mg_ml = sheet_name |>
+          stringr::str_extract("^[0-9.]+") |>
           as.numeric(),
           .before = 1)
-  }) %>%
+  }) |>
   dplyr::ungroup()
-names(data)[seq(4, 16, by = 3)] <- paste0(data[1,2:16] %>% as.character() %>% na.omit(), "_1")
-names(data)[seq(5, 17, by = 3)] <- paste0(data[1,2:16] %>% as.character() %>% na.omit(), "_2")
-names(data)[seq(6, 18, by = 3)] <- paste0(data[1,2:16] %>% as.character() %>% na.omit(), "_3")
+names(data)[seq(4, 16, by = 3)] <- paste0(data[1,2:16] |> as.character() |> na.omit(), "_1")
+names(data)[seq(5, 17, by = 3)] <- paste0(data[1,2:16] |> as.character() |> na.omit(), "_2")
+names(data)[seq(6, 18, by = 3)] <- paste0(data[1,2:16] |> as.character() |> na.omit(), "_3")
 names(data)[2] <- "time_s"
 names(data)[3] <- "temperature_C"
-data <- data %>%
+data <- data |>
   dplyr::filter(
     !is.na(time_s),
-    time_s != "Time [s]") %>%
+    time_s != "Time [s]") |>
   tidyr::pivot_longer(
     cols = -c("substrate_concentration_mg_ml", "time_s", "temperature_C"),
     names_to = "treatment_replica",
-    values_to = "product_concentration") %>%
+    values_to = "product_concentration") |>
   tidyr::separate(
     col = treatment_replica,
     into = c("treatment", "replica"),
-    sep = "_") %>%
+    sep = "_") |>
   dplyr::mutate(
     replica = as.factor(replica),
     time_s = as.numeric(time_s),
@@ -91,17 +91,17 @@ data <- data %>%
       product_concentration == "OVER" ~ NA_real_,
       TRUE ~ as.numeric(product_concentration)))
 
-baseline <- data %>%
-  dplyr::filter(treatment == "Blank") %>%
-  dplyr::group_by(substrate_concentration_mg_ml, time_s) %>%
+baseline <- data |>
+  dplyr::filter(treatment == "Blank") |>
+  dplyr::group_by(substrate_concentration_mg_ml, time_s) |>
   dplyr::summarize(
     mean_baseline = mean(product_concentration, na.rm=TRUE),
     .groups = "drop")
 
-data <- data %>%
+data <- data |>
   dplyr::left_join(
     baseline,
-    by = c("substrate_concentration_mg_ml", "time_s")) %>%
+    by = c("substrate_concentration_mg_ml", "time_s")) |>
   dplyr::mutate(
     normalized_product_concentration = product_concentration - mean_baseline)
 
@@ -109,7 +109,7 @@ data <- data %>%
 
 
 ```{r plot_data}
-ggplot2::ggplot(data = data %>% dplyr::filter(treatment != "Blank")) + 
+ggplot2::ggplot(data = data |> dplyr::filter(treatment != "Blank")) + 
   ggplot2::theme_bw() +
   ggplot2::geom_line(
     mapping = ggplot2::aes(
@@ -118,7 +118,7 @@ ggplot2::ggplot(data = data %>% dplyr::filter(treatment != "Blank")) +
       color = log(substrate_concentration_mg_ml),
       group = paste0(substrate_concentration_mg_ml, "_", replica))) +
   ggplot2::geom_smooth(
-    data = data %>%
+    data = data |>
       dplyr::filter(
         treatment != "Blank",
         time_s <= 200),
@@ -151,9 +151,9 @@ data_simulate <- tidyr::expand_grid(
   kcat = 0.0072,
   kM =  0.0448,
   ET = 1,
-  ST = c(0.5, 1, 2.5, 5, 10, 15)) %>%
-  dplyr::mutate(series_index = dplyr::row_number()) %>%
-  dplyr::rowwise() %>%
+  ST = c(0.5, 1, 2.5, 5, 10, 15)) |>
+  dplyr::mutate(series_index = dplyr::row_number()) |>
+  dplyr::rowwise() |>
   dplyr::do({
     data <- .
     time <- seq(0, 1200, by=20)
@@ -194,26 +194,26 @@ ggplot2::ggplot(data = data_simulate) +
 
 devtools::load_all()
 
-z <- data %>%
-  dplyr::filter(treatment %>% stringr::str_detect("^D")) %>%
+z <- data |>
+  dplyr::filter(treatment |> stringr::str_detect("^D")) |>
   dplyr::arrange(
     treatment,
     substrate_concentration_mg_ml,
     replica,
     time_s)
 
-z <- z %>%
+z <- z |>
   dplyr::left_join(
-    z %>%
+    z |>
       dplyr::distinct(
         treatment,
         substrate_concentration_mg_ml,
-        replica) %>%
+        replica) |>
       dplyr::mutate(
         series_index = dplyr::row_number()),
-    by = c("treatment", "substrate_concentration_mg_ml", "replica")) %>%
-  dplyr::filter(time_s > 0) %>%
-  dplyr::filter(!is.na(normalized_product_concentration)) %>%
+    by = c("treatment", "substrate_concentration_mg_ml", "replica")) |>
+  dplyr::filter(time_s > 0) |>
+  dplyr::filter(!is.na(normalized_product_concentration)) |>
   dplyr::transmute(
     series_index,
     treatment,
@@ -222,11 +222,6 @@ z <- z %>%
     P = product_concentration,
     time = time_s)
 
-
-
-
-
-devtools::load_all()
 model <- brms::brm(
     data = z,
     formula = brms::brmsformula(
@@ -256,7 +251,7 @@ model <- brms::brm(
 
 devtools::load_all()               
 model <- BayesPharma::tQ_model(
-    data = z %>%
+    data = z |>
       dplyr::filter(treatment == "D14-14"),
     formula = tQ_formula(),
     prior = tQ_prior(
@@ -265,40 +260,36 @@ model <- BayesPharma::tQ_model(
     init = function() list(kcat = 2, kM = 1000),
     iter = 8000,
     backend = 'cmdstanr')
-
-#    control = list(adapt_delta = 0.99))
-
-
 ```
 
 
 ```{r model-multiple-draws, deps=c("model-multiple", "model-multiple-prior")}
-model_prior <- model %>%
+model_prior <- model |>
   brms:::update.brmsfit(sample_prior = "only")
 
-draws_prior <- model_prior %>%
-  tidybayes::tidy_draws() %>%
-  tidybayes::gather_variables() %>%
-  dplyr::filter(.variable %>% stringr::str_detect("b_(kcat|kM)")) %>%
-  tidyr::separate(.variable, into = c("class", "parameter", "treatment"), sep = "_") %>%
-  dplyr::mutate(treatment = treatment %>% stringr::str_replace("treatment", ""))
+draws_prior <- model_prior |>
+  tidybayes::tidy_draws() |>
+  tidybayes::gather_variables() |>
+  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|kM)")) |>
+  tidyr::separate(.variable, into = c("class", "parameter", "treatment"), sep = "_") |>
+  dplyr::mutate(treatment = treatment |> stringr::str_replace("treatment", ""))
 
-draws_posterior <- model %>%
-  tidybayes::tidy_draws() %>%
-  tidybayes::gather_variables() %>%
-  dplyr::filter(.variable %>% stringr::str_detect("b_(kcat|kM)")) %>%
-  tidyr::separate(.variable, into = c("class", "parameter", "treatment"), sep = "_") %>%
-  dplyr::mutate(treatment = treatment %>% stringr::str_replace("treatment", ""))
+draws_posterior <- model |>
+  tidybayes::tidy_draws() |>
+  tidybayes::gather_variables() |>
+  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|kM)")) |>
+  tidyr::separate(.variable, into = c("class", "parameter", "treatment"), sep = "_") |>
+  dplyr::mutate(treatment = treatment |> stringr::str_replace("treatment", ""))
 ```
 
 ```{r prior-posterior-multiple-scatter, deps=c("model-multiple-draws")}
-draws_prior_pairs <- draws_prior %>%
+draws_prior_pairs <- draws_prior |>
   tidyr::pivot_wider(
     id_cols = c(".chain", ".iteration", ".draw", "treatment"),
     names_from = "parameter",
     values_from = ".value")
 
-draws_posterior_pairs <- draws_posterior %>%
+draws_posterior_pairs <- draws_posterior |>
   tidyr::pivot_wider(
     id_cols = c(".chain", ".iteration", ".draw", "treatment"),
     names_from = "parameter",
@@ -306,15 +297,6 @@ draws_posterior_pairs <- draws_posterior %>%
 
 ggplot2::ggplot() +
   ggplot2::theme_bw() +
-  # ggplot2::geom_point(
-  #   data = draws_prior_pairs,
-  #   mapping = ggplot2::aes(
-  #     x = kcat,
-  #     y = kM),
-  #   color = "orange",
-  #   size = 0.8,
-  #   shape = 16,
-  #   alpha = .6) +
     ggplot2::geom_point(
     data = draws_posterior_pairs,
     mapping = ggplot2::aes(
@@ -446,14 +428,14 @@ library(here)
 library(cmdstanr)
 
 
-# simulated data for exponential decay: c=A0*exp(-k1*time)
+# simulated data for exponential decay: c = A0*exp(-k1 * time)
 set.seed(1)
-time <- c(0,1,2,3,4,5,7,9,11)
-y_exp <- 100*exp(-0.2*time)  # c0 =100, kr=0.2, exact simulated data
+time <- c(0, 1, 2, 3, 4, 5, 7, 9, 11)
+y_exp <- 100 * exp(-0.2 * time)  # c0 = 100, kr=0.2, exact simulated data
 df_sim <- data.frame(time, y_exp)
-df_sim <- df_sim %>%
+df_sim <- df_sim |>
   dplyr::mutate(
-   y_obs = y_exp+rnorm(length(time),0,5)) %>%
+   y_obs = y_exp + rnorm(length(time), 0, 5)) |>
   dplyr::select(-y_exp)                        # random normal error added to simulated data with mean = 0 and sd = 5
 N_t <- length(df_sim$time)                     # number of datapoints
 

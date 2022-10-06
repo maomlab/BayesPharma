@@ -109,7 +109,7 @@ data_simulated <- simulate_score_vs_rmsd(
   hill=1.8,
   energy_near = -30,
   energy_far = -10,
-  sigma = 5) %>%
+  sigma = 5) |>
   dplyr::mutate(
     Pnear = BayesPharma::Pnear(
       score = score,
@@ -180,21 +180,21 @@ ggplot2::ggplot(data = data_simulated) +
 
 A nice thing about having the parametric model to generate score-vs-rmsd plots,
 is that it allows us to measure measure the sensitivity of the Pnear to differently
-shaped score-vs-rmsd plots. For example we can scann both the radius of 
+shaped score-vs-rmsd plots. For example we can scan both the radius of 
 
 ```{r simulate-data-scan, dependson=c("load-packages", "simulate-data")}
 data_simulated_scanned <- tidyr::expand_grid(
   radius = c(0.5, 1.5, 3),
-  energy_near = c(-50, -30, -20)) %>%
+  energy_near = c(-50, -30, -20)) |>
   dplyr::rowwise() %>%
   dplyr::do({
     params <- .
-   simulate_score_vs_rmsd(
+    simulate_score_vs_rmsd(
       radius = params$radius,
       hill=1.8,
       energy_near = params$energy_near,
       energy_far = -10,
-      sigma = 5) %>%
+      sigma = 5) |>
       dplyr::mutate(
         radius = params$radius,
         radius_label = paste0("Radius: ", params$radius),
@@ -245,7 +245,7 @@ data_simulated_replicates <- tidyr::expand_grid(
   energy_near = c(-30),
   lambda = c(0.5, 1.5, 2),
   kbt = c(0.62, 2, 5),
-  replicate = seq(1, 5000)) %>%
+  replicate = seq(1, 5000)) |>
   dplyr::rowwise() %>%
   dplyr::do({
     params <- .
@@ -304,7 +304,7 @@ Antibody protein targets
   ```{r snugdock-load-data, dependson=c("load-packages"), warning=FALSE, message=FALSE}
   
   data <- data.frame(
-    target = c("1ahw", "1jps", "1mlc", "1ztx", "2aep", "2jel")) %>%
+    target = c("1ahw", "1jps", "1mlc", "1ztx", "2aep", "2jel")) |>
     dplyr::rowwise() %>%
     dplyr::do({
       target <- .$target
@@ -313,16 +313,16 @@ Antibody protein targets
           "extdata", "Pnear", "antibody_snugdock", paste0(target, "_rmsd.sc"),
           package = "BayesPharma",
           mustWork = TRUE),
-        skip = 1) %>%
-        dplyr::mutate(target = target, .before = 1) %>%
+        skip = 1) |>
+        dplyr::mutate(target = target, .before = 1) |>
         dplyr::select(target, rmsd = Irms, score = I_sc)
-    }) %>%
-    dplyr::filter(rmsd <= 20) %>%
+    }) |>
+    dplyr::filter(rmsd <= 20) |>
     dplyr::mutate(
       response = score,
       log_dose = log(rmsd))
   
-  pnear_scores <- data %>%
+  pnear_scores <- data |>
     dplyr::group_by(target) %>%
     dplyr::do({
       data_by_target <- .
@@ -330,18 +330,18 @@ Antibody protein targets
         Pnear = BayesPharma::Pnear(
           score = data_by_target$score,
           rmsd = data_by_target$rmsd))
-    }) %>%
+    }) |>
     dplyr::mutate(
-      Pnear_label = Pnear %>% signif(2))
+      Pnear_label = Pnear |> signif(2))
   
   ```
 
-We can use the fit the sigmoid model to the log(RMSD) using the
-BayesPharma package, which relies on BRMS and Stan
+We can use the fit the sigmoid model to the `log(RMSD)` using the
+`BayesPharma` package, which relies on `BRMS` and `Stan`
 
 ```{r stugdock-fit-model, output=FALSE, dependson=c("load-packages", "stugdock-load-data"), message=FALSE, warning=FALSE, refresh = 0, results="hide"}
 model <- data %>%
-  BayesPharma::sgmoid_model(
+  BayesPharma::sigmoid_model(
     formula = BayesPharma::sigmoid_formula(
       multiple_perturbations = TRUE,
       predictors = 0 + target),
@@ -355,10 +355,10 @@ model <- data %>%
 
 #if(stan_backend == "cmdstanr") {
   sigmoid <- Vectorize(function(ec50, hill, top, bottom, log_dose){
-    bottom + (top - bottom) / (1 + 10^((ec50 - log_dose)*hill))
+    bottom + (top - bottom) / (1 + 10^((ec50 - log_dose) * hill))
   })
 #} else if (stan_backend == "rstan") {
-#  model %>% brms::expose_functions()
+#  model |> brms::expose_functions()
 #} else {
 #  stop("Unrecognized stan backend '", stan_backend, "\n", sep = "")
 #}
@@ -373,7 +373,7 @@ model
 Excitingly, using leave-one-out cross-validation, the sigmoid model fits the
 data very well
 ```{r model-fit-loo, dependson=c("load-packages", "stugdock-fit-model")}
-model <- model %>% brms::add_criterion(criterion = "loo")
+model <- model |> brms::add_criterion(criterion = "loo")
 model$criteria$loo
 ```
 
@@ -388,25 +388,25 @@ upper <- 3
 n <- 100
 
 # Samples of the expected response across RMSD values for draws from the posterior
-ep_data <- model %>%
+ep_data <- model |>
   tidybayes::add_epred_draws(
     newdata = tidyr::expand_grid(
       log_dose = seq(from = lower, to = upper, length.out = 100),
-      target = data$target %>% unique()),
+      target = data$target |> unique()),
     value = "response",
-    ndraws = 30) %>%
+    ndraws = 30) |>
   dplyr::mutate(
     rmsd = exp(log_dose),
     score = response)
 
 # Median quantile intervals for the response across RMSD values for draws from the posterior
-pp_data <- model %>%
+pp_data <- model |>
   tidybayes::add_predicted_draws(
     newdata = tidyr::expand_grid(
       log_dose = seq(from = lower, to = upper, length.out = 100),
-      target = data$target %>% unique()),
-    value = "response") %>%
-  ggdist:: median_qi(.width = c(.5, .8, .95)) %>%
+      target = data$target |> unique()),
+    value = "response") |>
+  ggdist:: median_qi(.width = c(.5, .8, .95)) |>
   dplyr::mutate(
     rmsd = exp(log_dose),
     score = response)
@@ -530,19 +530,19 @@ to estimate the uncertainty of the Pnear.
 
 ```{r pnear-uncertainty}
 # Median quantile intervals for the response across RMSD values for draws from the posterior
-# pp_data <- model %>%
+# pp_data <- model |>
 #   tidybayes::add_predicted_draws(
 #     newdata = tidyr::expand_grid(
 #       log_dose = seq(from = lower, to = upper, length.out = 100),
-#       target = data$target %>% unique()),
-#     value = "response") %>%
-#   dplyr::group_by(target, .draw) %>%
+#       target = data$target |> unique()),
+#     value = "response") |>
+#   dplyr::group_by(target, .draw) |>
 #   dplyr::do({
 #     draws <- .
 #     data.frame(
 #       
 #     )
-#   ggdist:: median_qi(.width = c(.5, .8, .95)) %>%
+#   ggdist:: median_qi(.width = c(.5, .8, .95)) |>
 #   dplyr::mutate(
 #     rmsd = exp(log_dose),
 #     score = response)
