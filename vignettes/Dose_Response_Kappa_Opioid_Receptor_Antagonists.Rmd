@@ -67,9 +67,8 @@ First, we will load the normalized dose-response data and plot it:
 load("../data/kor_antag.rda")
 
 # The BayesPharma uses columns log_dose and response
-kor_antag <- kor_antag %>%
-  dplyr::mutate(
-    response = normalized_measurement)
+kor_antag <- kor_antag |>
+  dplyr::mutate(response = normalized_measurement)
 kor_antag
 ```
 
@@ -394,9 +393,9 @@ The `kor_model2`, the model with a more informative prior, is the preferred mode
 but only by a minute amount.
 
 ```{r add-loo, cache=TRUE}
-kor_model <- kor_model %>%
+kor_model <- kor_model |>
   brms::add_criterion(criterion = c("loo"), reloo = TRUE)
-kor_model2 <- kor_model2 %>%
+kor_model2 <- kor_model2 |>
   brms::add_criterion(criterion = c("loo"), reloo = TRUE)
 
 brms::loo_compare(
@@ -534,14 +533,14 @@ plot_drc <- function(
     ggplot2::scale_color_manual(values = values)
 }
 
-kor_post_means <- kor_model2 %>%
-    tidybayes::add_epred_draws(
-      newdata = tidyr::expand_grid(
-        log_dose = seq(from = -12, to = -4, length.out = 50),
-        Drug = kor_model2$data[["Drug"]] %>% unique()),
-      value = "response",
-      re_formula = NA) %>%
-  dplyr::group_by(log_dose, Drug) %>%
+kor_post_means <- kor_model2 |>
+  tidybayes::add_epred_draws(
+    newdata = tidyr::expand_grid(
+      log_dose = seq(from = -12, to = -4, length.out = 50),
+      Drug = kor_model2$data[["Drug"]] |> unique()),
+    value = "response",
+    re_formula = NA) |>
+  dplyr::group_by(log_dose, Drug) |>
   dplyr::summarize(
     response = mean(response),
     .groups = "drop")
@@ -554,8 +553,8 @@ BTRX_335140_drc_plot <- plot_drc(
   BTRX_335140_df,
   "BTRX_335140") +
   ggplot2::geom_line(
-    data = kor_post_means %>%
-      dplyr::filter(Drug %>% stringr::str_detect("BTRX_335")),
+    data = kor_post_means |>
+      dplyr::filter(Drug |> stringr::str_detect("BTRX_335")),
     mapping = ggplot2::aes(
       x = log_dose, 
       y = response,
@@ -570,8 +569,8 @@ BTRX_395750_drc_plot <- plot_drc(
   BTRX_395750_df,
   "BTRX_395750") +
   ggplot2::geom_line(
-    data = kor_post_means %>%
-      dplyr::filter(Drug %>% stringr::str_detect("BTRX_395")),
+    data = kor_post_means |>
+      dplyr::filter(Drug |> stringr::str_detect("BTRX_395")),
     mapping = ggplot2::aes(
       x = log_dose, 
       y = response,
@@ -586,13 +585,13 @@ JNJ_drc_plot <- plot_drc(
   JNJ_df,
   "JNJ") +
   ggplot2::geom_line(
-    data = kor_post_means %>%
-      dplyr::filter(Drug %>% stringr::str_detect("JNJ")),
-  mapping = ggplot2::aes(
-    x = log_dose, 
-    y = response,
-    color = "Bayes"),
-  size = 0.6) +
+    data = kor_post_means |>
+      dplyr::filter(Drug |> stringr::str_detect("JNJ")),
+    mapping = ggplot2::aes(
+      x = log_dose, 
+      y = response,
+      color = "Bayes"),
+    size = 0.6) +
   ggplot2::ylab("% Baseline") +
   ggplot2::xlab("Log[Molar] EM1")
 
@@ -602,8 +601,8 @@ PF_drc_plot <- plot_drc(
   PF_df,
   "PF") +
   ggplot2::geom_line(
-    data = kor_post_means %>%
-      dplyr::filter(Drug %>% stringr::str_detect("PF")),
+    data = kor_post_means |>
+      dplyr::filter(Drug |> stringr::str_detect("PF")),
     mapping = ggplot2::aes(
       x = log_dose,
       y = response,
@@ -625,7 +624,7 @@ bayesplot::bayesplot_grid(
 
 drc_stats <- function(drc_fit, drug) {
   
-  data.frame(variables = c("hill", "bottom", "ic50")) %>%
+  data.frame(variables = c("hill", "bottom", "ic50")) |>
     dplyr::mutate(
       model = "drc",
       drug_label = drug,
@@ -697,20 +696,20 @@ bayes_vs_drc <- function(
     drc) {
   
   posterior <- dplyr::bind_rows(
-    model %>%
-      tidybayes::tidy_draws() %>%
-      tidybayes::gather_variables() %>%
-      dplyr::filter(!stringr::str_detect(.variable, "__$")) %>%
-      dplyr::filter(!stringr::str_detect(.variable, "sigma")) %>%
-      dplyr::filter(stringr::str_detect(.variable, filter_label))) %>%
-    dplyr::rename(variables = .variable) %>%
+    model |>
+      tidybayes::tidy_draws() |>
+      tidybayes::gather_variables() |>
+      dplyr::filter(!stringr::str_detect(.variable, "__$")) |>
+      dplyr::filter(!stringr::str_detect(.variable, "sigma")) |>
+      dplyr::filter(stringr::str_detect(.variable, filter_label))) |>
+    dplyr::rename(variables = .variable) |>
     dplyr::mutate(
-      variables = variables %>%
-        stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") %>%
-        stringr::str_remove("b_") %>%
-        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
-        stringr::str_remove(predictors_col_name) %>%
-        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") %>%
+      variables = variables |>
+        stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") |>
+        stringr::str_remove("b_") |>
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
+        stringr::str_remove(predictors_col_name) |>
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
         stringr::str_replace(filter_label, half_max_label))
   
   model <- c("Bayes" = "blue", "drc" = "red")

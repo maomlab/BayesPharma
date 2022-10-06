@@ -38,7 +38,7 @@ if(Sys.info()["machine"] == "arm64"){
 
 
 ```{r load-packages}
-library(tidyverse)
+library(tidymodels)
 library(BayesPharma)
 library(GeomIndicator)
 library(tidybayes)
@@ -145,8 +145,6 @@ ggplot2::ggplot(data = data |> dplyr::filter(treatment != "Blank")) +
 
 ```
 ```{r simulate-tQ}
-
-devtools::load_all()
 data_simulate <- tidyr::expand_grid(
   kcat = 0.0072,
   kM =  0.0448,
@@ -191,9 +189,6 @@ ggplot2::ggplot(data = data_simulate) +
 ```
 
 ```{r model-tQ}
-
-devtools::load_all()
-
 z <- data |>
   dplyr::filter(treatment |> stringr::str_detect("^D")) |>
   dplyr::arrange(
@@ -222,34 +217,34 @@ z <- z |>
     P = product_concentration,
     time = time_s)
 
-model <- brms::brm(
-    data = z,
-    formula = brms::brmsformula(
-      P ~ baseline + scale * prod,
-      brms::nlf(
-        prod ~ tQ_multiple(series_index, time, kcat, kM, ET, ST),
-        loop = FALSE),
-      kcat + kM ~ 0 + treatment,
-      baseline + scale ~ 1,
-      nl = TRUE),
-    prior = c(
-      brms::prior(prior = gamma(0.25, 0.01), lb = 0, nlpar = "kcat"),
-      brms::prior(prior = gamma(6, 0.01), lb = 0, nlpar = "kM"),
-      brms::prior(prior = normal(0, 3), nlpar = "baseline"),
-      brms::prior(prior = normal(1, 3), nlpar = "scale")),
-    init = function() list(
-      kcat = 250,
-      kM = 6000,
-      baseline = 0,
-      scale = 1),
-    iter = 4000,
-    cores = 4,
-    seed = 52L,
-    backend = 'cmdstanr',
-    stanvars = BayesPharma::tQ_stanvar)
+# model <- brms::brm(
+#     data = z,
+#     formula = brms::brmsformula(
+#       P ~ baseline + scale * prod,
+#       brms::nlf(
+#         prod ~ tQ_multiple(series_index, time, kcat, kM, ET, ST),
+#         loop = FALSE),
+#       kcat + kM ~ 0 + treatment,
+#       baseline + scale ~ 1,
+#       nl = TRUE),
+#     prior = c(
+#       brms::prior(prior = gamma(0.25, 0.01), lb = 0, nlpar = "kcat"),
+#       brms::prior(prior = gamma(6, 0.01), lb = 0, nlpar = "kM"),
+#       brms::prior(prior = normal(0, 3), nlpar = "baseline"),
+#       brms::prior(prior = normal(1, 3), nlpar = "scale")),
+#     init = function() list(
+#       kcat = 250,
+#       kM = 6000,
+#       baseline = 0,
+#       scale = 1),
+#     iter = 4000,
+#     cores = 4,
+#     seed = 52L,
+#     backend = 'cmdstanr',
+#     stanvars = BayesPharma::tQ_stanvar,
+#     algorithm = "meanfield")
 
 
-devtools::load_all()               
 model <- BayesPharma::tQ_model(
     data = z |>
       dplyr::filter(treatment == "D14-14"),
@@ -259,7 +254,8 @@ model <- BayesPharma::tQ_model(
       kM = brms::prior(prior = gamma(1000, 1), lb = 0, nlpar = "kM")),
     init = function() list(kcat = 2, kM = 1000),
     iter = 8000,
-    backend = 'cmdstanr')
+    control = NULL,
+    algorithm = "meanfield")
 ```
 
 
@@ -319,111 +315,12 @@ ggplot2::ggplot() +
 ```
 
 
-```{r generated-code}
-write("// generated with brms 2.17.0
-functions {
-  
-vector ode_sQ(
-   real time,
-   vector state,
-   vector params) {
-   real E_T = state[1];   // total enzyme
-   real S_T = state[2];   // total subtrate
-   real P_t = state[3];   // product at time t
-   real kcat = params[1];
-   real kM = params[2];
-   vector[1] dPdt;
-   dPdt[1] = kcat * (E_T * (S_T - P_t)) / (kM + S_T + P_t);
 
-   return(dPdt);
-}
-
-vector sQ(
-  data vector time,
-  vector vkcat,
-  vector vkM,
-  vector vE_T,
-  vector vS_T) {
-
-  vector[2] params;
-  params[1] = vkcat[1];
-  params[2] = vkM[1];
-  vector[3] initial_state;
-  initial_state[1] = vE_T[1];
-  initial_state[2] = vS_T[1];
-  initial_state[3] = 0.0;
-  real initial_time = 0.0;
-  int N = size(time);
-
-  vector[1] P_ode[N] = ode_rk45(
-    ode_sQ,                         // function ode
-    initial_state,                  // vector initial_state
-    initial_time,                   // real initial_time
-    to_array_1d(time),              // array[] real times
-    params);                        // ..
-  
-  vector[N] P;
-  for(i in 1:N) P[i] = P_ode[i,1];
-  return(P);
-}
-
-}
-data {
-  int<lower=1> N;  // total number of observations
-  vector[N] Y;  // response variable
-  int<lower=1> K_kcat;  // number of population-level effects
-  matrix[N, K_kcat] X_kcat;  // population-level design matrix
-  int<lower=1> K_kM;  // number of population-level effects
-  matrix[N, K_kM] X_kM;  // population-level design matrix
-  // covariate vectors for non-linear functions
-  vector[N] C_1;
-  vector[N] C_2;
-  vector[N] C_3;
-  int prior_only;  // should the likelihood be ignored?
-}
-transformed data {
-}
-parameters {
-  vector<lower=0>[K_kcat] b_kcat;  // population-level effects
-  vector<lower=0>[K_kM] b_kM;  // population-level effects
-  real<lower=0> sigma;  // dispersion parameter
-}
-transformed parameters {
-  real lprior = 0;  // prior contributions to the log posterior
-  lprior += gamma_lpdf(b_kcat | 10, 10);
-  lprior += gamma_lpdf(b_kM | 10, 10);
-  lprior += student_t_lpdf(sigma | 3, 0, 2.5)
-    - 1 * student_t_lccdf(0 | 3, 0, 2.5);
-}
-model {
-  // likelihood including constants
-  if (!prior_only) {
-    // initialize linear predictor term
-    vector[N] nlp_kcat = X_kcat * b_kcat;
-    // initialize linear predictor term
-    vector[N] nlp_kM = X_kM * b_kM;
-    // initialize non-linear predictor term
-    vector[N] mu;
-    for (n in 1:N) {
-      // compute non-linear predictor values
-      mu[n] = sQ(C_1[n] , nlp_kcat[n] , nlp_kM[n] , C_2[n] , C_3[n]);
-    }
-    target += normal_lpdf(Y | mu, sigma);
-  }
-  // priors including constants
-  target += lprior;
-}
-generated quantities {
-}","/tmp/stan_mm.stan")
-
-model_mm <- cmdstan_model("/tmp/stan_mm.stan")
-
-```
 
 
 ```{r test_data}
 library(brms)
-library(tidyverse)
+library(tidymodels)
 library(here)
 library(cmdstanr)
 
