@@ -6,9 +6,9 @@
 \usage{
 tQ_model(
   data,
-  formula = mm_formula(),
-  prior = NULL,
-  init = 0,
+  formula = tQ_formula(),
+  prior = tQ_prior(),
+  init = tQ_init(),
   iter = 8000,
   control = list(adapt_delta = 0.99),
   ...

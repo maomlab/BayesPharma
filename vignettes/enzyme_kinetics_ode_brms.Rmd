@@ -114,7 +114,7 @@ Using the `deSolve` package we can simulate data following the total QSSA model.
 Measurements are made with random Gaussian noise with mean `0` and variance of
 `0.5`.
 ```{r data-single, echo = TRUE, deps = c("load-packages")}
-simulate_tQ_model <- function(time, kcat, kM, ET, ST){
+tQ_model_generate <- function(time, kcat, kM, ET, ST){
   ode_tQ <- function(time, Pt, theta){
     list(c(theta[1] * (
       ET + theta[2] + ST - Pt +
@@ -123,7 +123,7 @@ simulate_tQ_model <- function(time, kcat, kM, ET, ST){
   deSolve::ode(y = 0, times = time, func = ode_tQ, parms = c(kcat, kM))
 }
 
-data_single <- simulate_tQ_model(
+data_single <- tQ_model_generate(
   time = seq(0.00, 3, by=.05),
   kcat = 3,
   kM = 5,
@@ -423,7 +423,7 @@ data_multiple <- tidyr::expand_grid(
     time <- seq(0.05, 3, by=.05)
     data <- data.frame(data,
       time = time,
-      P = simulate_tQ_model(
+      P = tQ_model_generate(
         time = time,
         kcat = data$kcat,
         kM = data$kM,
@@ -612,7 +612,7 @@ sample_multiple <- draws_multiple_posterior %>%
       time <- seq(0.05, 3, by=.05)
       data <- data.frame(data,
         time = time,
-        P = simulate_tQ_model(
+        P = tQ_model_generate(
           time = time,
          kcat = data$kcat,
          kM = data$kM,
