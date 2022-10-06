@@ -1,44 +1,3 @@
-#' Create a sigmoid formula for the brms model
-#'
-#' @description set-up a sigmoid dose response model formula to define a
-#'   non-linear model or multilevel non-linear model for `ec50`, `hill`, `top`,
-#'   and, `bottom` for use in Bayesian_model and in the BRMS package.
-#'
-#' @param predictors Additional formula objects to specify predictors of
-#'   non-linear parameters. i.e. what perturbations/experimental differences
-#'   should be modeled separately? (Default: 1) should a random effect be taken
-#'   into consideration? i.e. cell number, plate number, etc.
-#' @return brmsformula
-#'
-#' @examples
-#'\dontrun{
-#'   Consider observations made using 4 different drugs and the column header
-#'   containing the labels for the 4 different drugs is `predictors`.
-#'   dr_formula(predictors = 0 + predictors)
-#'
-#'   Consider that the cell_ID was recorded and the noise from the cell_ID is to
-#'   be accounted for. dr_formula(predictors = 0 + predictors + (1|cell_ID))
-#'}
-#'
-#'@export
-dr_formula <- function(
-  predictors = 1,
-  ...) {
-
-
-  predictor_eq <- rlang::new_formula(
-    lhs = quote(ec50 + hill + top + bottom),
-    rhs = rlang::enexpr(predictors))
-
-  sigmoid_formula <- brms::brmsformula(
-    response ~ sigmoid(ec50, hill, top, bottom, log_dose),
-    predictor_eq,
-    nl = TRUE,
-    ...)
-
-  return(sigmoid_formula)
-}
-
 #' Formula for a curve with a constant response
 #'
 #' @description set-up an equation for formula objects with a constant response.
@@ -135,31 +94,4 @@ dr_model <- function(
     ...)
 }
 
-#' @note stanvar script of a sigmoid dose response equation.
-#' For log dose greater than negative infinity (dose greater than 0), the
-#' sigmoid dose response equation is used. ec50 is the half maximal response,
-#' hill is the slope, top is the maximum response, and bottom is the minimum
-#' response. For log dose equal to negative infinity (dose equal to 0), if hill
-#' is positive, then the bottom value is returned. If hill is negative, then the
-#' top value is returned.
-#'
-dr_stanvar <- brms::stanvar(
-  scode = paste(
-    "   real sigmoid(",
-    "      real ec50,",
-    "      real hill,",
-    "      real top,",
-    "      real bottom,",
-    "      real log_dose) {",
-    "        if( log_dose > negative_infinity() ) {",
-    "          return (bottom + (top - bottom) /",
-    "            (1 + 10^((ec50 - log_dose)*hill)));",
-    "        } else { ",
-    "           if( hill > 0) {",
-    "            return bottom;",
-    "            } else {",
-    "               return top;",
-    "            }",
-    "        }",
-    "   }", sep = "\n"),
-  block = "functions")
+
