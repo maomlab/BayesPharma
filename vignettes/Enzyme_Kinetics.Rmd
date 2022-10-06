@@ -159,7 +159,7 @@ data_simulate <- tidyr::expand_grid(
     time <- seq(0, 1200, by=20)
     data <- data.frame(data,
       time = time,
-      P = BayesPharma::simulate_tQ_model(
+      P = BayesPharma::tQ_model_generate(
         time = time,
         kcat = data$kcat,
         kM = data$kM,
@@ -251,7 +251,7 @@ model <- brms::brm(
     cores = 4,
     seed = 52L,
     backend = 'cmdstanr',
-    stanvars = BayesPharma::tQ_stanvars)
+    stanvars = BayesPharma::tQ_stanvar)
 
 
 devtools::load_all()               
