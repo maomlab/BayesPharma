@@ -1,8 +1,8 @@
 #' Create a sigmoid formula for the brms model
 #'
 #' @description set-up a sigmoid dose response model formula to define a
-#'   non-linear model or multilevel non-linear model for ec50, hill, top, and
-#'   bottom for use in bayesian_model and in the brms package.
+#'   non-linear model or multilevel non-linear model for `ec50`, `hill`, `top`,
+#'   and, `bottom` for use in Bayesian_model and in the BRMS package.
 #'
 #' @param predictors Additional formula objects to specify predictors of
 #'   non-linear parameters. i.e. what perturbations/experimental differences

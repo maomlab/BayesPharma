@@ -1,9 +1,10 @@
-#' Create a list of initial values of the model parameters
+#' Create initialization for the sigmoid model 
 #'
-#' @description Creating a list of lists containing initial values for the
-#'   model parameters that will be used as an argument in the dr_model.
+#' @description Creating initial values for the sigmoid model parameters that
+#'   can be passed to the `dr_model`
 #'
-#' @param ec50 numeric units of ec50 (default = -9).
+#' @param ec50 numeric or numeric returning function units log_dose
+#'   (default = -9)
 #' @param hill TRUE, FALSE, or numeric units, TRUE/FALSE sets hill to an
 #'   initial value of 1/-1 or numeric units can be assigned to hill
 #'   (default = TRUE).

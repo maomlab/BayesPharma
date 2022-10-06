@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-sigmoid-init.R
 \name{dr_inits}
 \alias{dr_inits}
-\title{Create a list of initial values of the model parameters}
+\title{Create initialization for the sigmoid model}
 \usage{
 dr_inits(
   ec50 = -9,
@@ -14,7 +14,8 @@ dr_inits(
 )
 }
 \arguments{
-\item{ec50}{numeric units of ec50 (default = -9).}
+\item{ec50}{numeric or numeric returning function units log_dose
+(default = -9)}
 
 \item{hill}{TRUE, FALSE, or numeric units, TRUE/FALSE sets hill to an
 initial value of 1/-1 or numeric units can be assigned to hill
@@ -35,8 +36,8 @@ hill = 1 (default = TRUE).}
 list of lists.
 }
 \description{
-Creating a list of lists containing initial values for the
-  model parameters that will be used as an argument in the dr_model.
+Creating initial values for the sigmoid model parameters that
+  can be passed to the `dr_model`
 }
 \examples{
 \dontrun{
