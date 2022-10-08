@@ -4,15 +4,15 @@
 #'
 #' If the function arguments ec50, hill, top, bottom = NULL, default
 #' normal distribution priors will be set.
-#' 
+#'
 #' If inhibitor = TRUE, hill is positive. If inhibitor = FALSE, hill is
 #' negative.
-#' 
+#'
 #' If you would like to set a parameter as a constant, enter a numeric value for
 #' the function argument.
-#' 
+#'
 #' For other distribution options, reference
-#' http://mc-stan.org/rstanarm/reference/priors.html#arguments.
+#' <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
 #'
 #' @param ec50 NULL, numeric units, or brms::prior. NULL will provide a weakly
 #'   informative prior with mean of 100 nM. Setting ec50 to a numeric value will
@@ -107,7 +107,7 @@ sigmoid_prior <- function(
     top_prior <- top
     assertthat::assert_that(is(top_prior, "brmsprior"))
     assertthat::assert_that(top_prior$nlpar == "top")
-    
+
   }
 
   if (is.null(bottom)) {

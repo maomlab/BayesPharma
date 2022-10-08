@@ -7,10 +7,10 @@
 #' fit by comparing the observed data with generated data from the model.
 #'
 #' Here is the documentation for pp_check:
-#' http://paul-buerkner.github.io/brms/reference/pp_check.brmsfit.html
+#' <http://paul-buerkner.github.io/brms/reference/pp_check.brmsfit.html>
 #'
 #' Here is the documentation for pp_check plot types under PPC plotting
-#' functions: https://mc-stan.org/bayesplot/reference/PPC-overview.html
+#' functions: <https://mc-stan.org/bayesplot/reference/PPC-overview.html>
 #'
 #' @param model brmsfit model.
 #' @param plot_type string expression of a plot function.
@@ -26,7 +26,6 @@
 #'   n = 10)
 #'}
 #' @export
-
 plot_pp_check <- function(
     model,
     plot_type = "dens_overlay",

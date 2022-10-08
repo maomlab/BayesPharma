@@ -38,8 +38,6 @@
 #'   BayesPharma::MuSyC_init(E0 = 1, E1 = -Inf, E2 = -Inf, E3 = -Inf)
 #'}
 #'@export
-#'
-#'
 MuSyC_init <- function(
     logE0 = log(0.5),
     logC1 = 0,
@@ -61,6 +59,6 @@ MuSyC_init <- function(
       b_logE2 = prepare_init(logE1),
       b_h2 = prepare_init(h1),
       b_logE3 = prepare_init(logE3),
-      b_logalpha = prepare_init(logalpha))}
-}  
-  
+      b_logalpha = prepare_init(logalpha))
+  }
+}

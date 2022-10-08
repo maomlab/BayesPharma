@@ -16,12 +16,12 @@
 constant_formula <- function(
     predictors = 1,
     ...) {
-  
+
   constant_eq <- rlang::new_formula(
     lhs = quote(response),
     rhs = rlang::enexpr(predictors))
-  
+
   formula <- brms::brmsformula(constant_eq, ...)
-  
+
   return(formula)
 }

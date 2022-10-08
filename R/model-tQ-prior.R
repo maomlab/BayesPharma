@@ -14,7 +14,7 @@
 tQ_prior <- function(
     kcat = NULL,
     kM = NULL) {
-  
+
   if (is.null(kcat)) {
     kcat_prior <- brms::prior(
       prior = gamma(4, 1),
@@ -27,7 +27,7 @@ tQ_prior <- function(
   } else {
     kcat_prior <- kcat
   }
-  
+
   if (is.null(kM)) {
     kM_prior <- brms::prior(
       prior = gamma(4, 1),
@@ -40,6 +40,6 @@ tQ_prior <- function(
   } else {
     kM_prior <- kM
   }
-  
+
   c(kcat_prior, kM_prior)
 }

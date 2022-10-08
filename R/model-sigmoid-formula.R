@@ -15,12 +15,12 @@
 #'   # Data has a string column `drug_id` with drug identifiers
 #'   # Fit a separate model for each drug
 #'   BayesPharma::sigmoid_formula(predictors = 0 + drug_id)
-#'   
+#'
 #'   # Data has a string column `plate_id` with plate identifiers
 #'   # Estimate the change in response for each plate relative to a global
 #'   # baseline.
 #'   BayesPharma::sigmoid_formula(predictors = plate_id)
-#'   
+#'
 #'   # data has columns  `drug_id` and `plate_id`
 #'   # fit a multilevel model where the drug effect depends on the plate
 #'   BayesPharma::sigmoid_formula(predictors = 0 + (drug_id|plate_id))
@@ -30,17 +30,17 @@
 sigmoid_formula <- function(
     predictors = 1,
     ...) {
-  
+
   predictor_eq <- rlang::new_formula(
     lhs = quote(ec50 + hill + top + bottom),
     rhs = rlang::enexpr(predictors))
-  
+
   # the sigmoid function is defined in BayesPharma:::igmoid_stanvar
   sigmoid_formula <- brms::brmsformula(
     response ~ sigmoid(ec50, hill, top, bottom, log_dose),
     predictor_eq,
     nl = TRUE,
     ...)
-  
+
   return(sigmoid_formula)
 }

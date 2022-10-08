@@ -2,9 +2,9 @@
 #'
 #' @description
 #'   For additional information on additional function arguments, reference:
-#'   https://paul-buerkner.github.io/brms/reference/brm.html
+#'   <https://paul-buerkner.github.io/brms/reference/brm.html>
 #'   or
-#'   https://rdrr.io/cran/rstan/man/stan.html
+#'   <https://rdrr.io/cran/rstan/man/stan.html>
 #'
 #' @param data data.frame of experimental data.
 #'   must contain columns \code{response} and any predictors specified in
@@ -59,5 +59,3 @@ sigmoid_model <- function(
     stanvars = stanvar_function,
     ...)
 }
-
-
