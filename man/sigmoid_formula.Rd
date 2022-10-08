@@ -25,12 +25,12 @@ set-up a sigmoid dose response model formula to define a
   # Data has a string column `drug_id` with drug identifiers
   # Fit a separate model for each drug
   BayesPharma::sigmoid_formula(predictors = 0 + drug_id)
-  
+
   # Data has a string column `plate_id` with plate identifiers
   # Estimate the change in response for each plate relative to a global
   # baseline.
   BayesPharma::sigmoid_formula(predictors = plate_id)
-  
+
   # data has columns  `drug_id` and `plate_id`
   # fit a multilevel model where the drug effect depends on the plate
   BayesPharma::sigmoid_formula(predictors = 0 + (drug_id|plate_id))

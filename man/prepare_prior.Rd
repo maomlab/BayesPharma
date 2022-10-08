@@ -10,7 +10,8 @@ prepare_prior(prior, ...)
 What this gives above brms::prior(...) and friends is
   1) it allow just giving a numeric value rather than constant(<value>)
   2) if it is already a brmsprior it checks that it has specified arguments
-  
+}
+\details{
 This is used in models where want to allow user specified priors but
 make sure they are for the right parameters to make sure the model is well
 specified.
