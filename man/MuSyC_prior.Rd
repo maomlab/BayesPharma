@@ -22,7 +22,7 @@ MuSyC_prior(
 no treatment. Default normal(log(0.5), 3) lower bounded by 0.}
 
 \item{logE1}{numeric or `brms::prior(...)`. Prior for the full log response
-for treatment 1 and the dose of treatment 2 is zero. Default 
+for treatment 1 and the dose of treatment 2 is zero. Default
 normal(log(0.25), 3) lower bounded by 0.}
 
 \item{logC1}{numeric or `brms::prior(...)`. Prior for the log IC50 of drug 1
@@ -34,7 +34,7 @@ Default mu = MuSYC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei = 0); normal(mu, 3)
 lower bounded by .1}
 
 \item{logE2}{numeric or `brms::prior(...)`. Prior for the full log response
-for treatment 2 and the dose of treatment 1 is zero. Default 
+for treatment 2 and the dose of treatment 1 is zero. Default
 normal(log(0.25), 3) lower bounded by 0.}
 
 \item{logC2}{numeric or `brms::prior(...)`. Prior for the log IC50 of drug 2

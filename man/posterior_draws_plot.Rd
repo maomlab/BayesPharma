@@ -67,11 +67,17 @@ distribution from the expected mean and median quantile intervals.
 \dontrun{
   # Consider a model named my_model and data named my_data with a column
   # named predictors containing multiple different perturbations.
-  posterior_draws_plot(model = my_model, data = my_data,
-                       predictors_col_name = "predictors",lower = -12,
-                       upper = -3, n = 50, facet_var = predictors,
-                       jitter_width = 0.10,
-                       title = "Dose-Response Posterior Draws",
-                       xlab = "Log[Molar]", ylab = "Response")
+  posterior_draws_plot(
+    model = my_model,
+    data = my_data,
+    predictors_col_name = "predictors",
+    lower = -12,
+    upper = -3,
+    n = 50,
+    facet_var = predictors,
+    jitter_width = 0.10,
+    title = "Dose-Response Posterior Draws",
+    xlab = "Log[Molar]",
+    ylab = "Response")
 }
 }

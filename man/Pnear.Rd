@@ -31,7 +31,8 @@ numeric value.
 The Pnear metric defined in [(Bhardwaj, et al., Nature,
 2016)](https://www.nature.com/articles/nature19791)
 measures the how "funnel-like" a score-vs-rmsd plot is.
-https://github.com/RosettaCommons/main/blob/master/tests/benchmark/util/quality_measures.py#L268
+`r paste0("<https://github.com/RosettaCommons/",
+"main/blob/master/tests/benchmark/util/quality_measures.py#L268>")`
 }
 \details{
 ```{r}

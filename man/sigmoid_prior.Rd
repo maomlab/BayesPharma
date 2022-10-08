@@ -54,7 +54,7 @@ If you would like to set a parameter as a constant, enter a numeric value for
 the function argument.
 
 For other distribution options, reference
-http://mc-stan.org/rstanarm/reference/priors.html#arguments.
+<http://mc-stan.org/rstanarm/reference/priors.html#arguments>
 }
 \examples{
 \dontrun{
