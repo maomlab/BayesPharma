@@ -5,41 +5,41 @@
 \title{Default priors for the sigmoid model}
 \usage{
 sigmoid_prior(
-  ec50 = NULL,
+  ec50 = brms::prior(normal(-7, 2.5), nlpar = "ec50"),
   hill = NULL,
   inhibitor = TRUE,
-  top = NULL,
-  bottom = NULL,
+  top = brms::prior(normal(100, 25), nlpar = "top"),
+  bottom = brms::prior(prior = normal(0, 25), nlpar = "bottom"),
   ...
 )
 }
 \arguments{
-\item{ec50}{NULL, numeric units, or brms::prior. NULL will provide a weakly
-informative prior with mean of 100 nM. Setting ec50 to a numeric value will
-set the ec50 prior to a constant value of the given numeric value. A prior
-of choice can be set using brms::prior(). (default = NULL)}
+\item{ec50}{`brmsprior` or numeric. Prior for the ec50 parameter.
+Default: normal(-7, 2.5) where the mean -7 corresponds to a
+concentration of 1e-7 or 100 nM. Setting ec50 to a numeric value constrains
+it to a constant value.}
 
-\item{hill}{NULL, numeric value, or brms::prior. NULL will provide a weakly
-informative prior. Setting hill to a numeric value will set the hill prior
-to a constant value of the given numeric value. A prior of choice can be
-set using brms::prior(). (default = NULL)}
+\item{hill}{`brmsprior` or numeric. Prior for the hill parameter. Default:
+normal(-1, 1) upper bounded by 0.1 if inhibitor is TRUE and normal(1, 1)
+with and a lower bound of -0.1. The dependence on inhibitor is designed
+to make the model identifiable, otherwise swapping top and bottom and
+reversing the sign of hill will give the same model.}
 
 \item{inhibitor}{TRUE/FALSE value. This determines if a positive or negative
 slope is used for the hill prior. (default = TRUE)}
 
-\item{top}{NULL, numeric value, or `brms::prior`. NULL will provide a weakly
-informative prior. Setting top to a numeric value will set the top prior to
-a constant value of the given numeric value. A prior of choice can be set
-using `brms::prior()`. (default = NULL)}
+\item{top}{`brmsprior` or numeric. Prior for the top parameter.
+Default: normal(100, 25). Setting top to a numeric value constrains it to
+a constant value.}
 
-\item{bottom}{NULL, numeric value, or `brms::prior`. NULL will provide a
-weakly
-  informative prior. Setting bottom to a numeric value will set the bottom
-  prior to a constant value of the given numeric value. A prior of choice can
-  be set using `brms::prior()`. (default = NULL)}
+\item{bottom}{`brmsprior` or numeric. Prior for the top parameter.
+Default: normal(100, 25). Setting ec50 to a numeric value constrains it to
+a constant value.}
+
+\item{...}{additional `brmsprior` objects.}
 }
 \value{
-brmsprior data.frame
+`brmsprior` `data.frame`
 }
 \description{
 Creates a data.frame of priors for the sigmoid model
@@ -62,7 +62,6 @@ For other distribution options, reference
 # to be around 1 uM, and minimum response is known to be 0.
 priors <- sigmoid_prior(
   ec50 = brms::prior(normal(-6, 0.5), nlpar = "ec50"),
-  hill = NULL,
   inhibitor = FALSE,
   top = brms::prior(normal(50, 2.5), nlpar = "top"),
   bottom = 0)

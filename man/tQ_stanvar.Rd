@@ -3,14 +3,14 @@
 \docType{data}
 \name{tQ_stanvar}
 \alias{tQ_stanvar}
-\title{stanvars for the tQ enzyme kinetics model}
+\title{stanvar for the tQ enzyme kinetics model}
 \format{
 An object of class \code{stanvars} of length 1.
 }
 \usage{
-Pass to calls to `brms::brm`
+tQ_stanvar
 }
 \description{
-stanvars for the tQ enzyme kinetics model
+stanvar for the tQ enzyme kinetics model
 }
 \keyword{datasets}

@@ -1,21 +1,19 @@
 #' Initialize parameter values for the the tQ enyzme kinetic model
+#' 
+#' @param kcat numeric initial value for `kcat` parameter in the tQ model
+#'   (Default 4)
+#' @param kM numeric initial value for the `kM` parameter in the tQ model
+#'   (default 4)
+#' @return input for `BayesPharma::model_tQ(init = ...)` parameter.
+#' 
 #' @export
 tQ_init <- function(
     kcat = 4,
-    kM = 4,
-    chains = 4) {
+    kM = 4) {
 
-  init_list <- list(
-    kcat = kcat,
-    kM = kM)
-
-  inits <- list()
-
-  i <- 0
-  while (i < chains) {
-    inits <- append(inits, list(init_list))
-    i <- i + 1
+  function() {
+    list(
+      kcat = prepare_init(kcat),
+      kM = prepare_init(kM))
   }
-
-  return(inits)
 }

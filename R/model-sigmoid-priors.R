@@ -14,26 +14,25 @@
 #' For other distribution options, reference
 #' <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
 #'
-#' @param ec50 NULL, numeric units, or brms::prior. NULL will provide a weakly
-#'   informative prior with mean of 100 nM. Setting ec50 to a numeric value will
-#'   set the ec50 prior to a constant value of the given numeric value. A prior
-#'   of choice can be set using brms::prior(). (default = NULL)
-#' @param hill NULL, numeric value, or brms::prior. NULL will provide a weakly
-#'   informative prior. Setting hill to a numeric value will set the hill prior
-#'   to a constant value of the given numeric value. A prior of choice can be
-#'   set using brms::prior(). (default = NULL)
+#' @param ec50 `brmsprior` or numeric. Prior for the ec50 parameter.
+#'   Default: normal(-7, 2.5) where the mean -7 corresponds to a
+#'   concentration of 1e-7 or 100 nM. Setting ec50 to a numeric value constrains
+#'   it to a constant value.
+#' @param hill `brmsprior` or numeric. Prior for the hill parameter. Default:
+#'   normal(-1, 1) upper bounded by 0.1 if inhibitor is TRUE and normal(1, 1)
+#'   with and a lower bound of -0.1. The dependence on inhibitor is designed
+#'   to make the model identifiable, otherwise swapping top and bottom and
+#'   reversing the sign of hill will give the same model.
 #' @param inhibitor TRUE/FALSE value. This determines if a positive or negative
 #'    slope is used for the hill prior. (default = TRUE)
-#' @param top NULL, numeric value, or `brms::prior`. NULL will provide a weakly
-#'   informative prior. Setting top to a numeric value will set the top prior to
-#'   a constant value of the given numeric value. A prior of choice can be set
-#'   using `brms::prior()`. (default = NULL)
-#' @param bottom  NULL, numeric value, or `brms::prior`. NULL will provide a
-#' weakly
-#'   informative prior. Setting bottom to a numeric value will set the bottom
-#'   prior to a constant value of the given numeric value. A prior of choice can
-#'   be set using `brms::prior()`. (default = NULL)
-#' @return brmsprior data.frame
+#' @param top `brmsprior` or numeric. Prior for the top parameter.
+#'   Default: normal(100, 25). Setting top to a numeric value constrains it to
+#'   a constant value.
+#' @param bottom  `brmsprior` or numeric. Prior for the top parameter.
+#'   Default: normal(100, 25). Setting ec50 to a numeric value constrains it to
+#'   a constant value.
+#' @param ... additional `brmsprior` objects.
+#' @return `brmsprior` `data.frame`
 #'
 #' @examples
 #'\dontrun{
@@ -41,91 +40,39 @@
 #' # to be around 1 uM, and minimum response is known to be 0.
 #' priors <- sigmoid_prior(
 #'   ec50 = brms::prior(normal(-6, 0.5), nlpar = "ec50"),
-#'   hill = NULL,
 #'   inhibitor = FALSE,
 #'   top = brms::prior(normal(50, 2.5), nlpar = "top"),
 #'   bottom = 0)
 #'}
 #' @export
 sigmoid_prior <- function(
-  ec50 = NULL,
+  ec50 = brms::prior(normal(-7, 2.5), nlpar = "ec50"),
   hill = NULL,
   inhibitor = TRUE,
-  top = NULL,
-  bottom = NULL,
+  top = brms::prior(normal(100, 25), nlpar = "top"),
+  bottom = brms::prior(prior = normal(0, 25), nlpar = "bottom"),
   ...) {
 
-  if (is.null(ec50)) {
-    ec50_prior <- brms::prior(
-      prior = normal(-7, 2.5),
-      nlpar = "ec50")
-
-  } else if (is.numeric(ec50)) {
-    ec50_prior <- brms::prior_string(
-      prior = paste0("constant(", ec50, ")"),
-      nlpar = "ec50")
-
-  } else {
-    ec50_prior <- ec50
-    assertthat::assert_that(is(ec50_prior, "brmsprior"))
-    assertthat::assert_that(ec50_prior$nlpar == "ec50")
+  # To make the model identifiable, force inhibitor the slope to be either
+  # positive or negative
+  if(is.null(hill)){
+    if(inhibitor) {
+      hill <- brms::prior(
+        prior = normal(-1, 1),
+        nlpar = "hill",
+        lb = -0.01)
+    } else {
+      hill <- brms::prior(
+        prior = normal(1, 1),
+        nlpar = "hill",
+        ub = 0.01)
+    }
   }
-  if (is.null(hill) && inhibitor == FALSE) {
-    hill_prior <- brms::prior(
-      prior = normal(1, 1),
-      nlpar = "hill",
-      lb = -0.01)
+  
+  c(
+    prepare_prior(ec50, nlpar = "ec50"),
+    prepare_prior(hill, nlpar = "hill"),
+    prepare_prior(top, nlpar = "top"),
+    prepare_prior(bottom, nlpar = "bottom"))
 
-  } else if (is.null(hill) && inhibitor == TRUE) {
-    hill_prior <- brms::prior(
-      prior = normal(-1, 1),
-      nlpar = "hill",
-      ub = 0.01)
-
-  } else if (is.numeric(hill)) {
-    hill_prior <- brms::prior_string(
-      prior = paste0("constant(", hill, ")"),
-      nlpar = "hill")
-
-  } else {
-    hill_prior <- hill
-    assertthat::assert_that(is(hill_prior, "brmsprior"))
-    assertthat::assert_that(hill_prior$nlpar == "hill")
-  }
-
-  if (is.null(top)) {
-    top_prior <- brms::prior(
-      prior = normal(100, 25),
-      nlpar = "top")
-
-  } else if (is.numeric(top)) {
-    top_prior <- brms::prior_string(
-      prior = paste0("constant(", top, ")"),
-      nlpar = "top")
-
-  } else {
-    top_prior <- top
-    assertthat::assert_that(is(top_prior, "brmsprior"))
-    assertthat::assert_that(top_prior$nlpar == "top")
-
-  }
-
-  if (is.null(bottom)) {
-    bottom_prior <- brms::prior(
-      prior = normal(0, 25),
-      nlpar = "bottom")
-
-  } else if (is.numeric(bottom)) {
-    bottom_prior <- brms::prior_string(
-      prior = paste0("constant(", bottom, ")"),
-      nlpar = "bottom")
-
-  } else {
-    bottom_prior <- bottom
-    assertthat::assert_that(is(bottom_prior, "brmsprior"))
-    assertthat::assert_that(bottom_prior$nlpar == "bottom")
-  }
-
-  prior <- c(ec50_prior, hill_prior, top_prior, bottom_prior, ...)
-  return(prior)
 }

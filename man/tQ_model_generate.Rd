@@ -7,7 +7,20 @@
 tQ_model_generate(time, kcat, kM, ET, ST, ...)
 }
 \arguments{
-\item{time}{numeric vector of increasing time points.}
+\item{time}{numeric vector. Increasing time points}
+
+\item{kcat}{numeric value catalytic rate constant}
+
+\item{kM}{numeric value Michaelis rate constant}
+
+\item{ET}{numeric value total enzyme concentration}
+
+\item{ST}{numeric value total substrate concentration}
+}
+\value{
+run the tQ ordinary differential equation forwards starting with
+ initial product concentration of 0 and specified kcat and kM parameters
+ for the specified time steps.
 }
 \description{
 Simulate data from the total QSSA model a refinement of the classical

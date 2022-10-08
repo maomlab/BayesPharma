@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-tQ-run.R
 \name{tQ_model}
 \alias{tQ_model}
-\title{BRMS model for the tQ enzyme kinetics model}
+\title{Model for the tQ enzyme kinetics model}
 \usage{
 tQ_model(
   data,
@@ -14,6 +14,34 @@ tQ_model(
   ...
 )
 }
+\arguments{
+\item{data}{data.frame of experimental data.
+must contain columns \code{response} and any predictors specified in
+the formula.}
+
+\item{formula}{brmsformula object. To create a dose-response brmsformula,
+use the \code{tQ_formula} function.}
+
+\item{init}{list of lists, numeric value, or "random" for the initial values
+of the parameters being modeled (default = 0).}
+
+\item{iter}{number of iterations the model runs. Increasing iter can help
+with model convergence (default = 8000).}
+
+\item{control}{a named list of parameters to control the sampler's behavior.
+Adding max_treedepth and giving a greater value than 10 can improve model
+convergence (default = list(adapt_delta = 0.99)).}
+
+\item{...}{additional arguments passed to `brms::brm`.}
+
+\item{priors}{brmspriors data.frame for kcat, and kM.
+Use one of the priors functions provided to create priors to use here.}
+
+\item{stanvar_function}{stan code for the model.}
+}
+\value{
+brmsfit model
+}
 \description{
-BRMS model for the tQ enzyme kinetics model
+Model for the tQ enzyme kinetics model
 }
