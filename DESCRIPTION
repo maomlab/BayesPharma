@@ -29,6 +29,7 @@ Collage:
     'calculate-log-dose.R',
     'change-data-column-names.R',
     'data.R',
+    'globals.R',
     'helpers-testthat.R',
     'model-constant-formula.R',
     'model-MuSyC-formula.R',

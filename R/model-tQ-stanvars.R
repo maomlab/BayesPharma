@@ -1,6 +1,5 @@
-#' stanvars for the tQ enzyme kinetics model
+#' stanvar for the tQ enzyme kinetics model
 #'
-#' @usage Pass to calls to `brms::brm`
 #'
 #' @export
 tQ_stanvar <- brms::stanvar(
