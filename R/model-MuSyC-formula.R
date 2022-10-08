@@ -1,4 +1,3 @@
-
 #' Create a formula for the MuSyC synergy model
 #'
 #' @description setup a defaulMuSyC synergy model formula to predict
@@ -16,13 +15,13 @@
 #'   # Data has a string column `drug_id` with drug identifiers
 #'   # Fit a separate model for each drug
 #'   BayesPharma::MuSyC_formula(predictors = 0 + drug_id)
-#'   
+#'
 #'   # Data has a string column `plate_id` with plate identifiers
 #'   # Estimate the change in response for each plate relative to a global
 #'   # baseline.
 #'   BayesPharma::MuSyC_formula(predictors = plate_id)
-#'   
-#'   # data has columns  `drug_id` and `plate_id`
+#'
+#'   # data has columns `drug_id` and `plate_id`
 #'   # fit a multilevel model where the drug effect depends on the plate
 #'   BayesPharma::MuSyC_formula(predictors = 0 + (drug_id|plate_id))
 #'}
@@ -31,7 +30,7 @@
 MuSyC_formula <- function(
     predictors = 1,
     ...) {
-  
+
   if (!is.null(predictors)) {
     predictor_eq <- rlang::new_formula(
       lhs = quote(
@@ -43,7 +42,7 @@ MuSyC_formula <- function(
   } else {
     predictor_eq <- NULL
   }
-  
+
   brms::brmsformula(
     response ~ MuSyC(
       logd1 - logd1scale, logd2 - logd2scale,

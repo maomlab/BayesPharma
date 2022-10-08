@@ -1,5 +1,5 @@
 #' Plot synergy checkerboard
-#' 
+#'
 #' @param data data.frame with columns [dose1, dose2, response]
 #' @param treatment_1_label used to make default title and axis labels
 #' @param treatment_2_label used to make default title and axis labels
@@ -13,7 +13,7 @@
 #' @return ggplot2 plot with light-blue to dark-blue tiles the dose
 #'     response. Individual plot elements can be over-written and the
 #'     plot can be saved with `ggplot2::ggsave()`
-#' 
+#'
 #' @export
 plot_synergy_checkerboard <- function(
     data,
@@ -23,7 +23,7 @@ plot_synergy_checkerboard <- function(
     treatment_2_units = NULL,
     plot_zero_dose = TRUE,
     contour_color = "gold") {
-  
+
   d1 <- d1_label <- data$dose1 |> unique() |> sort()
   d2 <- d2_label <- data$dose2 |> unique() |> sort()
   if (plot_zero_dose) {

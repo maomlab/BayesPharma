@@ -27,7 +27,6 @@
 #'     title_label = "Posterior Density Plots with Mean and 95% CI")
 #'}
 #'@export
-
 posterior_densities <- function(
     model,
     predictors_col_name = "_Intercept",
