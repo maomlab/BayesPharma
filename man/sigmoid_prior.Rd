@@ -58,9 +58,8 @@ http://mc-stan.org/rstanarm/reference/priors.html#arguments.
 }
 \examples{
 \dontrun{
-Consider an activator that has a max response around 50\%, EC50 is estimated
-to be around 1 uM, and minimum response is known to be 0.
-
+# Consider an activator that has a max response around 50\%, EC50 is estimated
+# to be around 1 uM, and minimum response is known to be 0.
 priors <- sigmoid_prior(
   ec50 = brms::prior(normal(-6, 0.5), nlpar = "ec50"),
   hill = NULL,

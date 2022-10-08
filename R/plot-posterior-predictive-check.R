@@ -13,14 +13,14 @@
 #' functions: https://mc-stan.org/bayesplot/reference/PPC-overview.html
 #'
 #' @param model brmsfit model.
-#' @param plot_type String expression of a plot function.
+#' @param plot_type string expression of a plot function.
 #' @param n numeric units of posterior draws to be used.
 #' @return ggplot object.
 #'
 #' @examples
 #'\dontrun{
-#' Consider a dose response model with the plot type being 10 box plots
-#' plot_pp_check(
+#' # Consider a dose response model with the plot type being 10 box plots
+#' BayesPharma::plot_pp_check(
 #'   model = my_dose_response_model,
 #'   plot_type = "box_plot",
 #'   n = 10)

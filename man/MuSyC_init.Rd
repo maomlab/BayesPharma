@@ -56,5 +56,13 @@ Initial values for the MuSyC model
 }
 \examples{
 \dontrun{
+  # default prior and init for MuSyC Model
+  prior <- BayesPharma::MuSyC_prior()
+  init <- BayesPharma::MuSyC_init()
+
+  # Set prior and init for MuSyC model where both treatment 1 and treatment 2
+  # are assumed to be full inhibitors
+  BayesPharma::MuSyC_prior(logE0 = 0, E1 = -Inf, E2 = -Inf, E3 = -Inf)
+  BayesPharma::MuSyC_init(E0 = 1, E1 = -Inf, E2 = -Inf, E3 = -Inf)
 }
 }
