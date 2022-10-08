@@ -6,6 +6,13 @@
 \usage{
 prepare_prior(prior, ...)
 }
+\arguments{
+\item{prior}{`brmsprior` or numeric.}
+
+\item{...}{additional arguments to `brms::prior_string()`. If `prior` is a
+`brmsprior` then this will check that the slots have the given values. If
+prior is numeric, then these arguments are passed to `brms::prior_string`}
+}
 \description{
 What this gives above brms::prior(...) and friends is
   1) it allow just giving a numeric value rather than constant(<value>)

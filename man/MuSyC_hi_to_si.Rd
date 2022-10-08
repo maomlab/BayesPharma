@@ -7,16 +7,16 @@
 MuSyC_hi_to_si(hi, Ci, E0, Ei)
 }
 \arguments{
+\item{hi}{the exponent in the MuSyC equation for drug i}
+
 \item{Ci}{the IC50 of drug i}
 
 \item{E0}{the response with no treatments}
 
 \item{Ei}{the response of infinite drug i and no other treatments}
-
-\item{si}{slope of drug i at it's IC50 and doses of all other drugs are zero}
 }
 \value{
-hi the exponent in the MuSyC equation for drug i
+si slope of drug i at it's IC50 and doses of all other drugs are zero
 }
 \description{
 This can be used for setting priors and interpreting parameter estimates

@@ -12,6 +12,8 @@ plot_pp_check(model, plot_type = "dens_overlay", n = 50, ...)
 \item{plot_type}{string expression of a plot function.}
 
 \item{n}{numeric units of posterior draws to be used.}
+
+\item{...}{additional arugments to `brms::pp_check`.}
 }
 \value{
 ggplot object.

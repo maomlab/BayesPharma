@@ -22,6 +22,9 @@ the formula.}
 \item{formula}{brmsformula object. To create a dose-response brmsformula,
 use the \code{tQ_formula} function.}
 
+\item{prior}{brmspriors data.frame for kcat, and kM.
+Use one of the priors functions provided to create priors to use here.}
+
 \item{init}{list of lists, numeric value, or "random" for the initial values
 of the parameters being modeled (default = 0).}
 
@@ -33,11 +36,6 @@ Adding max_treedepth and giving a greater value than 10 can improve model
 convergence (default = list(adapt_delta = 0.99)).}
 
 \item{...}{additional arguments passed to `brms::brm`.}
-
-\item{priors}{brmspriors data.frame for kcat, and kM.
-Use one of the priors functions provided to create priors to use here.}
-
-\item{stanvar_function}{stan code for the model.}
 }
 \value{
 brmsfit model

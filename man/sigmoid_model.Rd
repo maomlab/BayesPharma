@@ -23,23 +23,23 @@ the formula.}
 \item{formula}{brmsformula object. To create a dose-response brmsformula,
 use the \code{sigmoid_formula} function.}
 
+\item{prior}{brmspriors data.frame for ec50, hill, top, and bottom.
+Use one of the priors functions provided to create priors to use here.}
+
 \item{init}{list of lists, numeric value, or "random" for the initial values
 of the parameters being modeled (default = 0).}
 
 \item{iter}{number of iterations the model runs. Increasing iter can help
-with model convergence (default = 8000).}
+with model convergence (default: 8000).}
 
 \item{control}{a named list of parameters to control the sampler's behavior.
-Adding max_treedepth and giving a greater value than 10 can improve model
-convergence (default = list(adapt_delta = 0.99)).}
+Adding `max_treedepth` and giving a greater value than 10 can improve model
+convergence (default: `list(adapt_delta = 0.99)`).}
 
 \item{stanvar_function}{stan code for the model.}
-
-\item{priors}{brmspriors data.frame for ec50, hill, top, and bottom.
-Use one of the priors functions provided to create priors to use here.}
 }
 \value{
-brmsfit model
+`brmsfit` object
 }
 \description{
 For additional information on additional function arguments, reference:

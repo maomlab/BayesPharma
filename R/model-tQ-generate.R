@@ -50,12 +50,14 @@
 #'
 #' where K = kb/kf is the dissociation constant.
 #'
-#'@param time numeric vector. Increasing time points
-#'@param kcat numeric value catalytic rate constant
-#'@param kM numeric value Michaelis rate constant
-#'@param ET numeric value total enzyme concentration
-#'@param ST numeric value total substrate concentration
-#'@return run the tQ ordinary differential equation forwards starting with
+#' @param time numeric vector. Increasing time points
+#' @param kcat numeric value catalytic rate constant
+#' @param kM numeric value Michaelis rate constant
+#' @param ET numeric value total enzyme concentration
+#' @param ST numeric value total substrate concentration
+#' @param ... additional arguments to `deSolve::ode`
+#' 
+#' @return run the tQ ordinary differential equation forwards starting with
 #'  initial product concentration of 0 and specified kcat and kM parameters
 #'  for the specified time steps.
 #' 
