@@ -5,7 +5,7 @@
 #'   the formula.
 #' @param formula brmsformula object. To create a dose-response brmsformula,
 #'   use the \code{tQ_formula} function.
-#' @param priors brmspriors data.frame for kcat, and kM.
+#' @param prior brmspriors data.frame for kcat, and kM.
 #'   Use one of the priors functions provided to create priors to use here.
 #' @param init list of lists, numeric value, or "random" for the initial values
 #'   of the parameters being modeled (default = 0).
@@ -14,8 +14,8 @@
 #' @param control a named list of parameters to control the sampler's behavior.
 #'   Adding max_treedepth and giving a greater value than 10 can improve model
 #'   convergence (default = list(adapt_delta = 0.99)).
-#' @param stanvar_function stan code for the model.
 #' @param ... additional arguments passed to `brms::brm`.
+
 #' @return brmsfit model
 #'
 #' 

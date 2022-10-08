@@ -10,15 +10,18 @@ MuSyC_model_generate(
   logd1,
   logd2,
   logE0,
-  h1,
-  logC1,
   logE1,
-  h2,
-  logC2,
+  logC1,
+  h1,
   logE2,
+  logC2,
+  h2,
   logE3,
   logalpha
 )
+}
+\arguments{
+\item{logalpha}{}
 }
 \description{
 Generate MuSyC Ed scores using a robust functional form

@@ -42,7 +42,7 @@ plot_synergy_checkerboard <- function(
     ggplot2::theme_bw() +
     ggplot2::theme(
       legend.position = "bottom",
-      panel.grid = element_blank(),
+      panel.grid = ggplot2::element_blank(),
       panel.background =
         ggplot2::element_rect(fill = "grey40", colour = "grey40")) +
     ggplot2::geom_tile(
@@ -75,5 +75,5 @@ plot_synergy_checkerboard <- function(
     viridis::scale_fill_viridis(
       "Response",
       option = "cividis",
-      guide = guide_colorbar(reverse = TRUE))
+      guide = ggplot2::guide_colorbar(reverse = TRUE))
 }

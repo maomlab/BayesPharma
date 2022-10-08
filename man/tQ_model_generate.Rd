@@ -16,6 +16,8 @@ tQ_model_generate(time, kcat, kM, ET, ST, ...)
 \item{ET}{numeric value total enzyme concentration}
 
 \item{ST}{numeric value total substrate concentration}
+
+\item{...}{additional arguments to `deSolve::ode`}
 }
 \value{
 run the tQ ordinary differential equation forwards starting with
