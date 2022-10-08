@@ -9,7 +9,8 @@ vignette: >
 
 ```{r set-options, echo=FALSE}
 
-# inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
+# inspired by
+# https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
 knitr::opts_chunk$set(
   cache = TRUE,
   echo = FALSE,
@@ -34,11 +35,13 @@ if(Sys.info()["machine"] == "arm64"){
   stan_backend <- "rstan"
 }
 
+algorithm <- "meanfield"
+
 ```
 
 
 ```{r load-packages}
-library(tidyverse)
+library(tidymodels)
 library(BayesPharma)
 library(xkcd)
 library(GeomIndicator)
@@ -297,72 +300,78 @@ ggplot2::ggplot(data = data_simulated_replicates) +
 ```  
 
 # Antibody SnugDock Case study
-As a case study, we can look at the real score-vs-rmsd plots from the 
-Antibody SnugDock scientific benchmark. It is evaluates the SnugDock protocol over 6
+As a case study, we can look at the real score-vs-rmsd plots from the Antibody
+SnugDock scientific benchmark. It is evaluates the SnugDock protocol over 6
 Antibody protein targets
 
-  ```{r snugdock-load-data, dependson=c("load-packages"), warning=FALSE, message=FALSE}
+```{r snugdock-load-data}
+#| dependson=c("load-packages"),
+#| warning=FALSE,
+#| message=FALSE
   
-  data <- data.frame(
-    target = c("1ahw", "1jps", "1mlc", "1ztx", "2aep", "2jel")) |>
-    dplyr::rowwise() %>%
-    dplyr::do({
-      target <- .$target
-      readr::read_table(
-        file = system.file(
-          "extdata", "Pnear", "antibody_snugdock", paste0(target, "_rmsd.sc"),
-          package = "BayesPharma",
-          mustWork = TRUE),
-        skip = 1) |>
-        dplyr::mutate(target = target, .before = 1) |>
-        dplyr::select(target, rmsd = Irms, score = I_sc)
-    }) |>
-    dplyr::filter(rmsd <= 20) |>
-    dplyr::mutate(
-      response = score,
-      log_dose = log(rmsd))
-  
-  pnear_scores <- data |>
-    dplyr::group_by(target) %>%
-    dplyr::do({
-      data_by_target <- .
-      data.frame(
-        Pnear = BayesPharma::Pnear(
-          score = data_by_target$score,
-          rmsd = data_by_target$rmsd))
-    }) |>
-    dplyr::mutate(
-      Pnear_label = Pnear |> signif(2))
-  
-  ```
+data <- data.frame(
+  target = c("1ahw", "1jps", "1mlc", "1ztx", "2aep", "2jel")) |>
+  dplyr::rowwise() %>%
+  dplyr::do({
+    target <- .$target
+    readr::read_table(
+      file = system.file(
+        "extdata", "Pnear", "antibody_snugdock", paste0(target, "_rmsd.sc"),
+        package = "BayesPharma",
+        mustWork = TRUE),
+      skip = 1) |>
+      dplyr::mutate(target = target, .before = 1) |>
+      dplyr::select(target, rmsd = Irms, score = I_sc)
+  }) |>
+  dplyr::filter(rmsd <= 20) |>
+  dplyr::mutate(
+    response = score,
+    log_dose = log(rmsd))
+
+pnear_scores <- data |>
+  dplyr::group_by(target) %>%
+  dplyr::do({
+    data_by_target <- .
+    data.frame(
+      Pnear = BayesPharma::Pnear(
+        score = data_by_target$score,
+        rmsd = data_by_target$rmsd))
+  }) |>
+  dplyr::mutate(
+    Pnear_label = Pnear |> signif(2))
+
+```
 
 We can use the fit the sigmoid model to the `log(RMSD)` using the
 `BayesPharma` package, which relies on `BRMS` and `Stan`
 
-```{r stugdock-fit-model, output=FALSE, dependson=c("load-packages", "stugdock-load-data"), message=FALSE, warning=FALSE, refresh = 0, results="hide"}
-model <- data %>%
+```{r stugdock-fit-model}
+#| output=FALSE,
+#| dependson=c("load-packages", "stugdock-load-data"),
+#| message=FALSE,
+#| warning=FALSE,
+#| refresh = 0,
+#| results="hide"
+model <- data |>
   BayesPharma::sigmoid_model(
     formula = BayesPharma::sigmoid_formula(
-      multiple_perturbations = TRUE,
       predictors = 0 + target),
     prior = BayesPharma::sigmoid_prior(
-      ec50 = brms::prior(normal(1.5,2), nlpar = "ec50"),
-      top = brms::prior(normal(-10,10), nlpar = "top"),
-      bottom = brms::prior(normal(-20,10), nlpar = "bottom"),
+      ec50 = brms::prior(normal(1.5, 2), nlpar = "ec50"),
+      top = brms::prior(normal(-10, 10), nlpar = "top"),
+      bottom = brms::prior(normal(-20, 10), nlpar = "bottom"),
       inhibitor = FALSE),
-    chains = 4, cores = 10, backend = stan_backend,
-    silent = 1)
+    init = BayesPharma::sigmoid_init(
+      ec50 = 1.2,
+      top = -10,
+      bottom = -20),
+    chains = 4,
+    cores = 4,
+    silent = 1,
+    iter = 4000,
+    control = list(adapt_delta = 0.9, max_treedepth = 12))
 
-#if(stan_backend == "cmdstanr") {
-  sigmoid <- Vectorize(function(ec50, hill, top, bottom, log_dose){
-    bottom + (top - bottom) / (1 + 10^((ec50 - log_dose) * hill))
-  })
-#} else if (stan_backend == "rstan") {
-#  model |> brms::expose_functions()
-#} else {
-#  stop("Unrecognized stan backend '", stan_backend, "\n", sep = "")
-#}
-
+model |> brms::expose_functions(vectorize = TRUE)
 ```
 
 Check the model parameter fit and estimated parameters:

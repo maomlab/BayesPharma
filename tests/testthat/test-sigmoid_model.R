@@ -1,5 +1,3 @@
-# library(tidyverse)
-# library(BayesPharma)
 
 # testthat::test_that("Sigmoid model fit with ideal data", {
 #   sigmoid <- function(ec50, hill, top, bottom, log_dose) {

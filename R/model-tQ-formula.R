@@ -1,7 +1,6 @@
 #' Define formula for the tQ enzyme kinetics model
 #'
-#' @param multiple_perturbations (default FALSE)
-#' @param predictors predictors to use for kcat and kM
+#' @param predictors predictors for `kcat` and `kM`.
 #'
 #'
 #' @export

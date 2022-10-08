@@ -7,9 +7,7 @@
 tQ_formula(predictors = 1, ...)
 }
 \arguments{
-\item{predictors}{predictors to use for kcat and kM}
-
-\item{multiple_perturbations}{(default FALSE)}
+\item{predictors}{predictors for `kcat` and `kM`.}
 }
 \description{
 Define formula for the tQ enzyme kinetics model

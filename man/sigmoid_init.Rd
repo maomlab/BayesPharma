@@ -41,16 +41,12 @@ Creating initial values for the sigmoid model parameters that
 }
 \examples{
 \dontrun{
-Consider an activator that has a max response around 50\%, EC50 is estimated
-to be around 1 uM, minimum response is known to be 0, and 4 MCMC chains will
-be used by the model.
-
+#Consider an activator that has a max response around 50\%, EC50 is estimated
+#to be around 1 uM, minimum response is known to be 0, and 4 MCMC chains will
+#be used by the model.
 init <- BayesPharma::sigmoid_init(
   ec50 = -6,
-  hill = TRUE,
   inhibitor = FALSE,
-  top = 50,
-  bottom = 0,
-  chains = 4)
+  top = 50)
 }
 }

@@ -111,7 +111,7 @@ if(Sys.info()["machine"] == "arm64"){
 ```
 
 ```{r load-packages}
-library(tidyverse)
+library(tidymodels)
 library(BayesPharma)
 library(drc)
 library(brms)
