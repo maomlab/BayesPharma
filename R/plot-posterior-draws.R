@@ -90,19 +90,37 @@ posterior_draws_plot <- function(
         paste0("Unrecognized model backend '", model$backend, "'\n", sep = ""))
     }
   }
+  
+  if (is.null(lower)) {
+    lower <- data |>
+      dplyr::filter(.data[["log_dose"]] > -Inf) |>
+      purrr::pluck("log_dose") |>
+      min(na.rm = TRUE)
+  } else {
+    assertthat::assert_that(
+      is.numeric(lower),
+      msg = "lower must be numeric")
+  }
+  
+  if (is.null(upper)) {
+    upper <- data |>
+      dplyr::filter(.data[["log_dose"]] < Inf) |>
+      purrr::pluck("log_dose") |>
+      max(na.rm = TRUE)
+  } else {
+    assertthat::assert_that(
+      is.numeric(upper),
+      msg = "upper must be numeric")
+  }
+  assertthat::assert_that(
+    lower < upper,
+    msg = "lower must be lower than upper")
 
   if (is.null(data)) {
     data <- model$data
   }
 
-  lower <- data |>
-    dplyr::filter(.data[["log_dose"]] > -Inf) |>
-    purrr::pluck("log_dose") |>
-    min(na.rm = TRUE)
-  upper <- data |>
-    dplyr::filter(.data[["log_dose"]] < Inf) |>
-    purrr::pluck("log_dose") |>
-    max(na.rm = TRUE)
+
 
   # this makes the "hair"
   ep_data <- model |>

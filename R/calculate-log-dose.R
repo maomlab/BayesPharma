@@ -36,6 +36,6 @@ calculate_log_dose <- function(
       "Calculating log_dose but a log_dose column already exists, overwriting.")
   }
   
-  dose_col <- tidyselect::eval_select(enquo(dose_col), data)
+  dose_col <- tidyselect::eval_select(rlang::enquo(dose_col), data)
   log10(data[,dose_col] * molar_concentration)
 }
