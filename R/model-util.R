@@ -1,14 +1,20 @@
+#' Prepare an init for a brms model
+#' 
+#' @param init function returning an numeric array of length one or a numeric
+#'   value.
+#' @return function returning a numeric array of length 1.
 prepare_init <- function(init) {
   if (methods::is(init, "function")) {
     x <- init()
     assertthat::assert_that(methods::is(x, "array"))
     assertthat::assert_that(dim(x) == 1)
+    assertthat::assert_that(is.numeric(x))
   } else if (is.numeric(init)) {
     init <- function() {
       as.array(init)
     }
   } else {
-    warning(paste0(
+    stop(paste0(
       "Initialization should either be a function that returns an array of
       length one or numeric"))
   }
@@ -30,6 +36,7 @@ prepare_init <- function(init) {
 #'   `brmsprior` then this will check that the slots have the given values. If
 #'   prior is numeric, then these arguments are passed to `brms::prior_string` 
 #' 
+#' @return brmsprior
 prepare_prior <- function(prior, ...) {
   if (methods::is(prior, "brmsprior")) {
     args <- list(...)
@@ -41,7 +48,8 @@ prepare_prior <- function(prior, ...) {
       prior = paste0("constant(", prior, ")"),
       ...)
   } else {
-    warning("prior must be a brms::prior(...) or a numeric value")
+    stop("prior must be a brms::prior(...) or a numeric value")
   }
   prior
 }
+

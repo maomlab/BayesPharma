@@ -24,7 +24,7 @@
 #' 
 #' 
 #' @export
-MuSyC_model_generate <- function(
+MuSyC <- function(
     logd1,
     logd2,
     logE0,
