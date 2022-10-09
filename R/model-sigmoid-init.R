@@ -52,10 +52,10 @@ sigmoid_init <- function(
   bottom_init <- bottom
 
   init_list <- list(
-    ec50 = ec50_init,
-    hill = hill_init,
-    top = top_init,
-    bottom = bottom_init)
+    b_ec50 = ec50_init,
+    b_hill = hill_init,
+    b_top = top_init,
+    b_bottom = bottom_init)
 
   init <- rep(list(init_list), chains)
   return(init)
