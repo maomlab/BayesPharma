@@ -12,19 +12,24 @@ URL: https://api.github.com/repos/maomlab/BayesPharma/pages
 Depends:
     R (>= 4.0.0)
 Imports:
+    assertthat,
     Rcpp,
     brms,
     devtools,
     dplyr,
     ggplot2,
     magrittr,
+    methods,
     posterior,
+    purrr,
     rlang,
     rstan,
     rstantools,
     StanHeaders,
+    stats,
     tidyr,
-    tidymodels
+    tidymodels,
+    viridis
 Collage:
     'calculate-log-dose.R',
     'change-data-column-names.R',

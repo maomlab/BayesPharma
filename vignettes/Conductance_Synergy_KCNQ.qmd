@@ -12,7 +12,9 @@ read_range <- function(
     dose_uM,
     is_control){
   readxl::read_excel(
-    path = "../data/KCNQ2-CR-raw data of Fig1b&d.xlsx",
+    path = paste0(
+      "../inst/extdata/Conductance Synergy KCNQ/",
+      "KCNQ2-CR-raw data of Fig1b&d.xlsx"),
     sheet = {{sheet}},
     range = range,
     col_names = FALSE) |>
@@ -111,11 +113,11 @@ model_data <- data |>
     logd2 = voltage/100)
 
 
-model_meanfield <- BayesPharma::fit_MuSyC_model(
+model_meanfield <- BayesPharma::MuSyC_model(
   data = model_data,
   algorithm = "meanfield")
 
-model <- BayesPharma::fit_MuSyC_model(
+model <- BayesPharma::MuSyC_model(
   data = model_data)
 
 ```

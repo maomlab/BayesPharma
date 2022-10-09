@@ -47,4 +47,5 @@ This function is useful to observe the distributions of the
     title_label = "Parameter Density Distribution Plots",
     sample_type = "Prior")
 }
+
 }

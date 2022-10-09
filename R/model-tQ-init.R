@@ -1,4 +1,4 @@
-#' Initialize parameter values for the the tQ enyzme kinetic model
+#' Initialize parameter values for the tQ enyzme kinetic model
 #' 
 #' @param kcat numeric initial value for `kcat` parameter in the tQ model
 #'   (Default 4)

@@ -37,7 +37,7 @@ sigmoid_formula <- function(
     lhs = quote(ec50 + hill + top + bottom),
     rhs = rlang::enexpr(predictors))
 
-  # the sigmoid function is defined in BayesPharma:::igmoid_stanvar
+  # The sigmoid function is defined in BayesPharma::sigmoid_stanvar
   sigmoid_formula <- brms::brmsformula(
     response ~ sigmoid(ec50, hill, top, bottom, log_dose),
     predictor_eq,

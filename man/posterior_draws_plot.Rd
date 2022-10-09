@@ -29,10 +29,10 @@ posterior_draws_plot(
 predictors for the model fit. If there is only one predictor, then any
 character input can be used and will not affect the plot (default = "na").}
 
-\item{lower}{numeric value of the lower bound of log_dose to be observed
+\item{lower}{numeric value of the lower bound of `log_dose` to be observed
 (default = smallest data$log_dose value > -Inf).}
 
-\item{upper}{numeric value of the upper bound of log_dose to be observed
+\item{upper}{numeric value of the upper bound of `log_dose` to be observed
 (default = greatest data$log_dose value < Inf).}
 
 \item{n}{numeric value of the number of draws to be observed (default = 50).}
@@ -41,7 +41,7 @@ character input can be used and will not affect the plot (default = "na").}
 models with multiple predictors, include the predictor column name;
 otherwise, include the character name of your choosing.}
 
-\item{point_size}{numeric. geom_jitter point size (default = 0.75).}
+\item{point_size}{numeric. `geom_jitter` point size (default = 0.75).}
 
 \item{jitter_height}{numeric. the height distance between overlapping points
 (default = 0).}
@@ -80,4 +80,5 @@ distribution from the expected mean and median quantile intervals.
     xlab = "Log[Molar]",
     ylab = "Response")
 }
+
 }

@@ -16,8 +16,8 @@ tQ_prior <- function(
     kM = NULL) {
 
   if (is.null(kcat)) {
-    kcat_prior <- brms::prior(
-      prior = gamma(4, 1),
+    kcat_prior <- brms::prior_string(
+      prior = "gamma(4, 1)",
       lb = 0,
       nlpar = "kcat")
   } else if (is.numeric(kcat)) {
@@ -29,8 +29,8 @@ tQ_prior <- function(
   }
 
   if (is.null(kM)) {
-    kM_prior <- brms::prior(
-      prior = gamma(4, 1),
+    kM_prior <- brms::prior_string(
+      prior = "gamma(4, 1)",
       lb = 0,
       nlpar = "kM")
   } else if (is.numeric(kM)) {

@@ -9,6 +9,7 @@
 #'   should be modeled separately? (Default: 1) should a random effect be taken
 #'   into consideration? i.e. cell number, plate number, etc.
 #' @param ... additional arguments passed to `brms::brmsformula`
+#' 
 #' @return brmsformula
 #'
 #' @examples

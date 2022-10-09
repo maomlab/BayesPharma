@@ -261,7 +261,7 @@ model <- BayesPharma::tQ_model(
 
 ```{r model-multiple-draws, deps=c("model-multiple", "model-multiple-prior")}
 model_prior <- model |>
-  brms:::update.brmsfit(sample_prior = "only")
+  update(sample_prior = "only")
 
 draws_prior <- model_prior |>
   tidybayes::tidy_draws() |>

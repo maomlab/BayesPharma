@@ -8,15 +8,15 @@
 #' @param predictors_col_name character. The name of the column containing the
 #'   predictors for the model fit. If there is only one predictor, then any
 #'   character input can be used and will not affect the plot (default = "na").
-#' @param lower numeric value of the lower bound of log_dose to be observed
+#' @param lower numeric value of the lower bound of `log_dose` to be observed
 #'   (default = smallest data$log_dose value > -Inf).
-#' @param upper numeric value of the upper bound of log_dose to be observed
+#' @param upper numeric value of the upper bound of `log_dose` to be observed
 #'   (default = greatest data$log_dose value < Inf).
 #' @param n numeric value of the number of draws to be observed (default = 50).
 #' @param facet_var defined variable to determine the facets of the plot. For
 #'   models with multiple predictors, include the predictor column name;
 #'   otherwise, include the character name of your choosing.
-#' @param point_size numeric. geom_jitter point size (default = 0.75).
+#' @param point_size numeric. `geom_jitter` point size (default = 0.75).
 #' @param jitter_height numeric. the height distance between overlapping points
 #'   (default = 0).
 #' @param jitter_width numeric. the width distance between overlapping points
@@ -44,6 +44,8 @@
 #'     xlab = "Log[Molar]",
 #'     ylab = "Response")
 #'}
+#'
+#' @importFrom rlang :=
 #' @export
 posterior_draws_plot <- function(
     model,
@@ -94,11 +96,11 @@ posterior_draws_plot <- function(
   }
 
   lower <- data |>
-    dplyr::filter(log_dose > -Inf) |>
+    dplyr::filter(.data[["log_dose"]] > -Inf) |>
     purrr::pluck("log_dose") |>
     min(na.rm = TRUE)
   upper <- data |>
-    dplyr::filter(log_dose < Inf) |>
+    dplyr::filter(.data[["log_dose"]] < Inf) |>
     purrr::pluck("log_dose") |>
     max(na.rm = TRUE)
 
@@ -131,25 +133,25 @@ posterior_draws_plot <- function(
     ggdist::geom_lineribbon(
       data = pp_data,
       mapping = ggplot2::aes(
-        x = log_dose,
-        y = response,
-        ymin = .lower,
-        ymax = .upper),
+        x = .data[["log_dose"]],
+        y = .data[["response"]],
+        ymin = .data[[".lower"]],
+        ymax = .data[[".upper"]]),
       alpha = .15) +
     ggplot2::geom_line(
       data = ep_data,
       mapping = ggplot2::aes(
-        x = log_dose,
-        y = response,
-        group = .draw),
+        x = .data[["log_dose"]],
+        y = .data[["response"]],
+        group = .data[[".draw"]]),
       size = 0.4,
       alpha = 0.2,
       color = "blueviolet") +
     ggplot2::geom_jitter(
       data = data,
       mapping = ggplot2::aes(
-        x = log_dose,
-        y = response),
+        x = .data[["log_dose"]],
+        y = .data[["response"]]),
       size = point_size,
       width = jitter_width,
       height = jitter_height) +

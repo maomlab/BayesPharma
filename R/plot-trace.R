@@ -44,7 +44,7 @@ traceplot <- function(
     stringr::str_remove(predictors_col_name) |>
     stringr::str_replace("ec50", half_max_label)
 
-  model_parnames <- head(model_parnames, -3)
+  model_parnames <- utils::head(model_parnames, -3)
 
   model_array <- as.array(model)[, , seq(model_parnames)]
   dimnames(model_array)[[3]] <- model_parnames
