@@ -1,11 +1,13 @@
 #' Add a log dose (in base 10) column to the input data.frame
 #'
-#' @description Given the dose as a column in a data.frame with a given molar concentration
-#'    add a new column of the log base-10 dose, `log_dose`, in the data.frame and return it.
-#'
-#' @param data data.frame containing a column representing a dose in molar units.
-#' @param dose_col expression for dose column in the input data.frame (default = dose).
-#' @param molar_concentration numeric units of molar concentration of the dose column (default = 1).
+#' @description Given the dose as a column in a data.frame with a given molar
+#'   concentration add a new column of the log base-10 dose, `log_dose`, in the
+#'   `data.frame` and return it.
+#' @param data data.frame containing a column representing a dose in molar
+#'   units.
+#' @param dose_col expression for dose column in the input data.frame
+#' @param molar_concentration numeric units of molar concentration of the dose
+#'   column (default = 1).
 #' @return input `r data.frame` with an additional `r log_dose` column.
 #'
 #' @examples
@@ -18,20 +20,22 @@
 #'
 #' # If the doses are given with in units of nanomolar units e.g. `nM` then
 #' data <- data.frame(dose_nM = c(1000, 100)) |>
-#'   BayesPharma::calculate_log_dose(dose_col = dose_nM, molar_concentration = 1e-9)
+#'   BayesPharma::calculate_log_dose(
+#'     dose_col = dose_nM,
+#'     molar_concentration = 1e-9)
 #' data$log_dose == c(-6, -7)
 #'}
 #'@export
 calculate_log_dose <- function(
     data,
-    dose_col = dose,
+    dose_col,
     molar_concentration = 1){
 
   if ("log_dose" %in% names(data.frame)) {
-    warning("Calculating log_dose but a log_dose column already exists, overwriting.")
+    warning(
+      "Calculating log_dose but a log_dose column already exists, overwriting.")
   }
-
-  data |> 
-    dplyr::mutate(log_dose = log10({{dose_col}} * molar_concentration))
-
+  
+  dose_col <- tidyselect::eval_select(enquo(dose_col), data)
+  log10(data[,dose_col] * molar_concentration)
 }

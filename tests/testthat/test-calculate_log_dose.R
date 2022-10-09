@@ -1,17 +1,40 @@
 library(BayesPharma)
 library(tidymodels)
 
-testthat::test_that("adding log dose to data.frame with units M", {
+testthat::test_that("adding log dose to data.frame using default arguments", {
+  data <- data.frame(dose = c(1e-6, 1e-7)) |>
+    BayesPharma::calculate_log_dose()
+  testthat::expect_equal(data$log_dose, c(-6, -7))
+})
+
+testthat::test_that(
+  desc = "adding log dose to data.frame with units M using string dose_col",
+  code = {
   data <- data.frame(dose = c(1e-6, 1e-7)) |>
     BayesPharma::calculate_log_dose(
-      dose_col = dose,
+      dose_col = "dose",
       molar_concentration = 1)
   testthat::expect_equal(data$log_dose, c(-6, -7))
 })
 
-testthat::test_that("adding log dose to data.frame using default arguments", {
+testthat::test_that(
+  desc = "adding log dose to data.frame with units M using numeric dose_col",
+  code = {
+  data <- data.frame(id = c(1, 2), dose = c(1e-6, 1e-7)) |>
+    BayesPharma::calculate_log_dose(
+      dose_col = 2,
+      molar_concentration = 1)
+  testthat::expect_equal(data$log_dose, c(-6, -7))
+})
+
+
+testthat::test_that(
+  desc = "adding log dose to data.frame with units M using expression",
+  code = {
   data <- data.frame(dose = c(1e-6, 1e-7)) |>
-    BayesPharma::calculate_log_dose()
+    BayesPharma::calculate_log_dose(
+      dose_col = dose,
+      molar_concentration = 1)
   testthat::expect_equal(data$log_dose, c(-6, -7))
 })
 

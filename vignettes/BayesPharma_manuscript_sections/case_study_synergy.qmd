@@ -2,7 +2,7 @@
 ## MuSyC synergy model {#MuSyC}
 When two independent treatments are combined they may synergize to effect the response. A typical use case is combining to different drugs to determine if there is signaling epistasis or to assess the value of combining them as a combination therapy. Alternatively for ion channels, a drug and voltage can be combined to evaluate the effect on the membrane potential.
 
-When two treatments are combined they can influence each other in different ways. The combine treatment can elicit a stronger or weaker effect than either treatment separately, or in the presence of one drug, the the dose at which the the other effects the outcome may be shifted. These different forms of synergy are modeled by the classical Bliss and Loewe models of synergy, respectively. Recently XXX derived the MuSyC model that combines these different forms of synergy.  
+When two treatments are combined they can influence each other in different ways. The combine treatment can elicit a stronger or weaker effect than either treatment separately, or in the presence of one drug, the dose at which the other effects the outcome may be shifted. These different forms of synergy are modeled by the classical Bliss and Loewe models of synergy, respectively. Recently XXX derived the MuSyC model that combines these different forms of synergy.  
 
 The functional form for the MuSyC model gives an equation for the response $\color{response}{E_d}$ at doses of $\color{dose}{d_1}$ and $\color{dose}{d_2}$ of the two treatments and has $9$ free parameters $\{\color{dose}{C_1}, \color{dose}{C_2}, \color{response}{E_0}, \color{response}{E_1}, \color{response}{E_2}, \color{response}{E_3}, \color{shape}{h_1}, \color{shape}{h_2}, \color{shape}{\alpha}\}$:
 

@@ -166,7 +166,7 @@ To implement in BRMS, we can use the `stanvars` to define custom functions. The
 key idea is call the ODE solver, in this case the backward differentiation
 formula (bdf) used to solve stiff ODEs, passing a function `ode_tQ` that
 returns `dP/dt`, the change in product at time `t`. The `ode_tQ` function
-depends on the the product at time `t` as the state vector, the kinematic
+depends on the product at time `t` as the state vector, the kinematic
 parameters to be estimated `kcat` and `kM` and the user-provided data of the
 enzyme and substrate concentrations `ET` and `ST`. To call `ode_dbf` we pass in
 the initial product concentration and time (both equal to zero), measured
@@ -520,7 +520,7 @@ model_multiple
 ```{r model-multiple-prior|}
 #| deps = c("model-multiple")
 model_multiple_prior <- model_multiple |>
-  brms:::update.brmsfit(sample_prior = "only")
+  update(sample_prior = "only")
 ```
 
 ```{r model-multiple-draws, deps=c("model-multiple", "model-multiple-prior")}

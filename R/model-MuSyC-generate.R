@@ -2,17 +2,26 @@
 #' It should give the same results as the simple one, but
 #' be more numerically stable
 #' 
-#' @param logd1
-#' @param logd2
-#' @param logE0
-#' @param logE1
-#' @param logC1
-#' @param h1
-#' @param logE2
-#' @param logC2
-#' @param h2
-#' @param logE3
-#' @param logalpha
+#' @param logd1 log dose for treatment 1
+#' @param logd2 log dose for treatment 2
+#' 
+#' @param logE0 numeric. Full log response with no treatment.
+#' @param logE1 numeric. Full log response for treatment 1 and the dose of
+#'   treatment 2 is zero.
+#' @param logC1 numeric. IC50 for treatment 1 and dose of treatment 2 is zero.
+#' @param h1 numeric. Slope of treatment 1 at it's IC50 and dose of treatment 2
+#'   is zero in exponential form. Use `MuSyC_si_to_hi` to convert from slope
+#'   form. 
+#' @param logE2 numeric. Full log response for treatment 2 and the dose of
+#'   treatment 1 is zero.
+#' @param logC2 numeric. IC50 for treatment 2 and dose of treatment 1 is zero.
+#' @param h2 numeric. Slope of treatment 2 at it's IC50 and dose of treatment 1
+#'   is zero in exponential form. Use `MuSyC_si_to_hi` to convert from slope
+#'   form.
+#' @param logE3 numeric. Full response for treatment 1 and treatment 2. 
+#' @param logalpha numeric. Log synergistic potency parameter with greater than
+#'   1 is synergistic, less than 1 is antagonistic.
+#' 
 #' 
 #' @export
 MuSyC_model_generate <- function(

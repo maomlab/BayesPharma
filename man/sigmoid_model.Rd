@@ -37,6 +37,8 @@ Adding `max_treedepth` and giving a greater value than 10 can improve model
 convergence (default: `list(adapt_delta = 0.99)`).}
 
 \item{stanvar_function}{stan code for the model.}
+
+\item{...}{additional arguments passed to `brms::brm`}
 }
 \value{
 `brmsfit` object

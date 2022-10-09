@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-tQ-init.R
 \name{tQ_init}
 \alias{tQ_init}
-\title{Initialize parameter values for the the tQ enyzme kinetic model}
+\title{Initialize parameter values for the tQ enyzme kinetic model}
 \usage{
 tQ_init(kcat = 4, kM = 4)
 }
@@ -17,5 +17,5 @@ tQ_init(kcat = 4, kM = 4)
 input for `BayesPharma::model_tQ(init = ...)` parameter.
 }
 \description{
-Initialize parameter values for the the tQ enyzme kinetic model
+Initialize parameter values for the tQ enyzme kinetic model
 }

@@ -39,15 +39,15 @@ basic_stats <- function(
   model |>
     posterior::summarise_draws(
       "mean", "sd", "median") |>
-    dplyr::filter(!stringr::str_detect(variable, "__$")) |>
-    dplyr::filter(!stringr::str_detect(variable, "sigma")) |>
-    dplyr::filter(!stringr::str_detect(variable, "lprior")) |>
-    dplyr::select(-variable) |>
+    dplyr::filter(!stringr::str_detect(.data[["variable"]], "__$")) |>
+    dplyr::filter(!stringr::str_detect(.data[["variable"]], "sigma")) |>
+    dplyr::filter(!stringr::str_detect(.data[["variable"]], "lprior")) |>
+    dplyr::select(-.data[["variable"]]) |>
     cbind(l_ci = c(ple_info[, 3]),
           u_ci = c(ple_info[, 4])) |>
     tibble::rownames_to_column("variables") |>
     dplyr::mutate(
-      variables = variables |>
+      variables = .data[["variables"]] |>
         stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
         stringr::str_remove(predictors_col_name) |>
         stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>

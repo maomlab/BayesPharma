@@ -21,6 +21,7 @@
 #'   Adding `max_treedepth` and giving a greater value than 10 can improve model
 #'   convergence (default: `list(adapt_delta = 0.99)`).
 #' @param stanvar_function stan code for the model.
+#' @param ... additional arguments passed to `brms::brm`
 #' 
 #' @return `brmsfit` object
 #'

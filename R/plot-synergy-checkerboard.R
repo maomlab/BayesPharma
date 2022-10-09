@@ -30,12 +30,14 @@ plot_synergy_checkerboard <- function(
     if (d1[1] == 0) {
       d1[1] <- 10 ^ (log10(d1[2]) - 1.05 * (log10(d1[3]) - log10(d1[2])))
       data <- data |>
-        dplyr::mutate(dose1 = ifelse(dose1 != 0, dose1, d1[1]))
+        dplyr::mutate(
+          dose1 = ifelse(.data[["dose1"]] != 0, .data[["dose1"]], d1[1]))
     }
     if (d2[1] == 0) {
       d2[1] <- 10 ^ (log10(d2[2]) - 1.05 * (log10(d2[3]) - log10(d2[2])))
       data <- data |>
-        dplyr::mutate(dose2 = ifelse(dose2 != 0, dose2, d2[1]))
+        dplyr::mutate(
+          dose2 = ifelse(.data[["dose2"]] != 0, .data[["dose2"]], d2[1]))
     }
   }
   ggplot2::ggplot(data = data) +
@@ -47,14 +49,14 @@ plot_synergy_checkerboard <- function(
         ggplot2::element_rect(fill = "grey40", colour = "grey40")) +
     ggplot2::geom_tile(
       mapping = ggplot2::aes(
-        x = log10(dose1),
-        y = log10(dose2),
-        fill = response)) +
+        x = log10(.data[["dose1"]]),
+        y = log10(.data[["dose2"]]),
+        fill = .data[["response"]])) +
     ggplot2::geom_contour(
       mapping = ggplot2::aes(
-        x = log10(dose1),
-        y = log10(dose2),
-        z = response),
+        x = log10(.data[["dose1"]]),
+        y = log10(.data[["dose2"]]),
+        z = .data[["response"]]),
       color = contour_color) +
     ggplot2::coord_fixed() +
     ggplot2::ggtitle(

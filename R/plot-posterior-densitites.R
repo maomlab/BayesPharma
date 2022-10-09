@@ -26,6 +26,7 @@
 #'     u_ci = 0.975,
 #'     title_label = "Posterior Density Plots with Mean and 95% CI")
 #'}
+#' @importFrom rlang .data
 #'@export
 posterior_densities <- function(
     model,
@@ -39,12 +40,12 @@ posterior_densities <- function(
     model |>
       tidybayes::tidy_draws() |>
       tidybayes::gather_variables() |>
-      dplyr::filter(!stringr::str_detect(.variable, "__$")) |>
-      dplyr::filter(!stringr::str_detect(.variable, "sigma")) |>
-      dplyr::filter(!stringr::str_detect(.variable, "lprior"))) |>
-    dplyr::rename(variables = .variable) |>
+      dplyr::filter(!stringr::str_detect(.data[[".variable"]], "__$")) |>
+      dplyr::filter(!stringr::str_detect(.data[[".variable"]], "sigma")) |>
+      dplyr::filter(!stringr::str_detect(.data[[".variable"]], "lprior"))) |>
+    dplyr::rename(variables = .data[[".variable"]]) |>
     dplyr::mutate(
-      variables = variables |>
+      variables = .data[["variable"]] |>
         stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") |>
         stringr::str_remove("b_") |>
         stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
@@ -64,13 +65,13 @@ posterior_densities <- function(
     ggplot2::theme(legend.position = "bottom") +
     ggplot2::geom_density(
       data = posterior,
-      mapping = ggplot2::aes(x = .value),
+      mapping = ggplot2::aes(x = .data[[".value"]]),
       fill = "cyan2",
       color = "black",
       alpha = .9) +
     ggplot2::geom_vline(
       data = summary_stats,
-      ggplot2::aes(xintercept = mean),
+      ggplot2::aes(xintercept = .data[["mean"]]),
       color = "red") +
     ggplot2::geom_rect(
       data = summary_stats,
@@ -84,7 +85,7 @@ posterior_densities <- function(
       alpha = 0.5) +
     ggplot2::ggtitle(label = paste0(title_label)) +
     ggplot2::facet_wrap(
-      facets = dplyr::vars(variables),
+      facets = dplyr::vars(.data[["variables"]]),
       scales = "free") +
     ggplot2::scale_y_continuous("Density") +
     ggplot2::scale_x_continuous("Parameter Value") +

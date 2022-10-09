@@ -1,14 +1,14 @@
 prepare_init <- function(init) {
-  if (is(init, "function")) {
+  if (methods::is(init, "function")) {
     x <- init()
-    assertthat::assert_that(is(x, "array"))
+    assertthat::assert_that(methods::is(x, "array"))
     assertthat::assert_that(dim(x) == 1)
   } else if (is.numeric(init)) {
     init <- function() {
       as.array(init)
     }
   } else {
-    error(paste0(
+    warning(paste0(
       "Initialization should either be a function that returns an array of
       length one or numeric"))
   }
@@ -31,7 +31,7 @@ prepare_init <- function(init) {
 #'   prior is numeric, then these arguments are passed to `brms::prior_string` 
 #' 
 prepare_prior <- function(prior, ...) {
-  if (is(prior, "brmsprior")) {
+  if (methods::is(prior, "brmsprior")) {
     args <- list(...)
     for (arg in names(args)) {
       assertthat::assert_that(prior[[arg]] == args[[arg]])

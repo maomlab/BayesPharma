@@ -222,7 +222,7 @@ kor_model <- kor_model |>
   brms::add_criterion(criterion = c("loo"), reloo = TRUE)
 kor_model$critera$loo
 ```
-Since ELPD is a global measure of model fit, it can be used to compare models. Using `loo_compare` from the LOO package, returns the `elpd_diff` and `se_diff` for each model relative the the model with the lowest ELPD. The kor_model2, the model with more informative priors, is the preferred model, but not significantly.
+Since ELPD is a global measure of model fit, it can be used to compare models. Using `loo_compare` from the LOO package, returns the `elpd_diff` and `se_diff` for each model relative the model with the lowest ELPD. The kor_model2, the model with more informative priors, is the preferred model, but not significantly.
 
 ```{r kor-model-model2-loo-compare}
 #| dependson=c("kor-loo", "kor-model2")

@@ -27,8 +27,9 @@
 #'     title_label = "Parameter Density Distribution Plots",
 #'     sample_type = "Prior")
 #'}
+#'
+#' @importFrom rlang .data
 #' @export
-
 density_distributions <- function(
     model,
     predictors_col_name = "_Intercept",
@@ -41,11 +42,11 @@ density_distributions <- function(
       tidybayes::tidy_draws() |>
       tidybayes::gather_variables() |>
       dplyr::mutate(sample_type = sample_type) |>
-      dplyr::filter(!stringr::str_detect(.variable, "__$")) |>
-      dplyr::filter(!stringr::str_detect(.variable, "sigma")) |>
-      dplyr::filter(!stringr::str_detect(.variable, "lprior"))) |>
+      dplyr::filter(!stringr::str_detect(.data[["variable"]], "__$")) |>
+      dplyr::filter(!stringr::str_detect(.data[["variable"]], "sigma")) |>
+      dplyr::filter(!stringr::str_detect(.data[["variable"]], "lprior"))) |>
     dplyr::mutate(
-      .variable = .variable |>
+      .variable = .data[[".variable"]] |>
         stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") |>
         stringr::str_remove("b_") |>
         stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
@@ -58,15 +59,15 @@ density_distributions <- function(
     ggplot2::theme(legend.position = "bottom") +
     ggplot2::geom_density(
       mapping = ggplot2::aes(
-        x = .value,
-        group = sample_type,
-        fill = sample_type),
+        x = .data[[".value"]],
+        group = .data[["sample_type"]],
+        fill = .data[["sample_type"]]),
       color = "black",
       alpha = .9) +
     ggplot2::ggtitle(
       label = paste0(title_label)) +
     ggplot2::facet_wrap(
-      facets = dplyr::vars(.variable),
+      facets = dplyr::vars(.data[[".variable"]]),
       scales = "free") +
     ggplot2::scale_y_continuous("Density") +
     ggplot2::scale_x_continuous("Parameter Value") +
