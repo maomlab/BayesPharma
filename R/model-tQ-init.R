@@ -13,7 +13,7 @@ tQ_init <- function(
 
   function() {
     list(
-      kcat = prepare_init(kcat),
-      kM = prepare_init(kM))
+      b_kcat = prepare_init(kcat),
+      b_kM = prepare_init(kM))
   }
 }
