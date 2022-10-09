@@ -1,8 +1,8 @@
 Package: BayesPharma
 Type: Package
 Title: Tools for Bayesian Analysis of Non-Linear Pharmacology Models
-Version: 0.0.1
-Authors@R: c(person("Madeline", "Martin", email = "mamadeli@umich.edu",
+Version: 0.0.2
+Authors@R: c(person("Madeline", "Martin", email = "mmarti29@uoregon.edu",
     role = c("aut", "cre")),
              person(given="Matthew", family="O'Meara", email = "maom@umich.edu",
     role = c("aut")))
@@ -39,7 +39,7 @@ Collage:
     'helpers-testthat.R',
     'model-constant-formula.R',
     'model-MuSyC-formula.R',
-    'model-MuSyC-generate.R',
+    'model-MuSyC-function.R',
     'model-MuSyC-init.R',
     'model-MuSyC-prior.R',
     'model-MuSyC-run.R',
