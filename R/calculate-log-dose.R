@@ -28,14 +28,28 @@
 #'@export
 calculate_log_dose <- function(
     data,
-    dose_col,
+    dose_col = dplyr::var("dose"),
     molar_concentration = 1){
 
-  if ("log_dose" %in% names(data.frame)) {
+  if ("log_dose" %in% names(data)) {
     warning(
       "Calculating log_dose but a log_dose column already exists, overwriting.")
   }
-  
-  dose_col <- tidyselect::eval_select(rlang::enquo(dose_col), data)
-  log10(data[,dose_col] * molar_concentration)
+    
+  if (rlang::is_symbol(rlang::expr(dose_col))) {
+    dose_col <- tidyselect::eval_select(rlang::enquo(dose_col), data)
+  } else if (is.character(dose_col)) {
+    if (!(dose_col %in% names(data))) {
+      stop("dose_col: '", dose_col, "' is not a column of data\n")
+    }
+  } else if (is.numeric(dose_col)) {
+    if (dose_col < 1 || dose_col > ncol(data)){
+      stop(
+        "dose_col indexes column ", dose_col, ", but data only has ",
+        ncol(data), " column\n")
+    }
+  }
+
+  data$log_dose <- log10(data[,dose_col] * molar_concentration)
+  data
 }

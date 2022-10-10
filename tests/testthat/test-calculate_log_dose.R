@@ -3,7 +3,8 @@ library(tidymodels)
 
 testthat::test_that("adding log dose to data.frame using default arguments", {
   data <- data.frame(dose = c(1e-6, 1e-7)) |>
-    BayesPharma::calculate_log_dose()
+    BayesPharma::calculate_log_dose(
+      dose_col = dose)
   testthat::expect_equal(data$log_dose, c(-6, -7))
 })
 
@@ -44,4 +45,37 @@ testthat::test_that("adding log dose to data.frame with units nM", {
       dose_col = dose_nM,
       molar_concentration = 1e-9)
   testthat::expect_equal(data$log_dose, c(-6, -7))
+})
+
+########
+
+testthat::test_that("Error if the default agument is a colum in data", {
+  testthat::expect_error(
+    data <- data.frame(dose_nM = c(1000, 100)) |>
+      BayesPharma::calculate_log_dose(
+        molar_concentration = 1e-9))
+})
+
+testthat::test_that("Error if specifying a column that is not in data", {
+  testthat::expect_error(
+    data <- data.frame(dose_nM = c(1000, 100)) |>
+      BayesPharma::calculate_log_dose(
+        dose_col = dose,
+        molar_concentration = 1e-9))
+})
+
+testthat::test_that("Error if specifying a string column that is not in data", {
+  testthat::expect_error(
+    data <- data.frame(dose_nM = c(1000, 100)) |>
+      BayesPharma::calculate_log_dose(
+        dose_col = "dose",
+        molar_concentration = 1e-9))
+})
+
+testthat::test_that("Error if specifying a numeric column that is not in data", {
+  testthat::expect_error(
+    data <- data.frame(dose_nM = c(1000, 100)) |>
+      BayesPharma::calculate_log_dose(
+        dose_col = 10,
+        molar_concentration = 1e-9))
 })
