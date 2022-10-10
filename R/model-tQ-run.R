@@ -29,7 +29,7 @@ tQ_model <- function(
     control = list(adapt_delta = 0.99),
     ...) {
 
-  brms::brm(
+  model <- brms::brm(
     formula = formula,
     data = data,
     prior = prior,
@@ -38,4 +38,7 @@ tQ_model <- function(
     control = control,
     stanvars = tQ_stanvar,
     ...)
+  
+  model$bayes_pharma <- list(model_type = "tQ")
+  model
 }

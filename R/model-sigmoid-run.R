@@ -51,7 +51,7 @@ sigmoid_model <- function(
       "There needs to be a column 'response' in the input 'data' data.frame\n")
   }
 
-  brms::brm(
+  model <- brms::brm(
     formula = formula,
     data = data,
     prior = prior,
@@ -60,4 +60,8 @@ sigmoid_model <- function(
     control = control,
     stanvars = stanvar_function,
     ...)
+  
+  model$bayes_pharma <- list(model_type = "sigmoid")
+  model
+  
 }
