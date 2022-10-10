@@ -5,9 +5,8 @@
 #'
 #' @param model brmsfit model.
 #' @param data data.frame of data inputted into the model.
-#' @param predictors_col_name character. The name of the column containing the
-#'   predictors for the model fit. If there is only one predictor, then any
-#'   character input can be used and will not affect the plot (default = "na").
+#' @param predictor_cols quosures list of predictor columns to plot, for
+#'   example `dplyr::vars(treamtent_id)`. (Default: NULL)
 #' @param lower numeric value of the lower bound of `log_dose` to be observed
 #'   (default = smallest data$log_dose value > -Inf).
 #' @param upper numeric value of the upper bound of `log_dose` to be observed
@@ -50,7 +49,7 @@
 posterior_draws_plot <- function(
     model,
     data = NULL,
-    predictors_col_name = "na",
+    predictor_cols = NULL,
     lower = NULL,
     upper = NULL,
     n = 50,
@@ -68,29 +67,6 @@ posterior_draws_plot <- function(
       " instead it is of class ", class(model)))
   }
 
-  if (is.character(predictors_col_name) == FALSE) {
-    warning("predictors_col_name must be a character. If there are not a
-            predictors in the data and model, then run using the default
-            argument (predictors_col_name = 'na').")
-  } else if (predictors_col_name == "na") {
-    warning("predictors_col_name is set to default argument 'na'. If predictors
-            are present in the data and model, assign the column name to
-            predictors_col_name.")
-  }
-
-  if (!exists("sigmoid")) {
-    if (model$backend == "rstan") {
-      brms::expose_functions(model, vectorize = TRUE)
-    } else if (model$backend == "cmdstanr") {
-      # add the sigmoid function to the current environment
-      # nolint
-      sigmoid <- BayesPharma::sigmoid
-    } else {
-      warning(
-        paste0("Unrecognized model backend '", model$backend, "'\n", sep = ""))
-    }
-  }
-  
   if (is.null(lower)) {
     lower <- data |>
       dplyr::filter(.data[["log_dose"]] > -Inf) |>
@@ -120,14 +96,17 @@ posterior_draws_plot <- function(
     data <- model$data
   }
 
-
-
+  newdata <- data |>
+    tidyr::expand(
+      predictor_cols,
+      log_dose = seq(from = lower, to = upper, length.out = 100))
+  
   # this makes the "hair"
   ep_data <- model |>
     tidybayes::add_epred_draws(
-      newdata = tidyr::expand_grid(
-        log_dose = seq(from = lower, to = upper, length.out = 100),
-        {{predictors_col_name}} := data[[predictors_col_name]] |> unique()),
+      newdata = data |>
+        tidyr::expand(!!!predictor_cols) |>
+        expand_grid(log_dose = seq(from = lower, to = upper, length.out = 100)),
       value = "response",
       re_formula = NA,
       ndraws = n)

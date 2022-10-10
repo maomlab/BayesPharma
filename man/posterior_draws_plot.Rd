@@ -7,7 +7,7 @@
 posterior_draws_plot(
   model,
   data = NULL,
-  predictors_col_name = "na",
+  predictor_cols = NULL,
   lower = NULL,
   upper = NULL,
   n = 50,
@@ -25,9 +25,8 @@ posterior_draws_plot(
 
 \item{data}{data.frame of data inputted into the model.}
 
-\item{predictors_col_name}{character. The name of the column containing the
-predictors for the model fit. If there is only one predictor, then any
-character input can be used and will not affect the plot (default = "na").}
+\item{predictor_cols}{quosures list of predictor columns to plot, for
+example `dplyr::vars(treamtent_id)`. (Default: NULL)}
 
 \item{lower}{numeric value of the lower bound of `log_dose` to be observed
 (default = smallest data$log_dose value > -Inf).}
