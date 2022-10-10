@@ -235,7 +235,7 @@ produced by the model:
 ```{r model-prior-posterior-densities}
 #| dependson=c("model")
 
-BayesPharma::prior_posterior_densities(
+BayesPharma::prior_posterior_densities_plot(
   kor_model,
   predictors_col_name = "Drug",
   half_max_label = "ic50")
@@ -250,7 +250,7 @@ results and to highlight the mode and high density intervals:
 #| warning=FALSE,
 #| dependson=c("model")
 
-BayesPharma::posterior_densities(
+BayesPharma::posterior_densities_plot(
   kor_model, 
   predictors_col_name = "Drug", 
   half_max_label = "ic50")
@@ -354,7 +354,7 @@ BayesPharma::plot_pp_check(
 Plot of the Prior and Posterior Distributions:
 
 ```{r}
-BayesPharma::prior_posterior_densities(
+BayesPharma::prior_posterior_densities_plot(
   kor_model2, 
   predictors_col_name = "Drug",
   half_max_label = "ic50")
@@ -363,7 +363,7 @@ BayesPharma::prior_posterior_densities(
 Plot of the Posterior Distributions with the Mean and Confidence Intervals:
 
 ```{r, message=FALSE, warning=FALSE}
-BayesPharma::posterior_densities(
+BayesPharma::posterior_densities_plot(
   kor_model2, 
   predictors_col_name = "Drug",
   half_max_label = "ic50")

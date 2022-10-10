@@ -18,7 +18,7 @@
 #'
 #' @examples
 #'\dontrun{
-#'   posterior_densities(
+#'   posterior_densities_plot(
 #'     model = my_sigmoid_model,
 #'     predictors_col_name = "predictors",
 #'     half_max_label = "ic50",
@@ -28,7 +28,7 @@
 #'}
 #' @importFrom rlang .data
 #'@export
-posterior_densities <- function(
+posterior_densities_plot <- function(
     model,
     predictors_col_name = "_Intercept",
     half_max_label = "ec50",
