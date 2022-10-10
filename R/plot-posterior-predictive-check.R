@@ -15,7 +15,7 @@
 #' @param model brmsfit model.
 #' @param plot_type string expression of a plot function.
 #' @param n numeric units of posterior draws to be used.
-#' @param ... additional arugments to `brms::pp_check`.
+#' @param ... additional arguments to `brms::pp_check`.
 #' 
 #' @return ggplot object.
 #'
