@@ -42,9 +42,9 @@ density_distributions_plot <- function(
       tidybayes::tidy_draws() |>
       tidybayes::gather_variables() |>
       dplyr::mutate(sample_type = sample_type) |>
-      dplyr::filter(!stringr::str_detect(.data[["variable"]], "__$")) |>
-      dplyr::filter(!stringr::str_detect(.data[["variable"]], "sigma")) |>
-      dplyr::filter(!stringr::str_detect(.data[["variable"]], "lprior"))) |>
+      dplyr::filter(!stringr::str_detect(.data[[".variable"]], "__$")) |>
+      dplyr::filter(!stringr::str_detect(.data[[".variable"]], "sigma")) |>
+      dplyr::filter(!stringr::str_detect(.data[[".variable"]], "lprior"))) |>
     dplyr::mutate(
       .variable = .data[[".variable"]] |>
         stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") |>
