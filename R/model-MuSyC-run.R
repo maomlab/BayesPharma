@@ -77,7 +77,7 @@ MuSyC_model <- function(
       dplyr::mutate(logd2scale = mean(.data[["logd2"]]))
   }
 
-  brms::brm(
+  model <- brms::brm(
     formula = formula,
     data = data,
     prior = prior,
@@ -85,4 +85,9 @@ MuSyC_model <- function(
     control = control,
     stanvars = stanvars,
     ...)
+  
+  model$bayes_pharma <- list(model_type = "MuSyC")
+  model
+  
+  
 }
