@@ -17,14 +17,14 @@
 #'
 #' @examples
 #'\dontrun{
-#'   prior_posterior_densities(
+#'   prior_posterior_densities_plot(
 #'     model = my_sigmoid_model,
 #'     predictors_col_name = "predictors",
 #'     half_max_response = "ic50",
 #'     title_label = "Prior Posterior Density Plots")
 #'}
 #' @export
-prior_posterior_densities <- function(
+prior_posterior_densities_plot <- function(
   model,
   predictors_col_name = "_Intercept",
   half_max_label = "ec50",

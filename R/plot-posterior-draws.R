@@ -96,17 +96,15 @@ posterior_draws_plot <- function(
     data <- model$data
   }
 
-  newdata <- data |>
-    tidyr::expand(
-      predictor_cols,
-      log_dose = seq(from = lower, to = upper, length.out = 100))
+  newdata <- 
   
   # this makes the "hair"
   ep_data <- model |>
     tidybayes::add_epred_draws(
       newdata = data |>
-        tidyr::expand(!!!predictor_cols) |>
-        expand_grid(log_dose = seq(from = lower, to = upper, length.out = 100)),
+        tidyr::expand(
+          predictor_cols,
+          log_dose = seq(from = lower, to = upper, length.out = 100)),
       value = "response",
       re_formula = NA,
       ndraws = n)
