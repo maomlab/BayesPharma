@@ -20,7 +20,7 @@
 #'
 #' @examples
 #'\dontrun{
-#'   density_distributions(
+#'   density_distributions_plot(
 #'     model = my_sigmoid_model_priors,
 #'     predictors_col_name = "predictors",
 #'     half_max_label = "ic50",
@@ -30,12 +30,12 @@
 #'
 #' @importFrom rlang .data
 #' @export
-density_distributions <- function(
-    model,
-    predictors_col_name = "_Intercept",
-    half_max_label = "ec50",
-    title_label = "Density Distributions",
-    sample_type = "Prior") {
+density_distributions_plot <- function(
+  model,
+  predictors_col_name = "_Intercept",
+  half_max_label = "ec50",
+  title_label = "Density Distributions",
+  sample_type = "Prior") {
 
   prior <- dplyr::bind_rows(
     model |>

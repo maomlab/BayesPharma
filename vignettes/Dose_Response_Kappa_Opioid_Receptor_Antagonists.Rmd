@@ -152,7 +152,7 @@ Plot of the Prior Distributions:
 ```{r plot-prior-density}
 #| dependson=c("sample-prior")
 
-BayesPharma::density_distributions(
+BayesPharma::density_distributions_plot(
   kor_sample_prior, 
   half_max_label = "ic50",
   title_label = "Prior Density Distributions")
@@ -309,7 +309,7 @@ Plot of the Prior Distributions:
 ```{r model2-prior-density}
 #| dependson=c("model2")
 
-BayesPharma::density_distributions(
+BayesPharma::density_distributions_plot(
   kor_sample_prior,
   predictors_col_name = "_Intercept",
   half_max_label = "ic50")

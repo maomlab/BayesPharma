@@ -60,7 +60,7 @@ And then plot of the prior predictive distributions:
 #| fig.height = 2.6,
 #| fig.cap="KOR antagonists prior distribution"
 
-BayesPharma::density_distributions(
+BayesPharma::density_distributions_plot(
   kor_sample_priors, 
   half_max_label = "ic50",
   title_label = "") +
