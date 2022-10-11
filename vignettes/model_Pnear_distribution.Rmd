@@ -354,14 +354,13 @@ We can use the fit the sigmoid model to the `log(RMSD)` using the
 #| results="hide"
 model <- data |>
   BayesPharma::sigmoid_model(
-    formula = BayesPharma::sigmoid_formula(
+    formula = BayesPharma::sigmoid_agonist_formula(
       predictors = 0 + target),
-    prior = BayesPharma::sigmoid_prior(
+    prior = BayesPharma::sigmoid_agonist_prior(
       ec50 = brms::prior(normal(1.5, 2), nlpar = "ec50"),
       top = brms::prior(normal(-10, 10), nlpar = "top"),
-      bottom = brms::prior(normal(-20, 10), nlpar = "bottom"),
-      inhibitor = FALSE),
-    init = BayesPharma::sigmoid_init(
+      bottom = brms::prior(normal(-20, 10), nlpar = "bottom")),
+    init = BayesPharma::sigmoid_agonist_init(
       ec50 = 1.2,
       top = -10,
       bottom = -20),
@@ -482,7 +481,9 @@ ggplot2::ggsave(
 And on the original RMSD scale:
 
 
-```{r plot-data-model-rmsd, dependson=c("load-packages", "stugdock-fit-model", "snugdock-collect-draws"), warning=FALSE}
+```{r plot-data-model-rmsd}
+#| dependson=c("load-packages", "stugdock-fit-model", "snugdock-collect-draws"),
+#| warning=FALSE
 ggplot2::ggplot(data = data) + 
   ggplot2::theme_bw() +
   GeomIndicator::geom_indicator(
@@ -534,11 +535,12 @@ ggplot2::ggplot(data = data) +
 
 
 ## Quantify Pnear uncertainty
-Using the two-state model fit, it is possible to propagate the posterior uncertainty
-to estimate the uncertainty of the Pnear.
+Using the two-state model fit, it is possible to propagate the posterior
+uncertainty to estimate the uncertainty of the Pnear.
 
 ```{r pnear-uncertainty}
-# Median quantile intervals for the response across RMSD values for draws from the posterior
+# # Median quantile intervals for the response across RMSD values for draws from
+# # the posterior
 # pp_data <- model |>
 #   tidybayes::add_predicted_draws(
 #     newdata = tidyr::expand_grid(
@@ -555,7 +557,7 @@ to estimate the uncertainty of the Pnear.
 #   dplyr::mutate(
 #     rmsd = exp(log_dose),
 #     score = response)
-
+```
 
 
 

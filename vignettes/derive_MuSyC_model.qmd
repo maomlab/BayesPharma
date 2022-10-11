@@ -102,12 +102,12 @@ generate_MuSyC_effects <- function(
 #'   Consider observations made using 4 different drugs and the column header
 #'   containing the labels for the 4 different drugs is `predictors`.
 #'   
-#'      `sigmoid_formula(predictors = 0 + predictors)`
+#'      `MuSyC_formula(predictors = 0 + predictors)`
 #'
 #'   Consider that the cell_ID was recorded and the noise from the cell_ID is to
 #'   be accounted for.
 #'  
-#'      `sigmoid_formula(predictors = 0 + predictors + (1|cell_ID))`
+#'      `MuSyC_formula(predictors = 0 + predictors + (1|cell_ID))`
 #'}
 #'
 #' @export

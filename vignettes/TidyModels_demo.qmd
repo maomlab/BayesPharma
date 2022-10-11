@@ -32,8 +32,8 @@ kor_model <- bayesian::bayesian(
   iter = 8000,
   control = list(adapt_delta = 0.99),
   stanvars = BayesPharma::sigmoid_stanvar,
-  init = BayesPharma::sigmoid_init(),
-  prior = BayesPharma::sigmoid_prior(inhibitor = TRUE, top = 100)) |>
+  init = BayesPharma::sigmoid_antagoinst_init(),
+  prior = BayesPharma::sigmoid_antagoinst_prior(inhibitor = TRUE, top = 100)) |>
   #parsnip::set_engine("brms") |>
   #parsnip::set_mode("regression") |>
   recipes::update(formula.override = bayesian::bayesian_formula(

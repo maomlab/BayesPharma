@@ -1,62 +1,73 @@
-#' Create initialization for the sigmoid model
+#' Create initialization for the agonist sigmoid model
 #'
-#' @description Creating initial values for the sigmoid model parameters that
-#'   can be passed to the `sigmoid_model`
+#' @description Creating initial values for an agonist sigmoid model parameters
+#'   that can be passed to the `sigmoid_agoninst_model`.
 #'
-#' @param ec50 numeric or numeric returning function units log_dose
+#' @param ic50 numeric or numeric returning function units log_dose
 #'   (default = -9)
-#' @param hill TRUE, FALSE, or numeric units, TRUE/FALSE sets hill to an
-#'   initial value of 1/-1 or numeric units can be assigned to hill
-#'   (default = TRUE).
-#' @param inhibitor TRUE/FALSE value that determines if hill is a positive or
-#'   negative slope. If TRUE, the initial condition will be hill = -1. If FALSE,
-#'   hill = 1 (default = TRUE).
+#' @param hill numeric or numeric returning function with units
+#'   response/log_dose (default = 1)
 #' @param top numeric units of top (default = 100).
 #' @param bottom numeric units of bottom (default = 0).
-#' @param chains numeric units of Markov chains that will be used in brmsfit
-#'   (default = 4).
-#' @return list of lists.
+#' @return input for brms::brm(init = ...)
 #'
 #' @examples
 #'\dontrun{
 #' #Consider an activator that has a max response around 50%, EC50 is estimated
-#' #to be around 1 uM, minimum response is known to be 0, and 4 MCMC chains will
-#' #be used by the model.
-#' init <- BayesPharma::sigmoid_init(
+#' #to be around 1 uM, minimum response is known to be 0.
+#' init <- BayesPharma::sigmoid_agonist_init(
 #'   ec50 = -6,
-#'   inhibitor = FALSE,
 #'   top = 50)
 #'}
 #'@export
-sigmoid_init <- function(
+sigmoid_agonist_init <- function(
     ec50 = -9,
-    hill = TRUE,
-    inhibitor = TRUE,
+    hill = 1,
     top = 100,
-    bottom = 0,
-    chains = 4) {
+    bottom = 0) {
 
-  ec50_init <- ec50
-
-  if (inhibitor == FALSE && hill == TRUE || hill == FALSE) {
-    hill_init <- 1
-    cat("hill is a positive slope.\n")
-  } else if (inhibitor == TRUE && hill == TRUE || hill == FALSE) {
-    cat("hill is a negative slope.\n")
-    hill_init <- -1
-  } else{
-    hill_init <- hill
+  function() {
+    list(
+      b_ec50 = prepare_init(ec50),
+      b_hill = prepare_init(hill),
+      b_top = prepare_init(top),
+      b_bottom = prepare_init(bottom))
   }
+}
 
-  top_init <- top
-  bottom_init <- bottom
-
-  init_list <- list(
-    b_ec50 = ec50_init,
-    b_hill = hill_init,
-    b_top = top_init,
-    b_bottom = bottom_init)
-
-  init <- rep(list(init_list), chains)
-  return(init)
+#' Create initialization for the antagonist sigmoid model
+#'
+#' @description Creating initial values for the sigmoid model parameters that
+#'   can be passed to the `sigmoid_antagonist_model`
+#'
+#' @param ic50 numeric or numeric returning function units log_dose
+#'   (default = -9)
+#' @param hill numeric or numeric returning function with units
+#'   response/log_dose (default = -1)
+#' @param top numeric units of top (default = 100).
+#' @param bottom numeric units of bottom (default = 0).
+#' @return input for brms::brm(init = ...)
+#'
+#' @examples
+#'\dontrun{
+#' #Consider an inhibitor that has a min response around 50%, IC50 is estimated
+#' #to be around 1 uM, maximum response is known to be 1000,
+#' init <- BayesPharma::sigmoid_antagonist_init(
+#'   ec50 = -6,
+#'   bottom = 50)
+#'}
+#'@export
+sigmoid_antagoinst_init <- function(
+    ic50 = -9,
+    hill = -1,
+    top = 100,
+    bottom = 0) {
+  
+  function() {
+    list(
+      b_ic50 = prepare_init(ic50),
+      b_hill = prepare_init(hill),
+      b_top = prepare_init(top),
+      b_bottom = prepare_init(bottom))
+  }
 }

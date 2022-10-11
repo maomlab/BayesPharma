@@ -32,11 +32,18 @@
 #' @export
 density_distributions_plot <- function(
   model,
-  predictors_col = "_Intercept",
+  predictors_col_name = "_Intercept",
   half_max_label = "ec50",
   title_label = "Density Distributions",
   sample_type = "Prior") {
 
+  bayesplot::mcmc_dens(
+    x = model) +
+    ggplot2::theme_bw() +
+    
+  
+  
+  browser()
   prior <- dplyr::bind_rows(
     model |>
       tidybayes::tidy_draws() |>
