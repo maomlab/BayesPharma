@@ -95,8 +95,6 @@ posterior_draws_plot <- function(
   if (is.null(data)) {
     data <- model$data
   }
-
-  newdata <- 
   
   # this makes the "hair"
   ep_data <- model |>
