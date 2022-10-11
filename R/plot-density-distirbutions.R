@@ -41,9 +41,6 @@ density_distributions_plot <- function(
     x = model) +
     ggplot2::theme_bw() +
     
-  
-  
-  browser()
   prior <- dplyr::bind_rows(
     model |>
       tidybayes::tidy_draws() |>

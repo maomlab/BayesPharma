@@ -15,8 +15,7 @@ testthat::test_that(
     ec50 = -6,
     hill = 0.5,
     top = 50,
-    bottom = 0,
-    chains = 2)
+    bottom = 0)
 
   testthat::expect_true(methods::is(init, "list"))
 })
@@ -35,8 +34,7 @@ testthat::test_that(
       ic50 = -6,
       hill = 0.5,
       top = 50,
-      bottom = 0,
-      chains = 2)
+      bottom = 0)
     
     testthat::expect_true(methods::is(init, "list"))
   })

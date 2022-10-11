@@ -28,14 +28,10 @@ knitr::opts_chunk$set(
 #  dev = "svg",
 #  dev.args = list(png = list(type = "cairo-png")),
 #  optipng = "-o1 -quiet")
-# cmdstanr is more up-to-date than rstan and runs a little faster
-# but can't expose defined functions for downstream analysis
-if(Sys.info()["machine"] == "arm64"){
-  #rstan does not currently support apple M1 chips
-  stan_backend <- "cmdstanr"
-} else {
-  stan_backend <- "rstan"
-}
+
+bayesplot::bayesplot_theme_set(
+  new = ggplot2::theme_bw())
+
 ```
 
 ```{r load-packages}
@@ -116,7 +112,7 @@ kor_prior
 ### Initial Values for Parameters
 Then, we will set the initial to values close to parameter estimates to help
 with model convergence. The initial values are the starting values for the
-Monte Carlo Marko Chains of each parameter. The default initial values are:
+Monte Carlo Markov Chains of each parameter. The default initial values are:
 `ec50 = -9`, `hill = -1`, `top = 100`, and `bottom = 0`.
 
 ```{r default-init}
@@ -149,10 +145,17 @@ Plot of the Prior Distributions:
 ```{r plot-prior-density}
 #| dependson=c("sample-prior")
 
-BayesPharma::density_distributions_plot(
-  kor_sample_prior, 
-  half_max_label = "ic50",
-  title_label = "Prior Density Distributions")
+kor_sample_prior |>
+  bayesplot::mcmc_dens(
+    pars = dplyr::vars(
+      b_ic50_Intercept,
+      b_hill_Intercept,
+      b_top_Intercept,
+      b_bottom_Intercept)) +
+  ggplot2::ggtitle("Prior Density Distributions") +
+  ggplot2::facet_grid(
+    ~ Parameter,
+    labeller = ~ .|> stringr::str_replace_all("b_|_Intercept", ""))
 ```
 
 
@@ -194,10 +197,7 @@ chains mixed well indicating the chains converged.
 ```{r model-traceplot}
 #| dependson=c("model")
 
-BayesPharma::traceplot(
-  kor_model, 
-  predictors_col_name = "Drug", 
-  half_max_label = "ic50") 
+kor_model |> bayesplot::mcmc_trace()
 ```
 
 ## Posterior Predictive Check
