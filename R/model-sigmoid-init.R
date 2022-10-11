@@ -57,7 +57,7 @@ sigmoid_agonist_init <- function(
 #'   bottom = 50)
 #'}
 #'@export
-sigmoid_antagoinst_init <- function(
+sigmoid_antagonist_init <- function(
     ic50 = -9,
     hill = -1,
     top = 100,
