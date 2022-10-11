@@ -32,7 +32,7 @@
 #' @export
 density_distributions_plot <- function(
   model,
-  predictors_col_name = "_Intercept",
+  predictors_col = "_Intercept",
   half_max_label = "ec50",
   title_label = "Density Distributions",
   sample_type = "Prior") {

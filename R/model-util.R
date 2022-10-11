@@ -1,5 +1,5 @@
 #' Prepare an init for a brms model
-#' 
+#'
 #' @param init function returning an numeric array of length one or a numeric
 #'   value.
 #' @return function returning a numeric array of length 1.
@@ -30,12 +30,12 @@ prepare_init <- function(init) {
 #' This is used in models where want to allow user specified priors but
 #' make sure they are for the right parameters to make sure the model is well
 #' specified.
-#' 
+#'
 #' @param prior `brmsprior` or numeric.
 #' @param ... additional arguments to `brms::prior_string()`. If `prior` is a
 #'   `brmsprior` then this will check that the slots have the given values. If
-#'   prior is numeric, then these arguments are passed to `brms::prior_string` 
-#' 
+#'   prior is numeric, then these arguments are passed to `brms::prior_string`
+#'
 #' @return brmsprior
 prepare_prior <- function(prior, ...) {
   if (methods::is(prior, "brmsprior")) {
@@ -52,4 +52,3 @@ prepare_prior <- function(prior, ...) {
   }
   prior
 }
-

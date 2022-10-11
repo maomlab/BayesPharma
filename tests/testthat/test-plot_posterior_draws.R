@@ -21,7 +21,7 @@ testthat::test_that(
     BayesPharma::posterior_draws_plot(
       model = test_model,
       data = test_data,
-      predictors_col_name = "test",
+      predictors_col = "test",
       lower = -15,
       upper = -1,
       n = 100,

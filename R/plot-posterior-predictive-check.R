@@ -16,7 +16,7 @@
 #' @param plot_type string expression of a plot function.
 #' @param n numeric units of posterior draws to be used.
 #' @param ... additional arguments to `brms::pp_check`.
-#' 
+#'
 #' @return ggplot object.
 #'
 #' @examples

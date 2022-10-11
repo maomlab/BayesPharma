@@ -51,8 +51,8 @@ MuSyC_si_to_hi <- function(si, Ci, E0, Ei) {
 #' @param Ci the IC50 of drug i
 #' @param E0 the response with no treatments
 #' @param Ei the response of infinite drug i and no other treatments
-#' @return si slope of drug i at it's IC50 and doses of all other drugs are zero 
-#' 
+#' @return si slope of drug i at it's IC50 and doses of all other drugs are zero
+#'
 #'@export
 MuSyC_hi_to_si <- function(hi, Ci, E0, Ei) {
   hi * (E0 + Ei) / (4 * Ci)

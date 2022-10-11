@@ -77,7 +77,7 @@ posterior_draws_plot <- function(
       is.numeric(lower),
       msg = "lower must be numeric")
   }
-  
+
   if (is.null(upper)) {
     upper <- data |>
       dplyr::filter(.data[["log_dose"]] < Inf) |>
@@ -95,7 +95,7 @@ posterior_draws_plot <- function(
   if (is.null(data)) {
     data <- model$data
   }
-  
+
   # this makes the "hair"
   ep_data <- model |>
     tidybayes::add_epred_draws(

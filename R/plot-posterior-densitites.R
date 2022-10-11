@@ -45,7 +45,7 @@ posterior_densities_plot <- function(
       dplyr::filter(!stringr::str_detect(.data[[".variable"]], "lprior"))) |>
     dplyr::rename(variables = .data[[".variable"]]) |>
     dplyr::mutate(
-      variables = .data[["variable"]] |>
+      variables = .data[["variables"]] |>
         stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") |>
         stringr::str_remove("b_") |>
         stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
