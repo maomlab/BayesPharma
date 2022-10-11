@@ -35,7 +35,7 @@ calculate_log_dose <- function(
     warning(
       "Calculating log_dose but a log_dose column already exists, overwriting.")
   }
-    
+
   if (rlang::is_symbol(rlang::expr(dose_col))) {
     dose_col <- tidyselect::eval_select(rlang::enquo(dose_col), data)
   } else if (is.character(dose_col)) {
@@ -48,6 +48,8 @@ calculate_log_dose <- function(
         "dose_col indexes column ", dose_col, ", but data only has ",
         ncol(data), " column\n")
     }
+  } else {
+    stop(paste0("Unrecognized class for dose_col ", class(dose_col), "\n"))
   }
 
   data$log_dose <- log10(data[,dose_col] * molar_concentration)

@@ -28,7 +28,6 @@ testthat::test_that(
   testthat::expect_equal(data$log_dose, c(-6, -7))
 })
 
-
 testthat::test_that(
   desc = "adding log dose to data.frame with units M using expression",
   code = {
