@@ -4,11 +4,7 @@
 \alias{calculate_log_dose}
 \title{Add a log dose (in base 10) column to the input data.frame}
 \usage{
-calculate_log_dose(
-  data,
-  dose_col = dplyr::var("dose"),
-  molar_concentration = 1
-)
+calculate_log_dose(data, dose_col = "dose", molar_concentration = 1)
 }
 \arguments{
 \item{data}{data.frame containing a column representing a dose in molar

@@ -109,9 +109,7 @@ https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
 
 ```{r default-prior}
 
-kor_prior <- BayesPharma::sigmoid_prior(
-  inhibitor = TRUE,
-  top = 100)
+kor_prior <- BayesPharma::sigmoid_antagonist_prior(top = 100)
 kor_prior
 ```
 
@@ -124,14 +122,14 @@ Monte Carlo Marko Chains of each parameter. The default initial values are:
 ```{r default-init}
 #| warning=FALSE,
 #| message=FALSE
-kor_init <- BayesPharma::sigmoid_init()
+kor_init <- BayesPharma::sigmoid_antagonist_init()
 ```
 
 ### Prior Predictive Check
 Before running the model, we will verify that the prior distributions
 cover a plausible range of values for each parameter. To do this, we want to 
 sample only from the prior distributions by adding  *sample_prior = "only"* as 
-an argument to the `sigmoid_model` function.
+an argument to the `sigmoid_antagonist_model` function.
 We will use the default response distribution of the model 
 (*family = gaussian()*).
 
@@ -140,9 +138,8 @@ We will use the default response distribution of the model
 #| message=FALSE,
 #| dependson=c("load-data", "default-prior", "default-init")
 
-kor_sample_prior <- BayesPharma::sigmoid_model(
-  kor_antag,
-  BayesPharma::sigmoid_formula(), 
+kor_sample_prior <- BayesPharma::sigmoid_antagonist_model(
+  data = kor_antag,
   prior = kor_prior,
   init = kor_init,
   sample_prior = "only")
@@ -167,15 +164,15 @@ responses.
 ## Fitting the Model
 
 To fit the model for each antagonist, we set the *predictors* argument in 
-`sigmoid_formula` to be *predictors = 0 + Drug*. 
+`sigmoid_antagonist_formula` to be *predictors = 0 + Drug*. 
 
 ```{r model}
 #| results='hide',
 #| message=FALSE,
 #| dependson=c("load-data", "default-prior", "default-init")
-kor_model <- BayesPharma::sigmoid_model(
+kor_model <- BayesPharma::sigmoid_antagonist_model(
   data = kor_antag,
-  formula = BayesPharma::sigmoid_formula(0 + Drug), 
+  formula = BayesPharma::sigmoid_antagonist_formula(0 + Drug), 
   prior = kor_prior,
   init = kor_init)
 ```
@@ -282,7 +279,7 @@ JNJ-67953964: ic50 = 3.0 +/- 4.6 nM (-8.5 +/- 0.4 M), bottom = -27%
 PF-04455242: ic50 = 6.7 +/- 15.1 nM (-8.2 +/- 0.5 M), bottom = 45%
 
 ```{r model-prior2}
-kor_prior2 <- BayesPharma::sigmoid_prior(
+kor_prior2 <- BayesPharma::sigmoid_antagoinst_prior(
   ec50 = brms::prior(normal(-8.5, 0.5), nlpar = "ec50"),
   hill = brms::prior(normal(-1, 0.5), ub = 0.01, nlpar = "hill"),
   top = 100,
@@ -297,9 +294,8 @@ Sampling the prior:
 #| message=FALSE,
 #| dependson=c("load-data", "default-init", "model-prior2")
 
-kor_sample_prior <- BayesPharma::sigmoid_model(
+kor_sample_prior <- BayesPharma::sigmoid_antagoinst_model(
   kor_antag,
-  BayesPharma::sigmoid_formula(), 
   prior = kor_prior2,
   init = kor_init,
   sample_prior = "only")
@@ -321,9 +317,9 @@ Running the Model:
 #| results='hide',
 #| message=FALSE
 
-kor_model2 <- BayesPharma::sigmoid_model(
+kor_model2 <- BayesPharma::sigmoid_antagoinst_model(
   kor_antag,
-  formula = BayesPharma::sigmoid_formula(0 + Drug), 
+  formula = BayesPharma::sigmoid_antagonist_formula(0 + Drug), 
   prior = kor_prior2,
   init = kor_init,
   cores = 2)
