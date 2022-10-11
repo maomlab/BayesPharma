@@ -7,7 +7,7 @@ model}
 \usage{
 density_distributions_plot(
   model,
-  predictors_col_name = "_Intercept",
+  predictors_col = "_Intercept",
   half_max_label = "ec50",
   title_label = "Density Distributions",
   sample_type = "Prior"
@@ -16,10 +16,6 @@ density_distributions_plot(
 \arguments{
 \item{model}{brmsfit model.}
 
-\item{predictors_col_name}{string expression for predictors column in the
-input data.frame (default = "_Intercept"). Predictors are the perturbations
-tested during the experiment (i.e. Drug, Temperature, etc.).}
-
 \item{half_max_label}{string of the label for the half maximal that fits the
 type of experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).}
 
@@ -27,6 +23,10 @@ type of experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).}
 
 \item{sample_type}{string of the type of density distribution
 (i.e. Prior or Posterior). (default = "Prior")}
+
+\item{predictors_col_name}{string expression for predictors column in the
+input data.frame (default = "_Intercept"). Predictors are the perturbations
+tested during the experiment (i.e. Drug, Temperature, etc.).}
 }
 \value{
 ggplot2::ggplot object.

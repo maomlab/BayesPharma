@@ -1,4 +1,4 @@
-#' Create initialization for the sigmoid model 
+#' Create initialization for the sigmoid model
 #'
 #' @description Creating initial values for the sigmoid model parameters that
 #'   can be passed to the `sigmoid_model`

@@ -85,9 +85,9 @@ MuSyC_model <- function(
     control = control,
     stanvars = stanvars,
     ...)
-  
+
   model$bayes_pharma <- list(model_type = "MuSyC")
   model
-  
-  
+
+
 }

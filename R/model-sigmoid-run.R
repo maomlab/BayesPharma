@@ -22,7 +22,7 @@
 #'   convergence (default: `list(adapt_delta = 0.99)`).
 #' @param stanvar_function stan code for the model.
 #' @param ... additional arguments passed to `brms::brm`
-#' 
+#'
 #' @return `brmsfit` object
 #'
 #' @examples
@@ -60,8 +60,8 @@ sigmoid_model <- function(
     control = control,
     stanvars = stanvar_function,
     ...)
-  
+
   model$bayes_pharma <- list(model_type = "sigmoid")
   model
-  
+
 }

@@ -1,5 +1,5 @@
 #' Model for the tQ enzyme kinetics model
-#' 
+#'
 #' @param data data.frame of experimental data.
 #'   must contain columns \code{response} and any predictors specified in
 #'   the formula.
@@ -18,7 +18,7 @@
 
 #' @return brmsfit model
 #'
-#' 
+#'
 #' @export
 tQ_model <- function(
     data,
@@ -38,7 +38,7 @@ tQ_model <- function(
     control = control,
     stanvars = tQ_stanvar,
     ...)
-  
+
   model$bayes_pharma <- list(model_type = "tQ")
   model
 }

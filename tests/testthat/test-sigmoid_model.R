@@ -9,7 +9,7 @@ testthat::test_that("Sigmoid model fit with zero doses", {
     log_dose = seq(-7, -5, length.out = 30)) |>
     dplyr::mutate(
       response = rnorm(
-        n = length(log_dose), 
+        n = length(log_dose),
         mean = BayesPharma::sigmoid(
           ec50 = -6,
           hill = 1,

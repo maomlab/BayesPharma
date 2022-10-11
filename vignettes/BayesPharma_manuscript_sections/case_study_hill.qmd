@@ -131,7 +131,7 @@ Displayed below is a plot for the prior and posterior distributions of the  para
 #| fig.height = 5,
 #| fig.cap="KOR antagonists model, compare prior and posterior distributions for each substance"
 
-BayesPharma::prior_posterior_densities(
+BayesPharma::prior_posterior_densities_plot(
   kor_model,
   predictors_col_name = "substance_id",
   half_max_label = "ic50",
@@ -151,7 +151,7 @@ results and to highlight the mode and high density intervals:
 #| fig.height=5,
 #| fig.cap="KOR Antagonists, posterior distribution for each substance"
 
-BayesPharma::posterior_densities(
+BayesPharma::posterior_densities_plot(
   kor_model, 
   predictors_col_name = "substance_id", 
   half_max_label = "ic50",

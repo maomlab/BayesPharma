@@ -56,11 +56,11 @@
 #' @param ET numeric value total enzyme concentration
 #' @param ST numeric value total substrate concentration
 #' @param ... additional arguments to `deSolve::ode`
-#' 
+#'
 #' @return run the tQ ordinary differential equation forwards starting with
 #'  initial product concentration of 0 and specified kcat and kM parameters
 #'  for the specified time steps.
-#' 
+#'
 #' @export
 tQ_model_generate <- function(time, kcat, kM, ET, ST, ...) {
   ode_tQ <- function(time, Pt, theta) {

@@ -55,8 +55,8 @@ sigmoid_prior <- function(
 
   # To make the model identifiable, force inhibitor the slope to be either
   # positive or negative
-  if(is.null(hill)){
-    if(inhibitor) {
+  if (is.null(hill)) {
+    if (inhibitor) {
       hill <- brms::prior(
         prior = normal(-1, 1),
         nlpar = "hill",
@@ -68,7 +68,7 @@ sigmoid_prior <- function(
         ub = 0.01)
     }
   }
-  
+
   c(
     prepare_prior(ec50, nlpar = "ec50"),
     prepare_prior(hill, nlpar = "hill"),

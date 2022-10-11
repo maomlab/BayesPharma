@@ -50,7 +50,7 @@ testthat::test_that(
 testthat::test_that(
   desc = paste0(
     "density_distributions throws error if half_max_label is not a character"),
-  code = {  
+  code = {
   testthat::expect_error(
     expect_gg(
       BayesPharma::density_distributions_plot(
