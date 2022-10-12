@@ -39,7 +39,7 @@
 #' @export
 sigmoid_agonist_prior <- function(
   ec50 = brms::prior(normal(-7, 2.5), nlpar = "ec50"),
-  hill = brms::prior(prior = normal(1, 1), nlpar = "hill", ub = 0.01),
+  hill = brms::prior(prior = normal(1, 1), nlpar = "hill", lb = -0.01),
   top = brms::prior(normal(100, 25), nlpar = "top"),
   bottom = brms::prior(prior = normal(0, 25), nlpar = "bottom"),
   ...) {
@@ -91,7 +91,7 @@ sigmoid_agonist_prior <- function(
 #' @export
 sigmoid_antagonist_prior <- function(
     ic50 = brms::prior(normal(-7, 2.5), nlpar = "ic50"),
-    hill = brms::prior(prior = normal(-1, 1), nlpar = "hill", lb = -0.01),
+    hill = brms::prior(prior = normal(-1, 1), nlpar = "hill", ub = 0.01),
     top = brms::prior(normal(100, 25), nlpar = "top"),
     bottom = brms::prior(prior = normal(0, 25), nlpar = "bottom"),
     ...) {

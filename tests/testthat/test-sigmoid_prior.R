@@ -162,7 +162,7 @@ testthat::test_that("sigmoid_antagonist_prior with custom prior", {
   #"prior" "class" "coef" "group" "resp" "dpar" "nlpar" "lb" "ub" "source"
   testthat::expect_true(all(
     as.list(prior[1, ]) ==
-      c("student_t(3, -7, 3)", "b", "", "", "", "", "ec50", NA, -4, "user"),
+      c("student_t(3, -7, 3)", "b", "", "", "", "", "ic50", NA, -4, "user"),
     na.rm = TRUE))
   
   testthat::expect_true(all(

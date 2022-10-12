@@ -6,7 +6,7 @@ testthat::test_that("Agonist sigmoid model fit with zero doses", {
       response = stats::rnorm(
         n = length(log_dose),
         mean = BayesPharma::sigmoid(
-          ec50 = -6,
+          ac50 = -6,
           hill = 1,
           top = 1,
           bottom = 0,
@@ -29,7 +29,7 @@ testthat::test_that("Antagonist sigmoid model fit with zero doses", {
       response = stats::rnorm(
         n = length(log_dose),
         mean = BayesPharma::sigmoid(
-          ic50 = -6,
+          ac50 = -6,
           hill = -1,
           top = 1,
           bottom = 0,
