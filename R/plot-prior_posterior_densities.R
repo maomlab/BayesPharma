@@ -32,7 +32,9 @@ prior_posterior_densities_plot <- function(
   Plots") {
 
   model_prior <- model |>
-    stats::update(sample_prior = "only")
+    stats::update(
+      sample_prior = "only",
+      iter = 2000)
 
   draws <- dplyr::bind_rows(
     model_prior |>
