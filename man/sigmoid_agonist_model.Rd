@@ -53,7 +53,7 @@ For additional information on additional function arguments, reference:
 }
 \examples{
 \dontrun{
-  sigmoid_agoinst_model(data,
+  sigmoid_agonist_model(data,
    formula = sigmoid_agonist_formula(predictors = 0 + drug))
 }
 }

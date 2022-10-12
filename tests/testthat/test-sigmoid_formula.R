@@ -1,7 +1,7 @@
 library(BayesPharma)
 library(tidymodels)
 
-testthat::test_that("sigmoid_agoinst_formula with a constant predictor", {
+testthat::test_that("sigmoid_agonist_formula with a constant predictor", {
   formula <- BayesPharma::sigmoid_agonist_formula()
 
   testthat::expect_true("brmsformula" %in% class(formula))
@@ -23,7 +23,7 @@ testthat::test_that("sigmoid_agoinst_formula with a constant predictor", {
   testthat::expect_equal(rlang::f_rhs(formula$pforms[[4]]), 1L)
 })
 
-testthat::test_that("sigmoid_agoinst_formula with a substance predictor", {
+testthat::test_that("sigmoid_agonist_formula with a substance predictor", {
   formula <- BayesPharma::sigmoid_agonist_formula(
     predictors = substance)
 
@@ -46,7 +46,7 @@ testthat::test_that("sigmoid_agoinst_formula with a substance predictor", {
   testthat::expect_equal(rlang::f_rhs(formula$pforms[[4]]), quote(substance))
 })
 
-testthat::test_that("sigmoid_agoinst_formula with a grouped predictor", {
+testthat::test_that("sigmoid_agonist_formula with a grouped predictor", {
   formula <- BayesPharma::sigmoid_agonist_formula(
     predictors = substance + (1 | batch))
 

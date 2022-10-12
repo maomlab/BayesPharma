@@ -1,4 +1,4 @@
-#' Default priors for the sigmoid agoinst model
+#' Default priors for the sigmoid agonist model
 #'
 #' @description Creates a data.frame of priors for the sigmoid agonist model
 #'
