@@ -146,22 +146,9 @@ Plot of the Prior Distributions:
 #| dependson=c("sample-prior")
 
 # Plot parameter distributions
-plot <- kor_sample_prior |>
-  bayesplot::mcmc_dens(
-    pars = dplyr::vars(tidyselect::starts_with("b_")))
-
-# Add style
-plot +
-  ggplot2::labs(
-    x = "Parameter Value",
-    y = "Prior Density") +
-  ggplot2::facet_wrap(
-    ~ Parameter,
-    scales = "free",
-    labeller = function(x) {x |>
-      dplyr::mutate(
-        Parameter = Parameter |> 
-          stringr::str_replace_all("b_|_Intercept", ""))})
+kor_sample_prior |>
+  BayesPharma::density_distributions_plot()
+  
 ```
 
 
@@ -303,10 +290,8 @@ Plot of the Prior Distributions:
 ```{r model2-prior-density}
 #| dependson=c("model2")
 
-BayesPharma::density_distributions_plot(
-  kor_sample_prior,
-  predictors_col_name = "_Intercept",
-  half_max_label = "ic50")
+kor_sample_prior |>
+  bayesplot::mcmc_dens()
 ```
 
 Running the Model:
@@ -398,43 +383,27 @@ We will fix the top to 100 and fit the ic50, hill, and bottom.
 
 ```{r}
 
-BTRX_335140_df <- kor_antag[grepl("BTRX_335140", kor_antag$Drug),]
-BTRX_395750_df <- kor_antag[grepl("BTRX_395750", kor_antag$Drug),]
-JNJ_df <- kor_antag[grepl("JNJ", kor_antag$Drug),]
-PF_df <- kor_antag[grepl("PF", kor_antag$Drug),]
+drc_model <- kor_antag |>
+  dplyr::group_by(Drug) |>
+  dplyr::group_modify( ~ {
+    tibble::tibble(
+      model = BayesPharma::drc_model(
+        data = .x,
+        fct = drc::L.4(
+          fixed = c(NA, NA, 100, NA),
+          names = c("hill", "bottom", "top", "ic50"))))
+  }) |>
+  dplyr::ungroup()
+
+
 ```
 
 Here is the code and results of the drc dose response model:
 ```{r}
-BTRX_335140_drc <- drc::drm(
-  response ~ log_dose,
-  data = BTRX_335140_df,
-  fct = L.4(fixed = c(NA, NA, 100, NA),
-  names = c("hill", "bottom", "top", "ic50")))
-
-BTRX_395750_drc <- drc::drm(
-  response ~ log_dose,
-  data = BTRX_395750_df,
-  fct = L.4(fixed = c(NA, NA, 100, NA),
-  names = c("hill", "bottom", "top", "ic50")))
-
-JNJ_drc <- drc::drm(
-  response ~ log_dose,
-  data = JNJ_df,
-  fct = L.4(fixed = c(NA, NA, 100, NA),
-  names = c("hill", "bottom", "top", "ic50")))
-
-PF_drc <- drc::drm(
-  response ~ log_dose,
-  data = PF_df,
-  fct = L.4(fixed = c(NA, NA, 100, NA),
-  names = c("hill", "bottom", "top", "ic50")))
-
-summary(BTRX_335140_drc)
-summary(BTRX_395750_drc)
-summary(JNJ_drc)
-summary(PF_drc)
-
+drc_model |>
+  dplyr::group_by(Drug) |>
+  dplyr::group_modify( ~ broom::tidy(.x$model[[1]])) |>
+  dplyr::ungroup()
 ```
 
 Displayed below is a plot of the results for KOR antagonist BTRX_335140 with
@@ -442,29 +411,17 @@ the data points, mean and error bars of the data points at each concentration
 they were recorded at, and a fitted curve.
 ```{r, echo=FALSE}
 
-plot(BTRX_335140_drc,
-     log = "", 
-     type = c("average"), 
-     xlim = c(-11, -6),
-     ylim = c(-50,150),
-     col = "red",
-     pch = 16)
-plot(BTRX_335140_drc, 
-     add = TRUE,
-     log = "", 
-     type = c("all"), 
-     xlim = c(-11, -6),
-     ylim = c(-50,150),
-     col = "gray",
-     pch = 16)
-plot(BTRX_335140_drc, 
-     add = TRUE,
-     log = "", 
-     type = c("bars"), 
-     xlim = c(-11, -6),
-     ylim = c(-50,150),
-     col = "black",
-     lty = 1)
+drc_model |>
+  dplyr::group_by(Drug) |>
+  dplyr::group_map(~{
+    BayesPharma::plot_drc(
+      model = .x$model[[1]],
+      title = .y$Drug[1])
+  }) |>
+  patchwork::wrap_plots(
+    ncol = 2,
+    guides = "collect")
+
 ```
 
 Displayed below are plots of the curves from drc and BayesPharma for each KOR 
@@ -608,7 +565,7 @@ bayesplot::bayesplot_grid(
 
 drc_stats <- function(drc_fit, drug) {
   
-  data.frame(variables = c("hill", "bottom", "ic50")) |>
+  data.frame(.variable = c("hill", "bottom", "ic50")) |>
     dplyr::mutate(
       model = "drc",
       drug_label = drug,
@@ -631,10 +588,10 @@ PF_drc_stats <- drc_stats(PF_drc, "PF")
 ```
 
 ```{r, echo=FALSE}
-BTRX_335140_drc_stats[3,][BTRX_335140_drc_stats[3,]$variables == "ic50", "variables"] <- "ic50_BTRX_335140"
-BTRX_395750_drc_stats[3,][BTRX_395750_drc_stats[3,]$variables == "ic50", "variables"] <- "ic50_BTRX_395750"
-JNJ_drc_stats[3,][JNJ_drc_stats[3,]$variables == "ic50", "variables"] <- "ic50_JNJ"
-PF_drc_stats[3,][PF_drc_stats[3,]$variables == "ic50", "variables"] <- "ic50_PF"
+BTRX_335140_drc_stats[3,][BTRX_335140_drc_stats[3,]$.variable == "ic50", ".variable"] <- "ic50_BTRX_335140"
+BTRX_395750_drc_stats[3,][BTRX_395750_drc_stats[3,]$.variable == "ic50", ".variable"] <- "ic50_BTRX_395750"
+JNJ_drc_stats[3,][JNJ_drc_stats[3,]$.variable == "ic50", ".variable"] <- "ic50_JNJ"
+PF_drc_stats[3,][PF_drc_stats[3,]$.variable == "ic50", ".variable"] <- "ic50_PF"
 
 drc_ic50 <- dplyr::bind_rows(
   BTRX_335140_drc_stats[3,], 
@@ -642,10 +599,10 @@ drc_ic50 <- dplyr::bind_rows(
   JNJ_drc_stats[3,],
   PF_drc_stats[3,])
 
-BTRX_335140_drc_stats[1,][BTRX_335140_drc_stats[1,]$variables == "hill", "variables"] <- "hill_BTRX_335140"
-BTRX_395750_drc_stats[1,][BTRX_395750_drc_stats[1,]$variables == "hill", "variables"] <- "hill_BTRX_395750"
-JNJ_drc_stats[1,][JNJ_drc_stats[1,]$variables == "hill", "variables"] <- "hill_JNJ"
-PF_drc_stats[1,][PF_drc_stats[1,]$variables == "hill", "variables"] <- "hill_PF"
+BTRX_335140_drc_stats[1,][BTRX_335140_drc_stats[1,]$.variable == "hill", ".variable"] <- "hill_BTRX_335140"
+BTRX_395750_drc_stats[1,][BTRX_395750_drc_stats[1,]$.variable == "hill", ".variable"] <- "hill_BTRX_395750"
+JNJ_drc_stats[1,][JNJ_drc_stats[1,]$.variable == "hill", ".variable"] <- "hill_JNJ"
+PF_drc_stats[1,][PF_drc_stats[1,]$.variable == "hill", ".variable"] <- "hill_PF"
 
 drc_hill <- dplyr::bind_rows(
   BTRX_335140_drc_stats[1,], 
@@ -653,10 +610,10 @@ drc_hill <- dplyr::bind_rows(
   JNJ_drc_stats[1,],
   PF_drc_stats[1,])
 
-BTRX_335140_drc_stats[2,][BTRX_335140_drc_stats[2,]$variables == "bottom", "variables"] <- "bottom_BTRX_335140"
-BTRX_395750_drc_stats[2,][BTRX_395750_drc_stats[2,]$variables == "bottom", "variables"] <- "bottom_BTRX_395750"
-JNJ_drc_stats[2,][JNJ_drc_stats[2,]$variables == "bottom", "variables"] <- "bottom_JNJ"
-PF_drc_stats[2,][PF_drc_stats[2,]$variables == "bottom", "variables"] <- "bottom_PF"
+BTRX_335140_drc_stats[2,][BTRX_335140_drc_stats[2,]$.variable == "bottom", ".variable"] <- "bottom_BTRX_335140"
+BTRX_395750_drc_stats[2,][BTRX_395750_drc_stats[2,]$.variable == "bottom", ".variable"] <- "bottom_BTRX_395750"
+JNJ_drc_stats[2,][JNJ_drc_stats[2,]$.variable == "bottom", ".variable"] <- "bottom_JNJ"
+PF_drc_stats[2,][PF_drc_stats[2,]$.variable == "bottom", ".variable"] <- "bottom_PF"
 
 drc_bottom <- dplyr::bind_rows(
   BTRX_335140_drc_stats[2,], 
@@ -675,28 +632,17 @@ than most of the standard errors provided by the drc method.
 bayes_vs_drc <- function(
     model,
     filter_label, 
-    predictors_col_name = "_Intercept",
-    half_max_label = NULL,
     drc) {
+
+  browser()
+  posterior <- model |>
+    tidybayes::tidy_draws() |>
+    tidybayes::gather_variables() |>
+    dplyr::filter(stringr::str_detect(.variable, filter_label)) |>
+    dplyr::mutate(.variable =
+        .variable |> stringr::str_replace_all("b_|_Intercept", ""))
   
-  posterior <- dplyr::bind_rows(
-    model |>
-      tidybayes::tidy_draws() |>
-      tidybayes::gather_variables() |>
-      dplyr::filter(!stringr::str_detect(.variable, "__$")) |>
-      dplyr::filter(!stringr::str_detect(.variable, "sigma")) |>
-      dplyr::filter(stringr::str_detect(.variable, filter_label))) |>
-    dplyr::rename(variables = .variable) |>
-    dplyr::mutate(
-      variables = variables |>
-        stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") |>
-        stringr::str_remove("b_") |>
-        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
-        stringr::str_remove(predictors_col_name) |>
-        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
-        stringr::str_replace(filter_label, half_max_label))
-  
-  model <- c("Bayes" = "blue", "drc" = "red")
+  model_type <- c("BayesPharma" = "blue", "drc" = "red")
 
   ggplot2::ggplot() +
     ggplot2::theme_bw() +
@@ -705,13 +651,13 @@ bayes_vs_drc <- function(
       data = posterior,
       mapping = ggplot2::aes(
         x = .value,
-        y = variables,
+        y = .variable,
         color = "Bayes"), 
       .width = c(0.66, 0.95)) +
     tidybayes::geom_pointinterval(
       data = drc,
       ggplot2::aes(
-        y = variables,
+        y = .variable,
         x = mean,
         xmin = l_ci, 
         xmax = u_ci,
@@ -720,8 +666,9 @@ bayes_vs_drc <- function(
       size = 3) +
     ggplot2::labs(
       x = "Log[Molar] EM1",
-      color = "model") +
-    ggplot2::scale_color_manual(values = model)
+      y = "Drug",
+      color = "Model") +
+    ggplot2::scale_color_manual(values = model_type)
 }
 ```
 
@@ -729,7 +676,10 @@ bayes_vs_drc <- function(
 ```{r model2-bayes-vs-drc}
 #| dependson=c("model2", "bayes-vs-drc")
 
-bayes_vs_drc(kor_model2, "ec50", "Drug", "ic50", drc_ic50) 
+bayes_vs_drc(
+  model = kor_model2,
+  filter_label = "ic50",
+  drc = drc_ic50) 
 ```
 
 (The drc results for the hill are displayed as a positive value although the 

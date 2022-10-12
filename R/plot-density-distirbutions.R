@@ -8,79 +8,52 @@
 #'   the values intended to be covered are being included.
 #'
 #' @param model brmsfit model.
-#' @param predictors_col_name string expression for predictors column in the
-#'   input data.frame (default = "_Intercept"). Predictors are the perturbations
-#'   tested during the experiment (i.e. Drug, Temperature, etc.).
-#' @param half_max_label string of the label for the half maximal that fits the
-#'   type of experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).
+#' @param pars parameters to choose (Default b_<parameter>_Intercept')
+#' @param labeller strip off the 'b_' and '_Intercept' from the parameter labels
 #' @param title_label string of the plot title. (Default = "Prior Density Plot")
-#' @param sample_type string of the type of density distribution
-#'   (i.e. Prior or Posterior). (default = "Prior")
+#' 
 #' @return ggplot2::ggplot object.
 #'
 #' @examples
 #'\dontrun{
 #'   density_distributions_plot(
-#'     model = my_sigmoid_model_priors,
-#'     predictors_col_name = "predictors",
-#'     half_max_label = "ic50",
-#'     title_label = "Parameter Density Distribution Plots",
-#'     sample_type = "Prior")
+#'     model = my_sigmoid_model)
 #'}
 #'
 #' @importFrom rlang .data
 #' @export
 density_distributions_plot <- function(
   model,
-  predictors_col_name = "_Intercept",
-  half_max_label = "ec50",
-  title_label = "Density Distributions",
-  sample_type = "Prior") {
+  pars = NULL,
+  labeller = NULL,
+  title_label = "Density Distributions") {
 
-  bayesplot::mcmc_dens(
-    x = model) +
-    ggplot2::theme_bw() +
-    
-  prior <- dplyr::bind_rows(
-    model |>
-      tidybayes::tidy_draws() |>
-      tidybayes::gather_variables() |>
-      dplyr::mutate(sample_type = sample_type) |>
-      dplyr::filter(!stringr::str_detect(.data[[".variable"]], "__$")) |>
-      dplyr::filter(!stringr::str_detect(.data[[".variable"]], "sigma")) |>
-      dplyr::filter(!stringr::str_detect(.data[[".variable"]], "lprior"))) |>
-    dplyr::mutate(
-      .variable = .data[[".variable"]] |>
-        stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") |>
-        stringr::str_remove("b_") |>
-        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
-        stringr::str_remove(predictors_col_name) |>
-        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
-        stringr::str_replace("ec50", half_max_label))
+  if (is.null(pars)) {
+    pars <- dplyr::vars(tidyselect::starts_with("b_"))
+  }
 
-  ggplot2::ggplot(data = prior) +
+  if (is.null(labeller)) {
+    labeller <- function(x) {
+      x |>
+        dplyr::mutate(
+          Parameter = Parameter |>
+            stringr::str_replace_all("b_|_Intercept", ""))
+    }
+  }
+  
+  # generate plot
+  plot <- bayesplot::mcmc_dens(
+    x = model,
+    pars = pars)
+  
+  # Add style
+  plot +
     ggplot2::theme_bw() +
-    ggplot2::theme(legend.position = "bottom") +
-    ggplot2::geom_density(
-      mapping = ggplot2::aes(
-        x = .data[[".value"]],
-        group = .data[["sample_type"]],
-        fill = .data[["sample_type"]]),
-      color = "black",
-      alpha = .9) +
-    ggplot2::ggtitle(
-      label = paste0(title_label)) +
+    ggplot2::labs(
+      x = "Parameter Value",
+      y = "Density") +
     ggplot2::facet_wrap(
-      facets = dplyr::vars(.data[[".variable"]]),
-      scales = "free") +
-    ggplot2::scale_y_continuous("Density") +
-    ggplot2::scale_x_continuous("Parameter Value") +
-    ggplot2::scale_fill_manual(
-      "Sample Type",
-      values = c(
-        "Posterior" = "cyan2",
-        "posterior" = "cyan2",
-        "Prior" = "hotpink2",
-        "prior" = "hotpink2"),
-      limits = c(sample_type))
+      ~ Parameter,
+      scales = "free",
+      labeller = labeller)
 }
