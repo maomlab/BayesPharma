@@ -6,12 +6,8 @@
 \usage{
 posterior_draws_plot(
   model,
-  data = NULL,
-  predictor_cols = NULL,
-  lower = NULL,
-  upper = NULL,
+  newdata = NULL,
   n = 50,
-  facet_var = NULL,
   point_size = 0.75,
   jitter_height = 0,
   jitter_width = 0,
@@ -23,22 +19,10 @@ posterior_draws_plot(
 \arguments{
 \item{model}{brmsfit model.}
 
-\item{data}{data.frame of data inputted into the model.}
-
-\item{predictor_cols}{quosures list of predictor columns to plot, for
-example `dplyr::vars(treamtent_id)`. (Default: NULL)}
-
-\item{lower}{numeric value of the lower bound of `log_dose` to be observed
-(default = smallest data$log_dose value > -Inf).}
-
-\item{upper}{numeric value of the upper bound of `log_dose` to be observed
-(default = greatest data$log_dose value < Inf).}
+\item{newdata}{data.frame of newdata to use for predictions. Default
+data.frame with each predictor and log-dose.}
 
 \item{n}{numeric value of the number of draws to be observed (default = 50).}
-
-\item{facet_var}{defined variable to determine the facets of the plot. For
-models with multiple predictors, include the predictor column name;
-otherwise, include the character name of your choosing.}
 
 \item{point_size}{numeric. `geom_jitter` point size (default = 0.75).}
 
@@ -68,7 +52,7 @@ distribution from the expected mean and median quantile intervals.
   # named predictors containing multiple different perturbations.
   posterior_draws_plot(
     model = my_model,
-    data = my_data,
+    newdata = my_data,
     predictors_col_name = "predictors",
     lower = -12,
     upper = -3,

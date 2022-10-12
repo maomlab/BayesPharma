@@ -145,17 +145,23 @@ Plot of the Prior Distributions:
 ```{r plot-prior-density}
 #| dependson=c("sample-prior")
 
-kor_sample_prior |>
+# Plot parameter distributions
+plot <- kor_sample_prior |>
   bayesplot::mcmc_dens(
-    pars = dplyr::vars(
-      b_ic50_Intercept,
-      b_hill_Intercept,
-      b_top_Intercept,
-      b_bottom_Intercept)) +
-  ggplot2::ggtitle("Prior Density Distributions") +
-  ggplot2::facet_grid(
+    pars = dplyr::vars(tidyselect::starts_with("b_")))
+
+# Add style
+plot +
+  ggplot2::labs(
+    x = "Parameter Value",
+    y = "Prior Density") +
+  ggplot2::facet_wrap(
     ~ Parameter,
-    labeller = ~ .|> stringr::str_replace_all("b_|_Intercept", ""))
+    scales = "free",
+    labeller = function(x) {x |>
+      dplyr::mutate(
+        Parameter = Parameter |> 
+          stringr::str_replace_all("b_|_Intercept", ""))})
 ```
 
 
@@ -259,17 +265,9 @@ the posterior distribution (purple) and the median quantile intervals:
 ```{r model-posterior-draws}
 #| dependson=c("model")
 
-BayesPharma::posterior_draws_plot(
-  model = kor_model,
-  predictors_col_name = "Drug",
-  lower = -12,
-  upper = -4,
-  n = 50, 
-  facet_var = Drug,
-  title = "Dose-Response Posterior Draws",
-  xlab = "Log[Molar]",
-  ylab = "Response")
+BayesPharma::posterior_draws_plot(model = kor_model)
 ```
+
 
 ## Improving the Model with a More Informative Prior
 Below are the dose-response results discussed in the paper:
@@ -279,7 +277,7 @@ JNJ-67953964: ic50 = 3.0 +/- 4.6 nM (-8.5 +/- 0.4 M), bottom = -27%
 PF-04455242: ic50 = 6.7 +/- 15.1 nM (-8.2 +/- 0.5 M), bottom = 45%
 
 ```{r model-prior2}
-kor_prior2 <- BayesPharma::sigmoid_antagoinst_prior(
+kor_prior2 <- BayesPharma::sigmoid_antagonist_prior(
   ec50 = brms::prior(normal(-8.5, 0.5), nlpar = "ec50"),
   hill = brms::prior(normal(-1, 0.5), ub = 0.01, nlpar = "hill"),
   top = 100,
@@ -294,7 +292,7 @@ Sampling the prior:
 #| message=FALSE,
 #| dependson=c("load-data", "default-init", "model-prior2")
 
-kor_sample_prior <- BayesPharma::sigmoid_antagoinst_model(
+kor_sample_prior <- BayesPharma::sigmoid_antagonist_model(
   kor_antag,
   prior = kor_prior2,
   init = kor_init,
@@ -317,7 +315,7 @@ Running the Model:
 #| results='hide',
 #| message=FALSE
 
-kor_model2 <- BayesPharma::sigmoid_antagoinst_model(
+kor_model2 <- BayesPharma::sigmoid_antagonist_model(
   kor_antag,
   formula = BayesPharma::sigmoid_antagonist_formula(0 + Drug), 
   prior = kor_prior2,
@@ -369,17 +367,7 @@ Sample of Sigmoid Dose-Response Curves from the Posterior Distribution and
 Mean Curve:
 
 ```{r}
-BayesPharma::posterior_draws_plot(
-  model = kor_model2,
-  data = kor_antag, 
-  predictors_col_name = "Drug",
-  lower = -12,
-  upper = -4,
-  n = 50, 
-  facet_var = Drug, 
-  title = "Dose-Response Posterior Draws",
-  xlab = "Log[Molar]",
-  ylab = "Response")
+BayesPharma::posterior_draws_plot(model = kor_model2)
 ```
 
 ## Comparing the Two Models Using LOO-Comparison:

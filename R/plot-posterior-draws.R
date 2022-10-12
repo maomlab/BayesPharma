@@ -4,17 +4,9 @@
 #' distribution from the expected mean and median quantile intervals.
 #'
 #' @param model brmsfit model.
-#' @param data data.frame of data inputted into the model.
-#' @param predictor_cols quosures list of predictor columns to plot, for
-#'   example `dplyr::vars(treamtent_id)`. (Default: NULL)
-#' @param lower numeric value of the lower bound of `log_dose` to be observed
-#'   (default = smallest data$log_dose value > -Inf).
-#' @param upper numeric value of the upper bound of `log_dose` to be observed
-#'   (default = greatest data$log_dose value < Inf).
+#' @param newdata data.frame of newdata to use for predictions. Default
+#'   data.frame with each predictor and log-dose.
 #' @param n numeric value of the number of draws to be observed (default = 50).
-#' @param facet_var defined variable to determine the facets of the plot. For
-#'   models with multiple predictors, include the predictor column name;
-#'   otherwise, include the character name of your choosing.
 #' @param point_size numeric. `geom_jitter` point size (default = 0.75).
 #' @param jitter_height numeric. the height distance between overlapping points
 #'   (default = 0).
@@ -32,7 +24,7 @@
 #'   # named predictors containing multiple different perturbations.
 #'   posterior_draws_plot(
 #'     model = my_model,
-#'     data = my_data,
+#'     newdata = my_data,
 #'     predictors_col_name = "predictors",
 #'     lower = -12,
 #'     upper = -3,
@@ -48,12 +40,12 @@
 #' @export
 posterior_draws_plot <- function(
     model,
-    data = NULL,
-    predictor_cols = NULL,
-    lower = NULL,
-    upper = NULL,
+    newdata = NULL,
+    #predictor_cols = NULL,
+    #lower = NULL,
+    #upper = NULL,
     n = 50,
-    facet_var = NULL,
+    #facet_var = NULL,
     point_size = 0.75,
     jitter_height = 0,
     jitter_width = 0,
@@ -67,42 +59,35 @@ posterior_draws_plot <- function(
       " instead it is of class ", class(model)))
   }
 
-  if (is.null(lower)) {
-    lower <- data |>
-      dplyr::filter(.data[["log_dose"]] > -Inf) |>
-      purrr::pluck("log_dose") |>
-      min(na.rm = TRUE)
-  } else {
-    assertthat::assert_that(
-      is.numeric(lower),
-      msg = "lower must be numeric")
+  browser()
+  # expand out all combinations of the predictor
+  # and add a sequence of values along the log_dose dimension
+  if (is.null(newdata)) {
+    predictor_values <- model$data |>
+      dplyr::select(-response, -log_dose) |>
+      as.list() |>
+      map(unique)
+    log_dose_range <- model$data$log_dose[
+      model$data$log_dose |> is.finite() |> which()] |>
+      range()
+    log_dose_values <- list(
+      log_dose = seq(
+        from = log_dose_range[1],
+        to = log_dose_range[2],
+        length.out = 100))
+    newdata <- do.call(
+      what = tidyr::expand_grid,
+      args = c(predictor_values, log_dose_values))
   }
-
-  if (is.null(upper)) {
-    upper <- data |>
-      dplyr::filter(.data[["log_dose"]] < Inf) |>
-      purrr::pluck("log_dose") |>
-      max(na.rm = TRUE)
-  } else {
-    assertthat::assert_that(
-      is.numeric(upper),
-      msg = "upper must be numeric")
-  }
-  assertthat::assert_that(
-    lower < upper,
-    msg = "lower must be lower than upper")
-
-  if (is.null(data)) {
-    data <- model$data
-  }
-
+  
+  predictor_names <- newdata |>
+    names() |>
+    purrr::keep(~. != "log_dose")
+      
   # this makes the "hair"
   ep_data <- model |>
     tidybayes::add_epred_draws(
-      newdata = data |>
-        tidyr::expand(
-          predictor_cols,
-          log_dose = seq(from = lower, to = upper, length.out = 100)),
+      newdata = newdata,
       value = "response",
       re_formula = NA,
       ndraws = n)
@@ -110,14 +95,13 @@ posterior_draws_plot <- function(
   # this makes the ribbon
   pp_data <- model |>
     tidybayes::add_predicted_draws(
-      newdata = tidyr::expand_grid(
-        log_dose = seq(from = lower, to = upper, length.out = 100),
-        {{predictors_col_name}} := data[[predictors_col_name]] |> unique()),
+      newdata = newdata,
       value = "response",
-      re_formula = NA)  |>
+      re_formula = NA,
+      ndraws = 200)  |>
     ggdist:: median_qi(.width = c(.5, .8, .95))
 
-  plot <- ggplot2::ggplot() +
+  ggplot2::ggplot() +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "bottom") +
     ggplot2::scale_fill_discrete(
@@ -141,20 +125,16 @@ posterior_draws_plot <- function(
       alpha = 0.2,
       color = "blueviolet") +
     ggplot2::geom_jitter(
-      data = data,
+      data = model$data,
       mapping = ggplot2::aes(
         x = .data[["log_dose"]],
         y = .data[["response"]]),
       size = point_size,
       width = jitter_width,
       height = jitter_height) +
+    ggplot2::facet_wrap(
+      facets = tidyselect::all_of(predictor_names)) +
     ggplot2::labs(title = title) +
     ggplot2::xlab(xlab) +
     ggplot2::ylab(ylab)
-
-  if (!is.null(substitute(facet_var))) {
-    plot <- plot +
-      ggplot2::facet_wrap(facets = dplyr::vars({{facet_var}}))
-  }
-  plot
 }
