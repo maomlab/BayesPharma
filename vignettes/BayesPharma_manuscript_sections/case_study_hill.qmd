@@ -65,23 +65,10 @@ And then plot of the prior predictive distributions:
 #| fig.height = 2.6,
 #| fig.cap="KOR antagonists prior distribution"
 
-kor_sample_priors |>
-  bayesplot::mcmc_dens(
-    x = kor_sample_priors) +
-  ggplot2::theme_bw
-  ggplot2::facet_wrap(
-    facets = dplyr::vars(.variable),
-    scales = "free",
-    nrow = 1)
+kor_sample_prior |>
+  BayesPharma::density_distributions_plot()
+  
 
-BayesPharma::density_distributions_plot(
-  kor_sample_priors, 
-  half_max_label = "ic50",
-  title_label = "") +
-  ggplot2::facet_wrap(
-    facets = dplyr::vars(.variable),
-    scales = "free",
-    nrow = 1)
 ```
 \normalsize
 

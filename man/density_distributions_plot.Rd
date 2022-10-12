@@ -7,26 +7,19 @@ model}
 \usage{
 density_distributions_plot(
   model,
-  predictors_col_name = "_Intercept",
-  half_max_label = "ec50",
-  title_label = "Density Distributions",
-  sample_type = "Prior"
+  pars = NULL,
+  labeller = NULL,
+  title_label = "Density Distributions"
 )
 }
 \arguments{
 \item{model}{brmsfit model.}
 
-\item{predictors_col_name}{string expression for predictors column in the
-input data.frame (default = "_Intercept"). Predictors are the perturbations
-tested during the experiment (i.e. Drug, Temperature, etc.).}
+\item{pars}{parameters to choose (Default b_<parameter>_Intercept')}
 
-\item{half_max_label}{string of the label for the half maximal that fits the
-type of experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).}
+\item{labeller}{strip off the 'b_' and '_Intercept' from the parameter labels}
 
 \item{title_label}{string of the plot title. (Default = "Prior Density Plot")}
-
-\item{sample_type}{string of the type of density distribution
-(i.e. Prior or Posterior). (default = "Prior")}
 }
 \value{
 ggplot2::ggplot object.
@@ -41,11 +34,7 @@ This function is useful to observe the distributions of the
 \examples{
 \dontrun{
   density_distributions_plot(
-    model = my_sigmoid_model_priors,
-    predictors_col_name = "predictors",
-    half_max_label = "ic50",
-    title_label = "Parameter Density Distribution Plots",
-    sample_type = "Prior")
+    model = my_sigmoid_model)
 }
 
 }

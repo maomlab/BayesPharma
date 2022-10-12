@@ -59,7 +59,6 @@ posterior_draws_plot <- function(
       " instead it is of class ", class(model)))
   }
 
-  browser()
   # expand out all combinations of the predictor
   # and add a sequence of values along the log_dose dimension
   if (is.null(newdata)) {
