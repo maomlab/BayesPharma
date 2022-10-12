@@ -93,7 +93,7 @@ To sample from the model we will the Stan NUTs Hamiltonian Monte Carlo, and init
 #| dependson = c("kor-data"),
 #| results='hide',
 #| message=FALSE
-kor_model <- BayesPharma::sigmoid_antagoinst_model(
+kor_model <- BayesPharma::sigmoid_antagonist_model(
   data = kor_antag |> dplyr::select(substance_id, log_dose, response),
   formula = BayesPharma::sigmoid_antagonistformula(
     predictors = 0 + substance_id), 
@@ -185,14 +185,7 @@ the posterior distribution (purple) and the median quantile intervals:
 
 BayesPharma::posterior_draws_plot(
   model = kor_model,
-  predictors_col_name = "substance_id",
-  lower = -12,
-  upper = -4,
-  n = 50, 
-  facet_var = substance_id,
-  title = "",
-  xlab = "Log[Molar]",
-  ylab = "Response")
+  title = "")
 ```
 
 ### Comparing alternative models
@@ -200,7 +193,7 @@ BayesPharma::posterior_draws_plot(
 To test the sensitivity of the analysis to the priors, we can re-fit the model with more informative priors:
 \scriptsize
 ```{r kor-model-priors2}
-kor_priors2 <- BayesPharma::sigmoid_antagoinst_prior(
+kor_priors2 <- BayesPharma::sigmoid_antagonist_prior(
   ec50 = brms::prior(normal(-8.5, 0.5), nlpar = "ec50"),
   hill = brms::prior(normal(-1, 0.5), ub = 0.01, nlpar = "hill"),
   top = 100,
@@ -219,7 +212,7 @@ Re-fitting the model
 
 kor_model2 <- BayesPharma::sigmoid_antagonist_model(
   data = kor_antag |> dplyr::select(substance_id, log_dose, response),
-  formula = BayesPharma::sigmoid_antagoinst_formula(0 + substance_id), 
+  formula = BayesPharma::sigmoid_antagonist_formula(0 + substance_id), 
   priors = kor_priors2)
 
 kor_model2

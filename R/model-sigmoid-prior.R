@@ -83,13 +83,13 @@ sigmoid_agonist_prior <- function(
 #'\dontrun{
 #' # Consider an activator that has a max response around 50%, EC50 is estimated
 #' # to be around 1 uM, and minimum response is known to be 0.
-#' priors <- sigmoid_antagoinst_prior(
+#' priors <- sigmoid_antagonist_prior(
 #'   ic50 = brms::prior(normal(-6, 0.5), nlpar = "ic50"),
 #'   top = brms::prior(normal(50, 2.5), nlpar = "top"),
 #'   bottom = 0)
 #'}
 #' @export
-sigmoid_antagoinst_prior <- function(
+sigmoid_antagonist_prior <- function(
     ic50 = brms::prior(normal(-7, 2.5), nlpar = "ic50"),
     hill = brms::prior(prior = normal(-1, 1), nlpar = "hill", lb = -0.01),
     top = brms::prior(normal(100, 25), nlpar = "top"),
@@ -97,7 +97,7 @@ sigmoid_antagoinst_prior <- function(
     ...) {
  
   c(
-    prepare_prior(ec50, nlpar = "ec50"),
+    prepare_prior(ic50, nlpar = "ic50"),
     prepare_prior(hill, nlpar = "hill"),
     prepare_prior(top, nlpar = "top"),
     prepare_prior(bottom, nlpar = "bottom"))

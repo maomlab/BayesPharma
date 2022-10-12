@@ -23,7 +23,7 @@ testthat::test_that(
 testthat::test_that(
   desc = "sigmoid_antagonist_inits with default inits",
   code = {
-    init <- sigmoid_antagoinst_init()
+    init <- sigmoid_antagonist_init()
     testthat::expect_true(methods::is(init, "list"))
   })
 
