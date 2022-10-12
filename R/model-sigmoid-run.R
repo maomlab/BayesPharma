@@ -29,7 +29,7 @@
 #'
 #' @examples
 #'\dontrun{
-#'   sigmoid_agoinst_model(data,
+#'   sigmoid_agonist_model(data,
 #'    formula = sigmoid_agonist_formula(predictors = 0 + drug))
 #'}
 #' @export
@@ -108,7 +108,7 @@ sigmoid_agonist_model <- function(
 #'
 #' @examples
 #'\dontrun{
-#'   sigmoid_agoinst_model(data,
+#'   sigmoid_antagonist_model(data,
 #'    formula = sigmoid_antagonist_formula(predictors = 0 + drug))
 #'}
 #' @export

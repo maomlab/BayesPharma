@@ -2,8 +2,8 @@ library(BayesPharma)
 library(tidymodels)
 
 
-testthat::test_that("sigmoid_agoinst_prior with default prior", {
-  prior <- BayesPharma::sigmoid_agoinst_prior()
+testthat::test_that("sigmoid_agonist_prior with default prior", {
+  prior <- BayesPharma::sigmoid_agonist_prior()
   testthat::expect_true("brmsprior" %in% class(prior))
 
   #"prior" "class" "coef" "group" "resp"  "dpar"  "nlpar" "lb" "ub" "source"
@@ -29,8 +29,8 @@ testthat::test_that("sigmoid_agoinst_prior with default prior", {
 })
 
 
-testthat::test_that("sigmoid_agoinst_prior with constant prior", {
-  prior <- BayesPharma::sigmoid_agoinst_prior(
+testthat::test_that("sigmoid_agonist_prior with constant prior", {
+  prior <- BayesPharma::sigmoid_agonist_prior(
     ec50 = -7,
     hill = 1.2,
     top = 100,
@@ -60,8 +60,8 @@ testthat::test_that("sigmoid_agoinst_prior with constant prior", {
     na.rm = TRUE))
 })
 
-testthat::test_that("sigmoid_agoinst_prior with custom prior", {
-  prior <- BayesPharma::sigmoid_agoinst_prior(
+testthat::test_that("sigmoid_agonist_prior with custom prior", {
+  prior <- BayesPharma::sigmoid_agonist_prior(
     ec50 = brms::prior(student_t(3, -7, 3), nlpar = "ec50", ub = -4),
     hill = brms::prior_string(paste0("constant(-1)"), nlpar = "hill"),
     top = brms::prior(beta(10, 1), nlpar = "top"),

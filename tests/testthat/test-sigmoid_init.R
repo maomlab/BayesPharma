@@ -2,14 +2,14 @@ library(BayesPharma)
 library(tidymodels)
 
 testthat::test_that(
-  desc = "sigmoid_agoinst_inits with default inits",
+  desc = "sigmoid_agonist_inits with default inits",
   code = {
     init <- sigmoid_agonist_init()
     testthat::expect_true(methods::is(init, "list"))
   })
 
 testthat::test_that(
-  desc = "sigmoid_agoinst_inits with custom inits",
+  desc = "sigmoid_agonist_inits with custom inits",
   code = {
   init <- sigmoid_agonist_init(
     ec50 = -6,
