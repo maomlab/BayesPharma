@@ -63,7 +63,7 @@ sigmoid_antagonist_init <- function(
     hill = -1,
     top = 1,
     bottom = 0) {
-  
+
   function() {
     list(
       b_ic50 = prepare_init(ic50),

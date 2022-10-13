@@ -29,4 +29,3 @@ testthat::test_that(
         pars = c("b_ec50_Intercept"),
         labeller = ggplot2::labeller(ec50 = "EC50")))
   })
-

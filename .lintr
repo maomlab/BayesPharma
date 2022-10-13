@@ -1,0 +1,4 @@
+linters:
+  with_defaults(
+    object_name_linter = NULL,
+    snake_case_linter = NULL)

@@ -58,17 +58,22 @@ devtools::load_all()
 devtools::test()
 ```
 
-2) Evaluate test coverage
+2) Check formatting
+```{r}
+lintr::lint_package()
+```
+
+3) Evaluate test coverage
 ```{r}
 covr::report()
 ```
 
-3) Full test for CRAN level of compliance
+4) Full test for CRAN level of compliance
 ```{r}
 devtools::check()
 ```
 
-4) Build the website
+5) Build the website
 ```{r}
 pkgdown::build_site()
 ```

@@ -1,6 +1,5 @@
-
 #' Wrapper for DRC dose response models
-#' 
+#'
 #' @param data data.frame
 #' @param formula formula. Default: \code{response ~ log_dose}
 #' @param fct Non-linear link function. Default is the 4 parameter
@@ -8,8 +7,8 @@
 #'     estimated. To fix a subset them, set the parameters to constant
 #'     values.
 #' @param ... additional arguments passed to \code{drc::drm}
-#' 
-#' 
+#'
+#'
 #' @export
 drc_model <- function(
     data,

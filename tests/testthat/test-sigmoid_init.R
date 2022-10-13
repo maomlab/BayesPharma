@@ -35,6 +35,6 @@ testthat::test_that(
       hill = 0.5,
       top = 50,
       bottom = 0)
-    
+
     testthat::expect_true(methods::is(init, "function"))
   })

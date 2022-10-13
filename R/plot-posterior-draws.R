@@ -84,11 +84,11 @@ posterior_draws_plot <- function(
       what = tidyr::expand_grid,
       args = c(predictor_values, log_dose_values))
   }
-  
+
   predictor_names <- newdata |>
     names() |>
     purrr::keep(~. != "log_dose")
-      
+
   # this makes the "hair"
   ep_data <- model |>
     tidybayes::add_epred_draws(
