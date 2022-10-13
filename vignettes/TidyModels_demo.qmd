@@ -6,10 +6,13 @@ format: html
 library(tidymodels)
 library(bayesian)
 ```
+# Using BayesPharma models with TidyModels
 
+Tidy Models is a platform for running and analyzing models in R. This vignette
+demonstrates how to use the BayesPharma models with Tidy Models.
 
 ```{r kor-data}
-load("/Users/maom/opt/BayesPharma/data/kor_antag.rda")
+load("../data/kor_antag.rda")
 kor_antag <- kor_antag |> dplyr::transmute(
   substance_id = Drug,
   cell_id = cell_number,
@@ -32,14 +35,15 @@ kor_model <- bayesian::bayesian(
   iter = 8000,
   control = list(adapt_delta = 0.99),
   stanvars = BayesPharma::sigmoid_stanvar,
-  init = BayesPharma::sigmoid_antagonist_init(),
-  prior = BayesPharma::sigmoid_antagonist_prior(inhibitor = TRUE, top = 100)) |>
-  #parsnip::set_engine("brms") |>
-  #parsnip::set_mode("regression") |>
-  recipes::update(formula.override = bayesian::bayesian_formula(
-    ..y ~ sigmoid(ec50, hill, top, bottom, log_dose),
-    ec50 + hill + top + bottom ~ 0 + substance_id,
-    nl = TRUE))
+  init = BayesPharma::sigmoid_antagonist_init(top = 100),
+  prior = BayesPharma::sigmoid_antagonist_prior(top = 100)) |>
+  parsnip::set_engine("brms") |>
+  parsnip::set_mode("regression") |>
+  recipes::update(
+    formula.override = bayesian::bayesian_formula(
+      ..y ~ sigmoid(ic50, hill, top, bottom, log_dose),
+      ic50 + hill + top + bottom ~ 0 + substance_id,
+      nl = TRUE))
 
 kor_workflow <- workflows::workflow() |>
   workflows::add_recipe(kor_recipe) |>
