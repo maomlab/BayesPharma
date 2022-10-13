@@ -41,7 +41,7 @@ algorithm <- "meanfield"
 
 
 ```{r load-packages}
-library(tidymodels)
+suppressWarnings(suppressMessages(library(tidymodels)))
 library(BayesPharma)
 library(xkcd)
 library(GeomIndicator)

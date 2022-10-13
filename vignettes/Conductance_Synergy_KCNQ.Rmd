@@ -1,10 +1,42 @@
 ---
-title: "Untitled"
-format: html
+title: "Ion Channel Conductance as Voltage Drugy Synergy"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Conductance Synergy KCNQ}
+  %\VignetteEncoding{UTF-8}
 ---
 
 
-```{r}
+
+```{r set-options, echo=FALSE}
+
+# inspired by
+# https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
+knitr::opts_chunk$set(
+  cache = TRUE,
+  echo = FALSE,
+  fig.path = "model_Pnear_distribution_figures/knitr-",
+  fig.retina = 2, # Control using dpi
+  fig.width = 6,  # generated images
+  fig.height = 5, # generated images
+  fig.pos = "t",  # pdf mode
+  fig.align = "center",
+  dpi = if (knitr::is_latex_output()) 72 else 300, 
+  out.width = "100%")
+
+algorithm <- "meanfield"
+
+```
+
+
+```{r load-packages}
+suppressWarnings(suppressMessages(library(tidymodels)))
+library(BayesPharma)
+```
+
+
+```{r load-data}
 read_range <- function(
     sheet,
     range,
@@ -148,9 +180,9 @@ BayesPharma::plot_synergy_checkerboard(
       expand = c(0, 0)) +
 ```
 
-```{r overlay_model_fit}
+```{r overlay-model-fit}
 
-brms::expose_functions(model)
+brms::expose_functions(model, vectorize = TRUE)
 
 model_predict <- predict(
   model,
@@ -159,4 +191,4 @@ model_predict <- predict(
     logd2 = unique(data$voltage) / 100,
     logd1scale = model$data$logd1scale[1],
     logd2scale = model$data$logd2scale[2]))
-
+```
