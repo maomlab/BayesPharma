@@ -43,11 +43,13 @@ library(drc)
 ```
 
 # Dose Response Analysis of Four Novel Kappa Opioid Receptor Antagonists
-In this case study we are going to reanalyze the dose response of 4 kappa opioid 
-receptor (KOR) antagonists using the `BayesPharma` package from from a study 
-done by Margolis et al. (2020). Whole cell electrophysiology in acute rat 
-midbrain slices was used to evaluate pharmacological properties of four novel 
-KOR antagonists: BTRX-335140, BTRX-395750, PF-04455242, and JNJ-67953964
+
+In this case study we are going to reanalyze the dose response of 4
+kappa opioid receptor (KOR) antagonists using the `BayesPharma`
+package from from a study done by Margolis et al. (2020). Whole cell
+electrophysiology in acute rat midbrain slices was used to evaluate
+pharmacological properties of four novel KOR antagonists: BTRX-335140,
+BTRX-395750, PF-04455242, and JNJ-67953964
 
 In the paper, the dose-response data analysis was done by using the drc package
 in R which implements the minimization of negative log likelihood function and 
@@ -292,7 +294,7 @@ Plot of the Prior Distributions:
 
 kor_sample_prior |>
   bayesplot::mcmc_dens(
-    pars = tidyselect::starts_with("b_"))
+    pars = dplyr::vars(tidyselect::starts_with("b_")))
 ```
 
 Running the Model:
@@ -371,7 +373,6 @@ brms::loo_compare(
 ```
 
 
----
 ##Analysis Using the drc Package
 
 Here we will analyze the KOR antagonist data using the drc package and compare
@@ -379,321 +380,85 @@ it to the results from the BayesPharma analysis.
 
 We will fix the top to 100 and fit the ic50, hill, and bottom.
 
-```{r}
-
-drc_model <- kor_antag |>
-  dplyr::group_by(Drug) |>
-  dplyr::group_modify( ~ {
-    tibble::tibble(
-      model = BayesPharma::drc_model(
+\scriptsize
+```{r kor-drc-model}
+#| dependson=c("kor-data"),
+#| echo=TRUE
+drc_models <- kor_antag |>
+  dplyr::group_by(substance_id) |>
+  dplyr::group_nest() |>
+  dplyr::mutate(
+    model = data |> 
+      purrr::map(~drc::drm(
+        response ~ log_dose,
         data = .x,
-        fct = drc::L.4(
-          fixed = c(NA, NA, 100, NA),
-          names = c("hill", "bottom", "top", "ic50"))))
-  }) |>
-  dplyr::ungroup()
+        fct = drc::L.4(fixed = c(NA, NA, 100, NA),
+        names = c("hill", "bottom", "top", "ic50")))))
 
-
+drc_models |>
+  dplyr::mutate(summary = purrr::map(model, broom::tidy, conf.int = TRUE)) |>
+  tidyr::unnest(summary) |>
+  dplyr::arrange(term, substance_id) |>
+  dplyr::select(-data, -model, -curve)
 ```
+\normalsize
 
-Here is the code and results of the drc dose response model:
-```{r}
-drc_model |>
-  dplyr::group_by(Drug) |>
-  dplyr::group_modify( ~ broom::tidy(.x$model[[1]])) |>
-  dplyr::ungroup()
-```
-
-Displayed below is a plot of the results for KOR antagonist BTRX_335140 with
-the data points, mean and error bars of the data points at each concentration 
-they were recorded at, and a fitted curve.
-```{r, echo=FALSE}
-
-drc_model |>
-  dplyr::group_by(Drug) |>
-  dplyr::group_map(~{
-    BayesPharma::plot_drc(
-      model = .x$model[[1]],
-      title = .y$Drug[1])
-  }) |>
-  patchwork::wrap_plots(
-    ncol = 2,
-    guides = "collect")
-
-```
-
-Displayed below are plots of the curves from drc and BayesPharma for each KOR 
-antagonists. Here we can see how the fits from the different methods 
-differentiate. 
-
+Displayed below is the comparison of results from `drc` and `BayesPharma` for each parameter of the dose-response curve. Here we see that the Bayesian method provides a distribution curve as evidence and has smaller confidence intervals than most of the standard errors provided by the drc method. 
 
 ```{r}
-log_dose <- seq(min(-4), max(-12), length.out=100)
+#| dependson = c("kor-drc-model", "kor-model"),
+#| fig.width = 9,
+#| fig.height = 3,
+#| fig.cap="KOR antagonists conditional effects. The blue lines are samples from the BayesPharma kor_model posterior distribution, the orange line is the conditional mean, and the purple line is the conditional mean for the DRC model fit."
+drc_model_conditional_effects <- drc_models |>
+  dplyr::mutate(
+    response = model |> purrr::map(
+      predict,
+      expand.grid(seq(-11, -6, length.out = 100)))) |>
+  tidyr::unnest(response) |>
+  dplyr::group_by(substance_id) |>
+  dplyr::mutate(
+    log_dose = seq(-11, -6, length.out = 100)) |>
+  dplyr::ungroup() |>
+  dplyr::transmute(
+    model_name = "DRC",
+    cond__ = substance_id,
+    log_dose,
+    response)
 
-BTRX_335140_pred_value <- predict(BTRX_335140_drc, expand.grid(log_dose, 1))
-BTRX_335140_drc_df <- data.frame(log_dose, BTRX_335140_pred_value)
-
-BTRX_395750_pred_value <- predict(BTRX_395750_drc, expand.grid(log_dose, 1))
-BTRX_395750_drc_df <- data.frame(log_dose, BTRX_395750_pred_value)
-
-JNJ_pred_value <- predict(JNJ_drc, expand.grid(log_dose, 1))
-JNJ_drc_df <- data.frame(log_dose, JNJ_pred_value)
-
-PF_pred_value <- predict(PF_drc, expand.grid(log_dose, 1))
-PF_drc_df <- data.frame(log_dose, PF_pred_value)
-
-
-```
-```{r, echo=FALSE}
-plot_drc <- function(
-    drc_df, 
-    pred_value,
-    data,
-    title,
-    values = colors) {
-  
-  ggplot2::ggplot(data = drc_df) +
-    ggplot2::geom_line(
-      mapping = ggplot2::aes(
-        x = log_dose, 
-        y = pred_value,
-        color = "drc"),
-        size = 0.6) +
-    ggplot2::geom_point(
-      data = data, 
-      mapping = ggplot2::aes(
-        x = log_dose, 
-        y = response)) +
-    ggplot2::labs(
-      title = title,
-      color = "Fit") + 
-    ggplot2::xlab("log dose") +
-    ggplot2::ylab("response") +
-    ggplot2::scale_color_manual(values = values)
-}
-
-kor_post_means <- kor_model2 |>
-  tidybayes::add_epred_draws(
-    newdata = tidyr::expand_grid(
-      log_dose = seq(from = -12, to = -4, length.out = 50),
-      Drug = kor_model2$data[["Drug"]] |> unique()),
-    value = "response",
-    re_formula = NA) |>
-  dplyr::group_by(log_dose, Drug) |>
-  dplyr::summarize(
-    response = mean(response),
-    .groups = "drop")
-
-colors = c("drc" = "blue", "Bayes" = "red")
-
-BTRX_335140_drc_plot <- plot_drc(
-  BTRX_335140_drc_df, 
-  BTRX_335140_pred_value,
-  BTRX_335140_df,
-  "BTRX_335140") +
+drc_model_conditional_effects_plot_layers <- list(
   ggplot2::geom_line(
-    data = kor_post_means |>
-      dplyr::filter(Drug |> stringr::str_detect("BTRX_335")),
-    mapping = ggplot2::aes(
-      x = log_dose, 
-      y = response,
-      color = "Bayes"),
-    size = 0.6) +
-  ggplot2::ylab("% Baseline") +
-  ggplot2::xlab("Log[Molar] EM1")
-
-BTRX_395750_drc_plot <- plot_drc(
-  BTRX_395750_drc_df, 
-  BTRX_395750_pred_value,
-  BTRX_395750_df,
-  "BTRX_395750") +
-  ggplot2::geom_line(
-    data = kor_post_means |>
-      dplyr::filter(Drug |> stringr::str_detect("BTRX_395")),
-    mapping = ggplot2::aes(
-      x = log_dose, 
-      y = response,
-      color = "Bayes"),
-      size = 0.6) +
-  ggplot2::ylab("% Baseline") +
-  ggplot2::xlab("Log[Molar] EM1")
-
-JNJ_drc_plot <- plot_drc(
-  JNJ_drc_df, 
-  JNJ_pred_value,
-  JNJ_df,
-  "JNJ") +
-  ggplot2::geom_line(
-    data = kor_post_means |>
-      dplyr::filter(Drug |> stringr::str_detect("JNJ")),
-    mapping = ggplot2::aes(
-      x = log_dose, 
-      y = response,
-      color = "Bayes"),
-    size = 0.6) +
-  ggplot2::ylab("% Baseline") +
-  ggplot2::xlab("Log[Molar] EM1")
-
-PF_drc_plot <- plot_drc(
-  PF_drc_df, 
-  PF_pred_value,
-  PF_df,
-  "PF") +
-  ggplot2::geom_line(
-    data = kor_post_means |>
-      dplyr::filter(Drug |> stringr::str_detect("PF")),
+    data = drc_model_conditional_effects,
     mapping = ggplot2::aes(
       x = log_dose,
-      y = response,
-      color = "Bayes"),
-    size = 0.6) +
-  ggplot2::ylab("% Baseline") +
-  ggplot2::xlab("Log[Molar] EM1")
+      y = response),
+    color = "purple",
+    size = 1.3))
 
-bayesplot::bayesplot_grid(
-  plots = list(
-    BTRX_335140_drc_plot,
-    BTRX_395750_drc_plot,
-    JNJ_drc_plot,
-    PF_drc_plot)) 
+kor_model_conditional_effects <- kor_model |>  
+  brms::conditional_effects(
+    effects = "log_dose",
+    conditions = kor_model |>
+      brms::make_conditions(
+        vars = "substance_id",
+        incl_vars = FALSE),
+    spaghetti = TRUE,
+    ndraws = 100)
+
+kor_model_conditional_effects_plot <- kor_model_conditional_effects |>
+  plot(
+    points = TRUE,
+    mean = TRUE,
+    line_args = list(size = 1.3, colour = "orange"),
+    point_args = list(width = 0.02),
+    plot = FALSE,
+    facet_args = list(nrow = 1, ncol = 4),
+    theme = ggplot2::theme_bw()) |>
+  purrr::pluck(1)
+
+kor_model_conditional_effects_plot +
+  drc_model_conditional_effects_plot_layers +
+  ggplot2::scale_x_continuous("log [Dose]") +
+  ggplot2::scale_y_continuous("Response")
   
 ```
-
-```{r, echo=FALSE}
-
-drc_stats <- function(drc_fit, drug) {
-  
-  data.frame(.variable = c("hill", "bottom", "ic50")) |>
-    dplyr::mutate(
-      model = "drc",
-      drug_label = drug,
-      mean = summary(drc_fit)$coefficients[, 1],
-      std_error = summary(drc_fit)$coefficients[, 2],
-      l_ci = summary(drc_fit)$coefficients[, 1] - 
-        summary(drc_fit)$coefficients[, 2],
-      u_ci = summary(drc_fit)$coefficients[, 1] + 
-        summary(drc_fit)$coefficients[, 2],
-      t_value = summary(drc_fit)$coefficients[, 3],
-      p_value = summary(drc_fit)$coefficients[, 4])
-  
-}
-
-BTRX_335140_drc_stats <- drc_stats(BTRX_335140_drc, "BTRX_335140")
-BTRX_395750_drc_stats <- drc_stats(BTRX_395750_drc, "BTRX_395750")
-JNJ_drc_stats <- drc_stats(JNJ_drc, "JNJ")
-PF_drc_stats <- drc_stats(PF_drc, "PF")
-
-```
-
-```{r, echo=FALSE}
-BTRX_335140_drc_stats[3,][BTRX_335140_drc_stats[3,]$.variable == "ic50", ".variable"] <- "ic50_BTRX_335140"
-BTRX_395750_drc_stats[3,][BTRX_395750_drc_stats[3,]$.variable == "ic50", ".variable"] <- "ic50_BTRX_395750"
-JNJ_drc_stats[3,][JNJ_drc_stats[3,]$.variable == "ic50", ".variable"] <- "ic50_JNJ"
-PF_drc_stats[3,][PF_drc_stats[3,]$.variable == "ic50", ".variable"] <- "ic50_PF"
-
-drc_ic50 <- dplyr::bind_rows(
-  BTRX_335140_drc_stats[3,], 
-  BTRX_395750_drc_stats[3,],
-  JNJ_drc_stats[3,],
-  PF_drc_stats[3,])
-
-BTRX_335140_drc_stats[1,][BTRX_335140_drc_stats[1,]$.variable == "hill", ".variable"] <- "hill_BTRX_335140"
-BTRX_395750_drc_stats[1,][BTRX_395750_drc_stats[1,]$.variable == "hill", ".variable"] <- "hill_BTRX_395750"
-JNJ_drc_stats[1,][JNJ_drc_stats[1,]$.variable == "hill", ".variable"] <- "hill_JNJ"
-PF_drc_stats[1,][PF_drc_stats[1,]$.variable == "hill", ".variable"] <- "hill_PF"
-
-drc_hill <- dplyr::bind_rows(
-  BTRX_335140_drc_stats[1,], 
-  BTRX_395750_drc_stats[1,],
-  JNJ_drc_stats[1,],
-  PF_drc_stats[1,])
-
-BTRX_335140_drc_stats[2,][BTRX_335140_drc_stats[2,]$.variable == "bottom", ".variable"] <- "bottom_BTRX_335140"
-BTRX_395750_drc_stats[2,][BTRX_395750_drc_stats[2,]$.variable == "bottom", ".variable"] <- "bottom_BTRX_395750"
-JNJ_drc_stats[2,][JNJ_drc_stats[2,]$.variable == "bottom", ".variable"] <- "bottom_JNJ"
-PF_drc_stats[2,][PF_drc_stats[2,]$.variable == "bottom", ".variable"] <- "bottom_PF"
-
-drc_bottom <- dplyr::bind_rows(
-  BTRX_335140_drc_stats[2,], 
-  BTRX_395750_drc_stats[2,],
-  JNJ_drc_stats[2,],
-  PF_drc_stats[2,])
-
-```
-
-Displayed below is the comparison of results from drc and BayesPharma for each 
-parameter of the dose-response curve. Here we see that the Bayesian method 
-provides a distribution curve as evidence and has smaller confidence intervals 
-than most of the standard errors provided by the drc method. 
-
-```{r bayes-vs-drc, echo=FALSE}
-bayes_vs_drc <- function(
-    model,
-    filter_label, 
-    drc) {
-
-  browser()
-  posterior <- model |>
-    tidybayes::tidy_draws() |>
-    tidybayes::gather_variables() |>
-    dplyr::filter(stringr::str_detect(.variable, filter_label)) |>
-    dplyr::mutate(.variable =
-        .variable |> stringr::str_replace_all("b_|_Intercept", ""))
-  
-  model_type <- c("BayesPharma" = "blue", "drc" = "red")
-
-  ggplot2::ggplot() +
-    ggplot2::theme_bw() +
-    ggplot2::theme(legend.position = "right") +
-    tidybayes::stat_halfeye(
-      data = posterior,
-      mapping = ggplot2::aes(
-        x = .value,
-        y = .variable,
-        color = "Bayes"), 
-      .width = c(0.66, 0.95)) +
-    tidybayes::geom_pointinterval(
-      data = drc,
-      ggplot2::aes(
-        y = .variable,
-        x = mean,
-        xmin = l_ci, 
-        xmax = u_ci,
-        color = "drc"),
-      position = ggplot2::position_nudge(y = -0.1),
-      size = 3) +
-    ggplot2::labs(
-      x = "Log[Molar] EM1",
-      y = "Drug",
-      color = "Model") +
-    ggplot2::scale_color_manual(values = model_type)
-}
-```
-
-
-```{r model2-bayes-vs-drc}
-#| dependson=c("model2", "bayes-vs-drc")
-
-bayes_vs_drc(
-  model = kor_model2,
-  filter_label = "ic50",
-  drc = drc_ic50) 
-```
-
-(The drc results for the hill are displayed as a positive value although the 
-curve has a negative slope.)
-```{r}
-
-hill_bd1 <- bayes_vs_drc(kor_model2, "hill", "Drug", "hill", drc_hill) 
-hill_bd2 <- bayes_vs_drc(kor_model2, "hill", "Drug", "hill", drc_hill) +
-  ggplot2::xlim(-6, 14)
-
-bayesplot::bayesplot_grid(hill_bd1, hill_bd2)
-```
-
-```{r}
-
-bayes_vs_drc(kor_model2, "bottom", "Drug", "bottom", drc_bottom) 
-```
-
-
