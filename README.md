@@ -13,15 +13,14 @@ The basic workflow follows the package development practices described in the
 
 1) Check out the repository using password-protected SSH keys
 
-```{shell}
-cd ~/opt
-git clone git@github.com:maomlab/BayesPharma.git
+```{shell clone-repo}
+git clone https://github.com/maomlab/BayesPharma.git
 cd BayesPharma
 ```
     
 2) Build package the package for the first time
 
-```{r}
+```{r install-package}
 # try installing package from github to install dependencies
 install.packages("remotes")
 remotes::install_github("maomlab/BayesPharma")

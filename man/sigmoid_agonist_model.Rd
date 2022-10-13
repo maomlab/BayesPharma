@@ -16,26 +16,28 @@ sigmoid_agonist_model(
 )
 }
 \arguments{
-\item{data}{data.frame of experimental data.
-must contain columns \code{response} and any predictors specified in
-the formula.}
+\item{data}{data.frame of experimental data.  must contain columns
+\code{response} and any predictors specified in the formula.}
 
-\item{formula}{brmsformula object. To create a dose-response brmsformula,
-(default: \code{BayesPharma::sigmoid_agonist_formula()}.}
+\item{formula}{brmsformula object. To create a dose-response
+brmsformula, (default:
+\code{BayesPharma::sigmoid_agonist_formula()}.}
 
 \item{prior}{brmspriors data.frame for ec50, hill, top, and bottom.
-Use one of the priors functions provided to create priors to use here.
-(default: \code{BayesPharma::sigmoid_agonist_prior()}}
+Use one of the priors functions provided to create priors to
+use here.  (default:
+\code{BayesPharma::sigmoid_agonist_prior()}}
 
-\item{init}{initial values of the parameters being modeled (default =
-\code{BayesPharma::sigmoid_agonist_init()}}
+\item{init}{initial values of the parameters being modeled (default
+= \code{BayesPharma::sigmoid_agonist_init()}}
 
-\item{iter}{number of iterations the model runs. Increasing iter can help
-with model convergence (default: 8000).}
+\item{iter}{number of iterations the model runs. Increasing iter
+can help with model convergence (default: 8000).}
 
-\item{control}{a named list of parameters to control the sampler's behavior.
-Adding \code{max_treedepth} and giving a greater value than 10 can improve model
-convergence (default: \code{list(adapt_delta = 0.99)}).}
+\item{control}{a named list of parameters to control the sampler's
+behavior.  Adding \code{max_treedepth} and giving a greater
+value than 10 can improve model convergence (default:
+\code{list(adapt_delta = 0.99)}).}
 
 \item{stanvar_function}{stan code for the model (default:
 \code{BayesPharma::sigmoid_stanvar})}
