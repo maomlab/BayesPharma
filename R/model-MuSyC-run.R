@@ -13,22 +13,23 @@
 #'                  =sample1
 #'
 #'
-#' @param data data.frame of experimental data.
-#'   must contain columns \code{response} and any predictors specified in
-#'   the formula.
+#' @param data data.frame of experimental data.  must contain columns
+#'     \code{response} and any predictors specified in the formula.
 #' @param formula \code{brmsformula} object. To create a dose-response
-#'   \code{brmsformula}, use the \code{MuSyC_formula} function.
-#' @param prior \code{brmspriors} for \code{kcat} and \code{kM} parameters. Use
-#'   \code{BayesPharma::MuSyC_prior(...)} to create the prior to use here.
-#'   Default: \code{BayesPharma::MuSyC_prior()}.
+#'     \code{brmsformula}, use the \code{MuSyC_formula} function.
+#' @param prior \code{brmspriors} for \code{kcat} and \code{kM}
+#'     parameters. Use \code{BayesPharma::MuSyC_prior(...)} to create
+#'     the prior to use here.  Default:
+#'     \code{BayesPharma::MuSyC_prior()}.
 #' @param init Initial values for the parameters, Use
-#'   \code{BayesPharma::MuSyC_init(...)} to create the init to use here. Default
-#'   \code{BayesPharma::MuSyC_init()}.
-#' @param control a named list of parameters to control the sampler's behavior.
-#'   Adding \code{max_treedepth} and giving a greater value than 10 can improve model
-#'   convergence (default: \code{list(adapt_delta = 0.99)}).
-#' @param stanvars \code{stanvars} code for the model. Default defines the
-#'   MuSyC function and genquant code.
+#'     \code{BayesPharma::MuSyC_init(...)} to create the init to use
+#'     here. Default \code{BayesPharma::MuSyC_init()}.
+#' @param control a named list of parameters to control the sampler's
+#'     behavior.  Adding \code{max_treedepth} and giving a greater
+#'     value than 10 can improve model convergence (default:
+#'     \code{list(adapt_delta = 0.99)}).
+#' @param stanvars \code{stanvars} code for the model. Default defines
+#'     the MuSyC function and genquant code.
 #' @param ... additional arguments passed to \code{brms::brm}
 #'
 #'

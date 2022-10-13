@@ -1,4 +1,3 @@
-
 testthat::test_that("Agonist sigmoid model fit with zero doses", {
   data <- data.frame(
     log_dose = seq(-7, -5, length.out = 30)) |>
@@ -14,12 +13,12 @@ testthat::test_that("Agonist sigmoid model fit with zero doses", {
         sd = .2)) |>
     dplyr::bind_rows(
       data.frame(log_dose = -Inf, response = 0))
-  
+
   model <- data |>
     BayesPharma::sigmoid_agonist_model(
       iter = 2000)
   testthat::expect_equal(class(model), "brmsfit")
-  
+
   n_divergences <- model |>
     brms::nuts_params() |>
     dplyr::filter(Parameter == "divergent__", Value > 0) |>
@@ -49,11 +48,10 @@ testthat::test_that("Antagonist sigmoid model fit with zero doses", {
     BayesPharma::sigmoid_antagonist_model(
       iter = 2000)
   testthat::expect_equal(class(model), "brmsfit")
-  
+
   n_divergences <- model |>
     brms::nuts_params() |>
     dplyr::filter(Parameter == "divergent__", Value > 0) |>
     nrow()
   testthat::expect_less_than(n_divergences, 100)
 })
-

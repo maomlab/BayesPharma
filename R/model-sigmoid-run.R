@@ -6,23 +6,25 @@
 #'   or
 #'   <https://rdrr.io/cran/rstan/man/stan.html>
 #'
-#' @param data data.frame of experimental data.
-#'   must contain columns \code{response} and any predictors specified in
-#'   the formula.
-#' @param formula brmsformula object. To create a dose-response brmsformula,
-#'   (default: \code{BayesPharma::sigmoid_agonist_formula()}.
+#' @param data data.frame of experimental data.  must contain columns
+#'     \code{response} and any predictors specified in the formula.
+#' @param formula brmsformula object. To create a dose-response
+#'     brmsformula, (default:
+#'     \code{BayesPharma::sigmoid_agonist_formula()}.
 #' @param prior brmspriors data.frame for ec50, hill, top, and bottom.
-#'   Use one of the priors functions provided to create priors to use here.
-#'   (default: \code{BayesPharma::sigmoid_agonist_prior()}
-#' @param init initial values of the parameters being modeled (default =
-#'   \code{BayesPharma::sigmoid_agonist_init()}
-#' @param iter number of iterations the model runs. Increasing iter can help
-#'   with model convergence (default: 8000).
-#' @param control a named list of parameters to control the sampler's behavior.
-#'   Adding \code{max_treedepth} and giving a greater value than 10 can improve model
-#'   convergence (default: \code{list(adapt_delta = 0.99)}).
+#'     Use one of the priors functions provided to create priors to
+#'     use here.  (default:
+#'     \code{BayesPharma::sigmoid_agonist_prior()}
+#' @param init initial values of the parameters being modeled (default
+#'     = \code{BayesPharma::sigmoid_agonist_init()}
+#' @param iter number of iterations the model runs. Increasing iter
+#'     can help with model convergence (default: 8000).
+#' @param control a named list of parameters to control the sampler's
+#'     behavior.  Adding \code{max_treedepth} and giving a greater
+#'     value than 10 can improve model convergence (default:
+#'     \code{list(adapt_delta = 0.99)}).
 #' @param stanvar_function stan code for the model (default:
-#'   \code{BayesPharma::sigmoid_stanvar})
+#'     \code{BayesPharma::sigmoid_stanvar})
 #' @param ... additional arguments passed to \code{brms::brm}
 #'
 #' @return \code{brmsfit} object
