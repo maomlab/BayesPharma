@@ -6,3 +6,13 @@ inst/doc
 .DS_Store
 docs
 *~
+
+vignettes/*_cache
+vignettes/*_files
+vignettes/*.tex
+vignettes/*.pdf
+vignettes/*.md
+vignettes/*.html
+vignettes/jss*
+vignettes/*_sections/*_files
+vignettes/*_sections/*.md
