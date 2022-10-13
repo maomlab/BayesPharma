@@ -7,7 +7,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
   
-```{r set-options, echo=FALSE}
+```{r set-options}
+#| echo=FALSE
 
 # inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
 knitr::opts_chunk$set(
@@ -34,6 +35,7 @@ suppressWarnings(suppressMessages(library(tidybayes)))
 
 
 ```{r read-data}
+#| echo=FALSE
 data_path <- "../inst/extdata/Enzyme Kinetics/Hettiaratchi_2020.xlsx"
 
 data <- tibble::tibble(
@@ -96,7 +98,7 @@ data <- data |>
 ```
 
 
-```{r plot_data}
+```{r plot-data}
 ggplot2::ggplot(data = data |> dplyr::filter(treatment != "Blank")) + 
   ggplot2::theme_bw() +
   ggplot2::geom_line(
@@ -236,11 +238,20 @@ z <- z |>
 model <- BayesPharma::tQ_model(
     data = z |>
       dplyr::filter(treatment == "D14-14"),
-    formula = tQ_formula(),
-    prior = tQ_prior(
-      kcat = brms::prior(prior = gamma(2, 1), lb = 0, nlpar = "kcat"),
-      kM = brms::prior(prior = gamma(1000, 1), lb = 0, nlpar = "kM")),
-    init = function() list(kcat = 2, kM = 1000),
+    #formula = tQ_formula(),
+    #prior = tQ_prior(
+    #  kcat = brms::prior(prior = gamma(2, 1), lb = 0, nlpar = "kcat"),
+    #  kM = brms::prior(prior = gamma(1000, 1), lb = 0, nlpar = "kM")),
+    formula = brms::brmsformula(
+      P ~ tQ_multiple(series_index, time, kcat, 10^logkM, ET, ST),
+      kcat ~ 1,
+      logkM ~ 1,
+      nl = TRUE,
+      loop = FALSE),
+    prior = c(
+        brms::prior(prior = gamma(2, 10), lb = 0, nlpar = "kcat"),
+        brms::prior(prior = normal(2, 1), nlpar = "logkM")),
+    init = function() list(b_kcat = 0.2, b_logkM = 2),
     iter = 8000,
     control = NULL,
     algorithm = "meanfield")
@@ -254,14 +265,14 @@ model_prior <- model |>
 draws_prior <- model_prior |>
   tidybayes::tidy_draws() |>
   tidybayes::gather_variables() |>
-  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|kM)")) |>
+  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|logkM)")) |>
   tidyr::separate(.variable, into = c("class", "parameter", "treatment"), sep = "_") |>
   dplyr::mutate(treatment = treatment |> stringr::str_replace("treatment", ""))
 
 draws_posterior <- model |>
   tidybayes::tidy_draws() |>
   tidybayes::gather_variables() |>
-  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|kM)")) |>
+  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|logkM)")) |>
   tidyr::separate(.variable, into = c("class", "parameter", "treatment"), sep = "_") |>
   dplyr::mutate(treatment = treatment |> stringr::str_replace("treatment", ""))
 ```
@@ -282,223 +293,25 @@ draws_posterior_pairs <- draws_posterior |>
 ggplot2::ggplot() +
   ggplot2::theme_bw() +
     ggplot2::geom_point(
+    data = draws_prior_pairs,
+    mapping = ggplot2::aes(
+      x = log10(kcat),
+      y = logkM),
+    color = "orange",
+    size = .8,
+    shape = 16,
+    alpha = .3) +  
+    ggplot2::geom_point(
     data = draws_posterior_pairs,
     mapping = ggplot2::aes(
-      x = kcat,
-      y = kM),
+      x = log10(kcat),
+      y = logkM),
     color = "blue",
     size = .8,
     shape = 16,
     alpha = .3) +
-  ggplot2::scale_x_continuous("catalytic constant (kcat)") +
-  ggplot2::scale_y_continuous("Michaelis constant (kM)") +
+  ggplot2::scale_x_continuous("catalytic constant log(kcat)") +
+  ggplot2::scale_y_continuous("Michaelis constant log(kM)") +
   ggplot2::facet_wrap(facets = dplyr::vars(treatment), nrow = 1, scales = "free")
-```
-
-
-
-```{r test list-column}
-
-
-```
-
-
-
-
-
-```{r test_data}
-library(brms)
-library(tidymodels)
-library(here)
-library(cmdstanr)
-
-
-# simulated data for exponential decay: c = A0*exp(-k1 * time)
-set.seed(1)
-time <- c(0, 1, 2, 3, 4, 5, 7, 9, 11)
-y_exp <- 100 * exp(-0.2 * time)  # c0 = 100, kr=0.2, exact simulated data
-df_sim <- data.frame(time, y_exp)
-df_sim <- df_sim |>
-  dplyr::mutate(
-   y_obs = y_exp + rnorm(length(time), 0, 5)) |>
-  dplyr::select(-y_exp)                        # random normal error added to simulated data with mean = 0 and sd = 5
-N_t <- length(df_sim$time)                     # number of datapoints
-
-```
-
-```{r test1}
-
-# the next lines of code show the coupling of brms to the old integrators, works without a problem
-fo_model <- "
-  real[] ode_fo(real t, //time
-  real [] y,         // the rates
-  real [] theta,     // the parameters
-  real [] x_r,       // data constant (not used)
-  int[] x_i){        // data constant (not used)
-  real dydt[1];      // dimension of ODEs
-  dydt[1] = - theta[1] * y[1];                   // first ODE
-   return dydt;        // returns a 3-dimensional array     
-  }
-
-// this is the function call from brms, integration of ODEs:
-real fo_ode(real t, real A0, real k1) {
-  real y0[1]; //one initial value
-  real theta[1]; //one parameter next to A0
-  real y[1,1]; //ODE solution
-  y0[1]=A0; //initial values
-  theta[1]=k1;
-
-  y=integrate_ode_rk45(ode_fo, y0,0,rep_array(t,1),theta,rep_array(0.0,0), rep_array(1,1), 0.00001,0.00001,100);
-// Return relevant values
-    return(y[1,1]);
-}
-
-"
-# t=0 not allowed, will be estimated
-
-df_sim_ode <- df_sim[-1, ]
-
-fo_formula <- brms::bf(
-  y_obs ~ fo_ode(time,A0,k1),
-  A0 ~ 1,
-  k1 ~ 1,
-  nl = TRUE)
-
-fo_priors <- c(
-  brms::prior(normal(100, 10),nlpar=A0),
-  brms::prior(normal(0.2, 0.1), nlpar=k1), 
-  brms::prior(cauchy(0, 10), class=sigma))
-
-fo_result1 <- brms::brm(
-  data=df_sim_ode,
-  family = gaussian,
-  formula=fo_formula,
-  prior=fo_priors,
-  init=0,
-  iter=4000,
-  chains=4,
-  cores=4,
-  stanvars = brms::stanvar(
-    scode=fo_model,
-    block="functions"),
-  file="fo_result1")
-
-
-```
-
-
-```{r test2}
-
-write("
-functions {                  // input to the ode_integrator:
-  vector fo(real t,          // time
-            vector y,        // state
-            vector kr        // parameters (only one in this case, c0 is automatically estimated)
-                  ) {      
-    vector[1] dydt;
-    dydt[1] = -kr[1] * y[1];
-    return dydt;
-  }
-}
-data {
-  int<lower = 1>   N;
-  real             t0;
-  real<lower = t0> ts[N];      // each element must be greater than t0
-  real             y0_obs;     // the observed initial value
-  real             y_obs[N];   //the observed (measured) values excluding the initial value
-}
-parameters {
-  real<lower = 0>      sigma; // experimental sigma
-  vector<lower = 0>[1] kr;    // rate constant to be estimated
-  vector[1]            y0;    // initial condition to be estimated
-}
-model {
-  vector[1] mu[N] = ode_bdf(fo, y0, t0, ts, kr);  // call to the ode_integrator, result is put in mu
-  sigma ~ cauchy(0, 5);                           // prior for sigma
-  kr[1] ~ normal(0.2, 0.02);                      // prior for rate constant
-  y0 ~ normal(100,10);                            // prior on initial condition
-  y0_obs ~ normal(y0[1], sigma);
-  for (t in 1:N) {
-    y_obs[t] ~ normal(mu[t], sigma);
-  }
-}    
-
-","/tmp/stan_fo.stan")
-
-# compile the stan model:
-fo_model1 <- cmdstan_model("/tmp/stan_fo.stan")
-# the data list for Stan:
-fo_data <- list(
-  N = N_t - 1,                # the first datapoint should not be at time zero because that point is provided by t0 and y0
-  t0 = 0,
-  ts = df_sim$time[-1],       # omitting the first time datapoint at time zero because that needs to be given for y0 (next line)
-  y0_obs = df_sim$y_obs[1],   # the first datapoint is the initial value y0 
-  y_obs = df_sim$y_obs[-1]    # the measured data without the starting point
-)
-
-# sampling from the compiled model:
-fo_fit <- fo_model1$sample(
-  data = fo_data,
-  seed = 42L,
-  refresh = 0,                
-  parallel_chains=4 
-)
-
-
-```
-```{r test3}
-fo_model3 <- "
-  vector fo2(real t,                  //time
-             vector y,                // the state
-             real k1){                // the parameter next to A0
-    
-             vector[1] dydt;          // dimension of ODE
-             dydt[1] = - k1 * y[1];   // ODE
-             return dydt;             // returns a 1-dimensional vector     
-  }
-
-// function called from brms: integration of ODEs
-vector  fo_ode2(
-  data vector time,
-  vector vA0,
-  vector vk1) {
-  
-  // vector[1] y0 = vA0[1];
-  vector[1] y0 = rep_vector(vA0[1], 1);
-  int N = size(time);
-  vector[1] y_hat_ode[N] = ode_rk45(
-    fo2, y0, 0.0, to_array_1d(time), vk1[1]);
-  vector[N] y_hat;
-  for(i in 1:N) y_hat[i] = y_hat_ode[i,1];
-  return(y_hat);
-}
-
-"
-
-df_sim_ode <- df_sim[-1,] #remove the first datapoint at t0
-
-fo_formula <- brms::bf(y_obs~fo_ode2(time,A0,k1),
-                  A0~1,
-                  k1~1,
-                  nl=TRUE, loop=FALSE)
-
-fo_priors <- c(brms::prior(normal(100,10),nlpar=A0),
-                brms::prior(normal(0.2,0.1), nlpar=k1), 
-                brms::prior(cauchy(0,10), class=sigma))
-
-fo_result2 <- brms::brm(
-  data = df_sim_ode,
-  family = gaussian,
-  formula=fo_formula,
-  prior=fo_priors,
-  init=0,
-  iter=4000,
-  chains=4,
-  cores=4,
-  stanvars = brms::stanvar(
-    scode=fo_model3,
-    block="functions"),
-  backend="cmdstanr",
-  file="fo_result3")
 ```
 
