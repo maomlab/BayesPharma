@@ -18,45 +18,45 @@ MuSyC_prior(
 )
 }
 \arguments{
-\item{logE0}{numeric or `brms::prior(...)`. Prior for the log response with
+\item{logE0}{numeric or `r brms::prior(...)`. Prior for the log response with
 no treatment. Default normal(log(0.5), 3) lower bounded by 0.}
 
-\item{logE1}{numeric or `brms::prior(...)`. Prior for the full log response
+\item{logE1}{numeric or `r brms::prior(...)`. Prior for the full log response
 for treatment 1 and the dose of treatment 2 is zero. Default
 normal(log(0.25), 3) lower bounded by 0.}
 
-\item{logC1}{numeric or `brms::prior(...)`. Prior for the log IC50 of drug 1
+\item{logC1}{numeric or `r brms::prior(...)`. Prior for the log IC50 of drug 1
 Default to normal(log(1), 3).}
 
-\item{h1}{numeric or `brms::prior(...)`. Prior the slope of drug 1 at
+\item{h1}{numeric or `r brms::prior(...)`. Prior the slope of drug 1 at
 it's IC50 and dose of the treatment 2 is zero converted to exponent form
 Default mu = MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei = 0); normal(mu, 3)
 lower bounded by .1}
 
-\item{logE2}{numeric or `brms::prior(...)`. Prior for the full log response
+\item{logE2}{numeric or `r brms::prior(...)`. Prior for the full log response
 for treatment 2 and the dose of treatment 1 is zero. Default
 normal(log(0.25), 3) lower bounded by 0.}
 
-\item{logC2}{numeric or `brms::prior(...)`. Prior for the log IC50 of drug 2
+\item{logC2}{numeric or `r brms::prior(...)`. Prior for the log IC50 of drug 2
 Default to normal(log(1), 3).}
 
-\item{h2}{numeric or `brms::prior(...)`. Prior the slope of drug 2 at
+\item{h2}{numeric or `r brms::prior(...)`. Prior the slope of drug 2 at
 it's IC50 and dose of the treatment 1 is zero converted to exponent form
-Default mu = MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei = 0); normal(mu, 3)
-lower bounded by 0.1}
+Default `r mu = MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei = 0)`;
+`r normal(mu, 3)` lower bounded by 0.1}
 
-\item{logE3}{numeric or `brms::prior(...)`. Prior for the low full response
-for treatment 1 and treatment 2. Default to normal(log(0.25), 3) lower
+\item{logE3}{numeric or `r brms::prior(...)`. Prior for the low full response
+for treatment 1 and treatment 2. Default to `r normal(log(0.25), 3)` lower
 bounded by 0.}
 
-\item{logalpha}{numeric or `brms::prior(...)`. Prior for the log synergistic
+\item{logalpha}{numeric or `r brms::prior(...)`. Prior for the log synergistic
 potency parameter with greater than 1 synergistic, less than 1
-antagonistic. Default normal(log(0), 0.5).}
+antagonistic. Default `r normal(log(0), 0.5)`.}
 
-\item{...}{additional `brmsprior` objects.}
+\item{...}{additional `r brmsprior` objects.}
 }
 \value{
-`brmsprior` `data.frame`
+`r brmsprior` `r data.frame`
 }
 \description{
 Creating a data.frame of priors of the dose response parameters

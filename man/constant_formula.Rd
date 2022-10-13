@@ -12,7 +12,7 @@ non-linear parameters. i.e. what perturbations/experimental differences
 should be modeled separately? (Default: 1) should a random effect be taken
 into consideration? i.e. cell number, plate number, etc.}
 
-\item{...}{additional arugments to `brms::brmsformula`}
+\item{...}{additional arugments to `r brms::brmsformula`}
 }
 \value{
 brmsformula

@@ -2,7 +2,7 @@
 #' model
 #'
 #' @description This function is useful to observe the distributions of the
-#'   priors set for the brmsfit model. By adding `sample_prior = "only"` to the
+#'   priors set for the brmsfit model. By adding `r sample_prior = "only"` to the
 #'   sigmoid_model or a brmsfit model, the model samples only from the prior
 #'   distributions and can be observed using this plot function to verify that
 #'   the values intended to be covered are being included.

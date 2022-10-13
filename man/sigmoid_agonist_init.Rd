@@ -8,7 +8,7 @@ sigmoid_agonist_init(ec50 = -9, hill = 1, top = 1, bottom = 0)
 }
 \arguments{
 \item{ec50}{numeric or numeric returning function units log_dose
-(default = -6, corresponding to 1 uM}
+(default = -6, corresponding to 1 μM}
 
 \item{hill}{numeric or numeric returning function with units
 response/log_dose (default = 1)}
@@ -22,7 +22,7 @@ input for brms::brm(init = ...)
 }
 \description{
 Creating initial values for an agonist sigmoid model parameters
-  that can be passed to the `sigmoid_agoninst_model`.
+  that can be passed to the `r sigmoid_agoninst_model`.
 }
 \examples{
 \dontrun{

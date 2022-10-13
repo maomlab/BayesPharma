@@ -14,13 +14,13 @@ drc_model(
 \arguments{
 \item{data}{data.frame}
 
-\item{formula}{formula. Default: `response ~ log_dose`}
+\item{formula}{formula. Default: `r response ~ log_dose`}
 
 \item{fct}{Non-linear link function. Default is the 4 parameter log-linear
 sigmoid equation, where all parameters are to be estimated. To fix a subset
 them, set the parameters to constant values.}
 
-\item{...}{additional arguments passed to `drc::drm`}
+\item{...}{additional arguments passed to `r drc::drm`}
 }
 \description{
 Wrapper for DRC dose response models

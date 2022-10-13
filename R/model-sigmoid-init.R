@@ -1,10 +1,10 @@
 #' Create initialization for the agonist sigmoid model
 #'
 #' @description Creating initial values for an agonist sigmoid model parameters
-#'   that can be passed to the `sigmoid_agoninst_model`.
+#'   that can be passed to the `r sigmoid_agoninst_model`.
 #'
 #' @param ec50 numeric or numeric returning function units log_dose
-#'   (default = -6, corresponding to 1 uM
+#'   (default = -6, corresponding to 1 μM
 #' @param hill numeric or numeric returning function with units
 #'   response/log_dose (default = 1)
 #' @param top numeric units of top (default = 1).
@@ -38,10 +38,10 @@ sigmoid_agonist_init <- function(
 #' Create initialization for the antagonist sigmoid model
 #'
 #' @description Creating initial values for the sigmoid model parameters that
-#'   can be passed to the `sigmoid_antagonist_model`
+#'   can be passed to the `r sigmoid_antagonist_model`
 #'
 #' @param ic50 numeric or numeric returning function units log_dose
-#'   (default = -6, corresponding to 1e-6 = 1 uM)
+#'   (default = -6, corresponding to 1e-6 = 1 μM)
 #' @param hill numeric or numeric returning function with units
 #'   response/log_dose (default = -1)
 #' @param top numeric units of top (default = 1).

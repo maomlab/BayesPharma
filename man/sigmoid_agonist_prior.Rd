@@ -13,26 +13,26 @@ sigmoid_agonist_prior(
 )
 }
 \arguments{
-\item{ec50}{`brmsprior` or numeric. Prior for the ec50 parameter.
+\item{ec50}{`r brmsprior` or numeric. Prior for the ec50 parameter.
 Default: normal(-6, 2.5) where the mean -7 corresponds to a
-concentration of 1e-6 or 1 uM. Setting ec50 to a numeric value constrains
+concentration of 1e-6 or 1 μM. Setting ec50 to a numeric value constrains
 it to a constant value.}
 
-\item{hill}{`brmsprior` or numeric. Prior for the hill parameter. Default:
+\item{hill}{`r brmsprior` or numeric. Prior for the hill parameter. Default:
 normal(1, 1) with and a lower bound of -0.1.}
 
-\item{top}{`brmsprior` or numeric. Prior for the top parameter.
+\item{top}{`r brmsprior` or numeric. Prior for the top parameter.
 Default: normal(1, 0.5). Setting top to a numeric value constrains it to
 a constant value.}
 
-\item{bottom}{`brmsprior` or numeric. Prior for the top parameter.
+\item{bottom}{`r brmsprior` or numeric. Prior for the top parameter.
 Default: normal(0, 0.5). Setting bottom to a numeric value constrains it
 to a constant value.}
 
-\item{...}{additional `brmsprior` objects.}
+\item{...}{additional `r brmsprior` objects.}
 }
 \value{
-`brmsprior` `data.frame`
+`r brmsprior` `r data.frame`
 }
 \description{
 Creates a data.frame of priors for the sigmoid agonist model

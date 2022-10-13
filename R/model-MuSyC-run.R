@@ -17,18 +17,18 @@
 #' @param data data.frame of experimental data.
 #'   must contain columns \code{response} and any predictors specified in
 #'   the formula.
-#' @param formula `brmsformula` object. To create a dose-response `brmsformula`,
-#'   use the \code{MuSyC_formula} function.
-#' @param prior `brmspriors` for `kcat` and `kM` parameters. Use
+#' @param formula `r brmsformula` object. To create a dose-response
+#'   `r brmsformula`, use the \code{MuSyC_formula} function.
+#' @param prior `r brmspriors` for `r kcat` and `r kM` parameters. Use
 #'   `BayesPharma::MuSyC_prior(...)` to create the prior to use here. Default
 #'   `BayesPharma::MuSyC_prior()`.
 #' @param init Initial values for the parameters, Use
-#'   `BayesPharma::MuSyC_init(...)` to create the init to use here. Default
-#'   `BayesPharma::MuSyC_init()`.
+#'   `r BayesPharma::MuSyC_init(...)` to create the init to use here. Default
+#'   `r BayesPharma::MuSyC_init()`.
 #' @param control a named list of parameters to control the sampler's behavior.
-#'   Adding `max_treedepth` and giving a greater value than 10 can improve model
-#'   convergence (default: `list(adapt_delta = 0.99)`).
-#' @param stanvars `stanvars` code for the model. Default defines the
+#'   Adding `r max_treedepth` and giving a greater value than 10 can improve model
+#'   convergence (default: `r list(adapt_delta = 0.99)`).
+#' @param stanvars `r stanvars` code for the model. Default defines the
 #'   MuSyC function and genquant code.
 #' @param ... additional arguments passed to `brms::brm`
 #'

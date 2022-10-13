@@ -21,7 +21,7 @@ treatment 2 is zero.}
 \item{logC1}{numeric. IC50 for treatment 1 and dose of treatment 2 is zero.}
 
 \item{h1}{numeric. Slope of treatment 1 at it's IC50 and dose of treatment 2
-is zero in exponential form. Use `MuSyC_si_to_hi` to convert from slope
+is zero in exponential form. Use `r MuSyC_si_to_hi` to convert from slope
 form.}
 
 \item{logE2}{numeric. Full log response for treatment 2 and the dose of
@@ -30,7 +30,7 @@ treatment 1 is zero.}
 \item{logC2}{numeric. IC50 for treatment 2 and dose of treatment 1 is zero.}
 
 \item{h2}{numeric. Slope of treatment 2 at it's IC50 and dose of treatment 1
-is zero in exponential form. Use `MuSyC_si_to_hi` to convert from slope
+is zero in exponential form. Use `r MuSyC_si_to_hi` to convert from slope
 form.}
 
 \item{logE3}{numeric. Full response for treatment 1 and treatment 2.}

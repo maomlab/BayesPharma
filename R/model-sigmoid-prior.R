@@ -11,20 +11,20 @@
 #' For other distribution options, reference
 #' <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
 #'
-#' @param ec50 `brmsprior` or numeric. Prior for the ec50 parameter.
+#' @param ec50 `r brmsprior` or numeric. Prior for the ec50 parameter.
 #'   Default: normal(-6, 2.5) where the mean -7 corresponds to a
-#'   concentration of 1e-6 or 1 uM. Setting ec50 to a numeric value constrains
+#'   concentration of 1e-6 or 1 μM. Setting ec50 to a numeric value constrains
 #'   it to a constant value.
-#' @param hill `brmsprior` or numeric. Prior for the hill parameter. Default:
+#' @param hill `r brmsprior` or numeric. Prior for the hill parameter. Default:
 #'   normal(1, 1) with and a lower bound of -0.1.
-#' @param top `brmsprior` or numeric. Prior for the top parameter.
+#' @param top `r brmsprior` or numeric. Prior for the top parameter.
 #'   Default: normal(1, 0.5). Setting top to a numeric value constrains it to
 #'   a constant value.
-#' @param bottom  `brmsprior` or numeric. Prior for the top parameter.
+#' @param bottom  `r brmsprior` or numeric. Prior for the top parameter.
 #'   Default: normal(0, 0.5). Setting bottom to a numeric value constrains it
 #'   to a constant value.
-#' @param ... additional `brmsprior` objects.
-#' @return `brmsprior` `data.frame`
+#' @param ... additional `r brmsprior` objects.
+#' @return `r brmsprior` `r data.frame`
 #'
 #' @examples
 #'\dontrun{
@@ -66,7 +66,7 @@ sigmoid_agonist_prior <- function(
 #'
 #' @param ic50 `brmsprior` or numeric. Prior for the ec50 parameter.
 #'   Default: normal(-6, 2.5) where the mean -6 corresponds to a
-#'   concentration of 1e-6 or 1 uM. Setting ic50 to a numeric value constrains
+#'   concentration of 1e-6 or 1 μM. Setting ic50 to a numeric value constrains
 #'   it to a constant value.
 #' @param hill `brmsprior` or numeric. Prior for the hill parameter. Default:
 #'   normal(-1, 1) upper bounded by 0.1.
@@ -82,7 +82,7 @@ sigmoid_agonist_prior <- function(
 #' @examples
 #'\dontrun{
 #' # Consider an activator that has a max response around 50%, EC50 is estimated
-#' # to be around 1 uM, and minimum response is known to be 0.
+#' # to be around 1 μM, and minimum response is known to be 0.
 #' priors <- sigmoid_antagonist_prior(
 #'   ic50 = brms::prior(normal(-6, 0.5), nlpar = "ic50"),
 #'   top = brms::prior(normal(0.5, 0.5), nlpar = "top"),

@@ -2,11 +2,11 @@
 #' Wrapper for DRC dose response models
 #' 
 #' @param data data.frame
-#' @param formula formula. Default: `response ~ log_dose`
+#' @param formula formula. Default: `r response ~ log_dose`
 #' @param fct Non-linear link function. Default is the 4 parameter log-linear
 #'   sigmoid equation, where all parameters are to be estimated. To fix a subset
 #'   them, set the parameters to constant values.
-#' @param ... additional arguments passed to `drc::drm`
+#' @param ... additional arguments passed to `r drc::drm`
 #' 
 #' 
 #' @export

@@ -7,7 +7,7 @@
 #' @param newdata data.frame of newdata to use for predictions. Default
 #'   data.frame with each predictor and log-dose.
 #' @param n numeric value of the number of draws to be observed (default = 50).
-#' @param point_size numeric. `geom_jitter` point size (default = 0.75).
+#' @param point_size numeric. `r geom_jitter` point size (default = 0.75).
 #' @param jitter_height numeric. the height distance between overlapping points
 #'   (default = 0).
 #' @param jitter_width numeric. the width distance between overlapping points

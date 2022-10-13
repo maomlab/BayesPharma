@@ -28,8 +28,8 @@ Functional form for the sigmoid model.
 }
 \examples{
 \dontrun{
- # Generate an agonist curve with an ec50 of 1 uM with the response
- # normalized to [0, 1] over the range 100 nM to 10 uM with half-log steps
+ # Generate an agonist curve with an ec50 of 1 μM with the response
+ # normalized to [0, 1] over the range 100 nM to 10 μM with half-log steps
  data <- data.frame(
    log_dose = seq(-7, -5, length.out = 5)) |>
      dplyr::mutate(

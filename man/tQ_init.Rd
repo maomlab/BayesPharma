@@ -7,14 +7,14 @@
 tQ_init(kcat = 4, kM = 4)
 }
 \arguments{
-\item{kcat}{numeric initial value for `kcat` parameter in the tQ model
+\item{kcat}{numeric initial value for `r kcat` parameter in the tQ model
 (Default 4)}
 
-\item{kM}{numeric initial value for the `kM` parameter in the tQ model
+\item{kM}{numeric initial value for the `r kM` parameter in the tQ model
 (default 4)}
 }
 \value{
-input for `BayesPharma::model_tQ(init = ...)` parameter.
+input for `r BayesPharma::model_tQ(init = ...)` parameter.
 }
 \description{
 Initialize parameter values for the tQ enyzme kinetic model
