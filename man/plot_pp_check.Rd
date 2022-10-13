@@ -13,23 +13,25 @@ plot_pp_check(model, plot_type = "dens_overlay", n = 50, ...)
 
 \item{n}{numeric units of posterior draws to be used.}
 
-\item{...}{additional arguments to `r brms::pp_check`.}
+\item{...}{additional arguments to \code{brms::pp_check}.}
 }
 \value{
 ggplot object.
 }
 \description{
-Given a brms model, perform a graphical posterior predictive
-  check.
+Given a brms model, perform a graphical posterior
+    predictive check.
 
-pp_check from the brms package has different plot types to analyze the model
-fit by comparing the observed data with generated data from the model.
+pp_check from the brms package has different plot types to analyze
+the model fit by comparing the observed data with generated data
+from the model.
 
 Here is the documentation for pp_check:
 <http://paul-buerkner.github.io/brms/reference/pp_check.brmsfit.html>
 
-Here is the documentation for pp_check plot types under PPC plotting
-functions: <https://mc-stan.org/bayesplot/reference/PPC-overview.html>
+Here is the documentation for pp_check plot types under PPC
+plotting functions:
+<https://mc-stan.org/bayesplot/reference/PPC-overview.html>
 }
 \examples{
 \dontrun{

@@ -18,55 +18,58 @@ MuSyC_prior(
 )
 }
 \arguments{
-\item{logE0}{numeric or `r brms::prior(...)`. Prior for the log response with
-no treatment. Default normal(log(0.5), 3) lower bounded by 0.}
-
-\item{logE1}{numeric or `r brms::prior(...)`. Prior for the full log response
-for treatment 1 and the dose of treatment 2 is zero. Default
-normal(log(0.25), 3) lower bounded by 0.}
-
-\item{logC1}{numeric or `r brms::prior(...)`. Prior for the log IC50 of drug 1
-Default to normal(log(1), 3).}
-
-\item{h1}{numeric or `r brms::prior(...)`. Prior the slope of drug 1 at
-it's IC50 and dose of the treatment 2 is zero converted to exponent form
-Default mu = MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei = 0); normal(mu, 3)
-lower bounded by .1}
-
-\item{logE2}{numeric or `r brms::prior(...)`. Prior for the full log response
-for treatment 2 and the dose of treatment 1 is zero. Default
-normal(log(0.25), 3) lower bounded by 0.}
-
-\item{logC2}{numeric or `r brms::prior(...)`. Prior for the log IC50 of drug 2
-Default to normal(log(1), 3).}
-
-\item{h2}{numeric or `r brms::prior(...)`. Prior the slope of drug 2 at
-it's IC50 and dose of the treatment 1 is zero converted to exponent form
-Default `r mu = MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei = 0)`;
-`r normal(mu, 3)` lower bounded by 0.1}
-
-\item{logE3}{numeric or `r brms::prior(...)`. Prior for the low full response
-for treatment 1 and treatment 2. Default to `r normal(log(0.25), 3)` lower
+\item{logE0}{numeric or \code{brms::prior(...)}. Prior for the log
+response with no treatment. Default normal(log(0.5), 3) lower
 bounded by 0.}
 
-\item{logalpha}{numeric or `r brms::prior(...)`. Prior for the log synergistic
-potency parameter with greater than 1 synergistic, less than 1
-antagonistic. Default `r normal(log(0), 0.5)`.}
+\item{logE1}{numeric or \code{brms::prior(...)}. Prior for the full
+log response for treatment 1 and the dose of treatment 2 is
+zero. Default normal(log(0.25), 3) lower bounded by 0.}
 
-\item{...}{additional `r brmsprior` objects.}
+\item{logC1}{numeric or \code{brms::prior(...)}. Prior for the log
+IC50 of drug 1 Default to normal(log(1), 3).}
+
+\item{h1}{numeric or \code{brms::prior(...)}. Prior the slope of
+drug 1 at it's IC50 and dose of the treatment 2 is zero
+converted to exponent form Default mu = MuSyC_si_to_hi(si = 1,
+Ci = 1, E0 = 0, Ei = 0); normal(mu, 3) lower bounded by .1}
+
+\item{logE2}{numeric or \code{brms::prior(...)}. Prior for the full
+log response for treatment 2 and the dose of treatment 1 is
+zero. Default normal(log(0.25), 3) lower bounded by 0.}
+
+\item{logC2}{numeric or \code{brms::prior(...)}. Prior for the log
+IC50 of drug 2 Default to normal(log(1), 3).}
+
+\item{h2}{numeric or \code{brms::prior(...)}. Prior the slope of
+drug 2 at it's IC50 and dose of the treatment 1 is zero
+converted to exponent form Default \code{mu = MuSyC_si_to_hi(si
+= 1, Ci = 1, E0 = 0, Ei = 0)}; \code{normal(mu, 3)} lower
+bounded by 0.1}
+
+\item{logE3}{numeric or \code{brms::prior(...)}. Prior for the low
+full response for treatment 1 and treatment 2. Default to
+\code{normal(log(0.25), 3)} lower bounded by 0.}
+
+\item{logalpha}{numeric or \code{brms::prior(...)}. Prior for the
+log synergistic potency parameter with greater than 1
+synergistic, less than 1 antagonistic. Default
+\code{normal(log(0), 0.5)}.}
+
+\item{...}{additional \code{brmsprior} objects.}
 }
 \value{
-`r brmsprior` `r data.frame`
+\code{brmsprior} \code{data.frame}
 }
 \description{
 Creating a data.frame of priors of the dose response parameters
    required for the MuSyC model.
 
 
-If you would like to set a parameter as a constant, enter a numeric value for
-the function argument.
-If you would like to set your own distribution, for example, in the function
-arguments type 'ec50 = brms::prior(distribution(mu,sigma), nlpar = 'ec50')'.
+If you would like to set a parameter as a constant, enter a numeric
+value for the function argument.  If you would like to set your own
+distribution, for example, in the function arguments type
+\code{ec50 = brms::prior(normal(<mu>, <sigma>), nlpar = 'ec50')}.
 For other distribution options, reference
 http://mc-stan.org/rstanarm/reference/priors.html#arguments.
 }

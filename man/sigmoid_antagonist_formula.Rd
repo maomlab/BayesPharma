@@ -7,20 +7,22 @@
 sigmoid_antagonist_formula(predictors = 1, ...)
 }
 \arguments{
-\item{predictors}{Additional formula objects to specify predictors of
-non-linear parameters. i.e. what perturbations/experimental differences
-should be modeled separately? (Default: 1) should a random effect be taken
-into consideration? i.e. cell number, plate number, etc.}
+\item{predictors}{Additional formula objects to specify predictors
+of non-linear parameters. i.e. what perturbations/experimental
+differences should be modeled separately? (Default: 1) should a
+random effect be taken into consideration? i.e. cell number,
+plate number, etc.}
 
-\item{...}{additional arguments to `r brms::brmsformula`}
+\item{...}{additional arguments to \code{brms::brmsformula}}
 }
 \value{
 brmsformula
 }
 \description{
-set-up a sigmoid dose response model formula to define a
-  non-linear model or multilevel non-linear model for `r ic50`, `r hill`,
-  `r top`, and, `r bottom` for use in Bayesian_model and in the BRMS package.
+set-up a sigmoid dose response model formula to define
+    a non-linear model or multilevel non-linear model for
+    \code{ic50}, \code{hill}, \code{top}, and, \code{bottom} for
+    use in Bayesian_model and in the BRMS package.
 }
 \examples{
 \dontrun{

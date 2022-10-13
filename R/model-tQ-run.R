@@ -14,10 +14,9 @@
 #' @param control a named list of parameters to control the sampler's behavior.
 #'   Adding max_treedepth and giving a greater value than 10 can improve model
 #'   convergence (default = list(adapt_delta = 0.99)).
-#' @param ... additional arguments passed to `r brms::brm`.
-
-#' @return brmsfit model
+#' @param ... additional arguments passed to \code{brms::brm}.
 #'
+#' @return brmsfit model
 #'
 #' @export
 tQ_model <- function(

@@ -1,14 +1,16 @@
 #' Create an agonist sigmoid formula for the brms model
 #'
-#' @description set-up a sigmoid dose response model formula to define a
-#'   non-linear model or multilevel non-linear model for `r ec50`, `r hill`,
-#'   `r top`, and, `r bottom` for use in Bayesian_model and in the BRMS package.
+#' @description set-up a sigmoid dose response model formula to define
+#'     a non-linear model or multilevel non-linear model for
+#'     \code{ec50}, \code{hill}, \code{top}, and, \code{bottom} for
+#'     use in Bayesian_model and in the BRMS package.
 #'
-#' @param predictors Additional formula objects to specify predictors of
-#'   non-linear parameters. i.e. what perturbations/experimental differences
-#'   should be modeled separately? (Default: 1) should a random effect be taken
-#'   into consideration? i.e. cell number, plate number, etc.
-#' @param ... additional arguments to `r brms::brmsformula`
+#' @param predictors Additional formula objects to specify predictors
+#'     of non-linear parameters. i.e. what perturbations/experimental
+#'     differences should be modeled separately? (Default: 1) should a
+#'     random effect be taken into consideration? i.e. cell number,
+#'     plate number, etc.
+#' @param ... additional arguments to \code{brms::brmsformula}
 #'
 #' @return brmsformula
 #'
@@ -47,15 +49,17 @@ sigmoid_agonist_formula <- function(
 
 #' Create an antagonist sigmoid formula for the brms model
 #'
-#' @description set-up a sigmoid dose response model formula to define a
-#'   non-linear model or multilevel non-linear model for `r ic50`, `r hill`,
-#'   `r top`, and, `r bottom` for use in Bayesian_model and in the BRMS package.
+#' @description set-up a sigmoid dose response model formula to define
+#'     a non-linear model or multilevel non-linear model for
+#'     \code{ic50}, \code{hill}, \code{top}, and, \code{bottom} for
+#'     use in Bayesian_model and in the BRMS package.
 #'
-#' @param predictors Additional formula objects to specify predictors of
-#'   non-linear parameters. i.e. what perturbations/experimental differences
-#'   should be modeled separately? (Default: 1) should a random effect be taken
-#'   into consideration? i.e. cell number, plate number, etc.
-#' @param ... additional arguments to `r brms::brmsformula`
+#' @param predictors Additional formula objects to specify predictors
+#'     of non-linear parameters. i.e. what perturbations/experimental
+#'     differences should be modeled separately? (Default: 1) should a
+#'     random effect be taken into consideration? i.e. cell number,
+#'     plate number, etc.
+#' @param ... additional arguments to \code{brms::brmsformula}
 #'
 #' @return brmsformula
 #'
@@ -80,11 +84,11 @@ sigmoid_agonist_formula <- function(
 sigmoid_antagonist_formula <- function(
     predictors = 1,
     ...) {
-  
+
   predictor_eq <- rlang::new_formula(
     lhs = quote(ic50 + hill + top + bottom),
     rhs = rlang::enexpr(predictors))
-  
+
   # The sigmoid function is defined in BayesPharma::sigmoid_stanvar
   brms::brmsformula(
     response ~ sigmoid(ic50, hill, top, bottom, log_dose),
@@ -92,4 +96,3 @@ sigmoid_antagonist_formula <- function(
     nl = TRUE,
     ...)
 }
-

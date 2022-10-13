@@ -21,8 +21,9 @@ response/log_dose (default = 1)}
 input for brms::brm(init = ...)
 }
 \description{
-Creating initial values for an agonist sigmoid model parameters
-  that can be passed to the `r sigmoid_agoninst_model`.
+Creating initial values for an agonist sigmoid model
+    parameters that can be passed to the
+    \code{sigmoid_agoninst_model}.
 }
 \examples{
 \dontrun{

@@ -7,12 +7,13 @@
 constant_formula(predictors = 1, ...)
 }
 \arguments{
-\item{predictors}{Additional formula objects to specify predictors of
-non-linear parameters. i.e. what perturbations/experimental differences
-should be modeled separately? (Default: 1) should a random effect be taken
-into consideration? i.e. cell number, plate number, etc.}
+\item{predictors}{Additional formula objects to specify predictors
+of non-linear parameters. i.e. what perturbations/experimental
+differences should be modeled separately? (Default: 1) should a
+random effect be taken into consideration? i.e. cell number,
+plate number, etc.}
 
-\item{...}{additional arugments to `r brms::brmsformula`}
+\item{...}{additional arugments to \code{brms::brmsformula}}
 }
 \value{
 brmsformula

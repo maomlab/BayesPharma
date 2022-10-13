@@ -1,21 +1,27 @@
 #' Plot of Posterior Model Fit Draws
 #'
-#' @description A plot of a sample of model fit draws from the posterior
-#' distribution from the expected mean and median quantile intervals.
+#' @description A plot of a sample of model fit draws from the
+#'     posterior distribution from the expected mean and median
+#'     quantile intervals.
 #'
 #' @param model brmsfit model.
-#' @param newdata data.frame of newdata to use for predictions. Default
-#'   data.frame with each predictor and log-dose.
-#' @param n numeric value of the number of draws to be observed (default = 50).
-#' @param point_size numeric. `r geom_jitter` point size (default = 0.75).
-#' @param jitter_height numeric. the height distance between overlapping points
-#'   (default = 0).
-#' @param jitter_width numeric. the width distance between overlapping points
-#'   (default = 0).
-#' @param title character name for the plot
-#'   (default = "Dose-Response Posterior Draws").
-#' @param xlab character name for the x-axis label (default = "Log[Molar]").
-#' @param ylab character name for the y-axis label (default = "Response").
+#' @param newdata data.frame of newdata to use for
+#'     predictions. Default data.frame with each predictor and
+#'     log-dose.
+#' @param n numeric value of the number of draws to be observed
+#'     (default = 50).
+#' @param point_size numeric. \code{geom_jitter} point size (default =
+#'     0.75).
+#' @param jitter_height numeric. the height distance between
+#'     overlapping points (default = 0).
+#' @param jitter_width numeric. the width distance between overlapping
+#'     points (default = 0).
+#' @param title character name for the plot (default =
+#'     "Dose-Response Posterior Draws").
+#' @param xlab character name for the x-axis label (default =
+#'     "Log[Molar]").
+#' @param ylab character name for the y-axis label (default =
+#'     "Response").
 #' @return ggplot2::ggplot object.
 #'
 #' @examples

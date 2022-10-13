@@ -1,29 +1,31 @@
 #' Create a formula for the MuSyC synergy model
 #'
-#' @description setup a defaul `r MuSyC` synergy model formula to predict
-#'   the `r E0`, `r C1`, `r E1`, `r s1`, `r C2`, `r E2`, `r s2`, `r log10alpha`,
-#'   and `r E3alpha` parameters.
+#' @description setup a defaul \code{MuSyC} synergy model formula to
+#'     predict the \code{E0}, \code{C1}, \code{E1}, \code{s1},
+#'     \code{C2}, \code{E2}, \code{s2}, \code{log10alpha}, and
+#'     \code{E3alpha} parameters.
 #'
-#' @param predictors Additional formula objects to specify predictors of
-#'   non-linear parameters. i.e. what perturbations/experimental differences
-#'   should be modeled separately? (Default: 1) should a random effect be taken
-#'   into consideration? i.e. cell number, plate number, etc.
-#' @param ... additional arguments passed to `r brms::brmsformula`
+#' @param predictors Additional formula objects to specify predictors
+#'     of non-linear parameters. i.e. what perturbations/experimental
+#'     differences should be modeled separately? (Default: 1) should a
+#'     random effect be taken into consideration? i.e. cell number,
+#'     plate number, etc.
+#' @param ... additional arguments passed to \code{brms::brmsformula}
 #'
 #' @return brmsformula
 #'
 #' @examples
 #'\dontrun{
-#'   # Data has a string column `r drug_id` with drug identifiers
+#'   # Data has a string column drug_id with drug identifiers
 #'   # Fit a separate model for each drug
 #'   BayesPharma::MuSyC_formula(predictors = 0 + drug_id)
 #'
-#'   # Data has a string column `r plate_id` with plate identifiers
+#'   # Data has a string column plate_id with plate identifiers
 #'   # Estimate the change in response for each plate relative to a global
 #'   # baseline.
 #'   BayesPharma::MuSyC_formula(predictors = plate_id)
 #'
-#'   # data has columns `r drug_id` and `r plate_id`
+#'   # data has columns drug_id and plate_id
 #'   # fit a multilevel model where the drug effect depends on the plate
 #'   BayesPharma::MuSyC_formula(predictors = 0 + (drug_id|plate_id))
 #'}

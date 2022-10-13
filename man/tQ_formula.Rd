@@ -7,9 +7,9 @@
 tQ_formula(predictors = 1, ...)
 }
 \arguments{
-\item{predictors}{predictors for `r kcat` and `r kM`.}
+\item{predictors}{predictors for \code{kcat} and \code{kM}.}
 
-\item{...}{additional arguments passed to `r brms::brmsformula`}
+\item{...}{additional arguments passed to \code{brms::brmsformula}}
 }
 \description{
 Define formula for the tQ enzyme kinetics model

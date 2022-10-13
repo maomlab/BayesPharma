@@ -2,8 +2,9 @@
 #'
 #' @description Creates a data.frame of priors for the sigmoid agonist model
 #'
-#' If the function arguments ec50, hill, top, bottom = NULL, default
-#' normal distribution priors will be set.
+#' If the function arguments \code{ec50}, \code{hill}, \code{top},
+#' \code{bottom} are \code{NULL}, default normal distribution priors
+#' will be set.
 #'
 #' If you would like to set a parameter as a constant, enter a numeric value for
 #' the function argument.
@@ -11,20 +12,20 @@
 #' For other distribution options, reference
 #' <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
 #'
-#' @param ec50 `r brmsprior` or numeric. Prior for the ec50 parameter.
+#' @param ec50 \code{brmsprior} or numeric. Prior for the ec50 parameter.
 #'   Default: normal(-6, 2.5) where the mean -7 corresponds to a
 #'   concentration of 1e-6 or 1 μM. Setting ec50 to a numeric value constrains
 #'   it to a constant value.
-#' @param hill `r brmsprior` or numeric. Prior for the hill parameter. Default:
+#' @param hill \code{brmsprior} or numeric. Prior for the hill parameter. Default:
 #'   normal(1, 1) with and a lower bound of -0.1.
-#' @param top `r brmsprior` or numeric. Prior for the top parameter.
+#' @param top \code{brmsprior} or numeric. Prior for the top parameter.
 #'   Default: normal(1, 0.5). Setting top to a numeric value constrains it to
 #'   a constant value.
-#' @param bottom  `r brmsprior` or numeric. Prior for the top parameter.
+#' @param bottom  \code{brmsprior} or numeric. Prior for the top parameter.
 #'   Default: normal(0, 0.5). Setting bottom to a numeric value constrains it
 #'   to a constant value.
-#' @param ... additional `r brmsprior` objects.
-#' @return `r brmsprior` `r data.frame`
+#' @param ... additional \code{brmsprior} objects.
+#' @return \code{brmsprior} \code{data.frame}
 #'
 #' @examples
 #'\dontrun{
@@ -64,20 +65,20 @@ sigmoid_agonist_prior <- function(
 #' For other distribution options, reference
 #' <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
 #'
-#' @param ic50 `brmsprior` or numeric. Prior for the ec50 parameter.
+#' @param ic50 \code{brmsprior} or numeric. Prior for the ec50 parameter.
 #'   Default: normal(-6, 2.5) where the mean -6 corresponds to a
 #'   concentration of 1e-6 or 1 μM. Setting ic50 to a numeric value constrains
 #'   it to a constant value.
-#' @param hill `brmsprior` or numeric. Prior for the hill parameter. Default:
+#' @param hill \code{brmsprior} or numeric. Prior for the hill parameter. Default:
 #'   normal(-1, 1) upper bounded by 0.1.
-#' @param top `brmsprior` or numeric. Prior for the top parameter.
+#' @param top \code{brmsprior} or numeric. Prior for the top parameter.
 #'   Default: normal(1, 0.5). Setting top to a numeric value constrains it to
 #'   a constant value.
-#' @param bottom  `brmsprior` or numeric. Prior for the top parameter.
+#' @param bottom  \code{brmsprior} or numeric. Prior for the top parameter.
 #'   Default: normal(0, 0.5). Setting bottom to a numeric value constrains it to
 #'   a constant value.
-#' @param ... additional `brmsprior` objects.
-#' @return `brmsprior` `data.frame`
+#' @param ... additional \code{brmsprior} objects.
+#' @return \code{brmsprior} \code{data.frame}
 #'
 #' @examples
 #'\dontrun{

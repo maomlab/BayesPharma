@@ -7,12 +7,12 @@
 prepare_prior(prior, ...)
 }
 \arguments{
-\item{prior}{`r brmsprior` or numeric.}
+\item{prior}{\code{brmsprior} or numeric.}
 
-\item{...}{additional arguments to `r brms::prior_string()`. If `r prior` is
-a `r brmsprior` then this will check that the slots have the given values.
-If prior is numeric, then these arguments are passed to
-`r brms::prior_string`}
+\item{...}{additional arguments to \code{brms::prior_string()}. If
+\code{prior} is a \code{brmsprior} then this will check that
+the slots have the given values.  If prior is numeric, then
+these arguments are passed to \code{brms::prior_string}}
 }
 \value{
 brmsprior
@@ -23,7 +23,7 @@ What this gives above brms::prior(...) and friends is
   2) if it is already a brmsprior it checks that it has specified arguments
 }
 \details{
-This is used in models where want to allow user specified priors but
-make sure they are for the right parameters to make sure the model is well
-specified.
+This is used in models where want to allow user specified priors
+but make sure they are for the right parameters to make sure the
+model is well specified.
 }

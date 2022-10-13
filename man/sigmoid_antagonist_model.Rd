@@ -16,34 +16,35 @@ sigmoid_antagonist_model(
 )
 }
 \arguments{
-\item{data}{data.frame of experimental data.
-must contain columns `response` and any predictors specified in
-the formula.}
+\item{data}{data.frame of experimental data.  must contain columns
+\code{sponse} and any predictors specified in the formula.}
 
-\item{formula}{brmsformula object. To create a dose-response brmsformula,
-(default: `BayesPharma::sigmoid__formula()`.}
+\item{formula}{brmsformula object. To create a dose-response
+brmsformula, (default: \code{BayesPharma::sigmoid__formula()}.}
 
-\item{prior}{brmspriors data.frame for ec50, hill, top, and bottom.
-Use one of the priors functions provided to create priors to use here.
-(default: `BayesPharma::sigmoid_antagonist_prior()`}
+\item{prior}{brmspriors data.frame for \code{ec50}, \code{hill},
+\code{top}, and \code{bottom}.  Use one of the priors functions
+provided to create priors to use here.  (default:
+\code{BayesPharma::sigmoid_antagonist_prior()}}
 
-\item{init}{initial values of the parameters being modeled (default =
-`BayesPharma::sigmoid_antagonist_init()`}
+\item{init}{initial values of the parameters being modeled (default
+= \code{BayesPharma::sigmoid_antagonist_init()}}
 
-\item{iter}{number of iterations the model runs. Increasing iter can help
-with model convergence (default: 8000).}
+\item{iter}{number of iterations the model runs. Increasing iter
+can help with model convergence (default: 8000).}
 
-\item{control}{a named list of parameters to control the sampler's behavior.
-Adding `max_treedepth` and giving a greater value than 10 can improve model
-convergence (default: `list(adapt_delta = 0.99)`).}
+\item{control}{a named list of parameters to control the sampler's
+behavior.  Adding \code{max_treedepth} and giving a greater
+value than 10 can improve model convergence (default:
+\code{list(adapt_delta = 0.99)}).}
 
 \item{stanvar_function}{stan code for the model (default:
-BayesPharma::sigmoid_stanvar)}
+\code{BayesPharma::sigmoid_stanvar})}
 
-\item{...}{additional arguments passed to `brms::brm`}
+\item{...}{additional arguments passed to \code{brms::brm}}
 }
 \value{
-`brmsfit` object
+\code{brmsfit} object
 }
 \description{
 For additional information on additional function arguments, reference:

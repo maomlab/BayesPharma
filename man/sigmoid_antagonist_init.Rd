@@ -22,7 +22,7 @@ input for brms::brm(init = ...)
 }
 \description{
 Creating initial values for the sigmoid model parameters that
-  can be passed to the `r sigmoid_antagonist_model`
+  can be passed to the \code{sigmoid_antagonist_model}
 }
 \examples{
 \dontrun{

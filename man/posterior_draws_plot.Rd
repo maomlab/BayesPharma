@@ -19,32 +19,38 @@ posterior_draws_plot(
 \arguments{
 \item{model}{brmsfit model.}
 
-\item{newdata}{data.frame of newdata to use for predictions. Default
-data.frame with each predictor and log-dose.}
+\item{newdata}{data.frame of newdata to use for
+predictions. Default data.frame with each predictor and
+log-dose.}
 
-\item{n}{numeric value of the number of draws to be observed (default = 50).}
+\item{n}{numeric value of the number of draws to be observed
+(default = 50).}
 
-\item{point_size}{numeric. `r geom_jitter` point size (default = 0.75).}
+\item{point_size}{numeric. \code{geom_jitter} point size (default =
+0.75).}
 
-\item{jitter_height}{numeric. the height distance between overlapping points
-(default = 0).}
+\item{jitter_height}{numeric. the height distance between
+overlapping points (default = 0).}
 
-\item{jitter_width}{numeric. the width distance between overlapping points
-(default = 0).}
+\item{jitter_width}{numeric. the width distance between overlapping
+points (default = 0).}
 
-\item{title}{character name for the plot
-(default = "Dose-Response Posterior Draws").}
+\item{title}{character name for the plot (default =
+"Dose-Response Posterior Draws").}
 
-\item{xlab}{character name for the x-axis label (default = "Log[Molar]").}
+\item{xlab}{character name for the x-axis label (default =
+"Log[Molar]").}
 
-\item{ylab}{character name for the y-axis label (default = "Response").}
+\item{ylab}{character name for the y-axis label (default =
+"Response").}
 }
 \value{
 ggplot2::ggplot object.
 }
 \description{
-A plot of a sample of model fit draws from the posterior
-distribution from the expected mean and median quantile intervals.
+A plot of a sample of model fit draws from the
+    posterior distribution from the expected mean and median
+    quantile intervals.
 }
 \examples{
 \dontrun{

@@ -2,8 +2,8 @@
 % Please edit documentation in R/plot-prior_posterior_densities.R
 \name{prior_posterior_densities_plot}
 \alias{prior_posterior_densities_plot}
-\title{Create a plot of the prior & posterior density distributions of modeled
-parameters from brmsfit model}
+\title{Create a plot of the prior & posterior density distributions of
+modeled parameters from brmsfit model}
 \usage{
 prior_posterior_densities_plot(
   model,
@@ -15,23 +15,26 @@ prior_posterior_densities_plot(
 \arguments{
 \item{model}{brmsfit model.}
 
-\item{predictors_col_name}{string expression for predictors column in the
-input data.frame (default = "_Intercept"). Predictors are the perturbations
-tested during the experiment (i.e. Drug, Temperature, etc.).}
+\item{predictors_col_name}{string expression for predictors column
+in the input data.frame (default = "_Intercept"). Predictors
+are the perturbations tested during the experiment (i.e. Drug,
+Temperature, etc.).}
 
-\item{half_max_label}{string of the label for the half maximal that fits the
-type of experiment that was done (i.e. ec50, ic50, ed50, id50, ld50, etc.).}
+\item{half_max_label}{string of the label for the half maximal that
+fits the type of experiment that was done (i.e. ec50, ic50,
+ed50, id50, ld50, etc.).}
 
-\item{title_label}{string of the plot title.
-(default = "Prior Posterior Density Plots")}
+\item{title_label}{string of the plot title.  (default =
+"Prior Posterior Density Plots")}
 }
 \value{
 ggplot2::ggplot object.
 }
 \description{
-Plot of the prior and posterior density distributions of each
-  parameter from brmsfit model. The prior and posterior density distributions
-  will be displayed on the same plot and color labeled.
+Plot of the prior and posterior density distributions
+    of each parameter from brmsfit model. The prior and posterior
+    density distributions will be displayed on the same plot and
+    color labeled.
 }
 \examples{
 \dontrun{

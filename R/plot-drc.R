@@ -1,29 +1,27 @@
-
-
 #' Create plot of drc model
-#' 
+#'
 #' @param model drc object. drc model generated with drc::drm(...)
 #' @param newdata data.frame where the predictions should be made. Default: use
 #'   the range of log_dose values in the model object.
 #' @param predict_args list of arguments passed to predict(model, ...)
 #'   including interval will generate ribbon of the given type, see
-#'   `r drc:::predict.drc` for more details, Default:
-#'   `r list(interval = "prediction")`
+#'   \code{drc:::predict.drc} for more details, Default:
+#'   \code{list(interval = "prediction")}
 #' @param aes_mapping ggplot2::aes(...) mapping columns of the model data
 #'   and new data to the plot. Default:
-#'   `r ggplot2::aes(x = log_dose, y = response)`
+#'   \code{ggplot2::aes(x = log_dose, y = response)}
 #' @param title character, plot title. Default: NULL
-#' 
+#'
 #' @export
 plot_drc <- function(
-    model, 
+    model,
     newdata = NULL,
     predict_args = list(interval = "prediction"),
     aes_mapping = ggplot2::aes(
       x = log_dose,
       y = response),
     title =  NULL) {
-  
+
   if (is.null(newdata)) {
     log_dose_range <- model$data$log_dose[
       model$data$log_dose |> is.finite() |> which()] |>
@@ -41,11 +39,11 @@ plot_drc <- function(
         "newdata should either be NULL or a data.frame, instead it is of ",
         "class ", class(newdata), "\n"))
   }
-  
+
   assertthat::assert_that(methods::is(aes_mapping, "uneval"))
   assertthat::assert_that(
     is.null(title) || methods::is(title, "character"))
-  
+
   predicted_values <- newdata |>
     dplyr::bind_cols(
       do.call(
@@ -71,7 +69,7 @@ plot_drc <- function(
     ggplot2::geom_point(
       data = model$data) +
     ggplot2::labs(
-      title = title) + 
+      title = title) +
     ggplot2::scale_x_continuous("log[Concentration]") +
     ggplot2::scale_y_continuous("Response")
 }

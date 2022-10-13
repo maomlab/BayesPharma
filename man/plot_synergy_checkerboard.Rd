@@ -34,7 +34,7 @@ separation on the axis.}
 \value{
 ggplot2 plot with light-blue to dark-blue tiles the dose
     response. Individual plot elements can be over-written and the
-    plot can be saved with `r ggplot2::ggsave()`
+    plot can be saved with \code{ggplot2::ggsave()}
 }
 \description{
 Plot synergy checkerboard
