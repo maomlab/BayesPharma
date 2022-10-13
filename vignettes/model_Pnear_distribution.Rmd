@@ -353,7 +353,7 @@ We can use the fit the sigmoid model to the `log(RMSD)` using the
 #| refresh = 0,
 #| results="hide"
 model <- data |>
-  BayesPharma::sigmoid_model(
+  BayesPharma::sigmoid_antagonist_model(
     formula = BayesPharma::sigmoid_agonist_formula(
       predictors = 0 + target),
     prior = BayesPharma::sigmoid_agonist_prior(
