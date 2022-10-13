@@ -69,9 +69,9 @@ posterior_draws_plot <- function(
   # and add a sequence of values along the log_dose dimension
   if (is.null(newdata)) {
     predictor_values <- model$data |>
-      dplyr::select(-response, -log_dose) |>
+      dplyr::select(-tidyselect::any_of("response", "log_dose")) |>
       as.list() |>
-      map(unique)
+      purrr::map(unique)
     log_dose_range <- model$data$log_dose[
       model$data$log_dose |> is.finite() |> which()] |>
       range()

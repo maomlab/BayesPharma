@@ -37,7 +37,7 @@ density_distributions_plot <- function(
     labeller <- function(x) {
       x |>
         dplyr::mutate(
-          Parameter = Parameter |>
+          Parameter = .data["Parameter"] |>
             stringr::str_replace_all("b_|_Intercept", ""))
     }
   }
