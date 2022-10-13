@@ -1,9 +1,9 @@
 ---
-title: "nSMase2 Enzyme Inhibition"
+title: "Kinetic modeling of nSMase2 enzyme inhibition"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Enzyme Kinetics Application Example}
+  %\VignetteIndexEntry{Kinetic modeling of nSMase2 enzyme inhibition}
   %\VignetteEncoding{UTF-8}
 ---
   
@@ -13,7 +13,7 @@ vignette: >
 knitr::opts_chunk$set(
   cache = TRUE,
   echo = FALSE,
-  fig.path = "model_Pnear_distribution_figures/knitr-",
+  fig.path = "nSmase2_kinetics/knitr-",
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images
   fig.height = 5, # generated images
@@ -21,29 +21,17 @@ knitr::opts_chunk$set(
   fig.align = "center",
   dpi = if (knitr::is_latex_output()) 72 else 300, 
   out.width = "100%")
-#  dev = "svg",
-#  dev.args = list(png = list(type = "cairo-png")),
-#  optipng = "-o1 -quiet")
-
-# cmdstanr is more up-to-date than rstan and runs a little faster
-# but can't expose defined functions for downstream analysis
-if(Sys.info()["machine"] == "arm64"){
-  #rstan does not currently support apple M1 chips
-  stan_backend <- "cmdstanr"
-} else {
-  stan_backend <- "rstan"
-}
-
-
 
 ```
 
 
 ```{r load-packages}
-library(tidymodels)
+suppressWarnings(suppressMessages(library(tidymodels)))
 library(BayesPharma)
 library(GeomIndicator)
-library(tidybayes)
+suppressWarnings(suppressMessages(library(tidybayes)))
+library(deSolve)
+library(tictoc)
 ```
 
 
@@ -192,7 +180,7 @@ scale_estimates <- data |>
 ```
 
 
-```{r benchmark-tQ-model}
+```{r tQ-model}
 # n_series  subsample adapt_delta runtime comment
 # 1 NA  .999  12.6  
 # 2 NA  .999  58.3  
@@ -206,7 +194,7 @@ scale_estimates <- data |>
 # all NA  .0  13351.1 Tighter prior for logkM = normal(-3, 2)
 
 runtime <- system.time({
-  model_compile2 <- brms::brm(
+  model <- brms::brm(
       data = data |>
         dplyr::filter(Drug == 339) |>
         dplyr::filter(ST > 0) |>
@@ -226,68 +214,37 @@ runtime <- system.time({
       chains = 4,
       iter = 4000,
       cores = 4,
-      control = list(adapt_delta = 0.9),
-      backend = "cmdstanr")
+      #control = list(adapt_delta = 0.9),
+      #backend = "cmdstanr",
+      algorithm = "meanfield")
 })
-
-library(tictoc)
-
-runtime <- system.time({
-  model <- model_compile |> 
-    update(
-      recompile = FALSE,
-      cores = 4,
-      #algorithm = "meanfield",
-      iter = 4000)
-})
-
-
 ```
 
 
-
-
-```{r model-tQ}
-  model7_code <- brms::make_stancode(
-      data = data |> dplyr::filter(Drug == 339) |> dplyr::filter(ST > 0),
-      formula = BayesPharma::tQ_formula(
-        predictors = 0 + Drug),
-      stanvars = BayesPharma::tQ_stanvar,
-      prior = BayesPharma::tQ_prior(
-        kcat = brms::prior(prior = gamma(9, 100), lb = 0, nlpar = "kcat"),
-        kM = brms::prior(prior = gamma(.001, 0.1), lb = 0, nlpar = "kM")),
-      init = function() list(b_kcat = .09, b_kM = .01, sigma = 1),
-      iter = 4000,
-      cores = 1,
-      backend = "cmdstanr")
-      threads = brms::threading(9)
-
-#    control = list(adapt_delta = 0.99))
-
-
-```
-
-
-```{r model-multiple-draws, deps=c("model-multiple", "model-multiple-prior")}
-model_prior <- model6 |>
+```{r model-draws, deps=c("tQ-model")}
+model_prior <- model |>
   update(sample_prior = "only")
 
 draws_prior <- model_prior |>
   tidybayes::tidy_draws() |>
   tidybayes::gather_variables() |>
-  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|kM)")) |>
-  tidyr::separate(.variable, into = c("class", "parameter", "treatment"), sep = "_") |>
+  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|logkM)")) |>
+  tidyr::separate(
+    .variable,
+    into = c("class", "parameter", "treatment"), sep = "_") |>
   dplyr::mutate(treatment = treatment |> stringr::str_replace("treatment", ""))
 
-draws_posterior <- model6 |>
+draws_posterior <- model |>
   tidybayes::tidy_draws() |>
   tidybayes::gather_variables() |>
-  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|kM)")) |>
-  tidyr::separate(.variable, into = c("class", "parameter", "treatment"), sep = "_") |>
+  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|logkM)")) |>
+  tidyr::separate(
+    .variable,
+    into = c("class", "parameter", "treatment"), sep = "_") |>
   dplyr::mutate(treatment = treatment |> stringr::str_replace("treatment", ""))
 ```
 
-```{r prior-posterior-multiple-scatter, deps=c("model-multiple-draws")}
+```{r prior-posterior-scatter, deps=c("model-draws")}
 draws_prior_pairs <- draws_prior |>
   tidyr::pivot_wider(
     id_cols = c(".chain", ".iteration", ".draw", "treatment"),
@@ -302,36 +259,37 @@ draws_posterior_pairs <- draws_posterior |>
 
 ggplot2::ggplot() +
   ggplot2::theme_bw() +
-   ggplot2::geom_point(
-     data = draws_prior_pairs,
-     mapping = ggplot2::aes(
-       x = log10(kcat),
-       y = log10(kM)),
-     color = "orange",
-     size = 0.8,
-     shape = 16,
-     alpha = .6) +
-    ggplot2::geom_point(
+  ggplot2::geom_point(
+    data = draws_prior_pairs,
+    mapping = ggplot2::aes(
+      x = log10(kcat),
+      y = logkM),
+    color = "orange",
+    size = 0.8,
+    shape = 16,
+    alpha = .6) +
+  ggplot2::geom_point(
     data = draws_posterior_pairs,
     mapping = ggplot2::aes(
       x = log10(kcat),
-      y = log10(kM)),
+      y = logkM),
     color = "blue",
     size = .8,
     shape = 16,
     alpha = .3) +
-  ggplot2::scale_x_continuous("catalytic constant (kcat)") +
-  ggplot2::scale_y_continuous("Michaelis constant (kM)") +
-  ggplot2::facet_wrap(facets = dplyr::vars(treatment), nrow = 1, scales = "free")
+  ggplot2::scale_x_continuous("Catalytic constant: log(kcat)") +
+  ggplot2::scale_y_continuous("Michaelis constant: log(kM)") +
+  ggplot2::facet_wrap(
+    facets = dplyr::vars(treatment),
+    nrow = 1,
+    scales = "free")
 ```
 
 
 
 ```{r test list-column}
-BayesPharma::posterior_draws_plot(
-  model = model5)
-
-
+#BayesPharma::posterior_draws_plot(
+#  model = model)
 ```
 
 

@@ -1,9 +1,9 @@
 ---
-title: "BayesPharma + TidyModels"
+title: "BayesPharma and TidyModels"
 author: "Matthew O'Meara"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{BayesPharma + TidyModels}
+  %\VignetteIndexEntry{BayesPharma and TidyModels}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 
@@ -17,7 +17,7 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 knitr::opts_chunk$set(
   cache = TRUE,
   echo = FALSE,
-  fig.path = "model_KOR_Antagonists_figures/knitr-",
+  fig.path = "TidyModels_demo/knitr-",
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images
   fig.height = 5, # generated images
@@ -36,7 +36,7 @@ set.seed(0)
 ```{r load-packages}
 suppressWarnings(suppressMessages(library(tidymodels)))
 library(BayesPharma)
-library(bayesplot)
+suppressWarnings(suppressMessages(library(bayesplot)))
 library(bayesian)
 
 bayesplot::bayesplot_theme_set(
@@ -72,6 +72,7 @@ kor_recipe <- kor_antag |>
 
 Define the model using the \code{bayesian} wrapper package for TidyModels.
 ```{r build-model}
+#| echo=TRUE
 kor_model <- bayesian::bayesian(
   cores = 4,
   chains = 4,
@@ -91,6 +92,7 @@ kor_model <- bayesian::bayesian(
 
 Build and run the workflow by adding the recipe and model and then running fit.
 ```{r build-workflow}
+#| echo=TRUE
 kor_workflow <- workflows::workflow() |>
   workflows::add_recipe(kor_recipe) |>
   workflows::add_model(spec = kor_model) |>

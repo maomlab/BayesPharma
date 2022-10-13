@@ -7,6 +7,7 @@ inst/doc
 docs
 *~
 
+vignettes/*.rmarkdown
 vignettes/*_cache
 vignettes/*_files
 vignettes/*.tex
