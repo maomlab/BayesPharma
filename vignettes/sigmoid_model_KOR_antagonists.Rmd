@@ -3,7 +3,7 @@ title: "Bayesian Sigmoid Model: Analysis of Four Kappa Opioid Receptor Antagonis
 author: "Madeline Martin"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Bayesian Dose Response Modeling and Analysis of Four Kappa Opioid Receptor Antagonists}
+  %\VignetteIndexEntry{Bayesian Sigmoid Model: Analysis of Four Kappa Opioid Receptor Antagonists}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 

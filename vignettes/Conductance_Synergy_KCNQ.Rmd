@@ -3,7 +3,7 @@ title: "Ion Channel Conductance as Voltage Drugy Synergy"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Conductance Synergy KCNQ}
+  %\VignetteIndexEntry{Ion Channel Conductance as Voltage Drugy Synergy}
   %\VignetteEncoding{UTF-8}
 ---
 
