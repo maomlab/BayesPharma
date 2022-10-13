@@ -3,27 +3,27 @@
 #' @description Creating initial values for an agonist sigmoid model parameters
 #'   that can be passed to the `sigmoid_agoninst_model`.
 #'
-#' @param ic50 numeric or numeric returning function units log_dose
-#'   (default = -9)
+#' @param ec50 numeric or numeric returning function units log_dose
+#'   (default = -6, corresponding to 1 uM
 #' @param hill numeric or numeric returning function with units
 #'   response/log_dose (default = 1)
-#' @param top numeric units of top (default = 100).
+#' @param top numeric units of top (default = 1).
 #' @param bottom numeric units of bottom (default = 0).
 #' @return input for brms::brm(init = ...)
 #'
 #' @examples
 #'\dontrun{
 #' #Consider an activator that has a max response around 50%, EC50 is estimated
-#' #to be around 1 uM, minimum response is known to be 0.
+#' #to be around 1 nM, minimum response is known to be 0.
 #' init <- BayesPharma::sigmoid_agonist_init(
-#'   ec50 = -6,
-#'   top = 50)
+#'   ec50 = -9,
+#'   top = 0.5)
 #'}
 #'@export
 sigmoid_agonist_init <- function(
     ec50 = -9,
     hill = 1,
-    top = 100,
+    top = 1,
     bottom = 0) {
 
   function() {
@@ -41,26 +41,26 @@ sigmoid_agonist_init <- function(
 #'   can be passed to the `sigmoid_antagonist_model`
 #'
 #' @param ic50 numeric or numeric returning function units log_dose
-#'   (default = -9)
+#'   (default = -6, corresponding to 1e-6 = 1 uM)
 #' @param hill numeric or numeric returning function with units
 #'   response/log_dose (default = -1)
-#' @param top numeric units of top (default = 100).
+#' @param top numeric units of top (default = 1).
 #' @param bottom numeric units of bottom (default = 0).
 #' @return input for brms::brm(init = ...)
 #'
 #' @examples
 #'\dontrun{
 #' #Consider an inhibitor that has a min response around 50%, IC50 is estimated
-#' #to be around 1 uM, maximum response is known to be 1000,
+#' #to be around 1 nM, minimum response is known to be around 0,
 #' init <- BayesPharma::sigmoid_antagonist_init(
-#'   ec50 = -6,
-#'   bottom = 50)
+#'   ec50 = -9,
+#'   bottom = 0.5)
 #'}
 #'@export
 sigmoid_antagonist_init <- function(
     ic50 = -9,
     hill = -1,
-    top = 100,
+    top = 1,
     bottom = 0) {
   
   function() {

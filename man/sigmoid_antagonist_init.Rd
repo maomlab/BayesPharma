@@ -4,16 +4,16 @@
 \alias{sigmoid_antagonist_init}
 \title{Create initialization for the antagonist sigmoid model}
 \usage{
-sigmoid_antagonist_init(ic50 = -9, hill = -1, top = 100, bottom = 0)
+sigmoid_antagonist_init(ic50 = -9, hill = -1, top = 1, bottom = 0)
 }
 \arguments{
 \item{ic50}{numeric or numeric returning function units log_dose
-(default = -9)}
+(default = -6, corresponding to 1e-6 = 1 uM)}
 
 \item{hill}{numeric or numeric returning function with units
 response/log_dose (default = -1)}
 
-\item{top}{numeric units of top (default = 100).}
+\item{top}{numeric units of top (default = 1).}
 
 \item{bottom}{numeric units of bottom (default = 0).}
 }
@@ -27,9 +27,9 @@ Creating initial values for the sigmoid model parameters that
 \examples{
 \dontrun{
 #Consider an inhibitor that has a min response around 50\%, IC50 is estimated
-#to be around 1 uM, maximum response is known to be 1000,
+#to be around 1 nM, minimum response is known to be around 0,
 init <- BayesPharma::sigmoid_antagonist_init(
-  ec50 = -6,
-  bottom = 50)
+  ec50 = -9,
+  bottom = 0.5)
 }
 }

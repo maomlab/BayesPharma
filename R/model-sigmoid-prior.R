@@ -12,16 +12,16 @@
 #' <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
 #'
 #' @param ec50 `brmsprior` or numeric. Prior for the ec50 parameter.
-#'   Default: normal(-7, 2.5) where the mean -7 corresponds to a
-#'   concentration of 1e-7 or 100 nM. Setting ec50 to a numeric value constrains
+#'   Default: normal(-6, 2.5) where the mean -7 corresponds to a
+#'   concentration of 1e-6 or 1 uM. Setting ec50 to a numeric value constrains
 #'   it to a constant value.
 #' @param hill `brmsprior` or numeric. Prior for the hill parameter. Default:
 #'   normal(1, 1) with and a lower bound of -0.1.
 #' @param top `brmsprior` or numeric. Prior for the top parameter.
-#'   Default: normal(100, 25). Setting top to a numeric value constrains it to
+#'   Default: normal(1, 0.5). Setting top to a numeric value constrains it to
 #'   a constant value.
 #' @param bottom  `brmsprior` or numeric. Prior for the top parameter.
-#'   Default: normal(100, 25). Setting bottom to a numeric value constrains it
+#'   Default: normal(0, 0.5). Setting bottom to a numeric value constrains it
 #'   to a constant value.
 #' @param ... additional `brmsprior` objects.
 #' @return `brmsprior` `data.frame`
@@ -29,19 +29,19 @@
 #' @examples
 #'\dontrun{
 #' # Consider an activator that has a max response around 50%, EC50 is estimated
-#' # to be around 1 uM, and minimum response is known to be 0.
+#' # to be around 1 nM, and minimum response is known to be 0.
 #' priors <- sigmoid_agonist_prior(
-#'   ec50 = brms::prior(normal(-6, 0.5), nlpar = "ec50"),
+#'   ec50 = brms::prior(normal(-9, 0.5), nlpar = "ec50"),
 #'   inhibitor = FALSE,
-#'   top = brms::prior(normal(50, 2.5), nlpar = "top"),
+#'   top = brms::prior(normal(0.5, 0.2), nlpar = "top"),
 #'   bottom = 0)
 #'}
 #' @export
 sigmoid_agonist_prior <- function(
-  ec50 = brms::prior(normal(-7, 2.5), nlpar = "ec50"),
+  ec50 = brms::prior(normal(-6, 2.5), nlpar = "ec50"),
   hill = brms::prior(prior = normal(1, 1), nlpar = "hill", lb = -0.01),
-  top = brms::prior(normal(100, 25), nlpar = "top"),
-  bottom = brms::prior(prior = normal(0, 25), nlpar = "bottom"),
+  top = brms::prior(normal(1, 0.5), nlpar = "top"),
+  bottom = brms::prior(prior = normal(0, 0.5), nlpar = "bottom"),
   ...) {
   
   c(
@@ -65,16 +65,16 @@ sigmoid_agonist_prior <- function(
 #' <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
 #'
 #' @param ic50 `brmsprior` or numeric. Prior for the ec50 parameter.
-#'   Default: normal(-7, 2.5) where the mean -7 corresponds to a
-#'   concentration of 1e-7 or 100 nM. Setting ic50 to a numeric value constrains
+#'   Default: normal(-6, 2.5) where the mean -6 corresponds to a
+#'   concentration of 1e-6 or 1 uM. Setting ic50 to a numeric value constrains
 #'   it to a constant value.
 #' @param hill `brmsprior` or numeric. Prior for the hill parameter. Default:
 #'   normal(-1, 1) upper bounded by 0.1.
 #' @param top `brmsprior` or numeric. Prior for the top parameter.
-#'   Default: normal(100, 25). Setting top to a numeric value constrains it to
+#'   Default: normal(1, 0.5). Setting top to a numeric value constrains it to
 #'   a constant value.
 #' @param bottom  `brmsprior` or numeric. Prior for the top parameter.
-#'   Default: normal(100, 25). Setting bottom to a numeric value constrains it to
+#'   Default: normal(0, 0.5). Setting bottom to a numeric value constrains it to
 #'   a constant value.
 #' @param ... additional `brmsprior` objects.
 #' @return `brmsprior` `data.frame`
@@ -85,15 +85,15 @@ sigmoid_agonist_prior <- function(
 #' # to be around 1 uM, and minimum response is known to be 0.
 #' priors <- sigmoid_antagonist_prior(
 #'   ic50 = brms::prior(normal(-6, 0.5), nlpar = "ic50"),
-#'   top = brms::prior(normal(50, 2.5), nlpar = "top"),
+#'   top = brms::prior(normal(0.5, 0.5), nlpar = "top"),
 #'   bottom = 0)
 #'}
 #' @export
 sigmoid_antagonist_prior <- function(
-    ic50 = brms::prior(normal(-7, 2.5), nlpar = "ic50"),
+    ic50 = brms::prior(normal(-6, 2.5), nlpar = "ic50"),
     hill = brms::prior(prior = normal(-1, 1), nlpar = "hill", ub = 0.01),
-    top = brms::prior(normal(100, 25), nlpar = "top"),
-    bottom = brms::prior(prior = normal(0, 25), nlpar = "bottom"),
+    top = brms::prior(normal(1, 0.5), nlpar = "top"),
+    bottom = brms::prior(prior = normal(0, 0.5), nlpar = "bottom"),
     ...) {
  
   c(
