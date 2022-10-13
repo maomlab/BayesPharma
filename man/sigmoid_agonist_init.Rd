@@ -4,18 +4,18 @@
 \alias{sigmoid_agonist_init}
 \title{Create initialization for the agonist sigmoid model}
 \usage{
-sigmoid_agonist_init(ec50 = -9, hill = 1, top = 100, bottom = 0)
+sigmoid_agonist_init(ec50 = -9, hill = 1, top = 1, bottom = 0)
 }
 \arguments{
+\item{ec50}{numeric or numeric returning function units log_dose
+(default = -6, corresponding to 1 uM}
+
 \item{hill}{numeric or numeric returning function with units
 response/log_dose (default = 1)}
 
-\item{top}{numeric units of top (default = 100).}
+\item{top}{numeric units of top (default = 1).}
 
 \item{bottom}{numeric units of bottom (default = 0).}
-
-\item{ic50}{numeric or numeric returning function units log_dose
-(default = -9)}
 }
 \value{
 input for brms::brm(init = ...)
@@ -27,9 +27,9 @@ Creating initial values for an agonist sigmoid model parameters
 \examples{
 \dontrun{
 #Consider an activator that has a max response around 50\%, EC50 is estimated
-#to be around 1 uM, minimum response is known to be 0.
+#to be around 1 nM, minimum response is known to be 0.
 init <- BayesPharma::sigmoid_agonist_init(
-  ec50 = -6,
-  top = 50)
+  ec50 = -9,
+  top = 0.5)
 }
 }

@@ -5,28 +5,28 @@
 \title{Default priors for the sigmoid antagonist model}
 \usage{
 sigmoid_antagonist_prior(
-  ic50 = brms::prior(normal(-7, 2.5), nlpar = "ic50"),
+  ic50 = brms::prior(normal(-6, 2.5), nlpar = "ic50"),
   hill = brms::prior(prior = normal(-1, 1), nlpar = "hill", ub = 0.01),
-  top = brms::prior(normal(100, 25), nlpar = "top"),
-  bottom = brms::prior(prior = normal(0, 25), nlpar = "bottom"),
+  top = brms::prior(normal(1, 0.5), nlpar = "top"),
+  bottom = brms::prior(prior = normal(0, 0.5), nlpar = "bottom"),
   ...
 )
 }
 \arguments{
 \item{ic50}{`brmsprior` or numeric. Prior for the ec50 parameter.
-Default: normal(-7, 2.5) where the mean -7 corresponds to a
-concentration of 1e-7 or 100 nM. Setting ic50 to a numeric value constrains
+Default: normal(-6, 2.5) where the mean -6 corresponds to a
+concentration of 1e-6 or 1 uM. Setting ic50 to a numeric value constrains
 it to a constant value.}
 
 \item{hill}{`brmsprior` or numeric. Prior for the hill parameter. Default:
 normal(-1, 1) upper bounded by 0.1.}
 
 \item{top}{`brmsprior` or numeric. Prior for the top parameter.
-Default: normal(100, 25). Setting top to a numeric value constrains it to
+Default: normal(1, 0.5). Setting top to a numeric value constrains it to
 a constant value.}
 
 \item{bottom}{`brmsprior` or numeric. Prior for the top parameter.
-Default: normal(100, 25). Setting bottom to a numeric value constrains it to
+Default: normal(0, 0.5). Setting bottom to a numeric value constrains it to
 a constant value.}
 
 \item{...}{additional `brmsprior` objects.}
@@ -52,7 +52,7 @@ For other distribution options, reference
 # to be around 1 uM, and minimum response is known to be 0.
 priors <- sigmoid_antagonist_prior(
   ic50 = brms::prior(normal(-6, 0.5), nlpar = "ic50"),
-  top = brms::prior(normal(50, 2.5), nlpar = "top"),
+  top = brms::prior(normal(0.5, 0.5), nlpar = "top"),
   bottom = 0)
 }
 }
