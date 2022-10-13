@@ -18,8 +18,8 @@ plot_drc <- function(
     newdata = NULL,
     predict_args = list(interval = "prediction"),
     aes_mapping = ggplot2::aes(
-      x = log_dose,
-      y = response),
+      x = .data["log_dose"],
+      y = .data["response"]),
     title =  NULL) {
 
   if (is.null(newdata)) {
@@ -53,9 +53,9 @@ plot_drc <- function(
           newdata = newdata),
           predict_args))) |>
     dplyr::rename(
-      response = Prediction,
-      response_lower = Lower,
-      response_upper = Upper)
+      response = .data["Prediction"],
+      response_lower = .data["Lower"],
+      response_upper = .data["Upper"])
 
   plot <- ggplot2::ggplot(mapping = aes_mapping) +
     ggplot2::theme_bw() +

@@ -2,12 +2,19 @@ Package: BayesPharma
 Type: Package
 Title: Tools for Bayesian Analysis of Non-Linear Pharmacology Models
 Version: 0.0.2
-Authors@R: c(person("Madeline", "Martin", email = "mmarti29@uoregon.edu",
-    role = c("aut", "cre")),
-             person(given="Matthew", family="O'Meara", email = "maom@umich.edu",
-    role = c("aut")))
-Description: This package contains a collection of R tools to analyze pharmacology
-    data using Bayesian statistics.
+Authors@R: c(
+    person(
+      given = "Madeline",
+      famil = "Martin",
+      email = "mmarti29@uoregon.edu",
+      role = c("aut", "cre")),
+    person(
+      given = "Matthew",
+      family = "O'Meara",
+      email = "maom@umich.edu",
+      role = c("aut"),
+      comment = c(ORCID = "0000-0002-3128-5331")))
+Description: Tools to analyze pharmacology data using Bayesian statistics.
 URL: https://api.github.com/repos/maomlab/BayesPharma/pages
 Depends:
     R (>= 4.0.0)
@@ -23,7 +30,6 @@ Imports:
     posterior,
     purrr,
     rlang,
-    readxl,
     rstan,
     rstantools,
     StanHeaders,
@@ -71,21 +77,32 @@ Collage:
 Encoding: UTF-8
 License: MIT + file LICENSE
 Suggests:
-    testthat (>= 3.0.0),
-    rmarkdown,
-    knitr,
-    xkcd,
-    GeomIndicator,
+    bayesian,
+    bayesplot,
+    cmdstanr,
     covr,
+    deSolve,
+    drc,
     forcats,
+    GeomIndicator,
+    ggdist,
+    ggrepel,
+    here,
+    knitr,
+    matrixStats,
     modelr,
+    parsnip,
+    readr,
+    readxl,
+    recipes,
+    rmarkdown,
     stringr,
     tibble,
+    tictoc,
     tidybayes,
-    bayesplot,
-    ggdist,
-    matrixStats,
-    deSolve
+    testthat (>= 3.0.0),
+    workflows,
+    xkcd
 Remotes: 
     maomlab/GeomIndicator
 LazyData: true
