@@ -35,7 +35,7 @@ with model convergence (default = 8000).}
 Adding max_treedepth and giving a greater value than 10 can improve model
 convergence (default = list(adapt_delta = 0.99)).}
 
-\item{...}{additional arguments passed to `r brms::brm`.}
+\item{...}{additional arguments passed to \code{brms::brm}.}
 }
 \value{
 brmsfit model

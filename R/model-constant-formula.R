@@ -2,11 +2,12 @@
 #'
 #' @description set-up an equation for formula objects with a constant response.
 #'
-#' @param predictors Additional formula objects to specify predictors of
-#'   non-linear parameters. i.e. what perturbations/experimental differences
-#'   should be modeled separately? (Default: 1) should a random effect be taken
-#'   into consideration? i.e. cell number, plate number, etc.
-#' @param ... additional arugments to `r brms::brmsformula`
+#' @param predictors Additional formula objects to specify predictors
+#'     of non-linear parameters. i.e. what perturbations/experimental
+#'     differences should be modeled separately? (Default: 1) should a
+#'     random effect be taken into consideration? i.e. cell number,
+#'     plate number, etc.
+#' @param ... additional arugments to \code{brms::brmsformula}
 #'
 #' @return brmsformula
 #'

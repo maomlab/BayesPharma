@@ -17,33 +17,33 @@ sigmoid_agonist_model(
 }
 \arguments{
 \item{data}{data.frame of experimental data.
-must contain columns `r response` and any predictors specified in
+must contain columns \code{response} and any predictors specified in
 the formula.}
 
 \item{formula}{brmsformula object. To create a dose-response brmsformula,
-(default: `r BayesPharma::sigmoid_agonist_formula()`.}
+(default: \code{BayesPharma::sigmoid_agonist_formula()}.}
 
 \item{prior}{brmspriors data.frame for ec50, hill, top, and bottom.
 Use one of the priors functions provided to create priors to use here.
-(default: `r BayesPharma::sigmoid_agonist_prior()`}
+(default: \code{BayesPharma::sigmoid_agonist_prior()}}
 
 \item{init}{initial values of the parameters being modeled (default =
-`r BayesPharma::sigmoid_agonist_init()`}
+\code{BayesPharma::sigmoid_agonist_init()}}
 
 \item{iter}{number of iterations the model runs. Increasing iter can help
 with model convergence (default: 8000).}
 
 \item{control}{a named list of parameters to control the sampler's behavior.
-Adding `r max_treedepth` and giving a greater value than 10 can improve model
-convergence (default: `r list(adapt_delta = 0.99)`).}
+Adding \code{max_treedepth} and giving a greater value than 10 can improve model
+convergence (default: \code{list(adapt_delta = 0.99)}).}
 
 \item{stanvar_function}{stan code for the model (default:
-`r BayesPharma::sigmoid_stanvar`)}
+\code{BayesPharma::sigmoid_stanvar})}
 
-\item{...}{additional arguments passed to `r brms::brm`}
+\item{...}{additional arguments passed to \code{brms::brm}}
 }
 \value{
-`r brmsfit` object
+\code{brmsfit} object
 }
 \description{
 For additional information on additional function arguments, reference:

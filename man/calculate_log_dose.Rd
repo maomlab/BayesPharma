@@ -16,12 +16,12 @@ units.}
 column (default = 1).}
 }
 \value{
-input `r data.frame` with an additional `r log_dose` column.
+input \code{data.frame} with an additional \code{log_dose} column.
 }
 \description{
 Given the dose as a column in a data.frame with a given molar
-  concentration add a new column of the log base-10 dose, `r log_dose`, in
-  the `r data.frame` and return it.
+  concentration add a new column of the log base-10 dose, \code{log_dose}, in
+  the \code{data.frame} and return it.
 }
 \examples{
 \dontrun{

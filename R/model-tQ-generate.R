@@ -1,26 +1,28 @@
 #' Generate data from the total QSSA model for enzyme kinetics
 #'
-#' Simulate data from the total QSSA model a refinement of the classical
-#' Michaelis-Menten enzyme kinetics ordinary differential equation described in
-#' (Choi, et al., 2017, DOI: 10.1038/s41598-017-17072-z). Consider the kinetic
-#' rate equation
+#' Simulate data from the total QSSA model a refinement of the
+#' classical Michaelis-Menten enzyme kinetics ordinary differential
+#' equation described in (Choi, et al., 2017, DOI:
+#' 10.1038/s41598-017-17072-z). Consider the kinetic rate equation
 #'
 #'                   kf
 #'                  --->    kcat
 #'           E + S  <---  C --->  E + P
 #'                   kb
 #'
-#' where the free enzyme (E) reversibly binds to the stubstrate (S) to form
-#' a complex (C) with forward and backward rate constants of kf and kb, which is
-#' irreversibly catalyzed into the product (P), with rate constant of kcat,
-#' releasing the enzyme to catalyze additional substrate. The total enzyme
-#' concentration is defined to be the `r ET := E + C`. The total substrate and
-#' product concentration is defined to be `r ST := S + C + P`. The Michaelis
-#' constant is the defined to be the `r kM := (kb + kcat) / kf`. The kcat rate
+#' where the free enzyme (E) reversibly binds to the stubstrate (S) to
+#' form a complex (C) with forward and backward rate constants of kf
+#' and kb, which is irreversibly catalyzed into the product (P), with
+#' rate constant of kcat, releasing the enzyme to catalyze additional
+#' substrate. The total enzyme concentration is defined to be the
+#' \code{ET := E + C}. The total substrate and product concentration
+#' is defined to be \code{ST := S + C + P}. The Michaelis constant is
+#' the defined to be the \code{kM := (kb + kcat) / kf}. The kcat rate
 #' constant determines the maximum turn over at saturating substrate
-#' concentrations, `r Vmax := kcat * ET`. The rate constants `kcat` and `kM` can
-#' be estimated by monitoring the product accumulation over time (enzyme
-#' progress curves), by varying the enzyme and substrate concentrations.
+#' concentrations, \code{Vmax := kcat * ET}. The rate constants \code{kcat}
+#' and \code{kM} can be estimated by monitoring the product accumulation
+#' over time (enzyme progress curves), by varying the enzyme and
+#' substrate concentrations.
 #'
 #' From (Choi, et al, 2017, equation 2, the total quasi-steady-state
 #' approximation (tQ) differential equation is defined by
@@ -55,11 +57,11 @@
 #' @param kM numeric value Michaelis rate constant
 #' @param ET numeric value total enzyme concentration
 #' @param ST numeric value total substrate concentration
-#' @param ... additional arguments to `r deSolve::ode`
+#' @param ... additional arguments to \code{deSolve::ode}
 #'
-#' @return run the tQ ordinary differential equation forwards starting with
-#'  initial product concentration of 0 and specified kcat and kM parameters
-#'  for the specified time steps.
+#' @return run the tQ ordinary differential equation forwards starting
+#'     with initial product concentration of 0 and specified kcat and
+#'     kM parameters for the specified time steps.
 #'
 #' @export
 tQ_model_generate <- function(time, kcat, kM, ET, ST, ...) {

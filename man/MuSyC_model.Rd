@@ -2,8 +2,7 @@
 % Please edit documentation in R/model-MuSyC-run.R
 \name{MuSyC_model}
 \alias{MuSyC_model}
-\title{Combined:
-     sample1 =}
+\title{MuSyC Synergy Model}
 \usage{
 MuSyC_model(
   data,
@@ -20,33 +19,36 @@ MuSyC_model(
 must contain columns \code{response} and any predictors specified in
 the formula.}
 
-\item{prior}{`r brmspriors` for `r kcat` and `r kM` parameters. Use
-`BayesPharma::MuSyC_prior(...)` to create the prior to use here. Default
-`BayesPharma::MuSyC_prior()`.}
+\item{prior}{\code{brmspriors} for \code{kcat} and \code{kM} parameters. Use
+\code{BayesPharma::MuSyC_prior(...)} to create the prior to use here.
+Default: \code{BayesPharma::MuSyC_prior()}.}
 
 \item{init}{Initial values for the parameters, Use
-`r BayesPharma::MuSyC_init(...)` to create the init to use here. Default
-`r BayesPharma::MuSyC_init()`.}
+\code{BayesPharma::MuSyC_init(...)} to create the init to use here. Default
+\code{BayesPharma::MuSyC_init()}.}
 
-\item{formula}{`r brmsformula` object. To create a dose-response
-`r brmsformula`, use the \code{MuSyC_formula} function.}
+\item{formula}{\code{brmsformula} object. To create a dose-response
+\code{brmsformula}, use the \code{MuSyC_formula} function.}
 
 \item{control}{a named list of parameters to control the sampler's behavior.
-Adding `r max_treedepth` and giving a greater value than 10 can improve model
-convergence (default: `r list(adapt_delta = 0.99)`).}
+Adding \code{max_treedepth} and giving a greater value than 10 can improve model
+convergence (default: \code{list(adapt_delta = 0.99)}).}
 
-\item{stanvars}{`r stanvars` code for the model. Default defines the
+\item{stanvars}{\code{stanvars} code for the model. Default defines the
 MuSyC function and genquant code.}
 
-\item{...}{additional arguments passed to `brms::brm`}
+\item{...}{additional arguments passed to \code{brms::brm}}
 }
 \description{
+Combined:
+     sample1 =
+}
+\details{
 nlp_logE0 = X_logE0 * b_logE0
                  _______   _______
                     = 1    = param
-}
-\details{
-nlp_logE1 = X_logE1 * b_logE0
+
+     nlp_logE1 = X_logE1 * b_logE0
                  _______   ______
                  =sample1
 }

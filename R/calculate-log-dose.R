@@ -1,14 +1,14 @@
 #' Add a log dose (in base 10) column to the input data.frame
 #'
 #' @description Given the dose as a column in a data.frame with a given molar
-#'   concentration add a new column of the log base-10 dose, `r log_dose`, in
-#'   the `r data.frame` and return it.
+#'   concentration add a new column of the log base-10 dose, \code{log_dose}, in
+#'   the \code{data.frame} and return it.
 #' @param data data.frame containing a column representing a dose in molar
 #'   units.
 #' @param dose_col expression for dose column in the input data.frame
 #' @param molar_concentration numeric units of molar concentration of the dose
 #'   column (default = 1).
-#' @return input `r data.frame` with an additional `r log_dose` column.
+#' @return input \code{data.frame} with an additional \code{log_dose} column.
 #'
 #' @examples
 #' \dontrun{
@@ -29,7 +29,7 @@
 calculate_log_dose <- function(
     data,
     dose_col = "dose",
-    molar_concentration = 1){
+    molar_concentration = 1) {
 
   if ("log_dose" %in% names(data)) {
     warning(
@@ -43,7 +43,7 @@ calculate_log_dose <- function(
       stop("dose_col: '", dose_col, "' is not a column of data\n")
     }
   } else if (is.numeric(dose_col)) {
-    if (dose_col < 1 || dose_col > ncol(data)){
+    if (dose_col < 1 || dose_col > ncol(data)) {
       stop(
         "dose_col indexes column ", dose_col, ", but data only has ",
         ncol(data), " column\n")
@@ -52,6 +52,6 @@ calculate_log_dose <- function(
     stop(paste0("Unrecognized class for dose_col ", class(dose_col), "\n"))
   }
 
-  data$log_dose <- log10(data[,dose_col] * molar_concentration)
+  data$log_dose <- log10(data[, dose_col] * molar_concentration)
   data
 }

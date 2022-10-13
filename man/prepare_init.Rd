@@ -7,8 +7,8 @@
 prepare_init(init)
 }
 \arguments{
-\item{init}{function returning an numeric array of length one or a numeric
-value.}
+\item{init}{function returning an numeric array of length one or a
+numeric value.}
 }
 \value{
 function returning a numeric array of length 1.
