@@ -23,6 +23,7 @@ Imports:
     posterior,
     purrr,
     rlang,
+    readxl,
     rstan,
     rstantools,
     StanHeaders,
