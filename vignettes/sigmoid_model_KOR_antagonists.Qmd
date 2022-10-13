@@ -1,0 +1,42 @@
+---
+title: "Bayesian Sigmoid Model: Analysis of Four Kappa Opioid Receptor Antagonists"
+author: "Madeline Martin"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Bayesian Dose Response Modeling and Analysis of Four Kappa Opioid Receptor Antagonists}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r set-options}
+#| echo=FALSE
+options(rmarkdown.html_vignette.check_title = FALSE)
+
+# inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
+knitr::opts_chunk$set(
+  cache = TRUE,
+  echo = FALSE,
+  fig.path = "model_KOR_Antagonists_figures/knitr-",
+  fig.retina = 2, # Control using dpi
+  fig.width = 6,  # generated images
+  fig.height = 5, # generated images
+  fig.pos = "t",  # pdf mode
+  fig.align = "center",
+  dpi = if (knitr::is_latex_output()) 72 else 300, 
+  out.width = "100%")
+
+bayesplot::bayesplot_theme_set(
+  new = ggplot2::theme_bw())
+
+```
+
+```{r load-packages}
+#| echo=FALSE
+
+library(tidymodels)
+library(BayesPharma)
+library(drc) 
+```
+
+{{< include BayesPharma_manuscript_sections/case_study_hill.qmd >}}
