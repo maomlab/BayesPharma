@@ -8,13 +8,13 @@ Originally paper, the dose-response data analysis was done by using the `drc` pa
 ### Fitting the sigmoid model
 Using the BayesPharma package, we can re-fit the sigmoid model with a negative slope, and fixing the top parameter to 100 as the response is normalized to a no-drug baseline.
 
-For the priors, we are going to use a normal distribution because the response
+For the prior, we are going to use a normal distribution because the response
 values are continuous. First, We will run the analysis with top (max response) parameter prior set to a constant value of 100 because top is normalized to 100 and the default broad
-priors for ic50, hill and bottom. Broad priors represent unbiased uncertainty and provide an opportunity for extreme responses.
+prior for ic50, hill and bottom. Broad priors represent unbiased uncertainty and provide an opportunity for extreme responses.
 
-The level of informativeness of the priors will affect how much influence the priors have on the model. Here is more [information on prior choice recommendations.](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
+The level of informativeness of the prior will affect how much influence the prior has on the model. Here is more [information on prior choice recommendations.](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
 \scriptsize
-```{r kor-priors}
+```{r kor-prior}
 #| echo=TRUE
 kor_prior <- BayesPharma::sigmoid_antagonist_prior(top = 100)
 kor_prior
@@ -45,11 +45,11 @@ kor_antag <- kor_antag |> dplyr::transmute(
 #| echo=TRUE,
 #| results='hide',
 #| message=FALSE,
-#| dependson=c("kor-priors")
+#| dependson=c("kor-prior")
 
-kor_sample_priors <- BayesPharma::sigmoid_antagonist_model(
+kor_sample_prior <- BayesPharma::sigmoid_antagonist_model(
   data = kor_antag |> dplyr::select(substance_id, log_dose, response),
-  priors = kor_priors,
+  prior = kor_prior,
   sample_prior = "only")
 ```
 \normalsize
@@ -82,9 +82,9 @@ To sample from the model we will the Stan NUTs Hamiltonian Monte Carlo, and init
 #| message=FALSE
 kor_model <- BayesPharma::sigmoid_antagonist_model(
   data = kor_antag |> dplyr::select(substance_id, log_dose, response),
-  formula = BayesPharma::sigmoid_antagonistformula(
+  formula = BayesPharma::sigmoid_antagonist_formula(
     predictors = 0 + substance_id), 
-  priors = kor_priors)
+  prior = kor_prior)
 brms::expose_functions(kor_model, vectorize=TRUE)
 ```
 \normalsize
@@ -112,10 +112,8 @@ chains mixed well indicating the chains converged.
 #| fig.width=12,
 #| dependson=c("kor-model")
 
-BayesPharma::traceplot(
-  kor_model, 
-  predictors_col_name = "substance_id", 
-  half_max_label = "ic50") 
+kor_model |>
+  bayesplot::mcmc_trace()
 ```
 \normalsize
 
@@ -133,7 +131,7 @@ Displayed below is a plot for the prior and posterior distributions of the  para
 #| fig.cap="KOR antagonists model, compare prior and posterior distributions for each substance"
 
 BayesPharma::prior_posterior_densities_plot(
-  kor_model,
+  model = kor_model,
   predictors_col_name = "substance_id",
   half_max_label = "ic50",
   title_label="")
@@ -177,15 +175,16 @@ BayesPharma::posterior_draws_plot(
 
 ### Comparing alternative models
 
-To test the sensitivity of the analysis to the priors, we can re-fit the model with more informative priors:
+To test the sensitivity of the analysis to the prior, we can re-fit the model
+with more informative prior:
 \scriptsize
-```{r kor-model-priors2}
-kor_priors2 <- BayesPharma::sigmoid_antagonist_prior(
+```{r kor-model-prior2}
+kor_prior2 <- BayesPharma::sigmoid_antagonist_prior(
   ec50 = brms::prior(normal(-8.5, 0.5), nlpar = "ec50"),
   hill = brms::prior(normal(-1, 0.5), ub = 0.01, nlpar = "hill"),
   top = 100,
   bottom = brms::prior(normal(10, 15), nlpar = "bottom"))
-kor_priors2
+kor_prior2
 ```
 \normalsize
 
@@ -195,12 +194,12 @@ Re-fitting the model
 ```{r kor-model2}
 #| results='hide',
 #| message=FALSE,
-#| dependson=c("kor-model-priors2")
+#| dependson=c("kor-model-prior2")
 
 kor_model2 <- BayesPharma::sigmoid_antagonist_model(
   data = kor_antag |> dplyr::select(substance_id, log_dose, response),
   formula = BayesPharma::sigmoid_antagonist_formula(0 + substance_id), 
-  priors = kor_priors2)
+  prior = kor_prior2)
 
 kor_model2
 ```
@@ -215,7 +214,11 @@ kor_model <- kor_model |>
   brms::add_criterion(criterion = c("loo"), reloo = TRUE)
 kor_model$critera$loo
 ```
-Since ELPD is a global measure of model fit, it can be used to compare models. Using `loo_compare` from the LOO package, returns the `elpd_diff` and `se_diff` for each model relative the model with the lowest ELPD. The kor_model2, the model with more informative priors, is the preferred model, but not significantly.
+Since ELPD is a global measure of model fit, it can be used to compare models.
+Using `loo_compare` from the LOO package, returns the `elpd_diff` and `se_diff`
+for each model relative the model with the lowest ELPD. The `kor_model2`, the
+model with more informative prior, is the preferred model, but not
+significantly.
 
 ```{r kor-model-model2-loo-compare}
 #| dependson=c("kor-loo", "kor-model2")

@@ -218,7 +218,10 @@ To visualize the posterior distribution vs. the prior distribution, we first sam
 #| results='hide',
 #| message=FALSE
 
-model_single_prior <- model_single |> stats::update(sample_prior = "only")
+model_single_prior <- model_single |>
+  stats::update(
+    sample_prior = "only",
+    iter = 2000)
 ```
 \normalsize
 
@@ -449,7 +452,10 @@ To assess the model fit, we will re-fit the model just sampling from the prior
 #| results='hide',
 #| message=FALSE,
 #| dependson = c("tQ-model-multiple")
-model_multiple_prior <- model_multiple |> stats::update(sample_prior = "only")
+model_multiple_prior <- model_multiple |>
+  stats::update(
+    sample_prior = "only",
+    iter = 2000)
 ```
 \normalsize
 

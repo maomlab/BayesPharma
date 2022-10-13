@@ -20,7 +20,7 @@ drc_model <- function(
   
     drc::drm(
       formula = formula,
-      data = data_subset,
+      data = data,
       fct = fct,
       ...)
 }

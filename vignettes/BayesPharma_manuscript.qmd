@@ -92,6 +92,7 @@ knitr:
 keywords: [Bayesian, Pharmacology, R]
 keywords-formatted: [Bayesian, Pharmacology, "[R]{.proglang}"]
 ---
+
 ```{r set-options}
 #| echo=FALSE
 # inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
@@ -119,12 +120,11 @@ library(broom)
 set.seed(0)
 ```
 
-
 {{< include BayesPharma_manuscript_sections/introduction.qmd >}}
 
 # Case Studies
-In this section we will consider several models as case studies: the sigmoidal hill model in #{sec:hill}, the MuSyC synergy model in {#sec:MuSyC}, Michaelis-Menten enzyme progress curve in #{sec:michaelis_menten}. For each we will implement it, and apply it to example data by fitting different models and then we will compare the models based on their fit of the data and inferences that can be made.
 
+In this section we will consider several models as case studies: the sigmoidal hill model in #{sec:hill}, the MuSyC synergy model in {#sec:MuSyC}, Michaelis-Menten enzyme progress curve in #{sec:michaelis_menten}. For each we will implement it, and apply it to example data by fitting different models and then we will compare the models based on their fit of the data and inferences that can be made.
 
 {{< include BayesPharma_manuscript_sections/case_study_hill.qmd >}}
 
@@ -133,8 +133,3 @@ In this section we will consider several models as case studies: the sigmoidal h
 {{< include BayesPharma_manuscript_sections/case_study_kinetics.qmd >}}
 
 {{< include BayesPharma_manuscript_sections/case_study_negbinom.qmd >}}
-
-
-
-
-
