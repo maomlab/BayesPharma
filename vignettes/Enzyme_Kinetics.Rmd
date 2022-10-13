@@ -46,7 +46,7 @@ library(tidybayes)
 
 
 ```{r read-data}
-data_path <- "~/opt/BayesPharma/inst/extdata/Enzyme Kinetics/Hettiaratchi_2020.xlsx"
+data_path <- "../inst/extdata/Enzyme Kinetics/Hettiaratchi_2020.xlsx"
 
 data <- tibble::tibble(
   sheet_name = readxl::excel_sheets(data_path)[2:7]) |>

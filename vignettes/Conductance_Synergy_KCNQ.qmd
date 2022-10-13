@@ -137,7 +137,7 @@ plot_data <- data |>
 BayesPharma::plot_synergy_checkerboard(
   data = plot_data,
   treatment_1_label = "ztz240",
-  treatment_1_units = "uM",
+  treatment_1_units = "μM",
   treatment_2_label = "Voltage",
   treatment_2_units = "mV") +
   ggplot2::coord_cartesian(default = TRUE) +
