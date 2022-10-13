@@ -291,7 +291,8 @@ Plot of the Prior Distributions:
 #| dependson=c("model2")
 
 kor_sample_prior |>
-  bayesplot::mcmc_dens()
+  bayesplot::mcmc_dens(
+    pars = tidyselect::starts_with("b_"))
 ```
 
 Running the Model:
@@ -314,10 +315,7 @@ kor_model2
 Checking the Model Convergence:
 
 ```{r kor-model2-traceplot}
-BayesPharma::traceplot(
-  model = kor_model2,
-  predictors_col_name = "Drug",
-  half_max_label = "ic50") 
+kor_model2 |> bayesplot::mcmc_trace()
 ```
 
 Posterior Predictive Check:
