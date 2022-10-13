@@ -15,7 +15,7 @@ sigmoid_antagonist_prior(
 \arguments{
 \item{ic50}{`brmsprior` or numeric. Prior for the ec50 parameter.
 Default: normal(-6, 2.5) where the mean -6 corresponds to a
-concentration of 1e-6 or 1 uM. Setting ic50 to a numeric value constrains
+concentration of 1e-6 or 1 μM. Setting ic50 to a numeric value constrains
 it to a constant value.}
 
 \item{hill}{`brmsprior` or numeric. Prior for the hill parameter. Default:
@@ -49,7 +49,7 @@ For other distribution options, reference
 \examples{
 \dontrun{
 # Consider an activator that has a max response around 50\%, EC50 is estimated
-# to be around 1 uM, and minimum response is known to be 0.
+# to be around 1 μM, and minimum response is known to be 0.
 priors <- sigmoid_antagonist_prior(
   ic50 = brms::prior(normal(-6, 0.5), nlpar = "ic50"),
   top = brms::prior(normal(0.5, 0.5), nlpar = "top"),

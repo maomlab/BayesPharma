@@ -1,7 +1,7 @@
 #' Define formula for the tQ enzyme kinetics model
 #'
-#' @param predictors predictors for `kcat` and `kM`.
-#' @param ... additional arguments passed to `brms::brmsformula`
+#' @param predictors predictors for `r kcat` and `r kM`.
+#' @param ... additional arguments passed to `r brms::brmsformula`
 #'
 #' @export
 tQ_formula <- function(

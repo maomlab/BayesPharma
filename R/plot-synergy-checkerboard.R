@@ -12,7 +12,7 @@
 #'
 #' @return ggplot2 plot with light-blue to dark-blue tiles the dose
 #'     response. Individual plot elements can be over-written and the
-#'     plot can be saved with `ggplot2::ggsave()`
+#'     plot can be saved with `r ggplot2::ggsave()`
 #'
 #' @export
 plot_synergy_checkerboard <- function(

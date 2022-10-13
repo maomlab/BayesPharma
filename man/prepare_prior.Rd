@@ -7,11 +7,12 @@
 prepare_prior(prior, ...)
 }
 \arguments{
-\item{prior}{`brmsprior` or numeric.}
+\item{prior}{`r brmsprior` or numeric.}
 
-\item{...}{additional arguments to `brms::prior_string()`. If `prior` is a
-`brmsprior` then this will check that the slots have the given values. If
-prior is numeric, then these arguments are passed to `brms::prior_string`}
+\item{...}{additional arguments to `r brms::prior_string()`. If `r prior` is
+a `r brmsprior` then this will check that the slots have the given values.
+If prior is numeric, then these arguments are passed to
+`r brms::prior_string`}
 }
 \value{
 brmsprior

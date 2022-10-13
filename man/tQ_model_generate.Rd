@@ -17,7 +17,7 @@ tQ_model_generate(time, kcat, kM, ET, ST, ...)
 
 \item{ST}{numeric value total substrate concentration}
 
-\item{...}{additional arguments to `deSolve::ode`}
+\item{...}{additional arguments to `r deSolve::ode`}
 }
 \value{
 run the tQ ordinary differential equation forwards starting with
@@ -40,11 +40,11 @@ where the free enzyme (E) reversibly binds to the stubstrate (S) to form
 a complex (C) with forward and backward rate constants of kf and kb, which is
 irreversibly catalyzed into the product (P), with rate constant of kcat,
 releasing the enzyme to catalyze additional substrate. The total enzyme
-concentration is defined to be the `ET := E + C`. The total substrate and
-product concentration is defined to be `ST := S + C + P`. The Michaelis
-constant is the defined to be the `kM := (kb + kcat) / kf`. The kcat rate
+concentration is defined to be the `r ET := E + C`. The total substrate and
+product concentration is defined to be `r ST := S + C + P`. The Michaelis
+constant is the defined to be the `r kM := (kb + kcat) / kf`. The kcat rate
 constant determines the maximum turn over at saturating substrate
-concentrations, `Vmax := kcat * ET`. The rate constants `kcat` and `kM` can
+concentrations, `r Vmax := kcat * ET`. The rate constants `kcat` and `kM` can
 be estimated by monitoring the product accumulation over time (enzyme
 progress curves), by varying the enzyme and substrate concentrations.
 

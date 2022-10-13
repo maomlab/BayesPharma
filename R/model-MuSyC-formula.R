@@ -1,29 +1,29 @@
 #' Create a formula for the MuSyC synergy model
 #'
-#' @description setup a defaulMuSyC synergy model formula to predict
-#'   the `E0`, `C1`, `E1`, `s1`, `C2`, `E2`, `s2`, `log10alpha`, and `E3alpha`
-#'   parameters.
+#' @description setup a defaul `r MuSyC` synergy model formula to predict
+#'   the `r E0`, `r C1`, `r E1`, `r s1`, `r C2`, `r E2`, `r s2`, `r log10alpha`,
+#'   and `r E3alpha` parameters.
 #'
 #' @param predictors Additional formula objects to specify predictors of
 #'   non-linear parameters. i.e. what perturbations/experimental differences
 #'   should be modeled separately? (Default: 1) should a random effect be taken
 #'   into consideration? i.e. cell number, plate number, etc.
-#' @param ... additional arguments passed to `brms::brmsformula`
+#' @param ... additional arguments passed to `r brms::brmsformula`
 #'
 #' @return brmsformula
 #'
 #' @examples
 #'\dontrun{
-#'   # Data has a string column `drug_id` with drug identifiers
+#'   # Data has a string column `r drug_id` with drug identifiers
 #'   # Fit a separate model for each drug
 #'   BayesPharma::MuSyC_formula(predictors = 0 + drug_id)
 #'
-#'   # Data has a string column `plate_id` with plate identifiers
+#'   # Data has a string column `r plate_id` with plate identifiers
 #'   # Estimate the change in response for each plate relative to a global
 #'   # baseline.
 #'   BayesPharma::MuSyC_formula(predictors = plate_id)
 #'
-#'   # data has columns `drug_id` and `plate_id`
+#'   # data has columns `r drug_id` and `r plate_id`
 #'   # fit a multilevel model where the drug effect depends on the plate
 #'   BayesPharma::MuSyC_formula(predictors = 0 + (drug_id|plate_id))
 #'}

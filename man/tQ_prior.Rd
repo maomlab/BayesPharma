@@ -7,15 +7,16 @@
 tQ_prior(kcat = NULL, kM = NULL)
 }
 \arguments{
-\item{kcat}{prior for kcat parameter (Default: NULL). Given a numeric value,
+\item{kcat}{prior for `r kcat` parameter (Default: NULL). Given a numeric value,
 it will be used as a constant and not estimated.}
 
-\item{kM}{prior for kM parameter (Default: NULL). Given a numeric value,
+\item{kM}{prior for `r kM` parameter (Default: NULL). Given a numeric value,
 it will be used as a constant and not estimated.}
 }
 \description{
-Default priors are gamma(4, 1) for both `kcat` and `kM`. We use the gamma
+Default priors are gamma(4, 1) for both `r kcat` and `r kM`. We use the gamma
 distribution because it is naturally lower bounded by 0. The first parameter
-is the shape, `alpha=4`, and the second is the rate, `beta=1`. The mean of
-gamma distributions is `alpha/beta` and the variance is `alpha/beta^2`.
+is the shape, `r alpha=4`, and the second is the rate, `r beta=1`. The mean
+of gamma distributions is `r alpha/beta` and the variance is
+`r alpha/beta^2`.
 }

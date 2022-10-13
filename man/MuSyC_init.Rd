@@ -17,39 +17,39 @@ MuSyC_init(
 )
 }
 \arguments{
-\item{logE0}{numeric or function returning array of length 1. Initial value
-for the `logE0` parameter. Default: `log(0.5)`}
+\item{logE0}{`r numeric` or function returning `r array` of length `r 1`.
+Initial value for the `r logE0` parameter. Default: `r log(0.5)`}
 
-\item{logC1}{numeric or function returning array of length 1. Initial value
-for the `logC1` parameter. Default: `0 = log(1)``}
+\item{logC1}{`r numeric` or function returning array of length 1. Initial
+value for the `r logC1` parameter. Default: `r 0 = log(1)``}
 
-\item{logE1}{numeric or function returning array of length 1. Initial value
-for the `logE1` parameter. Default: log(0.5)}
+\item{logE1}{`r numeric` or function returning array of length 1. Initial
+value for the `r logE1` parameter. Default: log(0.5)}
 
-\item{h1}{numeric or function returning array of length 1. Initial value
-for the `h1` parameter. Default: `4 =
-MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)` the exponent for treatment `1``
-corresponding to a slope of `1`}
+\item{h1}{`r numeric` or function returning array of length 1. Initial value
+for the `r h1` parameter. Default: `r 4 =
+MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)` the exponent for treatment `r 1`
+corresponding to a slope of `r 1`}
 
-\item{logC2}{numeric or function returning array of length 1. Initial value
-for the `logC2` parameter. Default: `0 = log(1)`}
+\item{logC2}{`r numeric` or function returning array of length `r 1`. Initial
+value for the `r logC2` parameter. Default: `r 0 = log(1)`}
 
-\item{logE2}{numeric or function returning array of length 1. Initial value
-for the `logE2` parameter. Default: `log(0.5)`}
+\item{logE2}{`r numeric` or function returning array of length `r 1`. Initial
+value for the `logE2` parameter. Default: `r log(0.5)`}
 
-\item{h2}{numeric or function returning array of length 1. Initial value
-for the `h2` parameter. Default: `4 =
-MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)` the exponent for treatment `1``
-corresponding to a slope of 1}
+\item{h2}{`r numeric` or function returning array of length `r 1`. Initial
+value for the `h2` parameter. Default: `r 4 =
+MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)` the exponent for treatment `r 1`
+corresponding to a slope of `r 1`}
 
-\item{logE3}{numeric or function returning array of length 1. Initial value
-for the `logE3` parameter. Default: `log(0.5)`}
+\item{logE3}{`r numeric` or function returning array of length 1. Initial
+value for the `r logE3` parameter. Default: `r log(0.5)`}
 
-\item{logalpha}{numeric or function returning array of length 1. Initial
-value for the `logalpha` parameter. Default: `0 =  log(1)`}
+\item{logalpha}{`r numeric` or function returning array of length 1. Initial
+value for the `r logalpha` parameter. Default: `r 0 = log(1)`}
 }
 \value{
-input for `BayesPharma::model_MuSyC(init = ...)` parameter.
+input for `r BayesPharma::model_MuSyC(init = ...)` parameter.
 }
 \description{
 Initial values for the MuSyC model

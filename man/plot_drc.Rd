@@ -20,12 +20,12 @@ the range of log_dose values in the model object.}
 
 \item{predict_args}{list of arguments passed to predict(model, ...)
 including interval will generate ribbon of the given type, see
-`drc:::predict.drc` for more details, Default:
-`list(interval = "prediction")`}
+`r drc:::predict.drc` for more details, Default:
+`r list(interval = "prediction")`}
 
 \item{aes_mapping}{ggplot2::aes(...) mapping columns of the model data
 and new data to the plot. Default:
-`ggplot2::aes(x = log_dose, y = response)`}
+`r ggplot2::aes(x = log_dose, y = response)`}
 
 \item{title}{character, plot title. Default: NULL}
 }

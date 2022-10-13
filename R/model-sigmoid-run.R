@@ -7,30 +7,31 @@
 #'   <https://rdrr.io/cran/rstan/man/stan.html>
 #'
 #' @param data data.frame of experimental data.
-#'   must contain columns `response` and any predictors specified in
+#'   must contain columns `r response` and any predictors specified in
 #'   the formula.
 #' @param formula brmsformula object. To create a dose-response brmsformula,
-#'   (default: `BayesPharma::sigmoid_agonist_formula()`.
+#'   (default: `r BayesPharma::sigmoid_agonist_formula()`.
 #' @param prior brmspriors data.frame for ec50, hill, top, and bottom.
 #'   Use one of the priors functions provided to create priors to use here.
-#'   (default: `BayesPharma::sigmoid_agonist_prior()`
+#'   (default: `r BayesPharma::sigmoid_agonist_prior()`
 #' @param init initial values of the parameters being modeled (default =
-#'   `BayesPharma::sigmoid_agonist_init()`
+#'   `r BayesPharma::sigmoid_agonist_init()`
 #' @param iter number of iterations the model runs. Increasing iter can help
 #'   with model convergence (default: 8000).
 #' @param control a named list of parameters to control the sampler's behavior.
-#'   Adding `max_treedepth` and giving a greater value than 10 can improve model
-#'   convergence (default: `list(adapt_delta = 0.99)`).
+#'   Adding `r max_treedepth` and giving a greater value than 10 can improve model
+#'   convergence (default: `r list(adapt_delta = 0.99)`).
 #' @param stanvar_function stan code for the model (default:
-#'   BayesPharma::sigmoid_stanvar)
-#' @param ... additional arguments passed to `brms::brm`
+#'   `r BayesPharma::sigmoid_stanvar`)
+#' @param ... additional arguments passed to `r brms::brm`
 #'
-#' @return `brmsfit` object
+#' @return `r brmsfit` object
 #'
 #' @examples
 #'\dontrun{
-#'   sigmoid_agonist_model(data,
-#'    formula = sigmoid_agonist_formula(predictors = 0 + drug))
+#'   BayesPharma::sigmoid_agonist_model(
+#'     data = data,
+#'     formula = BayesPharma::sigmoid_agonist_formula(predictors = 0 + drug))
 #'}
 #' @export
 sigmoid_agonist_model <- function(

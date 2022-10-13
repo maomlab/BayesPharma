@@ -12,28 +12,28 @@ non-linear parameters. i.e. what perturbations/experimental differences
 should be modeled separately? (Default: 1) should a random effect be taken
 into consideration? i.e. cell number, plate number, etc.}
 
-\item{...}{additional arguments to `brms::brmsformula`}
+\item{...}{additional arguments to `r brms::brmsformula`}
 }
 \value{
 brmsformula
 }
 \description{
 set-up a sigmoid dose response model formula to define a
-  non-linear model or multilevel non-linear model for `ic50`, `hill`, `top`,
-  and, `bottom` for use in Bayesian_model and in the BRMS package.
+  non-linear model or multilevel non-linear model for `r ic50`, `r hill`,
+  `r top`, and, `r bottom` for use in Bayesian_model and in the BRMS package.
 }
 \examples{
 \dontrun{
-  # Data has a string column `drug_id` with drug identifiers
+  # Data has a string column drug_id with drug identifiers
   # Fit a separate model for each drug
   BayesPharma::sigmoid_antagonist_formula(predictors = 0 + drug_id)
 
-  # Data has a string column `plate_id` with plate identifiers
+  # Data has a string column plate_id with plate identifiers
   # Estimate the change in response for each plate relative to a global
   # baseline.
   BayesPharma::sigmoid_antagonist_formula(predictors = plate_id)
 
-  # data has columns  `drug_id` and `plate_id`
+  # data has columns drug_id and plate_id
   # fit a multilevel model where the drug effect depends on the plate
   BayesPharma::sigmoid_antagonist_formula(
     predictors = 0 + (drug_id|plate_id))

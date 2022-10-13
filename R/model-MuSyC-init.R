@@ -2,29 +2,29 @@
 #'
 #' @description Initial values for the MuSyC model
 #'
-#' @param logE0 numeric or function returning array of length 1. Initial value
-#'   for the `logE0` parameter. Default: `log(0.5)`
-#' @param logC1 numeric or function returning array of length 1. Initial value
-#'   for the `logC1` parameter. Default: `0 = log(1)``
-#' @param logE1 numeric or function returning array of length 1. Initial value
-#'   for the `logE1` parameter. Default: log(0.5)
-#' @param h1 numeric or function returning array of length 1. Initial value
-#'   for the `h1` parameter. Default: `4 =
-#'   MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)` the exponent for treatment `1``
-#'   corresponding to a slope of `1`
-#' @param logC2 numeric or function returning array of length 1. Initial value
-#'   for the `logC2` parameter. Default: `0 = log(1)`
-#' @param logE2 numeric or function returning array of length 1. Initial value
-#'   for the `logE2` parameter. Default: `log(0.5)`
-#' @param h2 numeric or function returning array of length 1. Initial value
-#'   for the `h2` parameter. Default: `4 =
-#'   MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)` the exponent for treatment `1``
-#'   corresponding to a slope of 1
-#' @param logE3 numeric or function returning array of length 1. Initial value
-#'   for the `logE3` parameter. Default: `log(0.5)`
-#' @param logalpha numeric or function returning array of length 1. Initial
-#'   value for the `logalpha` parameter. Default: `0 =  log(1)`
-#' @return input for `BayesPharma::model_MuSyC(init = ...)` parameter.
+#' @param logE0 `r numeric` or function returning `r array` of length `r 1`.
+#'   Initial value for the `r logE0` parameter. Default: `r log(0.5)`
+#' @param logC1 `r numeric` or function returning array of length 1. Initial
+#'   value for the `r logC1` parameter. Default: `r 0 = log(1)``
+#' @param logE1 `r numeric` or function returning array of length 1. Initial
+#'   value for the `r logE1` parameter. Default: log(0.5)
+#' @param h1 `r numeric` or function returning array of length 1. Initial value
+#'   for the `r h1` parameter. Default: `r 4 =
+#'   MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)` the exponent for treatment `r 1`
+#'   corresponding to a slope of `r 1`
+#' @param logC2 `r numeric` or function returning array of length `r 1`. Initial
+#'   value for the `r logC2` parameter. Default: `r 0 = log(1)`
+#' @param logE2 `r numeric` or function returning array of length `r 1`. Initial
+#'   value for the `logE2` parameter. Default: `r log(0.5)`
+#' @param h2 `r numeric` or function returning array of length `r 1`. Initial
+#'   value for the `h2` parameter. Default: `r 4 =
+#'   MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)` the exponent for treatment `r 1`
+#'   corresponding to a slope of `r 1`
+#' @param logE3 `r numeric` or function returning array of length 1. Initial
+#'   value for the `r logE3` parameter. Default: `r log(0.5)`
+#' @param logalpha `r numeric` or function returning array of length 1. Initial
+#'   value for the `r logalpha` parameter. Default: `r 0 = log(1)`
+#' @return input for `r BayesPharma::model_MuSyC(init = ...)` parameter.
 #'
 #' @examples
 #'\dontrun{

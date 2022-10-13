@@ -11,35 +11,35 @@
 #' For other distribution options, reference
 #' http://mc-stan.org/rstanarm/reference/priors.html#arguments.
 #'
-#' @param logE0 numeric or `brms::prior(...)`. Prior for the log response with
+#' @param logE0 numeric or `r brms::prior(...)`. Prior for the log response with
 #'   no treatment. Default normal(log(0.5), 3) lower bounded by 0.
-#' @param logE1 numeric or `brms::prior(...)`. Prior for the full log response
+#' @param logE1 numeric or `r brms::prior(...)`. Prior for the full log response
 #'   for treatment 1 and the dose of treatment 2 is zero. Default
 #'   normal(log(0.25), 3) lower bounded by 0.
-#' @param logC1 numeric or `brms::prior(...)`. Prior for the log IC50 of drug 1
+#' @param logC1 numeric or `r brms::prior(...)`. Prior for the log IC50 of drug 1
 #'   Default to normal(log(1), 3).
-#' @param h1 numeric or `brms::prior(...)`. Prior the slope of drug 1 at
+#' @param h1 numeric or `r brms::prior(...)`. Prior the slope of drug 1 at
 #'   it's IC50 and dose of the treatment 2 is zero converted to exponent form
 #'   Default mu = MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei = 0); normal(mu, 3)
 #'   lower bounded by .1
-#' @param logE2 numeric or `brms::prior(...)`. Prior for the full log response
+#' @param logE2 numeric or `r brms::prior(...)`. Prior for the full log response
 #'   for treatment 2 and the dose of treatment 1 is zero. Default
 #'   normal(log(0.25), 3) lower bounded by 0.
-#' @param logC2 numeric or `brms::prior(...)`. Prior for the log IC50 of drug 2
+#' @param logC2 numeric or `r brms::prior(...)`. Prior for the log IC50 of drug 2
 #'   Default to normal(log(1), 3).
-#' @param h2 numeric or `brms::prior(...)`. Prior the slope of drug 2 at
+#' @param h2 numeric or `r brms::prior(...)`. Prior the slope of drug 2 at
 #'   it's IC50 and dose of the treatment 1 is zero converted to exponent form
-#'   Default mu = MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei = 0); normal(mu, 3)
-#'   lower bounded by 0.1
-#' @param logE3 numeric or `brms::prior(...)`. Prior for the low full response
-#'   for treatment 1 and treatment 2. Default to normal(log(0.25), 3) lower
+#'   Default `r mu = MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei = 0)`;
+#'   `r normal(mu, 3)` lower bounded by 0.1
+#' @param logE3 numeric or `r brms::prior(...)`. Prior for the low full response
+#'   for treatment 1 and treatment 2. Default to `r normal(log(0.25), 3)` lower
 #'   bounded by 0.
-#' @param logalpha numeric or `brms::prior(...)`. Prior for the log synergistic
+#' @param logalpha numeric or `r brms::prior(...)`. Prior for the log synergistic
 #'   potency parameter with greater than 1 synergistic, less than 1
-#'   antagonistic. Default normal(log(0), 0.5).
-#' @param ... additional `brmsprior` objects.
+#'   antagonistic. Default `r normal(log(0), 0.5)`.
+#' @param ... additional `r brmsprior` objects.
 #'
-#' @return `brmsprior` `data.frame`
+#' @return `r brmsprior` `r data.frame`
 #'
 #' @export
 MuSyC_prior <- function(

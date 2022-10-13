@@ -24,7 +24,7 @@ data.frame with each predictor and log-dose.}
 
 \item{n}{numeric value of the number of draws to be observed (default = 50).}
 
-\item{point_size}{numeric. `geom_jitter` point size (default = 0.75).}
+\item{point_size}{numeric. `r geom_jitter` point size (default = 0.75).}
 
 \item{jitter_height}{numeric. the height distance between overlapping points
 (default = 0).}
