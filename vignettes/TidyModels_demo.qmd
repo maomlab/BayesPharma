@@ -50,4 +50,5 @@ kor_workflow <- workflows::workflow() |>
   workflows::add_model(spec = kor_model) |>
   parsnip::fit(data = kor_antag)
 
+kor_model
 ```
