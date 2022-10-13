@@ -1,18 +1,39 @@
 ## Hill Equation {#hill}
-In this case study we are going to reanalyze the dose response of 4 Kappa Opioid 
-receptor (KOR) antagonists using the `BayesPharma` package from from a study 
-done by Margolis et al. (-@Margolis2020-bm). Whole cell electrophysiology in acute rat midbrain slices was used to evaluate pharmacological properties of four novel KOR antagonists: BTRX-335140, BTRX-395750, PF-04455242, and JNJ-67953964
 
-Originally paper, the dose-response data analysis was done by using the `drc` package in R which implements the minimization of negative log likelihood function and reduces to least square estimation for a continuous response. The data was normalized to % baseline then fit to a 4-parameter log-logistic dose response model, setting the top (max response) to 100% and estimating the IC50, its variance, and the bottom (min response).
+In this case study we are going to reanalyze the dose response of 4
+Kappa Opioid receptor (KOR) antagonists using the `BayesPharma`
+package from from a study done by Margolis et
+al. (-@Margolis2020-bm). Whole cell electrophysiology in acute rat
+midbrain slices was used to evaluate pharmacological properties of
+four novel KOR antagonists: BTRX-335140, BTRX-395750, PF-04455242, and
+JNJ-67953964
+
+Originally paper, the dose-response data analysis was done by using
+the `drc` package in R which implements the minimization of negative
+log likelihood function and reduces to least square estimation for a
+continuous response. The data was normalized to % baseline then fit to
+a 4-parameter log-logistic dose response model, setting the top (max
+response) to 100% and estimating the IC50, its variance, and the
+bottom (min response).
 
 ### Fitting the sigmoid model
-Using the BayesPharma package, we can re-fit the sigmoid model with a negative slope, and fixing the top parameter to 100 as the response is normalized to a no-drug baseline.
 
-For the prior, we are going to use a normal distribution because the response
-values are continuous. First, We will run the analysis with top (max response) parameter prior set to a constant value of 100 because top is normalized to 100 and the default broad
-prior for ic50, hill and bottom. Broad priors represent unbiased uncertainty and provide an opportunity for extreme responses.
+Using the BayesPharma package, we can re-fit the sigmoid model with a
+negative slope, and fixing the top parameter to 100 as the response is
+normalized to a no-drug baseline.
 
-The level of informativeness of the prior will affect how much influence the prior has on the model. Here is more [information on prior choice recommendations.](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
+For the prior, we are going to use a normal distribution because the
+response values are continuous. First, We will run the analysis with
+top (max response) parameter prior set to a constant value of 100
+because top is normalized to 100 and the default broad prior for ic50,
+hill and bottom. Broad priors represent unbiased uncertainty and
+provide an opportunity for extreme responses.
+
+The level of informativeness of the prior will affect how much
+influence the prior has on the model. Here is more [information on
+prior choice
+recommendations.](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
+
 \scriptsize
 ```{r kor-prior}
 #| echo=TRUE
@@ -27,12 +48,13 @@ the prior predictive distributions to see if they are compatible with the domain
 expertise. So, before running the model, we will verify that the prior
 distributions cover a plausible range of values for each parameter. To do this,
 we want to  sample only from the prior distributions by adding
-*sample_prior = "only"* as  an argument to the `sigmoid_model` function. We will
-use the default response distribution of the model  (*family = gaussian()*).
+*sample_prior = "only"* as  an argument to the `sigmoid_antagonist_model`
+function. We will use the default response distribution of the model
+(*family = gaussian()*).
 
 
 ```{r kor-data}
-load("/Users/maom/opt/BayesPharma/data/kor_antag.rda")
+load("../data/kor_antag.rda")
 kor_antag <- kor_antag |> dplyr::transmute(
   substance_id = Drug,
   cell_id = cell_number,
@@ -72,7 +94,10 @@ kor_sample_prior |>
 ```
 \normalsize
 
-To sample from the model we will the Stan NUTs Hamiltonian Monte Carlo, and initialize the parameters to the prior means to help with model convergence, using the default values of ec50 = -9, hill = -1, top = 100, bottom = 0.
+To sample from the model we will the Stan NUTs Hamiltonian Monte
+Carlo, and initialize the parameters to the prior means to help with
+model convergence, using the default values of ec50 = -9, hill = -1,
+top = 100, bottom = 0.
 
 \scriptsize
 ```{r kor-model}
@@ -90,7 +115,19 @@ brms::expose_functions(kor_model, vectorize=TRUE)
 \normalsize
 
 ### Analyzing model fit
-The BRMS generated model summary shows the formula that the expected response is sigmoid function of the log_dose with four parameters, and a shared Gaussian distribution. Each parameter is dependent on the substance_id. Since want to fit a separate model for each substance we include a `0 +` to indicate that there is no common intercept.  The consists of 73 data points and the posterior sampling was done in 4 chains each with 8000 steps with 4000 steps of warm-up. The population effects for each parameter summarize marginal posterior distributions, as well as the effective sample size in the bulk and tail. This gives an indication of the sampling quality, with an ESS of > 500 samples being good for this type of model. 
+
+The BRMS generated model summary shows the formula that the expected
+response is sigmoid function of the log_dose with four parameters, and
+a shared Gaussian distribution. Each parameter is dependent on the
+substance_id. Since want to fit a separate model for each substance we
+include a `0 +` to indicate that there is no common intercept.  The
+consists of 73 data points and the posterior sampling was done in 4
+chains each with 8000 steps with 4000 steps of warm-up. The population
+effects for each parameter summarize marginal posterior distributions,
+as well as the effective sample size in the bulk and tail. This gives
+an indication of the sampling quality, with an ESS of > 500 samples
+being good for this type of model.
+
 \scriptsize
 ```{r kor-model-summary}
 #| dependson=c("kor-model"),
@@ -100,10 +137,12 @@ kor_model
 \normalsize
 
 #### Traceplot
-The model ran without warning messages meaning there were no parameter value 
-problems or mcmc conflicts. The bulk and tail ESS indicate high resolution and 
-stability. The R-hat for each parameter equals 1.00 and the traceplot shows the 
-chains mixed well indicating the chains converged.
+
+The model ran without warning messages meaning there were no parameter
+value problems or mcmc conflicts. The bulk and tail ESS indicate high
+resolution and stability. The R-hat for each parameter equals 1.00 and
+the traceplot shows the chains mixed well indicating the chains
+converged.
 
 \scriptsize
 ```{r kor-model-traceplot}
@@ -118,7 +157,11 @@ kor_model |>
 \normalsize
 
 #### Compare prior and posterior marginal distributions
-Displayed below is a plot for the prior and posterior distributions of the  parameters (prior is pink and posterior is teal). this can be useful for  comparing the density distribution of the prior and posterior. produced by the model:
+
+Displayed below is a plot for the prior and posterior distributions of
+the parameters (prior is pink and posterior is teal). this can be
+useful for comparing the density distribution of the prior and
+posterior. produced by the model:
 
 \scriptsize
 ```{r kor-model-prior-posterior-densities}
@@ -137,9 +180,11 @@ BayesPharma::prior_posterior_densities_plot(
   title_label="")
 ```
 \normalsize
-Displayed below is a plot of the posterior distributions for each parameter 
-with the confidence intervals and mean. This is a useful visual of the model 
-results and to highlight the mode and high density intervals: 
+
+Displayed below is a plot of the posterior distributions for each
+parameter with the confidence intervals and mean. This is a useful
+visual of the model results and to highlight the mode and high density
+intervals:
   
 ```{r kor-model-posterior-densities}
 #| dependson=c("kor-model"),
@@ -157,8 +202,9 @@ BayesPharma::posterior_densities_plot(
   title_label = "")
 ```
 
-Displayed below is a plot of a sample of 100 sigmoid dose-response curves from 
-the posterior distribution (purple) and the median quantile intervals: 
+Displayed below is a plot of a sample of 100 sigmoid dose-response
+curves from the posterior distribution (purple) and the median
+quantile intervals:
 
 ```{r kor-model-posterior-draws}
 #| echo=TRUE,
@@ -175,8 +221,9 @@ BayesPharma::posterior_draws_plot(
 
 ### Comparing alternative models
 
-To test the sensitivity of the analysis to the prior, we can re-fit the model
-with more informative prior:
+To test the sensitivity of the analysis to the prior, we can re-fit
+the model with more informative prior:
+
 \scriptsize
 ```{r kor-model-prior2}
 kor_prior2 <- BayesPharma::sigmoid_antagonist_prior(
@@ -206,20 +253,36 @@ kor_model2
 \normalsize
 
 ## Comparing the Two Models Using LOO-Comparison:
-One way to evaluate the quality of a model is for each data-point, re-fit the model with remaining points, and evaluate the log probability of the point in the posterior distribution. Taking the expectation across all points give the Expected Log Pointwise predictive Density (ELPD). Since this is computationally challenging to re-fit the model for each point, if the model fits the data reasonably well, then the ELPD can be approximated using the Pareto smoothed importance sampling (PSIS). Using the LOO, the package, Pareto k value for each data point is computed, where k less than 0.5 is good, between 0.5 and 0.7 is ok, and higher than 0.7 indicates the data point is not fit by the model well. Evaluating the model for the KOR antagonists, shows that the model fits the data well.
 
+One way to evaluate the quality of a model is for each data-point,
+re-fit the model with remaining points, and evaluate the log
+probability of the point in the posterior distribution. Taking the
+expectation across all points give the Expected Log Pointwise
+predictive Density (ELPD). Since this is computationally challenging
+to re-fit the model for each point, if the model fits the data
+reasonably well, then the ELPD can be approximated using the Pareto
+smoothed importance sampling (PSIS). Using the LOO, the package,
+Pareto k value for each data point is computed, where k less than 0.5
+is good, between 0.5 and 0.7 is ok, and higher than 0.7 indicates the
+data point is not fit by the model well. Evaluating the model for the
+KOR antagonists, shows that the model fits the data well.
+
+\scriptsize
 ```{r kor-loo}
 #| dependson=c("kor-model")
 kor_model <- kor_model |>
   brms::add_criterion(criterion = c("loo"), reloo = TRUE)
 kor_model$critera$loo
 ```
-Since ELPD is a global measure of model fit, it can be used to compare models.
-Using `loo_compare` from the LOO package, returns the `elpd_diff` and `se_diff`
-for each model relative the model with the lowest ELPD. The `kor_model2`, the
-model with more informative prior, is the preferred model, but not
-significantly.
+\normalsize
 
+Since ELPD is a global measure of model fit, it can be used to compare
+models.  Using `loo_compare` from the LOO package, returns the
+`elpd_diff` and `se_diff` for each model relative the model with the
+lowest ELPD. The `kor_model2`, the model with more informative prior,
+is the preferred model, but not significantly.
+
+\scriptsize
 ```{r kor-model-model2-loo-compare}
 #| dependson=c("kor-loo", "kor-model2")
 kor_model2 <- kor_model2 |>
@@ -227,11 +290,12 @@ kor_model2 <- kor_model2 |>
 
 brms::loo_compare(kor_model, kor_model2)
 ```
+\normalsize
 
 ##Analysis Using the drc Package
 
-Here we will analyze the KOR antagonist data using the drc package and compare
-it to the results from the BayesPharma analysis. 
+Here we will analyze the KOR antagonist data using the drc package and
+compare it to the results from the BayesPharma analysis.
 
 We will fix the top to 100 and fit the ic50, hill, and bottom.
 
@@ -258,7 +322,11 @@ drc_models |>
 ```
 \normalsize
 
-Displayed below is the comparison of results from `drc` and `BayesPharma` for each parameter of the dose-response curve. Here we see that the Bayesian method provides a distribution curve as evidence and has smaller confidence intervals than most of the standard errors provided by the drc method. 
+Displayed below is the comparison of results from `drc` and
+`BayesPharma` for each parameter of the dose-response curve. Here we
+see that the Bayesian method provides a distribution curve as evidence
+and has smaller confidence intervals than most of the standard errors
+provided by the drc method.
 
 ```{r}
 #| dependson = c("kor-drc-model", "kor-model"),
