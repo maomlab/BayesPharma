@@ -1,15 +1,25 @@
 
+
+# Makefile for building BayesPharma
+
+
 clean:
 	rm -rf vignettes/*.Rmd
 	rm -rf vignettes/cache
 	rm -rf vignettes/*_files
 
-build:
+deps:
+	Rscript -e "devtools::install_dev_deps()"
+
+build: deps
 	Rscript -e "devtools::document()"
 	Rscript -e "devtools::build()"
 
+install:
+	Rscript -e "devtools::install_local('.', force = TRUE)"
+
 test:
-	Rscript -e "devtools::test()"
+	Rscript -e "devtools::check()"
 	Rscript -e "covr::covr()"
 	Rscript -e "lintr::lint_package()"
 
@@ -25,6 +35,6 @@ vignettes/manuscript.qmd:
 build_site: all_vignettes vignettes/manuscript.qmd
 	Rscript -e "pkgdown::build_site()"
 
-install:
-	Rscript -e "devtools::install_local('.', force = TRUE)"
+all: build install
 
+.PHONY: all
