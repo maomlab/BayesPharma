@@ -3,6 +3,14 @@
 title: "Derive: MuSyC Model -- Synergy Analysis"
 # Document ---------------------------------------------------------------------
 output: rmarkdown::html_vignette
+bibliography: references.bib
+editor: visual
+header-includes: |
+  % https://colorbrewer2.org/#type=qualitative&scheme=Dark2&n=3
+  \definecolor{dose}{rgb}{0.10546875,0.6171875,0.46484375}
+  \definecolor{response}{rgb}{0.8476562,0.3710938,0.0078125}
+  \definecolor{shape}{rgb}{0.4570312,0.4375000,0.6992188}
+  \usepackage{chemarr}
 vignette: >
   %\VignetteIndexEntry{Derive: MuSyC Model -- Synergy Analysis}
   %\VignetteKeyword{BayesPharma}
@@ -10,75 +18,40 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r set-options}
+#| echo=FALSE
+options(rmarkdown.html_vignette.check_title = FALSE)
 
+# inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
+knitr::opts_chunk$set(
+  cache = TRUE,
+  echo = FALSE,
+  fig.path = here::here("vignettes", "derive_MuSyC_model_files/"),
+  fig.retina = 2, # Control using dpi
+  fig.width = 6,  # generated images
+  fig.height = 5, # generated images
+  fig.pos = "t",  # pdf mode
+  fig.align = "center",
+  dpi = if (knitr::is_latex_output()) 72 else 300, 
+  out.width = "100%",
+  collapse = TRUE)
 
+set.seed(0)
+```
 
+```{r load-packages}
+#| echo=FALSE
+suppressWarnings(suppressMessages(library(tidymodels)))
+library(BayesPharma)
 
+bayesplot::bayesplot_theme_set(
+  new = ggplot2::theme_bw())
+```
 
+```{r}
+#| child = here::here("vignettes_src", "manuscript", "sections", "case_study_synergy.qmd")
 
-## MuSyC synergy model {#MuSyC}
-When two independent treatments are combined they may synergize to effect the response. A typical use case is combining to different drugs to determine if there is signaling epistasis or to assess the value of combining them as a combination therapy. Alternatively for ion channels, a drug and voltage can be combined to evaluate the effect on the membrane potential.
-
-When two treatments are combined they can influence each other in different ways. The combine treatment can elicit a stronger or weaker effect than either treatment separately, or in the presence of one drug, the dose at which the other effects the outcome may be shifted. These different forms of synergy are modeled by the classical Bliss and Loewe models of synergy, respectively. Recently XXX derived the MuSyC model that combines these different forms of synergy.  
-
-The functional form for the MuSyC model gives an equation for the response $\color{response}{E_d}$ at doses of $\color{dose}{d_1}$ and $\color{dose}{d_2}$ of the two treatments and has $9$ free parameters $\{\color{dose}{C_1}, \color{dose}{C_2}, \color{response}{E_0}, \color{response}{E_1}, \color{response}{E_2}, \color{response}{E_3}, \color{shape}{h_1}, \color{shape}{h_2}, \color{shape}{\alpha}\}$:
-
-\begin{align}
-\color{response}{E_d} &= \frac{
-          {\color{dose}{C_1}}^{\color{shape}{h_1}}{\color{dose}{C_2}}^{\color{shape}{h_2}}{\color{response}{E_0}} +
-          {\color{dose}{d_1}}^{\color{shape}{h_1}}{\color{dose}{C_2}}^{\color{shape}{h_2}}{\color{response}{E_1}} +
-          {\color{dose}{C_1}}^{\color{shape}{h_1}}{\color{dose}{d_2}}^{\color{shape}{h_2}}{\color{response}{E_2}} +
-          {\color{dose}{d_1}}^{\color{shape}{h_1}}{\color{dose}{d_2}}^{\color{shape}{h_2}}{\color{shape}{\alpha}} {\color{response}{E_3}}
-       }{
-          {\color{dose}{C_1}}^{\color{shape}{h_1}}{\color{dose}{C_2}}^{\color{shape}{h_2}} +
-          {\color{dose}{d_1}}^{\color{shape}{h_1}}{\color{dose}{C_2}}^{\color{shape}{h_2}} +
-          {\color{dose}{C_1}}^{\color{shape}{h_1}}{\color{dose}{d_2}}^{\color{shape}{h_2}} +
-          {\color{dose}{d_1}}^{\color{shape}{h_1}}{\color{dose}{d_2}}^{\color{shape}{h_2}}{\color{shape}{\alpha}}}
-\end{align}
-
-To interpret these parameters if we set $\color{dose}{d_2}=0$, then 
-\begin{align}
-\color{response}{E_d} &= \frac{
-          {\color{dose}{C_1}}^{\color{shape}{h_1}}{\color{response}{E_0}} +
-          {\color{dose}{d_1}}^{\color{shape}{h_1}}{\color{response}{E_1}}
-       }{
-          {\color{dose}{C_1}}^{\color{shape}{h_1}} +
-          {\color{dose}{d_1}}^{\color{shape}{h_1}}}
-\end{align}
-which is the Hill equation, which we modeled above \ref{sec:hill}. If we then additionally set $\color{dose}{d_1}=0$ then $\color{response}{E_d}=\color{response}{E_0}$, in the limit as ${\color{dose}{d_1}}\rightarrow \infty$ then ${\color{response}{E_d}}\rightarrow {\color{response}{E_1}}$, and if ${\color{dose}{d_1}}=\color{dose}{C_1}$ then ${\color{response}{E_d}} = ({\color{response}{E_0}} + {\color{response}{E_2}})/2$, which is the half maximal response (either the $\color{response}{\mbox{IC}_{50}}$ if treatment $1$ is an inhibitor or $\color{response}{\mbox{EC}_{50}}$ if treatment $1$ is agonist). The slope at ${\color{dose}{d_1}}={\color{dose}{C_1}}$ is 
-\begin{align*}
-    \frac{\mathrm{d}\;\color{response}{E_d}}{\mathrm{d}\color{dose}{d_1}}
-        &= {\color{dose}{C_1}}^{v}{\color{response}{E_0}}
-              \frac{\mathrm{d}}{\mathrm{d}\color{dose}{d_1}}
-                  \frac{1}{{\color{dose}{C_1}}^{\color{shape}{h_1}} + {\color{dose}{d_1}}^{\color{shape}{h_1}}} +
-           {\color{response}{E_1}}
-              \frac{\mathrm{d}}{\mathrm{d}\color{dose}{d_1}}
-                   \frac{{\color{dose}{d_1}}^{h_1}}{{\color{dose}{C_1}}^{\color{shape}{h_1}} + {\color{dose}{d_1}}^{\color{shape}{h_1}}}\\
-        &= {\color{dose}{C_1}}^{h_1}{\color{response}{E_0}}
-              \frac{                          h_1{\color{dose}{d_1}}^{{\color{shape}{h_1}}-1}}{\left({\color{dose}{C_1}}^{\color{shape}{h_1}} + {\color{dose}{d_1}}^{\color{shape}{h_1}}\right)^2} +
-            {\color{response}{E_1}}
-               \frac{{\color{dose}{C_1}}^{\color{shape}{h_1}}h_1{\color{dose}{d_1}}^{{\color{shape}{h_1}}-1}}{\left({\color{dose}{C_1}}^{\color{shape}{h_1}} + {\color{dose}{d_1}}^{\color{shape}{h_1}}\right)^2}\\
-        &= ({\color{response}{E_0}} + {\color{response}{E_1}})
-\end{align*}
-
-The evaluation of the functional form for ${\color{response}{E_d}}$ is numerically unstable. To transform using the $\mbox{log\_sum\_exp}$ trick, let
-
-\begin{align*}
-\mbox{numerator\_parts} = [\\
-      &{\color{shape}{h_1}}\log({\color{dose}{C_1}}) + {\color{shape}{h_2}}\log({\color{dose}{C_2}}) + \log({\color{response}{E_0}}),\\
-      &{\color{shape}{h_1}}\log({\color{dose}{d_1}}) + {\color{shape}{h_2}}\log({\color{dose}{C_2}}) + \log({\color{response}{E_1}}),\\
-      &{\color{shape}{h_1}}\log({\color{dose}{C_1}}) + {\color{shape}{h_2}}\log({\color{dose}{d_2}}) + \log({\color{response}{E_2}}),\\
-      &{\color{shape}{h_1}}\log({\color{dose}{d_1}}) + {\color{shape}{h_2}}\log({\color{dose}{d_2}}) + \log({\color{response}{E_3}}) + \log({\color{shape}{\alpha}}) ]\\
-\mbox{denominator\_parts} = [\\
-      &{\color{shape}{h_1}}\log({\color{dose}{C_1}}) + {\color{shape}{h_2}}\log({\color{dose}{C_2}}),\\
-      &{\color{shape}{h_1}}\log({\color{dose}{d_1}}) + {\color{shape}{h_2}}\log({\color{dose}{C_2}}),\\
-      &{\color{shape}{h_1}}\log({\color{dose}{C_1}}) + {\color{shape}{h_2}}\log({\color{dose}{d_2}}),\\
-      &{\color{shape}{h_1}}\log({\color{dose}{d_1}}) + {\color{shape}{h_2}}\log({\color{dose}{d_2}})]\\
-\end{align*}
-Then 
-$$
-    E_d = \mbox{exp}\!\left(\mbox{log\_sum\_exp}(\mbox{numerator\_parts}) - \mbox{log\_sum\_exp}(\mbox{denominator\_parts})\right).
-$$
+```
 
 
 

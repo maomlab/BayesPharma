@@ -1,23 +1,25 @@
 ---
-title: "BayesPharma and TidyModels"
+title: "Implement: BayesPharma and Tidymodels"
 author: "Matthew O'Meara"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{BayesPharma and TidyModels}
+  %\VignetteIndexEntry{Implement: BayesPharma and Tidymodels}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{here, }
 
 ---
 
 ```{r set-options}
 #| echo=FALSE
+
 options(rmarkdown.html_vignette.check_title = FALSE)
 
 # inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
 knitr::opts_chunk$set(
   cache = TRUE,
   echo = FALSE,
-  fig.path = "TidyModels_demo/knitr-",
+  fig.path = here::here("vignettes", "implement_tidymodels_files/"),
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images
   fig.height = 5, # generated images
@@ -26,14 +28,11 @@ knitr::opts_chunk$set(
   dpi = if (knitr::is_latex_output()) 72 else 300, 
   out.width = "100%")
 
-bayesplot::bayesplot_theme_set(
-  new = ggplot2::theme_bw())
-
-set.seed(0)
 ```
 
 
 ```{r load-packages}
+library(here)
 suppressWarnings(suppressMessages(library(tidymodels)))
 library(BayesPharma)
 suppressWarnings(suppressMessages(library(bayesplot)))
@@ -44,14 +43,14 @@ bayesplot::bayesplot_theme_set(
 
 set.seed(0)
 ```
-# Using BayesPharma models with TidyModels
+# Using BayesPharma models with Tidymodels
 
-Tidy Models is a platform for running and analyzing models in R. This vignette
+Tidymodels is a platform for running and analyzing models in R. This vignette
 demonstrates how to use the BayesPharma models with Tidy Models.
 
 ```{r kor-data}
 #| echo=TRUE
-load("../data/kor_antag.rda")
+load(here::here("data", "kor_antag.rda"))
 kor_antag <- kor_antag |> dplyr::transmute(
   substance_id = Drug,
   cell_id = cell_number,

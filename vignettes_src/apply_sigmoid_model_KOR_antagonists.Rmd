@@ -1,11 +1,16 @@
 ---
-title: "Bayesian Sigmoid Model: Analysis of Four Kappa Opioid Receptor Antagonists"
-author: "Madeline Martin"
+# For vignette -----------------------------------------------------------------
+title: "Apply: Sigmoid Model -- KOR Antagonists"
+subtitle: Analysis of Four Kappa Opioid Receptor Antagonists
+description: Demonstrate the applying a sigmoid model electrophysiology data
+# Document ---------------------------------------------------------------------
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Bayesian Sigmoid Model: Analysis of Four Kappa Opioid Receptor Antagonists}
+  %\VignetteIndexEntry{Apply: Sigmoid Model -- KOR Antagonists}
+  %\VignetteKeyword{BayesPharma}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{drc}
 
 ---
 
@@ -17,14 +22,16 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 knitr::opts_chunk$set(
   cache = TRUE,
   echo = FALSE,
-  fig.path = "sigmoid_model_KOR_antagonists/knitr-",
+  fig.path = here::here(
+    "vignettes", "apply_sigmoid_model_KOR_antagonists_files/"),
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images
   fig.height = 5, # generated images
   fig.pos = "t",  # pdf mode
   fig.align = "center",
   dpi = if (knitr::is_latex_output()) 72 else 300, 
-  out.width = "100%")
+  out.width = "100%",
+  collapse = TRUE)
 
 set.seed(0)
 ```
@@ -40,4 +47,8 @@ bayesplot::bayesplot_theme_set(
   new = ggplot2::theme_bw())
 ```
 
-{{< include BayesPharma_manuscript_sections/case_study_hill.qmd >}}
+```{r}
+#| child = here::here("vignettes_src", "manuscript", "sections", "case_study_hill.qmd")
+
+```
+

@@ -7,3 +7,7 @@
 ^\.github$
 ^codecov\.yml$
 ^\.lintr$
+^vignettes/cache/*
+^vignettes/*_files/*
+^Makefile$
+^vignettes_src$

@@ -1,0 +1,939 @@
+---
+title: "Derive: tQ Model -- Enzyme Kinetics"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Derive: tQ Model -- Enzyme Kinetics}
+  %\VignetteEncoding{UTF-8}
+---
+  
+
+
+
+
+```
+## Loading required package: Rcpp
+```
+
+```
+## 
+## Attaching package: 'Rcpp'
+```
+
+```
+## The following object is masked from 'package:rsample':
+## 
+##     populate
+```
+
+```
+## Loading 'brms' package (version 2.18.1). Useful instructions
+## can be found by typing help('brms'). A more detailed introduction
+## to the package is available through vignette('brms_overview').
+```
+
+```
+## 
+## Attaching package: 'brms'
+```
+
+```
+## The following objects are masked from 'package:tidybayes':
+## 
+##     dstudent_t, pstudent_t, qstudent_t, rstudent_t
+```
+
+```
+## The following object is masked from 'package:drc':
+## 
+##     mixture
+```
+
+```
+## The following object is masked from 'package:dials':
+## 
+##     mixture
+```
+
+```
+## The following object is masked from 'package:stats':
+## 
+##     ar
+```
+## Enzyme Kinetic Modeling
+Enzymes are proteins that catalyze chemical reactions. Not only do they
+facilitate producing virtual all biological matter, but they are crucial for
+regulating biological processes. In the early 20th century Michaels and Menten
+described a foundational kinematic model for enzymes, where the substrate and
+enzyme reversibly bind, the substrate is converted to the product and then
+released.
+
+
+                  kf
+                 --->     kcat
+          E + S  <---  C --->  E + P
+                  kb
+
+where the free enzyme (E) reversibly binds to the stubstrate (S) to form
+a complex (C) with forward and backward rate constants of kf and kb, which is 
+irreversibly catalyzed into the product (P), with rate constant of kcat,
+releasing the enzyme to catalyze additional substrate. The total enzyme
+concentration is defined to be the `ET := E + C`. The total substrate and
+product concentration is defined to be `ST := S + C + P`. The Michaelis
+constant is the defined to be the `kM := (kb + kcat) / kf`. The `kcat` rate
+constant determines the maximum turn over at saturating substrate
+concentrations, `Vmax := kcat * ET`. The rate constants `kcat` and `kM` can be
+estimated by monitoring the product accumulation over time (enzyme progress
+curves), by varying the enzyme and substrate concentrations.
+
+By assuming that the enzyme concentration is very low (ET << ST), they derived
+their celebrated Michaelis-Menten kinetics. Since their work, a number of groups
+have developed models for enzyme kinetics that make less stringent assumptions.
+Recently (Choi, et al., 2017), described a Bayesian model for the total QSSA
+model. To make their model more accessible, we have re-implemented it in the
+Stan/BRMS framework and made it available through the `BayesPharma` package.
+
+## Outline for Vignette
+Next we will formally define the problem and formulate the model as the
+solution to an ordinary differential equation. To illustrate, we will consider a
+a toy system where we assuming the `kcat` and `kM` are known and simulate a
+sequence of measurements using deSolve. We will then implement the ODE in
+Stan/BRMS using stanvars and show how the parameters of the toy system can be
+estimated. Since it is common to vary the enzyme and substrate concentrations in
+order to better estimate the kinematic parameters, we will show how we can
+improve the Stan/BRMS model to allow multiple observations, each with an
+arbitrary number of measurements. Then finally, we will consider a real enzyme
+kinetics dataset and use the Stan/BRMS model to estimate the kinematic
+parameters. We will compare estimated parameters with those fit using
+standard approaches.
+
+
+## Problem Statement
+Implement the total QSSA model in stan/BRMS, a refinement of the classical
+Michaelis-Menten enzyme kinetics ordinary differential equation described in
+(Choi, et al., 2017, DOI: 10.1038/s41598-017-17072-z). From their equation 2:
+
+    Observed data:
+      M     = number of measurements # The product concentration Pt is measured
+      t[M]  = time                   # at M time points t
+      Pt[M] = product                # 
+      ST    = substrate total conc.  # Substrate and enzyme concentrations are
+      ET    = enzyme total conc.     # assumed to be given for each observation
+
+    Model parameters:
+      kcat    # catalytic constant
+      kM      # Michaelis constant
+
+    ODE formulation:
+      dPdt = kcat * (                # Change in product concentration at time t
+        ET + kM + ST - Pt +          
+        -sqrt((ET + kM + ST - Pt)^2 - 2* ET * (ST - Pt))) / 2
+      initial condition:
+        P := 0                       # There is zero product at time 0
+
+In (Choi, et al. 2017) they prove, that the tQ model is valid when
+ 
+     K/(2*ST) * (ET+kM+ST) / sqrt((ET+kM+ST+P)^2 - 4*ET(ST-P)) << 1,
+
+where `K = kb/kf` is the dissociation constant.
+
+## Simulate one observation
+Using the `deSolve` package we can simulate data following the total QSSA model.
+Measurements are made with random Gaussian noise with mean `0` and variance of
+`0.5`.
+
+```r
+tQ_model_generate <- function(time, kcat, kM, ET, ST){
+  ode_tQ <- function(time, Pt, theta){
+    list(c(theta[1] * (
+      ET + theta[2] + ST - Pt +
+      -sqrt((ET + theta[2] + ST - Pt)^2 - 4 * ET * (ST - Pt))) / 2))
+  }
+  deSolve::ode(y = 0, times = time, func = ode_tQ, parms = c(kcat, kM))
+}
+
+data_single <- tQ_model_generate(
+  time = seq(0.00, 3, by=.05),
+  kcat = 3,
+  kM = 5,
+  ET = 10,
+  ST = 10) |>
+  as.data.frame() |>
+  dplyr::rename(P_true = 2) |>
+  dplyr::mutate(
+    P = rnorm(dplyr::n(), P_true, 0.5), # add some observational noise
+    ST = 10, ET = 10)
+head(data_single)
+```
+
+```
+##   time    P_true          P ST ET
+## 1 0.00 0.0000000 -0.4834701 10 10
+## 2 0.05 0.7311578  0.5434683 10 10
+## 3 0.10 1.4243598  1.3900547 10 10
+## 4 0.15 2.0794197  1.4740040 10 10
+## 5 0.20 2.6964485  2.1198875 10 10
+## 6 0.25 3.2758537  3.6310486 10 10
+```
+To visualize, the true enzyme progress curve is shown in
+<span style="color:blue">blue</span>, and the enzyme progress curve fit to the
+noisy measurements with a smooth `loess` spline is shown in
+<span style="color:orange">orange</span>. While the smooth fits well, we
+cannot estimate the parameters for the curve from it.
+<img src="/Users/maom/opt/BayesPharma/vignettes/derive_tQ_model_files/data-single-plot-1.png" alt="plot of chunk data-single-plot" width="100%" style="display: block; margin: auto;" />
+
+## Fitting a single ODE observation in BRMS
+
+To implement in BRMS, we can use the `stanvars` to define custom functions. The
+key idea is call the ODE solver, in this case the backward differentiation
+formula (bdf) used to solve stiff ODEs, passing a function `ode_tQ` that
+returns `dP/dt`, the change in product at time `t`. The `ode_tQ` function
+depends on the product at time `t` as the state vector, the kinematic
+parameters to be estimated `kcat` and `kM` and the user-provided data of the
+enzyme and substrate concentrations `ET` and `ST`. To call `ode_dbf` we pass in
+the initial product concentration and time (both equal to zero), measured
+time-points, parameters and user defied data. Finally we, extract the vector of
+sampled vector of product concentrations which we return.
+
+
+```r
+stanvars_tQ_ode <- brms::stanvar(scode = paste("
+vector tQ_ode(
+   real time,
+   vector state,
+   vector params,
+   data real ET,
+   data real ST) {
+   
+   real Pt = state[1];   // product at time t
+   real kcat = params[1];
+   real kM = params[2];
+   vector[1] dPdt;
+   dPdt[1] = kcat * (
+     ET + kM + ST - Pt
+     -sqrt((ET + kM + ST - Pt)^2 - 4 * ET * (ST - Pt))) / 2;
+   return(dPdt);
+}
+", sep = "\n"),
+block = "functions")
+```
+
+
+```r
+stanvars_tQ_single <- brms::stanvar(scode = paste("
+vector tQ_single(
+  data vector time,
+  vector vkcat,
+  vector vkM,
+  data vector vET,
+  data vector vST) {
+  
+  vector[2] params;
+  params[1] = vkcat[1];
+  params[2] = vkM[1];
+  vector[1] initial_state;
+  initial_state[1] = 0.0;
+  real initial_time = 0.0;
+  int M = size(time);
+
+  vector[1] P_ode[M] = ode_bdf(     // Function signature:
+    tQ_ode,                         // function ode
+    initial_state,                  // vector initial_state
+    initial_time,                   // real initial_time
+    to_array_1d(time),              // array[] real time
+    params,                         // vector params
+    vET[1],                         // ...
+    vST[1]);                        // ...
+  
+  vector[M] P;                      // Need to return a vector not array
+  for(i in 1:M) P[i] = P_ode[i,1];
+  return(P);
+}
+", sep = "\n"),
+block = "functions")
+```
+
+To use this function, we define `kcat` and `kM` as parameters and that
+we wish to sample `P ~ tQ(...)`. Since all the data points define a single
+observation, we set `loop = FALSE`. We use `gamma` priors for `kcat` and
+`kM` with the shape parameter `alpha=4` and the rate parameter `beta=1`. The
+prior mean is `alpha/beta = 4/1 = 4` and the variance is
+`alpha/beta^2 = 4/1 = 4`. We also bound the parameters from below by `0`. We
+initialize each chain at the prior mean and use `cmdstanr` version 2.29.2 as the
+backend, and use the default warmup of `1000`
+
+
+```r
+brms_params <- list(
+  cores = 4,
+  seed = 52L,
+  backend = 'cmdstanr')
+```
+
+
+
+```r
+model_single <- do.call(what = brms::brm, args = c(list(
+  formula = brms::brmsformula(
+    P ~ tQ_single(time, kcat, kM, ET, ST),
+    kcat + kM ~ 1,
+    nl = TRUE,
+    loop=FALSE),
+  data = data_single |> dplyr::filter(time > 0),
+  prior = c(
+    brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kcat"),
+    brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kM")),
+  init = function() list(kcat = 4, kM = 4),
+  stanvars = c(
+    stanvars_tQ_ode,
+    stanvars_tQ_single)),
+  brms_params))
+```
+
+```
+## Start sampling
+```
+
+```
+## Init values were only set for a subset of parameters. 
+## Missing init values for the following parameters:
+##  - chain 1: b_kcat, b_kM, sigma
+##  - chain 2: b_kcat, b_kM, sigma
+##  - chain 3: b_kcat, b_kM, sigma
+##  - chain 4: b_kcat, b_kM, sigma
+```
+
+```
+## Running MCMC with 4 parallel chains...
+## 
+## Chain 1 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 2 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 3 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 4 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 1 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 2 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 3 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 4 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 2 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 4 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 1 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 3 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 2 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 4 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 1 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 3 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 4 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 2 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 1 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 3 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 4 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 1 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 2 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 3 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 2 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 1 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 3 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 2 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 3 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 1 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 2 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 1 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 3 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 4 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 2 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 3 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 1 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 4 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 2 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 2 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 3 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 3 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 4 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 1 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 1 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 2 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 4 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 3 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 1 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 2 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 4 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 4 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 1 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 3 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 2 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 4 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 1 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 3 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 2 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 4 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 1 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 3 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 4 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 2 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 1 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 3 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 4 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 2 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 1 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 3 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 4 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 2 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 1 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 3 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 4 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 2 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 1 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 3 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 2 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 4 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 3 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 1 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 4 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 2 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 2 finished in 15.8 seconds.
+## Chain 1 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 3 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 1 finished in 16.3 seconds.
+## Chain 3 finished in 16.3 seconds.
+## Chain 4 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 4 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 4 finished in 17.1 seconds.
+## 
+## All 4 chains finished successfully.
+## Mean chain execution time: 16.4 seconds.
+## Total execution time: 17.2 seconds.
+```
+Fitting the model takes ~15 seconds, with `Rhat = 1` and
+effective sample size for the bulk and tail greater than `1400` for
+both parameters. The estimates and 95% confidence intervals are good.
+
+```
+##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: P ~ tQ_single(time, kcat, kM, ET, ST) 
+##          kcat ~ 1
+##          kM ~ 1
+##    Data: structure(list(time = c(0.05, 0.1, 0.15, 0.2, 0.25 (Number of observations: 60) 
+##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup draws = 4000
+## 
+## Population-Level Effects: 
+##                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## kcat_Intercept     2.88      0.41     2.19     3.82 1.00     1245     1320
+## kM_Intercept       4.32      1.90     1.41     8.77 1.00     1274     1350
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma     0.54      0.05     0.45     0.65 1.00     1904     1779
+## 
+## Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).
+```
+
+To visualize the posterior distribution vs. the prior distribution, we first
+sample from the prior, using the same `brms::brm` call with
+`sample_prior = "only"` the argument.
+
+```r
+model_single_prior <- do.call(what = brms::brm, args = c(list(
+  formula = brms::brmsformula(
+    P ~ tQ_single(time, kcat, kM, ET, ST),
+    kcat + kM ~ 1,
+    nl = TRUE,
+    loop=FALSE),
+  data = data_single |> dplyr::filter(time > 0),
+  prior = c(
+    brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kcat"),
+    brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kM")),
+  init = function() list(kcat = 4, kM = 4),
+  stanvars = c(
+    stanvars_tQ_ode,
+    stanvars_tQ_single),
+  sample_prior = "only"),
+  brms_params))
+```
+
+```
+## Start sampling
+```
+
+```
+## Init values were only set for a subset of parameters. 
+## Missing init values for the following parameters:
+##  - chain 1: b_kcat, b_kM, sigma
+##  - chain 2: b_kcat, b_kM, sigma
+##  - chain 3: b_kcat, b_kM, sigma
+##  - chain 4: b_kcat, b_kM, sigma
+```
+
+```
+## Running MCMC with 4 parallel chains...
+## 
+## Chain 1 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 1 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 1 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 1 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 1 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 1 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 1 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 1 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 1 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 1 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 1 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 1 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 1 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 1 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 1 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 1 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 1 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 1 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 1 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 1 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 1 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 1 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 2 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 2 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 2 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 2 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 2 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 2 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 2 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 2 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 2 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 2 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 2 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 2 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 2 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 2 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 2 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 2 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 2 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 2 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 2 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 2 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 2 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 2 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 3 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 3 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 3 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 3 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 3 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 3 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 3 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 3 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 3 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 3 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 3 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 3 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 3 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 3 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 3 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 3 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 3 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 3 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 3 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 3 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 3 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 3 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 4 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 4 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 4 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 4 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 4 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 4 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 4 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 4 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 4 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 4 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 4 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 4 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 4 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 4 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 4 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 4 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 4 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 4 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 4 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 4 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 4 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 4 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 1 finished in 0.0 seconds.
+## Chain 2 finished in 0.0 seconds.
+## Chain 3 finished in 0.0 seconds.
+## Chain 4 finished in 0.0 seconds.
+## 
+## All 4 chains finished successfully.
+## Mean chain execution time: 0.0 seconds.
+## Total execution time: 0.2 seconds.
+```
+
+And to plot, we use `tidybayes` to gather the draws and `ggplot2` to map them to
+curves, with the prior as the<span style="color:orange">orange curve</span>,
+posterior as the <span style="color:blue">blue curve</span>, and the true
+parameter marked as a vertical line.
+
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/derive_tQ_model_files/prior-posterior-single-marginal-plot-1.png" alt="plot of chunk prior-posterior-single-marginal-plot" width="100%" style="display: block; margin: auto;" />
+
+Next, we plot the prior and posterior samples as a scatter plot. Note that
+the high correlation of the `kcat` and `kM` parameters in the posterior. This is
+expected, and typically better estimates require varying the enzyme and
+substrate concentrations.
+<img src="/Users/maom/opt/BayesPharma/vignettes/derive_tQ_model_files/prior-posterior-single-scatter-1.png" alt="plot of chunk prior-posterior-single-scatter" width="100%" style="display: block; margin: auto;" />
+
+## Fitting multiple observations
+
+Next we will extend the BRMS model to allow fitting common `kcat`, `kM`
+concentrations based on multiple replicas, or varying substrate/enzyme
+concentrations using BRMS. To demonstrate, we varying the enzyme and substrate
+concentrations, to better fit the kinematic parameters.
+
+```r
+data_multiple <- tidyr::expand_grid(
+  kcat = 3,
+  kM =  5,
+  ET = c(3, 10, 30),
+  ST = c(3, 10, 30)) |>
+  dplyr::mutate(observation_index = dplyr::row_number()) |>
+  dplyr::rowwise() |>
+  dplyr::do({
+    data <- .
+    time <- seq(0.05, 3, by=.05)
+    data <- data.frame(data,
+      time = time,
+      P = tQ_model_generate(
+        time = time,
+        kcat = data$kcat,
+        kM = data$kM,
+        ET = data$ET,
+        ST = data$ST)[,2])
+  }) |>
+  dplyr::mutate(
+    P = rnorm(dplyr::n(), P, 0.5))
+```
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/derive_tQ_model_files/data-multiple-plot-1.png" alt="plot of chunk data-multiple-plot" width="100%" style="display: block; margin: auto;" />
+
+
+```r
+stanvars_tQ_multiple <- brms::stanvar(scode = paste("
+vector tQ_multiple(
+  array[] int replica,
+  data vector time,
+  vector vkcat,
+  vector vkM,
+  data vector vET,
+  data vector vST) {
+
+  int N = size(time);
+  vector[N] P;
+  int begin = 1;
+  int current_replica = replica[1];
+  for (i in 1:N){
+    if(current_replica != replica[i]){
+      P[begin:i-1] = tQ_single(
+        time[begin:i-1],
+        vkcat,
+        vkM,
+        vET[begin:i-1],
+        vST[begin:i-1]);
+      begin = i;
+      current_replica = replica[i];
+    }
+  }
+  P[begin:N] = tQ_single(time[begin:N], vkcat, vkM, vET[begin:N], vST[begin:N]);
+  return(P);
+}", sep = "\n"),
+block = "functions")
+```
+
+
+```r
+model_multiple <- do.call(what = brms::brm, args = c(list(
+  formula = brms::brmsformula(
+    P ~ tQ_multiple(observation_index, time, kcat, kM, ET, ST),
+    kcat + kM ~ 1,
+    nl = TRUE,
+    loop=FALSE),
+  data = data_multiple,
+  prior = c(
+    brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kcat"),
+    brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kM")),
+  init = function() list(kcat = 4, kM = 4),
+  stanvars = c(
+    stanvars_tQ_ode,
+    stanvars_tQ_single,
+    stanvars_tQ_multiple)),
+  brms_params))
+```
+
+```
+## Start sampling
+```
+
+```
+## Init values were only set for a subset of parameters. 
+## Missing init values for the following parameters:
+##  - chain 1: b_kcat, b_kM, sigma
+##  - chain 2: b_kcat, b_kM, sigma
+##  - chain 3: b_kcat, b_kM, sigma
+##  - chain 4: b_kcat, b_kM, sigma
+```
+
+```
+## Running MCMC with 4 parallel chains...
+## 
+## Chain 1 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 2 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 3 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 4 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 3 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 4 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 1 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 2 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 1 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 2 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 3 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 4 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 1 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 2 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 4 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 3 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 1 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 2 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 4 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 3 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 1 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 2 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 3 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 4 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 1 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 2 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 4 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 3 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 1 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 2 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 4 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 3 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 1 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 2 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 4 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 3 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 1 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 2 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 4 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 3 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 1 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 1 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 2 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 2 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 4 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 4 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 3 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 3 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 2 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 1 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 4 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 3 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 2 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 1 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 4 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 1 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 3 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 2 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 4 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 1 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 3 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 2 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 1 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 4 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 2 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 3 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 1 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 4 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 2 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 3 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 1 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 4 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 2 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 3 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 1 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 4 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 2 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 3 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 1 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 2 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 4 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 3 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 1 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 1 finished in 85.8 seconds.
+## Chain 4 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 2 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 2 finished in 87.8 seconds.
+## Chain 3 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 4 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 4 finished in 92.2 seconds.
+## Chain 3 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 3 finished in 94.6 seconds.
+## 
+## All 4 chains finished successfully.
+## Mean chain execution time: 90.1 seconds.
+## Total execution time: 94.7 seconds.
+```
+
+```r
+model_multiple
+```
+
+```
+##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: P ~ tQ_multiple(observation_index, time, kcat, kM, ET, ST) 
+##          kcat ~ 1
+##          kM ~ 1
+##    Data: structure(list(kcat = c(3, 3, 3, 3, 3, 3, 3, 3, 3, (Number of observations: 540) 
+##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup draws = 4000
+## 
+## Population-Level Effects: 
+##                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## kcat_Intercept     2.78      0.04     2.69     2.86 1.00     1307     1387
+## kM_Intercept       4.53      0.30     3.96     5.14 1.00     1321     1401
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma     0.58      0.02     0.55     0.62 1.00     2026     1636
+## 
+## Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).
+```
+
+
+```
+## Start sampling
+```
+
+```
+## Init values were only set for a subset of parameters. 
+## Missing init values for the following parameters:
+##  - chain 1: b_kcat, b_kM, sigma
+##  - chain 2: b_kcat, b_kM, sigma
+##  - chain 3: b_kcat, b_kM, sigma
+##  - chain 4: b_kcat, b_kM, sigma
+```
+
+```
+## Running MCMC with 4 sequential chains...
+## 
+## Chain 1 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 1 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 1 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 1 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 1 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 1 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 1 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 1 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 1 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 1 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 1 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 1 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 1 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 1 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 1 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 1 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 1 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 1 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 1 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 1 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 1 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 1 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 1 finished in 0.0 seconds.
+## Chain 2 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 2 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 2 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 2 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 2 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 2 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 2 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 2 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 2 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 2 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 2 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 2 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 2 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 2 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 2 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 2 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 2 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 2 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 2 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 2 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 2 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 2 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 2 finished in 0.1 seconds.
+## Chain 3 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 3 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 3 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 3 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 3 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 3 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 3 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 3 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 3 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 3 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 3 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 3 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 3 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 3 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 3 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 3 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 3 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 3 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 3 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 3 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 3 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 3 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 3 finished in 0.0 seconds.
+## Chain 4 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 4 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 4 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 4 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 4 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 4 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 4 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 4 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 4 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 4 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 4 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 4 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 4 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 4 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 4 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 4 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 4 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 4 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 4 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 4 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 4 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 4 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 4 finished in 0.0 seconds.
+## 
+## All 4 chains finished successfully.
+## Mean chain execution time: 0.0 seconds.
+## Total execution time: 0.6 seconds.
+```
+
+
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/derive_tQ_model_files/prior-posterior-multiple-scatter-1.png" alt="plot of chunk prior-posterior-multiple-scatter" width="100%" style="display: block; margin: auto;" />
+
+
+Next we will sample enzyme progress curves from the posterior
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/derive_tQ_model_files/model-multiple-curves-1.png" alt="plot of chunk model-multiple-curves" width="100%" style="display: block; margin: auto;" />
+
+
+
+

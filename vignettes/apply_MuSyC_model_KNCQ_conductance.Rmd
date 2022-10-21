@@ -1,42 +1,29 @@
 ---
-title: "Ion Channel Conductance as Voltage Drugy Synergy"
+title: "Apply: MuSyC Model -- KCNQ Conductance"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Ion Channel Conductance as Voltage Drugy Synergy}
+  %\VignetteIndexEntry{Apply: MuSyC Model -- KCNQ Conductance}
   %\VignetteEncoding{UTF-8}
 ---
 
 
 
-```{r set-options, echo=FALSE}
 
-# inspired by
-# https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
-knitr::opts_chunk$set(
-  cache = TRUE,
-  echo = FALSE,
-  fig.path = "model_Pnear_distribution_figures/knitr-",
-  fig.retina = 2, # Control using dpi
-  fig.width = 6,  # generated images
-  fig.height = 5, # generated images
-  fig.pos = "t",  # pdf mode
-  fig.align = "center",
-  dpi = if (knitr::is_latex_output()) 72 else 300, 
-  out.width = "100%")
-
-algorithm <- "meanfield"
-
+```
+## Error in here("vignettes", "apply_MuSyC_model_KCNQ_conductance_files/"): could not find function "here"
 ```
 
 
-```{r load-packages}
+
+```r
 suppressWarnings(suppressMessages(library(tidymodels)))
 library(BayesPharma)
 ```
 
 
-```{r load-data}
+
+```r
 read_range <- function(
     sheet,
     range,
@@ -44,12 +31,13 @@ read_range <- function(
     dose_uM,
     is_control){
   readxl::read_excel(
-    path = paste0(
-      "../inst/extdata/Conductance Synergy KCNQ/",
+    path = here::here(
+      "inst", "extdata", "Conductance Synergy KCNQ",
       "KCNQ2-CR-raw data of Fig1b&d.xlsx"),
     sheet = {{sheet}},
     range = range,
-    col_names = FALSE) |>
+    col_names = FALSE,
+    .name_repair = ~ paste0("replica_", 1:length(.))) |>
     dplyr::mutate(
       treatment = {{treatment}},
       dose_uM = {{dose_uM}},
@@ -130,21 +118,12 @@ data <- dplyr::bind_rows(
   read_range(
     sheet = "fig 1d", range = "M95:Q110",
     treatment = "retigabine", dose_uM = 0.3, is_control = FALSE))
-    
 ```
 
 
-```{r model-MuSyC}
-model_data <- data |>
-  dplyr::filter(
-    treatment == "ztz240",
-    is_control == FALSE) |>
-  dplyr::transmute(
-    response = conductance,
-    logd1 = log10(dose_uM) - 6,
-    logd2 = voltage/100)
 
 
+```
 model_meanfield <- BayesPharma::MuSyC_model(
   data = model_data,
   algorithm = "meanfield")
@@ -177,13 +156,19 @@ BayesPharma::plot_synergy_checkerboard(
     "Voltage (mV)",
     breaks = data$voltage |> unique() |> sort(),
     labels = signif(d2_label, 3),
-      expand = c(0, 0)) +
+      expand = c(0, 0))
 ```
 
-```{r overlay-model-fit}
 
+```r
 brms::expose_functions(model, vectorize = TRUE)
+```
 
+```
+## Error in brms::expose_functions(model, vectorize = TRUE): object 'model' not found
+```
+
+```r
 model_predict <- predict(
   model,
   newdata = tidyr::expand_grid(
@@ -191,4 +176,8 @@ model_predict <- predict(
     logd2 = unique(data$voltage) / 100,
     logd1scale = model$data$logd1scale[1],
     logd2scale = model$data$logd2scale[2]))
+```
+
+```
+## Error in predict(model, newdata = tidyr::expand_grid(logd1 = seq(-1, 1, : object 'model' not found
 ```

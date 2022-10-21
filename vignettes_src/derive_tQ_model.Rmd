@@ -1,9 +1,9 @@
 ---
-title: "Modeling enzyme kinetics"
+title: "Derive: tQ Model -- Enzyme Kinetics"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Modeling enzyme kinetics}
+  %\VignetteIndexEntry{Derive: tQ Model -- Enzyme Kinetics}
   %\VignetteEncoding{UTF-8}
 ---
   
@@ -11,7 +11,7 @@ vignette: >
 knitr::opts_chunk$set(
   cache = TRUE,
   echo = FALSE,
-  fig.path = "model_Enzyme_Kinetics/knitr-",
+  fig.path = here::here("vignettes", "derive_tQ_model_files/"),
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images
   fig.height = 5, # generated images
@@ -41,6 +41,8 @@ regulating biological processes. In the early 20th century Michaels and Menten
 described a foundational kinematic model for enzymes, where the substrate and
 enzyme reversibly bind, the substrate is converted to the product and then
 released.
+
+
                   kf
                  --->     kcat
           E + S  <---  C --->  E + P

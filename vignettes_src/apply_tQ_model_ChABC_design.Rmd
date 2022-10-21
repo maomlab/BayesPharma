@@ -1,9 +1,9 @@
 ---
-title: "Enzyme Kinetics Application Example"
+title: "Apply: tQ Model -- ChABC Design"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Enzyme Kinetics Application Example}
+  %\VignetteIndexEntry{Apply: tQ Model -- ChABC Design}
   %\VignetteEncoding{UTF-8}
 ---
   
@@ -14,7 +14,7 @@ vignette: >
 knitr::opts_chunk$set(
   cache = TRUE,
   echo = FALSE,
-  fig.path = "Enzyme_Kinetics/knitr-",
+  fig.path = here::here("vignettes", "apply_model_tQ_ChABC_design_files/"),
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images
   fig.height = 5, # generated images
@@ -22,7 +22,6 @@ knitr::opts_chunk$set(
   fig.align = "center",
   dpi = if (knitr::is_latex_output()) 72 else 300, 
   out.width = "100%")
-
 ```
 
 
@@ -36,19 +35,20 @@ suppressWarnings(suppressMessages(library(tidybayes)))
 
 ```{r read-data}
 #| echo=FALSE
-data_path <- "../inst/extdata/Enzyme Kinetics/Hettiaratchi_2020.xlsx"
+data_path <- here::here(
+  "inst", "extdata", "Enzyme Kinetics/Hettiaratchi_2020.xlsx")
 
 data <- tibble::tibble(
   sheet_name = readxl::excel_sheets(data_path)[2:7]) |>
   dplyr::rowwise() |>
   dplyr::do({
     sheet_name <- .$sheet_name
-    cat("Parsing sheet: '", sheet_name, "' ...\n", sep = "")
     data <- readxl::read_excel(
       path = data_path,
       sheet = sheet_name,
       range = "R2C2:R65C18",
-      col_names = TRUE) |>
+      col_names = TRUE,
+      .name_repair = ~ paste0("column_", 1:length(.))) |>
       dplyr::mutate(
         substrate_concentration_mg_ml = sheet_name |>
           stringr::str_extract("^[0-9.]+") |>
@@ -56,9 +56,12 @@ data <- tibble::tibble(
           .before = 1)
   }) |>
   dplyr::ungroup()
-names(data)[seq(4, 16, by = 3)] <- paste0(data[1,2:16] |> as.character() |> na.omit(), "_1")
-names(data)[seq(5, 17, by = 3)] <- paste0(data[1,2:16] |> as.character() |> na.omit(), "_2")
-names(data)[seq(6, 18, by = 3)] <- paste0(data[1,2:16] |> as.character() |> na.omit(), "_3")
+names(data)[seq(4, 16, by = 3)] <- paste0(
+  data[1,2:16] |> as.character() |> na.omit(), "_1")
+names(data)[seq(5, 17, by = 3)] <- paste0(
+  data[1,2:16] |> as.character() |> na.omit(), "_2")
+names(data)[seq(6, 18, by = 3)] <- paste0(
+  data[1,2:16] |> as.character() |> na.omit(), "_3")
 names(data)[2] <- "time_s"
 names(data)[3] <- "temperature_C"
 data <- data |>

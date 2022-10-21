@@ -1,0 +1,181 @@
+---
+title: "Apply: Sigmoid Model -- Pnear Folding Funnel"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Apply: Sigmoid Model -- Pnear Folding Funnel}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+
+
+# Modeling Folding Funnels
+A common task in molecular modeling is to predict the conformation of the folded
+state for a given molecular system. For example, the Rosetta ab initio, or
+protein-protein-interface docking protocols. To turn the simulation into a prediction
+requires predicting the relative free energy of the folded state relative a reference.
+
+The Rosetta score function can score individual conformations, but doesn't capture
+the free energy of the state. Typically, a researcher will run a series of trajectories
+and generate a **score vs. RMSD plot** and look for a "folding funnel" e.g. lower
+energies for conformations that are closer to a target folded state. Here, RMSD
+is the root-mean squared deviation measuring the euclidean distance of pairs of atom
+defined by the application (for example just the backbone for sequence design or
+interface atoms for docking).
+
+## Pnear score
+To quantify the quality of the folding funnel, recently, there has been interest
+in using the **Pnear score**, which is defined by
+
+    Pnear = Sum_i[exp(-RMSD[i]^2/lambda^2)*exp(-score[i]/k_BT)] /
+            Sum_i[exp(-score[i]/k_BT)]
+
+where *(RMSD[i], score[i])* is the score RMSD and score values for a
+conformation *i*. The parameter *lambda* is measured in Angstroms indicating the
+breadth of the Gaussian used to define "native-like-ness".  The bigger the
+value, the more permissive the calculation is to structures that deviate from
+native. Typical values for peptides range from 1.5 to 2.0, and for proteins from
+2.0 to perhaps 4.0. And finally the parameter *k_BT* is measured in in energy
+units, determines how large an energy gap must be in order for a sequence to be
+said to favour the native state. The default value, 0.62, should correspond to
+physiological temperature for ref2015 or any other scorefunction with units of
+kcal/mol.
+
+## Two state model
+Thinking of the folded and unfolded states as a two-state model and RSMD as
+a reaction coordinate or "collective variable", then the energy gap can be
+modeled by a sigmoidal Boltzmann distribution.
+
+
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/apply_sigmoid_model_Pnear_files/sigmoidal-cartoon-1.png" alt="plot of chunk sigmoidal-cartoon" width="100%" style="display: block; margin: auto;" />
+
+For a principled molecular dynamics or monte carlo simulation that maintains detailed balance, it is in
+theory possible to use thermodynamic integration to quantify the energy gap
+between the two states. However, this is often not computationally feasible for
+proteins of moderate size or in a protein design or screening context where many
+different molecules need to be evaluated given a limited computational budget. So,
+Instead, we will assume that the at least locally around the folded state, the
+degrees of freedom increase exponentially so that the log of the RMSD defines
+a linear reaction coordinate. 
+
+If we simulate, trajectory points from the sigmoid on the log(RMSD) scale,
+with a Normally distributed error we can generate synthetic score-vs-rmsd plots
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/apply_sigmoid_model_Pnear_files/simulate-score-vs-rmsd-data-1.png" alt="plot of chunk simulate-score-vs-rmsd-data" width="100%" style="display: block; margin: auto;" />
+
+A nice thing about having the parametric model to generate score-vs-rmsd plots,
+is that it allows us to measure measure the sensitivity of the Pnear to differently
+shaped score-vs-rmsd plots. For example we can scan both the radius of 
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/apply_sigmoid_model_Pnear_files/simulate-data-scan-1.png" alt="plot of chunk simulate-data-scan" width="100%" style="display: block; margin: auto;" />
+
+Another question we can use this model to investigate is how reproducible is the Pnear score?
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/apply_sigmoid_model_Pnear_files/simulated-replicates-1.png" alt="plot of chunk simulated-replicates" width="100%" style="display: block; margin: auto;" />
+
+# Antibody SnugDock Case study
+As a case study, we can look at the real score-vs-rmsd plots from the Antibody
+SnugDock scientific benchmark. It is evaluates the SnugDock protocol over 6
+Antibody protein targets
+
+
+
+We can use the fit the sigmoid model to the `log(RMSD)` using the
+`BayesPharma` package, which relies on `BRMS` and `Stan`
+
+
+
+Check the model parameter fit and estimated parameters:
+
+```
+##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: response ~ sigmoid(ec50, hill, top, bottom, log_dose) 
+##          ec50 ~ 0 + target
+##          hill ~ 0 + target
+##          top ~ 0 + target
+##          bottom ~ 0 + target
+##    Data: data (Number of observations: 3003) 
+##   Draws: 4 chains, each with iter = 4000; warmup = 2000; thin = 1;
+##          total post-warmup draws = 8000
+## 
+## Population-Level Effects: 
+##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## ec50_target1ahw       1.70      0.11     1.45     1.86 1.00     4124     2651
+## ec50_target1jps       1.37      0.13     1.08     1.59 1.00     4211     3334
+## ec50_target1mlc       2.39      0.52     0.94     3.16 1.00     2943     2131
+## ec50_target1ztx       0.75      0.08     0.59     0.89 1.00     5099     4400
+## ec50_target2aep       1.12      0.25     0.63     1.52 1.00     3481     1579
+## ec50_target2jel       1.65      0.06     1.53     1.76 1.00     5466     4264
+## hill_target1ahw       1.68      0.43     0.91     2.62 1.00     3033     2344
+## hill_target1jps       1.50      0.36     0.89     2.30 1.00     3969     3546
+## hill_target1mlc       1.03      0.55     0.25     2.30 1.00     2918     3687
+## hill_target1ztx       2.72      0.54     1.78     3.91 1.00     6733     5493
+## hill_target2aep       2.01      0.64     0.81     3.35 1.00     1494      567
+## hill_target2jel       3.20      0.59     2.11     4.46 1.00     6407     4606
+## top_target1ahw      -10.57      0.69   -11.57    -8.96 1.00     3866     2642
+## top_target1jps       -9.69      0.57   -10.61    -8.32 1.00     5367     4140
+## top_target1mlc       -1.41      5.75    -9.81    11.97 1.00     5952     4680
+## top_target1ztx      -17.44      0.28   -18.00   -16.89 1.00     9447     5319
+## top_target2aep      -16.30      0.77   -16.95   -15.51 1.00     1535      485
+## top_target2jel      -11.09      0.33   -11.73   -10.44 1.00     8436     5717
+## bottom_target1ahw   -25.99      2.06   -31.01   -23.13 1.00     3232     2408
+## bottom_target1jps   -30.50      3.75   -39.44   -24.99 1.00     4008     3545
+## bottom_target1mlc   -18.50      4.43   -31.68   -14.76 1.00     2741     2229
+## bottom_target1ztx   -38.92      3.54   -46.68   -32.95 1.00     5601     4738
+## bottom_target2aep   -30.32      5.93   -44.28   -21.30 1.00     5267     5206
+## bottom_target2jel   -19.46      0.99   -21.66   -17.72 1.00     6023     4096
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma     5.74      0.07     5.60     5.89 1.00     9480     5904
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).
+```
+
+Excitingly, using leave-one-out cross-validation, the sigmoid model fits the
+data very well
+
+```
+## 
+## Computed from 8000 by 3003 log-likelihood matrix
+## 
+##          Estimate   SE
+## elpd_loo  -9520.9 39.0
+## p_loo        21.1  1.1
+## looic     19041.8 78.0
+## ------
+## Monte Carlo SE of elpd_loo is 0.1.
+## 
+## All Pareto k estimates are good (k < 0.5).
+## See help('pareto-k-diagnostic') for details.
+```
+
+
+
+
+
+Visualize the fit as draws from the expected mean and median quantile intvervals on the
+log(RMSD) scale:
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/apply_sigmoid_model_Pnear_files/plot-data-model-1.png" alt="plot of chunk plot-data-model" width="100%" style="display: block; margin: auto;" />
+And on the original RMSD scale:
+
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/apply_sigmoid_model_Pnear_files/plot-data-model-rmsd-1.png" alt="plot of chunk plot-data-model-rmsd" width="100%" style="display: block; margin: auto;" />
+
+
+## Quantify Pnear uncertainty
+Using the two-state model fit, it is possible to propagate the posterior
+uncertainty to estimate the uncertainty of the Pnear.
+
+
+
+
+
+
