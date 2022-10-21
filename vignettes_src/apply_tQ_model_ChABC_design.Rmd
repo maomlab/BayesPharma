@@ -36,7 +36,7 @@ suppressWarnings(suppressMessages(library(tidybayes)))
 ```{r read-data}
 #| echo=FALSE
 data_path <- here::here(
-  "inst", "extdata", "Enzyme Kinetics/Hettiaratchi_2020.xlsx")
+  "inst", "extdata", "enzyme_kinetics", "Hettiaratchi_2020.xlsx")
 
 data <- tibble::tibble(
   sheet_name = readxl::excel_sheets(data_path)[2:7]) |>
