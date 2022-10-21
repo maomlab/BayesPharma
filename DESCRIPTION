@@ -95,6 +95,7 @@ Suggests:
     readr,
     readxl,
     recipes,
+    qpdf,
     rmarkdown,
     stringr,
     tibble,
