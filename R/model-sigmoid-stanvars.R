@@ -1,3 +1,5 @@
+#' Stan code for the sigmoid function.
+#' 
 #' @note stanvar script of a sigmoid dose response equation.  For log
 #'     dose greater than negative infinity (dose greater than 0), the
 #'     sigmoid dose response equation is used. \code{ac50} is the half

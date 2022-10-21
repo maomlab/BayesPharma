@@ -1,0 +1,133 @@
+---
+title: "Apply: tQ Model -- nSMase2 Kinetics"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Apply: tQ Model -- nSMase2 Kinetics}
+  %\VignetteEncoding{UTF-8}
+---
+  
+
+
+
+
+
+
+
+
+
+
+```
+## Warning in FUN(X[[i]], ...): NaNs produced
+
+## Warning in FUN(X[[i]], ...): NaNs produced
+```
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/apply_model_tQ_nSmase2_kinetics_files/plot_data-1.png" alt="plot of chunk plot_data" width="100%" style="display: block; margin: auto;" />
+
+
+
+
+
+
+
+
+
+```
+## Compiling Stan program...
+```
+
+```
+## Start sampling
+```
+
+```
+## Chain 1: ------------------------------------------------------------
+## Chain 1: EXPERIMENTAL ALGORITHM:
+## Chain 1:   This procedure has not been thoroughly tested and may be unstable
+## Chain 1:   or buggy. The interface is subject to change.
+## Chain 1: ------------------------------------------------------------
+## Chain 1: 
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0.002719 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 27.19 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Begin eta adaptation.
+## Chain 1: Iteration:   1 / 250 [  0%]  (Adaptation)
+## Chain 1: Iteration:  50 / 250 [ 20%]  (Adaptation)
+## Chain 1: Iteration: 100 / 250 [ 40%]  (Adaptation)
+## Chain 1: Iteration: 150 / 250 [ 60%]  (Adaptation)
+## Chain 1: Iteration: 200 / 250 [ 80%]  (Adaptation)
+## Chain 1: Success! Found best value [eta = 1] earlier than expected.
+## Chain 1: 
+## Chain 1: Begin stochastic gradient ascent.
+## Chain 1:   iter             ELBO   delta_ELBO_mean   delta_ELBO_med   notes 
+## Chain 1:    100         -749.808             1.000            1.000
+## Chain 1:    200         -725.845             0.517            1.000
+## Chain 1:    300         -730.322             0.346            0.033
+## Chain 1:    400         -725.917             0.261            0.033
+## Chain 1:    500         -726.309             0.011            0.006   MEDIAN ELBO CONVERGED
+## Chain 1: 
+## Chain 1: Drawing a sample of size 1000 from the approximate posterior... 
+## Chain 1: COMPLETED.
+```
+
+
+
+```
+## Start sampling
+```
+
+```
+## Chain 1: ------------------------------------------------------------
+## Chain 1: EXPERIMENTAL ALGORITHM:
+## Chain 1:   This procedure has not been thoroughly tested and may be unstable
+## Chain 1:   or buggy. The interface is subject to change.
+## Chain 1: ------------------------------------------------------------
+## Chain 1: 
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Gradient evaluation took 4e-06 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Begin eta adaptation.
+## Chain 1: Iteration:   1 / 250 [  0%]  (Adaptation)
+## Chain 1: Iteration:  50 / 250 [ 20%]  (Adaptation)
+## Chain 1: Iteration: 100 / 250 [ 40%]  (Adaptation)
+## Chain 1: Iteration: 150 / 250 [ 60%]  (Adaptation)
+## Chain 1: Iteration: 200 / 250 [ 80%]  (Adaptation)
+## Chain 1: Success! Found best value [eta = 1] earlier than expected.
+## Chain 1: 
+## Chain 1: Begin stochastic gradient ascent.
+## Chain 1:   iter             ELBO   delta_ELBO_mean   delta_ELBO_med   notes 
+## Chain 1:    100           -0.297             1.000            1.000
+## Chain 1:    200           -0.134             1.105            1.209
+## Chain 1:    300           -0.142             0.632            1.209
+## Chain 1:    400           -0.357             0.328            0.602
+## Chain 1:    500           -0.261             0.484            0.602
+## Chain 1:    600           -0.305             0.255            0.367
+## Chain 1:    700           -0.194             0.356            0.569
+## Chain 1:    800            0.045             2.965            5.361
+## Chain 1:    900           -0.122             3.363            5.361
+## Chain 1:   1000           -0.082             0.929            1.364
+## Chain 1: Informational Message: The maximum number of iterations is reached! The algorithm may not have converged.
+## Chain 1: This variational approximation is not guaranteed to be meaningful.
+## Chain 1: 
+## Chain 1: Drawing a sample of size 1000 from the approximate posterior... 
+## Chain 1: COMPLETED.
+```
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/apply_model_tQ_nSmase2_kinetics_files/prior-posterior-scatter-1.png" alt="plot of chunk prior-posterior-scatter" width="100%" style="display: block; margin: auto;" />
+
+
+
+
+
+
+
+

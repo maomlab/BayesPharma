@@ -1,0 +1,198 @@
+---
+title: "Apply: MuSyC Model -- KCNQ Conductance"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Apply: MuSyC Model -- KCNQ Conductance}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+```{r set-options, echo=FALSE}
+
+# inspired by
+# https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
+knitr::opts_chunk$set(
+  cache = TRUE,
+  echo = FALSE,
+  fig.path = here("vignettes", "apply_MuSyC_model_KCNQ_conductance_files/"),
+  fig.retina = 2, # Control using dpi
+  fig.width = 6,  # generated images
+  fig.height = 5, # generated images
+  fig.pos = "t",  # pdf mode
+  fig.align = "center",
+  dpi = if (knitr::is_latex_output()) 72 else 300, 
+  out.width = "100%")
+
+algorithm <- "meanfield"
+
+```
+
+
+```{r load-packages}
+suppressWarnings(suppressMessages(library(tidymodels)))
+library(BayesPharma)
+```
+
+
+```{r load-data}
+read_range <- function(
+    sheet,
+    range,
+    treatment,
+    dose_uM,
+    is_control){
+  readxl::read_excel(
+    path = here::here(
+      "inst", "extdata", "Conductance Synergy KCNQ",
+      "KCNQ2-CR-raw data of Fig1b&d.xlsx"),
+    sheet = {{sheet}},
+    range = range,
+    col_names = FALSE,
+    .name_repair = ~ paste0("replica_", 1:length(.))) |>
+    dplyr::mutate(
+      treatment = {{treatment}},
+      dose_uM = {{dose_uM}},
+      is_control = {{is_control}},
+      voltage = seq(-90, 60, by = 10),
+      .before = 1) |>
+    tidyr::pivot_longer(
+      cols = c(-treatment, -dose_uM, -is_control, -voltage),
+      names_to = "replica",
+      values_to = "conductance")
+}
+
+data <- dplyr::bind_rows(
+  read_range(
+    sheet = "fig1b", range = "E3:I18",
+    treatment = "ztz240", dose_uM = 10, is_control = TRUE),
+  read_range(
+    sheet = "fig1b", range = "L3:P18",
+    treatment = "ztz240", dose_uM = 10, is_control = FALSE),
+  read_range(
+    sheet = "fig1b", range = "E22:I37",
+    treatment = "ztz240", dose_uM = 5, is_control = TRUE),
+  read_range(
+    sheet = "fig1b", range = "L22:P37",
+    treatment = "ztz240", dose_uM = 5, is_control = FALSE),  
+  read_range(
+    sheet = "fig1b", range = "E40:I55",
+    treatment = "ztz240", dose_uM = 3, is_control = TRUE),
+  read_range(
+    sheet = "fig1b", range = "L40:P55",
+    treatment = "ztz240", dose_uM = 3, is_control = FALSE), 
+  read_range(
+    sheet = "fig1b", range = "E58:J73",
+    treatment = "ztz240", dose_uM = 1, is_control = TRUE),
+  read_range(
+    sheet = "fig1b", range = "L58:Q73",
+    treatment = "ztz240", dose_uM = 1, is_control = FALSE),   
+  read_range(
+    sheet = "fig1b", range = "E77:I92",
+    treatment = "ztz240", dose_uM = 0.1, is_control = TRUE),
+  read_range(
+    sheet = "fig1b", range = "L77:P92",
+    treatment = "ztz240", dose_uM = 0.1, is_control = FALSE),
+
+  read_range(
+    sheet = "fig 1d", range = "D2:I17",
+    treatment = "retigabine", dose_uM = 30, is_control = TRUE),
+  read_range(
+    sheet = "fig 1d", range = "M2:R17",
+    treatment = "retigabine", dose_uM = 30, is_control = FALSE),
+  read_range(
+    sheet = "fig 1d", range = "D20:I35",
+    treatment = "retigabine", dose_uM = 10, is_control = TRUE),
+  read_range(
+    sheet = "fig 1d", range = "M20:R35",
+    treatment = "retigabine", dose_uM = 10, is_control = FALSE),  
+  read_range(
+    sheet = "fig 1d", range = "D39:H54",
+    treatment = "retigabine", dose_uM = 5, is_control = TRUE),
+  read_range(
+    sheet = "fig 1d", range = "M39:Q54",
+    treatment = "retigabine", dose_uM = 5, is_control = FALSE), 
+  read_range(
+    sheet = "fig 1d", range = "D57:H72",
+    treatment = "retigabine", dose_uM = 3, is_control = TRUE),
+  read_range(
+    sheet = "fig 1d", range = "M57:Q72",
+    treatment = "retigabine", dose_uM = 3, is_control = FALSE),   
+  read_range(
+    sheet = "fig 1d", range = "D76:H91",
+    treatment = "retigabine", dose_uM = 1, is_control = TRUE),
+  read_range(
+    sheet = "fig 1d", range = "M76:Q91",
+    treatment = "retigabine", dose_uM = 1, is_control = FALSE),
+  read_range(
+    sheet = "fig 1d", range = "D95:H110",
+    treatment = "retigabine", dose_uM = 0.3, is_control = TRUE),
+  read_range(
+    sheet = "fig 1d", range = "M95:Q110",
+    treatment = "retigabine", dose_uM = 0.3, is_control = FALSE))
+    
+```
+
+
+```{r prepare example data}
+#| echo=FALSE
+model_data <- data |>
+  dplyr::filter(
+    treatment == "ztz240",
+    is_control == FALSE) |>
+  dplyr::transmute(
+    response = conductance,
+    logd1 = log10(dose_uM) - 6,
+    logd2 = voltage/100)
+
+```
+
+```
+model_meanfield <- BayesPharma::MuSyC_model(
+  data = model_data,
+  algorithm = "meanfield")
+
+model <- BayesPharma::MuSyC_model(
+  data = model_data)
+
+```
+
+
+```{plot-checkerboard}
+
+plot_data <- data |>
+  dplyr::filter(
+    treatment == "ztz240",
+    is_control == FALSE) |>
+  dplyr::transmute(
+    response = conductance,
+    dose1 = dose_uM,
+    dose2 = 10^(voltage),
+
+BayesPharma::plot_synergy_checkerboard(
+  data = plot_data,
+  treatment_1_label = "ztz240",
+  treatment_1_units = "μM",
+  treatment_2_label = "Voltage",
+  treatment_2_units = "mV") +
+  ggplot2::coord_cartesian(default = TRUE) +
+  ggplot2::scale_y_continuous(
+    "Voltage (mV)",
+    breaks = data$voltage |> unique() |> sort(),
+    labels = signif(d2_label, 3),
+      expand = c(0, 0))
+```
+
+```{r overlay-model-fit}
+
+brms::expose_functions(model, vectorize = TRUE)
+
+model_predict <- predict(
+  model,
+  newdata = tidyr::expand_grid(
+    logd1 = seq(-1, 1, length.out = 100),
+    logd2 = unique(data$voltage) / 100,
+    logd1scale = model$data$logd1scale[1],
+    logd2scale = model$data$logd2scale[2]))
+```

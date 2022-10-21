@@ -7,6 +7,8 @@ inst/doc
 docs
 *~
 
+vignettes_working
+
 vignettes/*.rmarkdown
 vignettes/*_cache
 vignettes/*_files
@@ -17,3 +19,5 @@ vignettes/*.html
 vignettes/jss*
 vignettes/*_sections/*_files
 vignettes/*_sections/*.md
+vignettes_src/manuscript/*.rmarkdown
+vignettes_src/manuscript/*_cache

@@ -1,0 +1,145 @@
+---
+title: "Implement: BayesPharma and Tidymodels"
+author: "Matthew O'Meara"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Implement: BayesPharma and Tidymodels}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{here, }
+
+---
+
+
+
+
+
+# Using BayesPharma models with Tidymodels
+
+Tidymodels is a platform for running and analyzing models in R. This vignette
+demonstrates how to use the BayesPharma models with Tidy Models.
+
+
+```r
+load(here::here("data", "kor_antag.rda"))
+kor_antag <- kor_antag |> dplyr::transmute(
+  substance_id = Drug,
+  cell_id = cell_number,
+  log_dose = log_dose,
+  response = normalized_measurement)
+```
+
+Define a recipe and assign roles to different columns
+
+```r
+kor_recipe <- kor_antag |>
+  recipes::recipe() |>
+  recipes::update_role(response, new_role = "outcome") |>
+  recipes::update_role(log_dose, new_role = "predictor") |>
+  recipes::update_role(substance_id, new_role = "predictor")
+```
+
+Define the model using the \code{bayesian} wrapper package for TidyModels.
+
+```r
+kor_model <- bayesian::bayesian(
+  cores = 4,
+  chains = 4,
+  iter = 2000,
+  control = list(adapt_delta = 0.99),
+  stanvars = BayesPharma::sigmoid_stanvar,
+  init = BayesPharma::sigmoid_antagonist_init(top = 100),
+  prior = BayesPharma::sigmoid_antagonist_prior(top = 100)) |>
+  parsnip::set_engine("brms") |>
+  parsnip::set_mode("regression") |>
+  recipes::update(
+    formula.override = bayesian::bayesian_formula(
+      ..y ~ sigmoid(ic50, hill, top, bottom, log_dose),
+      ic50 + hill + top + bottom ~ 0 + substance_id,
+      nl = TRUE))
+```
+
+Build and run the workflow by adding the recipe and model and then running fit.
+
+```r
+kor_workflow <- workflows::workflow() |>
+  workflows::add_recipe(kor_recipe) |>
+  workflows::add_model(spec = kor_model) |>
+  parsnip::fit(data = kor_antag)
+```
+
+```
+## Compiling Stan program...
+```
+
+```
+## Start sampling
+```
+
+```r
+kor_workflow
+```
+
+```
+## ══ Workflow [trained] ════════════════════════════════════════════════════════════════════════════════════
+## Preprocessor: Recipe
+## Model: bayesian()
+## 
+## ── Preprocessor ──────────────────────────────────────────────────────────────────────────────────────────
+## 0 Recipe Steps
+## 
+## ── Model ─────────────────────────────────────────────────────────────────────────────────────────────────
+##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: ..y ~ sigmoid(ic50, hill, top, bottom, log_dose) 
+##          ic50 ~ 0 + substance_id
+##          hill ~ 0 + substance_id
+##          top ~ 0 + substance_id
+##          bottom ~ 0 + substance_id
+##    Data: ~data (Number of observations: 73) 
+##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup draws = 4000
+## 
+## Population-Level Effects: 
+##                                Estimate Est.Error l-95% CI u-95% CI Rhat
+## ic50_substance_idBTRX_335140      -8.85      0.20    -9.20    -8.41 1.00
+## ic50_substance_idBTRX_395750      -8.25      0.38    -8.92    -7.44 1.00
+## ic50_substance_idJNJ              -9.16      0.32    -9.79    -8.52 1.00
+## ic50_substance_idPF               -6.14      1.02    -7.60    -3.56 1.00
+## hill_substance_idBTRX_335140      -1.47      0.60    -2.89    -0.59 1.00
+## hill_substance_idBTRX_395750      -0.89      0.49    -2.19    -0.28 1.00
+## hill_substance_idJNJ              -1.02      0.53    -2.49    -0.40 1.00
+## hill_substance_idPF               -0.31      0.23    -0.86    -0.03 1.00
+## bottom_substance_idBTRX_335140    -0.01      0.50    -1.00     0.97 1.00
+## bottom_substance_idBTRX_395750     0.02      0.50    -0.96     0.99 1.00
+## bottom_substance_idJNJ            -0.01      0.51    -1.01     0.97 1.00
+## bottom_substance_idPF             -0.00      0.51    -1.00     0.98 1.00
+## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA
+## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA
+## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA
+## top_substance_idPF               100.00      0.00   100.00   100.00   NA
+##                                Bulk_ESS Tail_ESS
+## ic50_substance_idBTRX_335140       3676     2145
+## ic50_substance_idBTRX_395750       4333     2468
+## ic50_substance_idJNJ               4511     2653
+## ic50_substance_idPF                2189     1395
+## hill_substance_idBTRX_335140       4531     2991
+## hill_substance_idBTRX_395750       4725     2664
+## hill_substance_idJNJ               4618     2949
+## hill_substance_idPF                2143     1364
+## bottom_substance_idBTRX_335140     5622     3141
+## bottom_substance_idBTRX_395750     5047     2879
+## bottom_substance_idJNJ             4789     2609
+## bottom_substance_idPF              5176     2823
+## top_substance_idBTRX_335140          NA       NA
+## top_substance_idBTRX_395750          NA       NA
+## top_substance_idJNJ                  NA       NA
+## top_substance_idPF                   NA       NA
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma    32.06      2.85    27.06    38.45 1.01     3834     2793
+## 
+## ...
+## and 4 more lines.
+```

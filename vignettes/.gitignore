@@ -1,5 +1,5 @@
 *.html
 *.rds
-*_cache
+*cache
 *_figures
 */*.png

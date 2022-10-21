@@ -1,3 +1,45 @@
+---
+# For vignette -----------------------------------------------------------------
+title: "Apply: Sigmoid Model -- KOR Antagonists"
+subtitle: Analysis of Four Kappa Opioid Receptor Antagonists
+description: Demonstrate the applying a sigmoid model electrophysiology data
+# Document ---------------------------------------------------------------------
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Apply: Sigmoid Model -- KOR Antagonists}
+  %\VignetteKeyword{BayesPharma}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{drc}
+
+---
+
+
+
+
+```
+## Loading required package: MASS
+## 
+## Attaching package: 'MASS'
+## The following object is masked from 'package:dplyr':
+## 
+##     select
+## Loading required package: drcData
+## 
+## 'drc' has been loaded.
+## Please cite R and 'drc' if used for a publication,
+## for references type 'citation()' and 'citation('drc')'.
+## 
+## Attaching package: 'drc'
+## The following object is masked from 'package:dials':
+## 
+##     mixture
+## The following objects are masked from 'package:stats':
+## 
+##     gaussian, getInitial
+```
+
+
 ## Hill Equation {#hill}
 
 In this case study we are going to reanalyze the dose response of 4
@@ -35,10 +77,15 @@ prior choice
 recommendations.](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
 
 \scriptsize
-```{r kor-prior}
-#| echo=TRUE
+
+```r
 kor_prior <- BayesPharma::sigmoid_antagonist_prior(top = 100)
 kor_prior
+##            prior class coef group resp dpar  nlpar   lb   ub source
+##  normal(-6, 2.5)     b                        ic50 <NA> <NA>   user
+##    normal(-1, 1)     b                        hill <NA> 0.01   user
+##    constant(100)     b                         top <NA> <NA>   user
+##   normal(0, 0.5)     b                      bottom <NA> <NA>   user
 ```
 \normalsize
 
@@ -53,22 +100,10 @@ function. We will use the default response distribution of the model
 (*family = gaussian()*).
 
 
-```{r kor-data}
-load("../data/kor_antag.rda")
-kor_antag <- kor_antag |> dplyr::transmute(
-  substance_id = Drug,
-  cell_id = cell_number,
-  log_dose = log_dose,
-  response = normalized_measurement)
-```
 
 \scriptsize
-```{r kor-prior-sample}
-#| echo=TRUE,
-#| results='hide',
-#| message=FALSE,
-#| dependson=c("kor-prior")
 
+```r
 kor_sample_prior <- BayesPharma::sigmoid_antagonist_model(
   data = kor_antag |> dplyr::select(substance_id, log_dose, response),
   prior = kor_prior,
@@ -79,18 +114,14 @@ kor_sample_prior <- BayesPharma::sigmoid_antagonist_model(
 And then plot of the prior predictive distributions:
 
 \scriptsize
-```{r kor-prior-density-plot}
-#| echo=TRUE,
-#| results='show',
-#| dependson=c("kor-prior-sample"),
-#| fig.width = 9,
-#| fig.height = 2.6,
-#| fig.cap="KOR antagonists prior distribution"
 
+```r
 kor_sample_prior |>
   BayesPharma::density_distributions_plot()
-  
-
+## Error in `dplyr::mutate()`:
+## ! Problem while computing `Parameter = stringr::str_replace_all(...)`.
+## Caused by error in `.data["Parameter"]`:
+## ! `[` is not supported by the `.data` pronoun, use `[[` or $ instead.
 ```
 \normalsize
 
@@ -100,11 +131,8 @@ model convergence, using the default values of ec50 = -9, hill = -1,
 top = 100, bottom = 0.
 
 \scriptsize
-```{r kor-model}
-#| echo=TRUE,
-#| dependson = c("kor-data"),
-#| results='hide',
-#| message=FALSE
+
+```r
 kor_model <- BayesPharma::sigmoid_antagonist_model(
   data = kor_antag |> dplyr::select(substance_id, log_dose, response),
   formula = BayesPharma::sigmoid_antagonist_formula(
@@ -129,10 +157,45 @@ an indication of the sampling quality, with an ESS of > 500 samples
 being good for this type of model.
 
 \scriptsize
-```{r kor-model-summary}
-#| dependson=c("kor-model"),
-#| R.options = list(width = 350)
-kor_model
+
+```
+##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: response ~ sigmoid(ic50, hill, top, bottom, log_dose) 
+##          ic50 ~ 0 + substance_id
+##          hill ~ 0 + substance_id
+##          top ~ 0 + substance_id
+##          bottom ~ 0 + substance_id
+##    Data: data (Number of observations: 73) 
+##   Draws: 4 chains, each with iter = 8000; warmup = 4000; thin = 1;
+##          total post-warmup draws = 16000
+## 
+## Population-Level Effects: 
+##                                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## ic50_substance_idBTRX_335140      -8.84      0.20    -9.20    -8.40 1.00    14883     8873
+## ic50_substance_idBTRX_395750      -8.24      0.41    -8.92    -7.39 1.00    12333     5863
+## ic50_substance_idJNJ              -9.15      0.32    -9.78    -8.50 1.00    17511    10242
+## ic50_substance_idPF               -6.15      1.05    -7.64    -3.41 1.00     8649     6213
+## hill_substance_idBTRX_335140      -1.47      0.60    -2.89    -0.59 1.00    15340    10545
+## hill_substance_idBTRX_395750      -0.89      0.51    -2.24    -0.26 1.00    12763     6273
+## hill_substance_idJNJ              -1.01      0.51    -2.38    -0.41 1.00    15285    11508
+## hill_substance_idPF               -0.31      0.24    -0.88    -0.03 1.00     7904     4559
+## bottom_substance_idBTRX_335140    -0.00      0.50    -0.99     0.97 1.00    19984    11491
+## bottom_substance_idBTRX_395750     0.01      0.50    -0.97     1.00 1.00    19123    11247
+## bottom_substance_idJNJ            -0.01      0.50    -0.98     0.98 1.00    18940    11984
+## bottom_substance_idPF              0.00      0.50    -0.98     0.98 1.00    21351    12102
+## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA       NA       NA
+## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA       NA       NA
+## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA       NA       NA
+## top_substance_idPF               100.00      0.00   100.00   100.00   NA       NA       NA
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma    32.17      2.84    27.19    38.32 1.00    14690    10539
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).
 ```
 \normalsize
 
@@ -145,15 +208,13 @@ the traceplot shows the chains mixed well indicating the chains
 converged.
 
 \scriptsize
-```{r kor-model-traceplot}
-#| echo=TRUE,
-#| fig.height=6,
-#| fig.width=12,
-#| dependson=c("kor-model")
 
+```r
 kor_model |>
   bayesplot::mcmc_trace()
 ```
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/apply_sigmoid_model_KOR_antagonists_files/kor-model-traceplot-1.png" alt="plot of chunk kor-model-traceplot" width="100%" style="display: block; margin: auto;" />
 \normalsize
 
 #### Compare prior and posterior marginal distributions
@@ -164,21 +225,16 @@ useful for comparing the density distribution of the prior and
 posterior. produced by the model:
 
 \scriptsize
-```{r kor-model-prior-posterior-densities}
-#| dependson=c("kor-model"),
-#| echo=TRUE,
-#| results='hide',
-#| message=FALSE,
-#| fig.width = 9,
-#| fig.height = 5,
-#| fig.cap="KOR antagonists model, compare prior and posterior distributions for each substance"
 
+```r
 BayesPharma::prior_posterior_densities_plot(
   model = kor_model,
   predictors_col_name = "substance_id",
   half_max_label = "ic50",
   title_label="")
 ```
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/apply_sigmoid_model_KOR_antagonists_files/kor-model-prior-posterior-densities-1.png" alt="KOR antagonists model, compare prior and posterior distributions for each substance" width="100%" style="display: block; margin: auto;" />
 \normalsize
 
 Displayed below is a plot of the posterior distributions for each
@@ -186,15 +242,8 @@ parameter with the confidence intervals and mean. This is a useful
 visual of the model results and to highlight the mode and high density
 intervals:
   
-```{r kor-model-posterior-densities}
-#| dependson=c("kor-model"),
-#| echo=TRUE,
-#| message=FALSE,
-#| warning=FALSE,
-#| fig.width=9,
-#| fig.height=5,
-#| fig.cap="KOR Antagonists, posterior distribution for each substance"
 
+```r
 BayesPharma::posterior_densities_plot(
   kor_model, 
   predictors_col_name = "substance_id", 
@@ -202,22 +251,20 @@ BayesPharma::posterior_densities_plot(
   title_label = "")
 ```
 
+<img src="/Users/maom/opt/BayesPharma/vignettes/apply_sigmoid_model_KOR_antagonists_files/kor-model-posterior-densities-1.png" alt="KOR Antagonists, posterior distribution for each substance" width="100%" style="display: block; margin: auto;" />
+
 Displayed below is a plot of a sample of 100 sigmoid dose-response
 curves from the posterior distribution (purple) and the median
 quantile intervals:
 
-```{r kor-model-posterior-draws}
-#| echo=TRUE,
-#| results='hide',
-#| message=FALSE,
-#| warning=FALSE,
-#| dependson=c("kor-model"),
-#| fig.cap="KOR antagonists, posterior draws"
 
+```r
 BayesPharma::posterior_draws_plot(
   model = kor_model,
   title = "")
 ```
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/apply_sigmoid_model_KOR_antagonists_files/kor-model-posterior-draws-1.png" alt="KOR antagonists, posterior draws" width="100%" style="display: block; margin: auto;" />
 
 ### Comparing alternative models
 
@@ -225,31 +272,20 @@ To test the sensitivity of the analysis to the prior, we can re-fit
 the model with more informative prior:
 
 \scriptsize
-```{r kor-model-prior2}
-kor_prior2 <- BayesPharma::sigmoid_antagonist_prior(
-  ec50 = brms::prior(normal(-8.5, 0.5), nlpar = "ec50"),
-  hill = brms::prior(normal(-1, 0.5), ub = 0.01, nlpar = "hill"),
-  top = 100,
-  bottom = brms::prior(normal(10, 15), nlpar = "bottom"))
-kor_prior2
+
+```
+##            prior class coef group resp dpar  nlpar   lb   ub source
+##  normal(-6, 2.5)     b                        ic50 <NA> <NA>   user
+##  normal(-1, 0.5)     b                        hill <NA> 0.01   user
+##    constant(100)     b                         top <NA> <NA>   user
+##   normal(10, 15)     b                      bottom <NA> <NA>   user
 ```
 \normalsize
 
 Re-fitting the model
 
 \scriptsize
-```{r kor-model2}
-#| results='hide',
-#| message=FALSE,
-#| dependson=c("kor-model-prior2")
 
-kor_model2 <- BayesPharma::sigmoid_antagonist_model(
-  data = kor_antag |> dplyr::select(substance_id, log_dose, response),
-  formula = BayesPharma::sigmoid_antagonist_formula(0 + substance_id), 
-  prior = kor_prior2)
-
-kor_model2
-```
 \normalsize
 
 ## Comparing the Two Models Using LOO-Comparison:
@@ -268,11 +304,10 @@ data point is not fit by the model well. Evaluating the model for the
 KOR antagonists, shows that the model fits the data well.
 
 \scriptsize
-```{r kor-loo}
-#| dependson=c("kor-model")
-kor_model <- kor_model |>
-  brms::add_criterion(criterion = c("loo"), reloo = TRUE)
-kor_model$critera$loo
+
+```
+## No problematic observations found. Returning the original 'loo' object.
+## NULL
 ```
 \normalsize
 
@@ -283,12 +318,12 @@ lowest ELPD. The `kor_model2`, the model with more informative prior,
 is the preferred model, but not significantly.
 
 \scriptsize
-```{r kor-model-model2-loo-compare}
-#| dependson=c("kor-loo", "kor-model2")
-kor_model2 <- kor_model2 |>
-  brms::add_criterion(criterion = c("loo"), reloo = TRUE)
 
-brms::loo_compare(kor_model, kor_model2)
+```
+## No problematic observations found. Returning the original 'loo' object.
+##            elpd_diff se_diff
+## kor_model   0.0       0.0   
+## kor_model2 -0.2       0.8
 ```
 \normalsize
 
@@ -300,9 +335,8 @@ compare it to the results from the BayesPharma analysis.
 We will fix the top to 100 and fit the ic50, hill, and bottom.
 
 \scriptsize
-```{r kor-drc-model}
-#| dependson=c("kor-data"),
-#| echo=TRUE
+
+```r
 drc_models <- kor_antag |>
   dplyr::group_by(substance_id) |>
   dplyr::group_nest() |>
@@ -319,6 +353,21 @@ drc_models |>
   tidyr::unnest(summary) |>
   dplyr::arrange(term, substance_id) |>
   dplyr::select(-data, -model, -curve)
+## # A tibble: 12 × 8
+##    substance_id term   estimate std.error statistic  p.value  conf.low conf.high
+##    <chr>        <chr>     <dbl>     <dbl>     <dbl>    <dbl>     <dbl>     <dbl>
+##  1 BTRX_335140  bottom     1.31    19.4      0.0675 9.47e- 1  -40.0        42.6 
+##  2 BTRX_395750  bottom    29.5      9.40     3.14   7.85e- 3    9.20       49.8 
+##  3 JNJ          bottom   -18.1     26.7     -0.681  5.04e- 1  -73.7        37.4 
+##  4 PF           bottom    39.4     30.8      1.28   2.22e- 1  -27.0       106.  
+##  5 BTRX_335140  hill       4.06     9.20     0.441  6.65e- 1  -15.5        23.7 
+##  6 BTRX_395750  hill       9.82   164.       0.0600 9.53e- 1 -344.        364.  
+##  7 JNJ          hill       1.17     0.580    2.02   5.69e- 2   -0.0378      2.38
+##  8 PF           hill       1.13     1.33     0.855  4.08e- 1   -1.73        4.00
+##  9 BTRX_335140  ic50      -8.91     0.308  -28.9    1.42e-14   -9.57       -8.26
+## 10 BTRX_395750  ic50      -8.97     0.505  -17.8    1.70e-10  -10.1        -7.88
+## 11 JNJ          ic50      -8.77     0.670  -13.1    2.89e-11  -10.2        -7.37
+## 12 PF           ic50      -7.96     1.27    -6.29   2.78e- 5  -10.7        -5.23
 ```
 \normalsize
 
@@ -328,60 +377,5 @@ see that the Bayesian method provides a distribution curve as evidence
 and has smaller confidence intervals than most of the standard errors
 provided by the drc method.
 
-```{r}
-#| dependson = c("kor-drc-model", "kor-model"),
-#| fig.width = 9,
-#| fig.height = 3,
-#| fig.cap="KOR antagonists conditional effects. The blue lines are samples from the BayesPharma kor_model posterior distribution, the orange line is the conditional mean, and the purple line is the conditional mean for the DRC model fit."
-drc_model_conditional_effects <- drc_models |>
-  dplyr::mutate(
-    response = model |> purrr::map(
-      predict,
-      expand.grid(seq(-11, -6, length.out = 100)))) |>
-  tidyr::unnest(response) |>
-  dplyr::group_by(substance_id) |>
-  dplyr::mutate(
-    log_dose = seq(-11, -6, length.out = 100)) |>
-  dplyr::ungroup() |>
-  dplyr::transmute(
-    model_name = "DRC",
-    cond__ = substance_id,
-    log_dose,
-    response)
+<img src="/Users/maom/opt/BayesPharma/vignettes/apply_sigmoid_model_KOR_antagonists_files/unnamed-chunk-2-1.png" alt="KOR antagonists conditional effects. The blue lines are samples from the BayesPharma kor_model posterior distribution, the orange line is the conditional mean, and the purple line is the conditional mean for the DRC model fit." width="100%" style="display: block; margin: auto;" />
 
-drc_model_conditional_effects_plot_layers <- list(
-  ggplot2::geom_line(
-    data = drc_model_conditional_effects,
-    mapping = ggplot2::aes(
-      x = log_dose,
-      y = response),
-    color = "purple",
-    size = 1.3))
-
-kor_model_conditional_effects <- kor_model |>  
-  brms::conditional_effects(
-    effects = "log_dose",
-    conditions = kor_model |>
-      brms::make_conditions(
-        vars = "substance_id",
-        incl_vars = FALSE),
-    spaghetti = TRUE,
-    ndraws = 100)
-
-kor_model_conditional_effects_plot <- kor_model_conditional_effects |>
-  plot(
-    points = TRUE,
-    mean = TRUE,
-    line_args = list(size = 1.3, colour = "orange"),
-    point_args = list(width = 0.02),
-    plot = FALSE,
-    facet_args = list(nrow = 1, ncol = 4),
-    theme = ggplot2::theme_bw()) |>
-  purrr::pluck(1)
-
-kor_model_conditional_effects_plot +
-  drc_model_conditional_effects_plot_layers +
-  ggplot2::scale_x_continuous("log [Dose]") +
-  ggplot2::scale_y_continuous("Response")
-  
-```

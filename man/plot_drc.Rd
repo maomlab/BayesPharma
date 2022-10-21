@@ -8,7 +8,7 @@ plot_drc(
   model,
   newdata = NULL,
   predict_args = list(interval = "prediction"),
-  aes_mapping = ggplot2::aes(x = log_dose, y = response),
+  aes_mapping = ggplot2::aes(x = .data[["log_dose"]], y = .data[["response"]]),
   title = NULL
 )
 }
