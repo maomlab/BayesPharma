@@ -7,8 +7,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
-
 ```{r set-options, echo=FALSE}
 
 # inspired by
@@ -45,7 +43,7 @@ read_range <- function(
     is_control){
   readxl::read_excel(
     path = here::here(
-      "inst", "extdata", "conductance_KNCQ", "Li_CellRes_2021_fig1.xlsx"),
+      "inst", "extdata", "conductance_KCNQ", "Li_CellRes_2021_fig1.xlsx"),
     sheet = {{sheet}},
     range = range,
     col_names = FALSE,

@@ -82,7 +82,7 @@ knitr:
   opts_chunk: 
     cache: true
     echo: false
-    fig.path: "../../vignettes/manuscript_files/"
+    fig.path: "../../vignettes_src/manuscript_files/"
     fig.width: 6
     fig.height: 5
     fig.pos: "t"

@@ -50,8 +50,8 @@ vignette: >
 ## Chain 1: 
 ## Chain 1: 
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0.002719 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 27.19 seconds.
+## Chain 1: Gradient evaluation took 0.002665 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 26.65 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -65,11 +65,13 @@ vignette: >
 ## Chain 1: 
 ## Chain 1: Begin stochastic gradient ascent.
 ## Chain 1:   iter             ELBO   delta_ELBO_mean   delta_ELBO_med   notes 
-## Chain 1:    100         -749.808             1.000            1.000
-## Chain 1:    200         -725.845             0.517            1.000
-## Chain 1:    300         -730.322             0.346            0.033
-## Chain 1:    400         -725.917             0.261            0.033
-## Chain 1:    500         -726.309             0.011            0.006   MEDIAN ELBO CONVERGED
+## Chain 1:    100        -3982.774             1.000            1.000
+## Chain 1:    200         -759.166             2.623            4.246
+## Chain 1:    300         -743.095             1.756            1.000
+## Chain 1:    400         -744.406             1.317            1.000
+## Chain 1:    500         -726.596             1.074            0.025
+## Chain 1:    600         -727.353             0.012            0.022
+## Chain 1:    700         -725.335             0.008            0.003   MEAN ELBO CONVERGED   MEDIAN ELBO CONVERGED
 ## Chain 1: 
 ## Chain 1: Drawing a sample of size 1000 from the approximate posterior... 
 ## Chain 1: COMPLETED.
@@ -105,21 +107,27 @@ vignette: >
 ## Chain 1: 
 ## Chain 1: Begin stochastic gradient ascent.
 ## Chain 1:   iter             ELBO   delta_ELBO_mean   delta_ELBO_med   notes 
-## Chain 1:    100           -0.297             1.000            1.000
-## Chain 1:    200           -0.134             1.105            1.209
-## Chain 1:    300           -0.142             0.632            1.209
-## Chain 1:    400           -0.357             0.328            0.602
-## Chain 1:    500           -0.261             0.484            0.602
-## Chain 1:    600           -0.305             0.255            0.367
-## Chain 1:    700           -0.194             0.356            0.569
-## Chain 1:    800            0.045             2.965            5.361
-## Chain 1:    900           -0.122             3.363            5.361
-## Chain 1:   1000           -0.082             0.929            1.364
+## Chain 1:    100           -0.130             1.000            1.000
+## Chain 1:    200           -0.009             7.282           13.564
+## Chain 1:    300           -0.307             7.268           13.564
+## Chain 1:    400           -0.190             0.796            0.971
+## Chain 1:    500           -0.158             0.411            0.620
+## Chain 1:    600            0.191             1.015            1.828
+## Chain 1:    700           -0.410             1.647            1.828
+## Chain 1:    800           -0.220             1.162            1.465
+## Chain 1:    900           -0.092             1.121            1.384
+## Chain 1:   1000           -0.389             1.073            1.384
 ## Chain 1: Informational Message: The maximum number of iterations is reached! The algorithm may not have converged.
 ## Chain 1: This variational approximation is not guaranteed to be meaningful.
 ## Chain 1: 
 ## Chain 1: Drawing a sample of size 1000 from the approximate posterior... 
 ## Chain 1: COMPLETED.
+```
+
+```
+## Warning: Pareto k diagnostic value is 1.24. Resampling is disabled. Decreasing
+## tol_rel_obj may help if variational algorithm has terminated prematurely.
+## Otherwise consider using sampling instead.
 ```
 
 <img src="/Users/maom/opt/BayesPharma/vignettes/apply_model_tQ_nSmase2_kinetics_files/prior-posterior-scatter-1.png" alt="plot of chunk prior-posterior-scatter" width="100%" style="display: block; margin: auto;" />

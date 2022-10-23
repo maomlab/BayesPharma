@@ -12,6 +12,7 @@ vignettes_working
 vignettes/*.rmarkdown
 vignettes/*_cache
 vignettes/*_files
+vignettes/*.R
 vignettes/*.tex
 vignettes/*.pdf
 vignettes/*.md
@@ -21,3 +22,8 @@ vignettes/*_sections/*_files
 vignettes/*_sections/*.md
 vignettes_src/manuscript/*.rmarkdown
 vignettes_src/manuscript/*_cache
+vignettes_src/manuscript/*_files
+vignettes_src/manuscript/*tex
+vignettes_src/manuscript/*pdf
+vignettes_src/manuscript/*html
+vignettes_src/manuscript_files

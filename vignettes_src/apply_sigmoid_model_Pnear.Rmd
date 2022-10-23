@@ -37,7 +37,7 @@ library(GeomIndicator)
 ```
 # Modeling Folding Funnels
 A common task in molecular modeling is to predict the conformation of the folded
-state for a given molecular system. For example, the Rosetta ab initio, or
+state for a given molecular system. For example, the Rosetta *ab initio*, or
 protein-protein-interface docking protocols. To turn the simulation into a prediction
 requires predicting the relative free energy of the folded state relative a reference.
 
