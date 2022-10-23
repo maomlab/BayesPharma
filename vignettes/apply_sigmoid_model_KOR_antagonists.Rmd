@@ -17,27 +17,6 @@ vignette: >
 
 
 
-```
-## Loading required package: MASS
-## 
-## Attaching package: 'MASS'
-## The following object is masked from 'package:dplyr':
-## 
-##     select
-## Loading required package: drcData
-## 
-## 'drc' has been loaded.
-## Please cite R and 'drc' if used for a publication,
-## for references type 'citation()' and 'citation('drc')'.
-## 
-## Attaching package: 'drc'
-## The following object is masked from 'package:dials':
-## 
-##     mixture
-## The following objects are masked from 'package:stats':
-## 
-##     gaussian, getInitial
-```
 
 
 ## Hill Equation {#hill}
@@ -118,11 +97,9 @@ And then plot of the prior predictive distributions:
 ```r
 kor_sample_prior |>
   BayesPharma::density_distributions_plot()
-## Error in `dplyr::mutate()`:
-## ! Problem while computing `Parameter = stringr::str_replace_all(...)`.
-## Caused by error in `.data["Parameter"]`:
-## ! `[` is not supported by the `.data` pronoun, use `[[` or $ instead.
 ```
+
+<img src="/Users/maom/opt/BayesPharma/vignettes/apply_sigmoid_model_KOR_antagonists_files/kor-prior-density-plot-1.png" alt="KOR antagonists prior distribution" width="100%" style="display: block; margin: auto;" />
 \normalsize
 
 To sample from the model we will the Stan NUTs Hamiltonian Monte
@@ -172,18 +149,18 @@ being good for this type of model.
 ## 
 ## Population-Level Effects: 
 ##                                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## ic50_substance_idBTRX_335140      -8.84      0.20    -9.20    -8.40 1.00    14883     8873
-## ic50_substance_idBTRX_395750      -8.24      0.41    -8.92    -7.39 1.00    12333     5863
-## ic50_substance_idJNJ              -9.15      0.32    -9.78    -8.50 1.00    17511    10242
-## ic50_substance_idPF               -6.15      1.05    -7.64    -3.41 1.00     8649     6213
-## hill_substance_idBTRX_335140      -1.47      0.60    -2.89    -0.59 1.00    15340    10545
-## hill_substance_idBTRX_395750      -0.89      0.51    -2.24    -0.26 1.00    12763     6273
-## hill_substance_idJNJ              -1.01      0.51    -2.38    -0.41 1.00    15285    11508
-## hill_substance_idPF               -0.31      0.24    -0.88    -0.03 1.00     7904     4559
-## bottom_substance_idBTRX_335140    -0.00      0.50    -0.99     0.97 1.00    19984    11491
-## bottom_substance_idBTRX_395750     0.01      0.50    -0.97     1.00 1.00    19123    11247
-## bottom_substance_idJNJ            -0.01      0.50    -0.98     0.98 1.00    18940    11984
-## bottom_substance_idPF              0.00      0.50    -0.98     0.98 1.00    21351    12102
+## ic50_substance_idBTRX_335140      -8.85      0.20    -9.20    -8.40 1.00    15905     8645
+## ic50_substance_idBTRX_395750      -8.24      0.41    -8.92    -7.40 1.00    14328     6840
+## ic50_substance_idJNJ              -9.15      0.32    -9.77    -8.50 1.00    19319    11449
+## ic50_substance_idPF               -6.16      1.07    -7.67    -3.32 1.00     9760     6888
+## hill_substance_idBTRX_335140      -1.46      0.60    -2.87    -0.57 1.00    18054    11217
+## hill_substance_idBTRX_395750      -0.90      0.51    -2.25    -0.27 1.00    15430     8021
+## hill_substance_idJNJ              -1.01      0.51    -2.41    -0.40 1.00    17098    12190
+## hill_substance_idPF               -0.31      0.25    -0.92    -0.03 1.00     8704     6199
+## bottom_substance_idBTRX_335140     0.00      0.50    -0.98     0.96 1.00    23496    11189
+## bottom_substance_idBTRX_395750     0.02      0.50    -0.95     0.99 1.00    22836    11492
+## bottom_substance_idJNJ            -0.00      0.50    -0.97     0.99 1.00    23087    11232
+## bottom_substance_idPF              0.01      0.51    -0.97     0.99 1.00    24967    12179
 ## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA       NA       NA
 ## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA       NA       NA
 ## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA       NA       NA
@@ -191,7 +168,7 @@ being good for this type of model.
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma    32.17      2.84    27.19    38.32 1.00    14690    10539
+## sigma    32.19      2.88    27.13    38.36 1.00    18407    11655
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -322,8 +299,8 @@ is the preferred model, but not significantly.
 ```
 ## No problematic observations found. Returning the original 'loo' object.
 ##            elpd_diff se_diff
-## kor_model   0.0       0.0   
-## kor_model2 -0.2       0.8
+## kor_model  0.0       0.0    
+## kor_model2 0.0       0.8
 ```
 \normalsize
 

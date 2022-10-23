@@ -6,10 +6,6 @@ output: rmarkdown::html_vignette
 bibliography: references.bib
 editor: visual
 header-includes: |
-  % https://colorbrewer2.org/#type=qualitative&scheme=Dark2&n=3
-  \definecolor{dose}{rgb}{0.10546875,0.6171875,0.46484375}
-  \definecolor{response}{rgb}{0.8476562,0.3710938,0.0078125}
-  \definecolor{shape}{rgb}{0.4570312,0.4375000,0.6992188}
   \usepackage{chemarr}
 vignette: >
   %\VignetteIndexEntry{Derive: MuSyC Model -- Synergy Analysis}

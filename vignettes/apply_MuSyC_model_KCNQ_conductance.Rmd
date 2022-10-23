@@ -8,8 +8,6 @@ vignette: >
 ---
 
 
-
-
 ```
 ## Error in here("vignettes", "apply_MuSyC_model_KCNQ_conductance_files/"): could not find function "here"
 ```
@@ -32,8 +30,7 @@ read_range <- function(
     is_control){
   readxl::read_excel(
     path = here::here(
-      "inst", "extdata", "Conductance Synergy KCNQ",
-      "KCNQ2-CR-raw data of Fig1b&d.xlsx"),
+      "inst", "extdata", "conductance_KCNQ", "Li_CellRes_2021_fig1.xlsx"),
     sheet = {{sheet}},
     range = range,
     col_names = FALSE,
