@@ -35,6 +35,31 @@ devtools::document()
 devtools::load_all()
 ```    
     
+## Build the manuscript and vignettes
+The manuscript is a multi-part Quarto document in `vignettes_src/manuscript`
+
+1) We have used paperpile to organize the references, to update
+
+```{shell update-references}
+make update_references
+```
+
+1) To build the manuscript
+
+```{shell build-manuscript}
+make manuscript
+```
+
+To build the sections into the website
+
+2) Build the website
+```{shell build-site}
+make build_site
+```
+
+To see the site locally, navigate to `BayesPharma/docs/index.html`
+    
+    
 ## Package testing and deployment
 
 1) Run all the tests
@@ -43,11 +68,6 @@ devtools::load_all()
 make test
 ```
 
-5) Build the website
-```{shell build-site}
-make build_site
-```
 
-To see the site locally, navigate to `BayesPharma/docs/index.html`
 
 
