@@ -1,6 +1,7 @@
 
-
-# Makefile for building BayesPharma
+#################################################
+# Makefile for building the BayesPharma package #
+#################################################
 
 
 clean:	
@@ -26,6 +27,13 @@ test:
 	Rscript -e "lintr::lint_package()"
 
 # compile the vignettes from vignettes_src because they can take quite a while
+
+update_references:
+	# Set up PaperPile automatic export of bibtex files and generate link
+	# https://paperpile.com/h/automatic-bibtex-export/
+	curl -R -o "vignettes_src/references.bib" -z "vignettes_src/references.bib" https://paperpile.com/eb/qxOGiPoDRL
+	rm vignettes/references.bib
+  
 vignettes_src/references.bib:
 
 vignettes/references.bib: vignettes_src/references.bib
@@ -36,7 +44,7 @@ vignettes/%.Rmd: vignettes_src/%.Rmd vignettes/references.bib
 
 vignettes: $(patsubst vignettes_src/%,vignettes/%,$(wildcard vignettes_src/*.Rmd))
 
-vignettes/manuscript.qmd:
+vignettes/manuscript.qmd: vignettes/references.bib
 	quarto render vignettes_src/manuscript/manuscript.qmd --output-dir vignettes
 
 manuscript: vignettes/manuscript.qmd
@@ -47,4 +55,4 @@ site: vignettes manuscript
 
 all: build install
 
-.PHONY: all
+.PHONY: all site manuscript vignettes update_references test install build deps clean
