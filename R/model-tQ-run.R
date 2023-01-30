@@ -14,6 +14,8 @@
 #' @param control a named list of parameters to control the sampler's behavior.
 #'   Adding max_treedepth and giving a greater value than 10 can improve model
 #'   convergence (default = list(adapt_delta = 0.99)).
+#' @param expose_functions boolean. Expose the BayesPharma functions for the
+#'   model [default: TRUE].
 #' @param ... additional arguments passed to \code{brms::brm}.
 #'
 #' @return brmsfit model
@@ -26,6 +28,7 @@ tQ_model <- function(
     init = tQ_init(),
     iter = 8000,
     control = list(adapt_delta = 0.99),
+    expose_functions = TRUE,
     ...) {
     
   model <- brms::brm(
@@ -39,5 +42,10 @@ tQ_model <- function(
     ...)
 
   model$bayes_pharma <- list(model_type = "tQ")
+  
+  if (expose_functions) {
+    brms::expose_functions(model, vectorize = TRUE)
+  }
+  
   model
 }

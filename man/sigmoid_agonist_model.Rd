@@ -12,6 +12,7 @@ sigmoid_agonist_model(
   iter = 8000,
   control = list(adapt_delta = 0.99),
   stanvar_function = sigmoid_stanvar,
+  expose_functions = TRUE,
   ...
 )
 }
@@ -41,6 +42,9 @@ value than 10 can improve model convergence (default:
 
 \item{stanvar_function}{stan code for the model (default:
 \code{BayesPharma::sigmoid_stanvar})}
+
+\item{expose_functions}{boolean. Expose the BayesPharma functions for the
+model [default: TRUE].}
 
 \item{...}{additional arguments passed to \code{brms::brm}}
 }

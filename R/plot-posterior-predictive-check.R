@@ -36,6 +36,5 @@ plot_pp_check <- function(
     n = 50,
     ...) {
 
-  brms::expose_functions(model, vectorize = TRUE)
   brms::pp_check(model, type = plot_type, ndraws = n, ...)
 }

@@ -11,6 +11,7 @@ MuSyC_model(
   formula = MuSyC_formula(),
   control = list(adapt_delta = 0.99, max_treedepth = 12),
   stanvars = c(MuSyC_function_stanvar, MuSyC_genquant_stanvar),
+  expose_functions = TRUE,
   ...
 )
 }
@@ -37,6 +38,9 @@ value than 10 can improve model convergence (default:
 
 \item{stanvars}{\code{stanvars} code for the model. Default defines
 the MuSyC function and genquant code.}
+
+\item{expose_functions}{boolean. Expose the BayesPharma functions for the
+model [default: TRUE].}
 
 \item{...}{additional arguments passed to \code{brms::brm}}
 }
