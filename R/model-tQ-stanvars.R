@@ -28,13 +28,10 @@ vector tQ_single(
   data vector vET,
   data vector vST) {
 
-  vector[2] params;
-  params[1] = vkcat[1];
-  params[2] = vkM[1];
-  vector[1] initial_state;
-  initial_state[1] = 0.0;
+  vector[2] params = [ vkcat[1], vkM[1] ]';
+  vector[1] initial_state = [0.0]';
   real initial_time = 0.0;
-  int M = size(time);
+  int M = dims(time)[1];
 
   vector[1] P_ode[M] = ode_bdf(     // Function signature:
     tQ_ode,                         // function ode
@@ -63,7 +60,7 @@ vector tQ_single(
 }
 
 vector tQ_multiple(
-  array[] int series_index,
+  data vector series_index,
   data vector time,
   vector vkcat,
   vector vkM,
@@ -73,7 +70,7 @@ vector tQ_multiple(
   int N = size(time);
   vector[N] P;
   int begin = 1;
-  int current_series = series_index[1];
+  real current_series = series_index[1];
   for (i in 1:N) {
     if(current_series != series_index[i]) {
       P[begin:i-1] = tQ_single(

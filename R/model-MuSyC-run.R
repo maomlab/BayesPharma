@@ -87,6 +87,8 @@ MuSyC_model <- function(
     ...)
 
   model$bayes_pharma <- list(model_type = "MuSyC")
+
+  brms::expose_functions(model, vectorize = TRUE)
   model
 
 

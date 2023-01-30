@@ -47,11 +47,7 @@
 posterior_draws_plot <- function(
     model,
     newdata = NULL,
-    #predictor_cols = NULL,
-    #lower = NULL,
-    #upper = NULL,
     n = 50,
-    #facet_var = NULL,
     point_size = 0.75,
     jitter_height = 0,
     jitter_width = 0,
@@ -59,7 +55,7 @@ posterior_draws_plot <- function(
     xlab = "Log[Molar]",
     ylab = "Response") {
 
-  if (class(model) != "brmsfit") {
+  if (!inherits(model, "brmsfit")) {
     warning(paste0(
       "posterior_draws_plot expects model to be of class 'brmsfit',",
       " instead it is of class ", class(model)))

@@ -1,5 +1,4 @@
 library(BayesPharma)
-library(tidymodels)
 
 testthat::test_that("sigmoid returns numeric class:", {
   testthat::expect_equal(

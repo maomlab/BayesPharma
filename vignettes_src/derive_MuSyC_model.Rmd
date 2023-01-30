@@ -37,7 +37,7 @@ set.seed(0)
 
 ```{r load-packages}
 #| echo=FALSE
-suppressWarnings(suppressMessages(library(tidymodels)))
+suppressWarnings(suppressMessages(library(tidyverse)))
 library(BayesPharma)
 
 bayesplot::bayesplot_theme_set(

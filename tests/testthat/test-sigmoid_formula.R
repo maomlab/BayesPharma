@@ -1,10 +1,9 @@
-library(BayesPharma)
 library(tidymodels)
 
 testthat::test_that("sigmoid_agonist_formula with a constant predictor", {
   formula <- BayesPharma::sigmoid_agonist_formula()
 
-  testthat::expect_true("brmsformula" %in% class(formula))
+  testthat::expect_true(inherits(formula, "brmsformula"))
   testthat::expect_equal(formula$resp, "response")
   testthat::expect_equal(
     rlang::f_lhs(formula$formula),
@@ -27,7 +26,7 @@ testthat::test_that("sigmoid_agonist_formula with a substance predictor", {
   formula <- BayesPharma::sigmoid_agonist_formula(
     predictors = substance)
 
-  testthat::expect_true("brmsformula" %in% class(formula))
+  testthat::expect_true(inherits(formula, "brmsformula"))
   testthat::expect_equal(formula$resp, "response")
   testthat::expect_equal(
     rlang::f_lhs(formula$formula),
@@ -50,7 +49,7 @@ testthat::test_that("sigmoid_agonist_formula with a grouped predictor", {
   formula <- BayesPharma::sigmoid_agonist_formula(
     predictors = substance + (1 | batch))
 
-  testthat::expect_true("brmsformula" %in% class(formula))
+  testthat::expect_true(inherits(formula, "brmsformula"))
   testthat::expect_equal(formula$resp, "response")
   testthat::expect_equal(
     rlang::f_lhs(formula$formula),
@@ -77,7 +76,7 @@ testthat::test_that("sigmoid_agonist_formula with a grouped predictor", {
 testthat::test_that("sigmoid_antagonist_formula with a constant predictor", {
   formula <- BayesPharma::sigmoid_antagonist_formula()
 
-  testthat::expect_true("brmsformula" %in% class(formula))
+  testthat::expect_true(inherits(formula, "brmsformula"))
   testthat::expect_equal(formula$resp, "response")
   testthat::expect_equal(
     rlang::f_lhs(formula$formula),
@@ -100,7 +99,7 @@ testthat::test_that("sigmoid_antagonist_formula with a substance predictor", {
   formula <- BayesPharma::sigmoid_antagonist_formula(
     predictors = substance)
 
-  testthat::expect_true("brmsformula" %in% class(formula))
+  testthat::expect_true(inherits(formula, "brmsformula"))
   testthat::expect_equal(formula$resp, "response")
   testthat::expect_equal(
     rlang::f_lhs(formula$formula),
@@ -123,7 +122,7 @@ testthat::test_that("sigmoid_antagonist_formula with a grouped predictor", {
   formula <- BayesPharma::sigmoid_antagonist_formula(
     predictors = substance + (1 | batch))
 
-  testthat::expect_true("brmsformula" %in% class(formula))
+  testthat::expect_true(inherits(formula, "brmsformula"))
   testthat::expect_equal(formula$resp, "response")
   testthat::expect_equal(
     rlang::f_lhs(formula$formula),

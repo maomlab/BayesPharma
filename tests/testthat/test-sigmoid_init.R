@@ -1,5 +1,4 @@
 library(BayesPharma)
-library(tidymodels)
 
 testthat::test_that(
   desc = "sigmoid_agonist_inits with default inits",

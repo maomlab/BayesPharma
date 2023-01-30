@@ -112,7 +112,7 @@ if(Sys.info()["machine"] == "arm64"){
 ```
 
 ```{r load-packages}
-suppressWarnings(suppressMessages(library(tidymodels)))
+#suppressWarnings(suppressMessages(library(tidyverse)))
 library(BayesPharma)
 library(drc)
 library(brms)

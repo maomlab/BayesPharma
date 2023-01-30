@@ -27,7 +27,7 @@ tQ_model <- function(
     iter = 8000,
     control = list(adapt_delta = 0.99),
     ...) {
-
+    
   model <- brms::brm(
     formula = formula,
     data = data,

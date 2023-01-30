@@ -1,4 +1,3 @@
-library(tidymodels)
 library(BayesPharma)
 
 load("../testdata/ggplot_test_model.rda")
