@@ -11,6 +11,7 @@ tQ_model(
   init = tQ_init(),
   iter = 8000,
   control = list(adapt_delta = 0.99),
+  expose_functions = TRUE,
   ...
 )
 }
@@ -34,6 +35,9 @@ with model convergence (default = 8000).}
 \item{control}{a named list of parameters to control the sampler's behavior.
 Adding max_treedepth and giving a greater value than 10 can improve model
 convergence (default = list(adapt_delta = 0.99)).}
+
+\item{expose_functions}{boolean. Expose the BayesPharma functions for the
+model [default: TRUE].}
 
 \item{...}{additional arguments passed to \code{brms::brm}.}
 }

@@ -109,7 +109,6 @@ kor_model <- BayesPharma::sigmoid_antagonist_model(
   formula = BayesPharma::sigmoid_antagonist_formula(
     predictors = 0 + substance_id), 
   prior = kor_prior)
-brms::expose_functions(kor_model, vectorize=TRUE)
 ```
 \normalsize
 

@@ -25,6 +25,8 @@
 #'     \code{list(adapt_delta = 0.99)}).
 #' @param stanvar_function stan code for the model (default:
 #'     \code{BayesPharma::sigmoid_stanvar})
+#' @param expose_functions boolean. Expose the BayesPharma functions for the
+#'   model [default: TRUE].
 #' @param ... additional arguments passed to \code{brms::brm}
 #'
 #' @return \code{brmsfit} object
@@ -44,6 +46,7 @@ sigmoid_agonist_model <- function(
   iter = 8000,
   control = list(adapt_delta = 0.99),
   stanvar_function = sigmoid_stanvar,
+  expose_functions = TRUE,
   ...) {
 
   if (!methods::is(formula, "brmsformula")) {
@@ -75,6 +78,11 @@ sigmoid_agonist_model <- function(
     ...)
 
   model$bayes_pharma <- list(model_type = "sigmoid_agonist")
+  
+  if (expose_functions) {
+    brms::expose_functions(model, vectorize = TRUE)
+  }
+  
   model
 
 }
@@ -106,6 +114,8 @@ sigmoid_agonist_model <- function(
 #'     \code{list(adapt_delta = 0.99)}).
 #' @param stanvar_function stan code for the model (default:
 #'     \code{BayesPharma::sigmoid_stanvar})
+#' @param expose_functions boolean. Expose the BayesPharma functions for the
+#'   model [default: TRUE].
 #' @param ... additional arguments passed to \code{brms::brm}
 #'
 #' @return \code{brmsfit} object
@@ -124,6 +134,7 @@ sigmoid_antagonist_model <- function(
     iter = 8000,
     control = list(adapt_delta = 0.99),
     stanvar_function = sigmoid_stanvar,
+    expose_functions = TRUE,
     ...) {
 
   if (!methods::is(formula, "brmsformula")) {
@@ -155,6 +166,11 @@ sigmoid_antagonist_model <- function(
     ...)
 
   model$bayes_pharma <- list(model_type = "sigmoid_antagonist")
+  
+  if (expose_functions) {
+    brms::expose_functions(model, vectorize = TRUE)
+  }
+  
   model
 
 }

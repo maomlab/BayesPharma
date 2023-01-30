@@ -358,8 +358,6 @@ model <- data |>
     silent = 1,
     iter = 4000,
     control = list(adapt_delta = 0.9, max_treedepth = 12))
-
-model |> brms::expose_functions(vectorize = TRUE)
 ```
 
 Check the model parameter fit and estimated parameters:

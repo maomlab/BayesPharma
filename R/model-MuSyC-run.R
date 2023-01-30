@@ -30,6 +30,8 @@
 #'     \code{list(adapt_delta = 0.99)}).
 #' @param stanvars \code{stanvars} code for the model. Default defines
 #'     the MuSyC function and genquant code.
+#' @param expose_functions boolean. Expose the BayesPharma functions for the
+#'   model [default: TRUE].
 #' @param ... additional arguments passed to \code{brms::brm}
 #'
 #'
@@ -45,6 +47,7 @@ MuSyC_model <- function(
     stanvars = c(
       MuSyC_function_stanvar,
       MuSyC_genquant_stanvar),
+    expose_functions = TRUE,
     ...) {
 
   if (!("response" %in% names(data))) {
@@ -88,7 +91,10 @@ MuSyC_model <- function(
 
   model$bayes_pharma <- list(model_type = "MuSyC")
 
-  brms::expose_functions(model, vectorize = TRUE)
+  if (expose_functions) {
+    brms::expose_functions(model, vectorize = TRUE)
+  }
+  
   model
 
 

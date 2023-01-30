@@ -150,7 +150,6 @@ ggplot2::ggsave(
 # https://www.rdocumentation.org/packages/bayesplot/versions/0.0.12/topics/PPC-overview
 
 model <- synergy_model_v10$model[[1]]
-model %>% brms::expose_functions(vectorize = TRUE)
 
 model %>% brms::pp_check(type='error_scatter_avg')
 model %>% brms::pp_check(type = "stat_grouped", stat = "std", group = "plate_id")

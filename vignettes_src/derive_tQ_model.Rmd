@@ -28,7 +28,7 @@ if(!dir.exists(output_path)){
 
 
 ```{r load-packages}
-library(tidymodels)
+library(tidyverse)
 library(deSolve)
 library(brms)
 library(tidybayes)
@@ -211,13 +211,10 @@ vector tQ_single(
   data vector vET,
   data vector vST) {
   
-  vector[2] params;
-  params[1] = vkcat[1];
-  params[2] = vkM[1];
-  vector[1] initial_state;
-  initial_state[1] = 0.0;
+  vector[2] params = [ vkcat[1], vkM[1] ]';
+  vector[1] initial_state = [ 0.0 ]';
   real initial_time = 0.0;
-  int M = size(time);
+  int M = dims(time)[1];
 
   vector[1] P_ode[M] = ode_bdf(     // Function signature:
     tQ_ode,                         // function ode
