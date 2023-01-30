@@ -1,5 +1,4 @@
 library(BayesPharma)
-library(tidymodels)
 
 testthat::test_that(
   desc = "adding log dose to data.frame using default arguments",

@@ -19,23 +19,15 @@ URL: https://api.github.com/repos/maomlab/BayesPharma/pages
 Depends:
     R (>= 4.0.0)
 Imports:
-    assertthat,
-    Rcpp,
     brms,
     devtools,
     dplyr,
     ggplot2,
-    magrittr,
     methods,
     posterior,
     purrr,
     rlang,
-    rstan,
-    rstantools,
-    StanHeaders,
     stats,
-    tidyr,
-    tidymodels,
     tidyselect,
     viridis
 Collage:
@@ -89,6 +81,7 @@ Suggests:
     ggrepel,
     here,
     knitr,
+    lintr,
     matrixStats,
     modelr,
     parsnip,
@@ -104,9 +97,10 @@ Suggests:
     testthat (>= 3.0.0),
     workflows,
     xkcd
-Remotes: 
+Remotes:
+    stan-dev/cmdstanr
     maomlab/GeomIndicator
 LazyData: true
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3

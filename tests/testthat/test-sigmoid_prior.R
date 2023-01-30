@@ -1,6 +1,4 @@
 library(BayesPharma)
-library(tidymodels)
-
 
 testthat::test_that("sigmoid_agonist_prior with default prior", {
   prior <- BayesPharma::sigmoid_agonist_prior()

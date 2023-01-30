@@ -57,7 +57,7 @@ plot_drc <- function(
       response_lower = .data[["Lower"]],
       response_upper = .data[["Upper"]])
 
-  plot <- ggplot2::ggplot(mapping = aes_mapping) +
+  ggplot2::ggplot(mapping = aes_mapping) +
     ggplot2::theme_bw() +
     ggdist::geom_lineribbon(
       data = predicted_values,

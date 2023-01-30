@@ -29,7 +29,7 @@ algorithm <- "meanfield"
 
 
 ```{r load-packages}
-suppressWarnings(suppressMessages(library(tidymodels)))
+suppressWarnings(suppressMessages(library(tidyverse)))
 library(BayesPharma)
 suppressPackageStartupMessages(library(extrafont))
 library(xkcd)
