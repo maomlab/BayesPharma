@@ -15,7 +15,7 @@ vignette: >
 
 
 ```r
-suppressWarnings(suppressMessages(library(tidymodels)))
+suppressWarnings(suppressMessages(library(tidyverse)))
 library(BayesPharma)
 ```
 
@@ -156,14 +156,6 @@ BayesPharma::plot_synergy_checkerboard(
       expand = c(0, 0))
 ```
 
-
-```r
-brms::expose_functions(model, vectorize = TRUE)
-```
-
-```
-## Error in brms::expose_functions(model, vectorize = TRUE): object 'model' not found
-```
 
 ```r
 model_predict <- predict(

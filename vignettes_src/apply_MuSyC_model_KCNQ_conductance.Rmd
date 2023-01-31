@@ -183,8 +183,6 @@ BayesPharma::plot_synergy_checkerboard(
 
 ```{r overlay-model-fit}
 
-brms::expose_functions(model, vectorize = TRUE)
-
 model_predict <- predict(
   model,
   newdata = tidyr::expand_grid(
