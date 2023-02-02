@@ -30,7 +30,7 @@ tQ_model <- function(
     control = list(adapt_delta = 0.99),
     expose_functions = TRUE,
     ...) {
-    
+
   model <- brms::brm(
     formula = formula,
     data = data,
@@ -42,10 +42,10 @@ tQ_model <- function(
     ...)
 
   model$bayes_pharma <- list(model_type = "tQ")
-  
+
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)
   }
-  
+
   model
 }

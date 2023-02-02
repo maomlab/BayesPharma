@@ -13,7 +13,7 @@
 #'                  =sample1
 #'
 #'
-#' @param data data.frame of experimental data.  must contain columns
+#' @param data \code{data.frame} of experimental data.  must contain columns
 #'     \code{response} and any predictors specified in the formula.
 #' @param formula \code{brmsformula} object. To create a dose-response
 #'     \code{brmsformula}, use the \code{MuSyC_formula} function.
@@ -94,7 +94,7 @@ MuSyC_model <- function(
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)
   }
-  
+
   model
 
 

@@ -1,6 +1,6 @@
 #' Default priors for the sigmoid agonist model
 #'
-#' @description Creates a data.frame of priors for the sigmoid agonist
+#' @description Creates a \code{data.frame} of priors for the sigmoid agonist
 #'     model
 #'
 #' If the function arguments \code{ec50}, \code{hill}, \code{top},
@@ -56,7 +56,8 @@ sigmoid_agonist_prior <- function(
 
 #' Default priors for the sigmoid antagonist model
 #'
-#' @description Creates a data.frame of priors for the sigmoid antagonist model
+#' @description Creates a \code{data.frame} of priors for the sigmoid antagonist
+#'     model
 #'
 #' If the function arguments ic50, hill, top, bottom = NULL, default
 #' normal distribution priors will be set.

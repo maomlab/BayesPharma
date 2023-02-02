@@ -1,8 +1,7 @@
 #' Default priors for the MuSyC model
 #'
-#' @description Creating a data.frame of priors of the dose response parameters
-#'    required for the MuSyC model.
-#'
+#' @description Creating a \code{data.frame} of priors of the dose response
+#'    parameters required for the MuSyC model.
 #'
 #' If you would like to set a parameter as a constant, enter a numeric
 #' value for the function argument.  If you would like to set your own

@@ -65,11 +65,11 @@
 #'
 #' @export
 tQ_model_generate <- function(time, kcat, kM, ET, ST, ...) {
-  
+
   assertthat::assert_that(
     all(time == cummax(time)),
     msg = "Time is monotonic increasing")
-  
+
   ode_tQ <- function(time, Pt, theta) {
     list(c(theta[1] * (
       ET + theta[2] + ST - Pt +
