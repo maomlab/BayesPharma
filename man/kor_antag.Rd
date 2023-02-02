@@ -6,7 +6,7 @@
 \title{Dose Response Measurements of Four Different Kappa Opioid Receptor
 Antagonists}
 \format{
-A data.frame that includes the dose-response measurements
+A \code{data.frame} that includes the dose-response measurements
 }
 \source{
 \url{https://github.com/maomlab/BayesPharma}

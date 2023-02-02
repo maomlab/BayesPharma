@@ -2,8 +2,7 @@
 % Please edit documentation in R/summary-basic-stats.R
 \name{basic_stats}
 \alias{basic_stats}
-\title{Displays a data.frame of basic statistical information about the model
-results}
+\title{Give Basic statistical information about the model results}
 \usage{
 basic_stats(
   model,
@@ -14,35 +13,35 @@ basic_stats(
 )
 }
 \arguments{
-\item{model}{brmsfit model}
+\item{model}{\code{brms::brmsfit} model}
 
-\item{predictors_col_name}{string expression for predictors column
-in the input data.frame (default = "_Intercept"). Predictors
-are the perturbations tested during the experiment (i.e. Drug,
-Temperature, etc.).}
+\item{predictors_col_name}{\code{string} expression for predictors column
+in the input \code{data.frame}. Predictors are the perturbations tested
+during the experiment (i.e. Drug, Temperature, etc.). [default =
+"_Intercept"]}
 
-\item{half_max_label}{string of the label for the half maximal that
+\item{half_max_label}{\code{string} of the label for the half maximal that
 fits the type of experiment that was done (i.e. ec50, ic50,
 ed50, id50, ld50, etc.).}
 
-\item{l_ci}{numeric unit of the lower confidence interval (default
+\item{l_ci}{\code{numeric} unit of the lower confidence interval (default
 = 0.025)}
 
-\item{u_ci}{numeric unit of the upper confidence interval (default
+\item{u_ci}{\code{numeric} unit of the upper confidence interval (default
 = 0.975)}
 }
 \value{
-tibble::tibble object.
+\code{tibble::tibble} object.
 }
 \description{
-data.frame containing summary statistics of brmsfit
-    model.  The summary statistics included are mean, median,
-    standard deviation, lower confidence interval, and upper
+Return a \code{data.frame} containing summary statistics of
+    \code{brms::brmsfit} model.  The summary statistics included are
+    mean, median, standard deviation, lower confidence interval, and upper
     confidence interval.
 }
 \examples{
 \dontrun{
-  basic_stats(
+  BayesPharma::basic_stats(
     model = my_sigmoid_model,
     predictors_col_name = "predictors",
     half_max_label = "ic50",

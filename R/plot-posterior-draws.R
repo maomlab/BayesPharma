@@ -85,6 +85,15 @@ posterior_draws_plot <- function(
     names() |>
     purrr::keep(~. != "log_dose")
 
+  if (length(predictor_names) > 0) {
+    facets_layer <- list(
+      ggplot2::facet_wrap(
+        facets = paste0("~", paste(predictor_names, collapse = "+")) |>
+          as.formula()))
+  } else {
+    facets_layer <- NULL
+  }
+  
   # this makes the "hair"
   ep_data <- model |>
     tidybayes::add_epred_draws(
@@ -101,7 +110,7 @@ posterior_draws_plot <- function(
       re_formula = NA,
       ndraws = 200)  |>
     ggdist:: median_qi(.width = c(.5, .8, .95))
-
+  
   ggplot2::ggplot() +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "bottom") +
@@ -122,7 +131,7 @@ posterior_draws_plot <- function(
         x = .data[["log_dose"]],
         y = .data[["response"]],
         group = .data[[".draw"]]),
-      size = 0.4,
+      linewidth = 0.4,
       alpha = 0.2,
       color = "blueviolet") +
     ggplot2::geom_jitter(
@@ -133,8 +142,7 @@ posterior_draws_plot <- function(
       size = point_size,
       width = jitter_width,
       height = jitter_height) +
-    ggplot2::facet_wrap(
-      facets = tidyselect::all_of(predictor_names)) +
+    facets_layer +
     ggplot2::labs(title = title) +
     ggplot2::xlab(xlab) +
     ggplot2::ylab(ylab)

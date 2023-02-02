@@ -36,7 +36,7 @@ numeric value constrains it to a constant value.}
 \code{brmsprior} \code{data.frame}
 }
 \description{
-Creates a data.frame of priors for the sigmoid agonist
+Creates a \code{data.frame} of priors for the sigmoid agonist
     model
 
 If the function arguments \code{ec50}, \code{hill}, \code{top},

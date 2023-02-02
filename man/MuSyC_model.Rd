@@ -16,7 +16,7 @@ MuSyC_model(
 )
 }
 \arguments{
-\item{data}{data.frame of experimental data.  must contain columns
+\item{data}{\code{data.frame} of experimental data.  must contain columns
 \code{response} and any predictors specified in the formula.}
 
 \item{prior}{\code{brmspriors} for \code{kcat} and \code{kM}

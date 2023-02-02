@@ -45,7 +45,7 @@ basic_stats <- function(
     dplyr::filter(!stringr::str_detect(.data[["variable"]], "__$")) |>
     dplyr::filter(!stringr::str_detect(.data[["variable"]], "sigma")) |>
     dplyr::filter(!stringr::str_detect(.data[["variable"]], "lprior")) |>
-    dplyr::select(-.data[["variable"]]) |>
+    dplyr::select(-tidyselect::all_of("variable")) |>
     cbind(l_ci = c(ple_info[, 3]),
           u_ci = c(ple_info[, 4])) |>
     tibble::rownames_to_column("variables") |>
