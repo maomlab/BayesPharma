@@ -35,7 +35,8 @@ numeric value constrains it to a constant value.}
 \code{brmsprior} \code{data.frame}
 }
 \description{
-Creates a data.frame of priors for the sigmoid antagonist model
+Creates a \code{data.frame} of priors for the sigmoid antagonist
+    model
 
 If the function arguments ic50, hill, top, bottom = NULL, default
 normal distribution priors will be set.

@@ -41,6 +41,12 @@ posterior_densities_plot <- function(
     u_ci = 0.975,
     title_label = "Posterior Density Plots w/ Mean & 95% CI") {
 
+  assertthat::assert_that(
+    methods::is(model, "brmsfit"),
+    msg = "Model should be a brms::brmsfit object")
+  assertthat::is.number(l_ci)
+  assertthat::is.number(u_ci)
+  
   posterior <- dplyr::bind_rows(
     model |>
       tidybayes::tidy_draws() |>
@@ -48,7 +54,7 @@ posterior_densities_plot <- function(
       dplyr::filter(!stringr::str_detect(.data[[".variable"]], "__$")) |>
       dplyr::filter(!stringr::str_detect(.data[[".variable"]], "sigma")) |>
       dplyr::filter(!stringr::str_detect(.data[[".variable"]], "lprior"))) |>
-    dplyr::rename(variables = .data[[".variable"]]) |>
+    dplyr::rename(variables = tidyselect::all_of(".variable")) |>
     dplyr::mutate(
       variables = .data[["variables"]] |>
         stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") |>

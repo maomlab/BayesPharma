@@ -19,9 +19,9 @@ column (default = 1).}
 input \code{data.frame} with an additional \code{log_dose} column.
 }
 \description{
-Given the dose as a column in a data.frame with a given molar
-  concentration add a new column of the log base-10 dose, \code{log_dose}, in
-  the \code{data.frame} and return it.
+Given the dose as a column in a \code{data.frame} with a given
+  molar concentration add a new column of the log base-10 dose,
+  \code{log_dose}, in the \code{data.frame} and return it.
 }
 \examples{
 \dontrun{

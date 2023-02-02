@@ -62,9 +62,8 @@ synergistic, less than 1 antagonistic. Default
 \code{brmsprior} \code{data.frame}
 }
 \description{
-Creating a data.frame of priors of the dose response parameters
-   required for the MuSyC model.
-
+Creating a \code{data.frame} of priors of the dose response
+   parameters required for the MuSyC model.
 
 If you would like to set a parameter as a constant, enter a numeric
 value for the function argument.  If you would like to set your own
