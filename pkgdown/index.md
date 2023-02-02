@@ -44,7 +44,9 @@ If the treatment dose is given in molar concentration, you can convert it to
 `log_dose` using
 
 ```{r}
-data <- data |> log_dose = BayesPharma::calculate_log_dose(dose)
+data <- data |> 
+  dplyr::mutate(
+    log_dose = BayesPharma::calculate_log_dose(dose))
 ```
 
 The basic usage is
