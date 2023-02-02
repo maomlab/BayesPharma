@@ -14,7 +14,7 @@ vignette: >
 knitr::opts_chunk$set(
   cache = TRUE,
   echo = FALSE,
-  fig.path = here("vignettes", "apply_MuSyC_model_KCNQ_conductance_files/"),
+  fig.path = "vignettes/apply_MuSyC_model_KCNQ_conductance_files/",
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images
   fig.height = 5, # generated images

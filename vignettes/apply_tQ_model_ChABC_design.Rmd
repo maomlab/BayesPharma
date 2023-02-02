@@ -27,8 +27,8 @@ vignette: >
 ## Warning: Removed 150 rows containing missing values (`geom_line()`).
 ```
 
-<img src="/Users/maom/opt/bayespharma/vignettes/apply_model_tQ_ChABC_design_files/plot-data-1.png" alt="plot of chunk plot-data" width="100%" style="display: block; margin: auto;" />
-<img src="/Users/maom/opt/bayespharma/vignettes/apply_model_tQ_ChABC_design_files/simulate-tQ-1.png" alt="plot of chunk simulate-tQ" width="100%" style="display: block; margin: auto;" />
+<img src="apply_model_tQ_ChABC_design_files/plot-data-1.png" alt="plot of chunk plot-data" width="100%" style="display: block; margin: auto;" />
+<img src="apply_model_tQ_ChABC_design_files/simulate-tQ-1.png" alt="plot of chunk simulate-tQ" width="100%" style="display: block; margin: auto;" />
 
 
 ```
@@ -36,108 +36,40 @@ vignette: >
 ```
 
 ```
-## Start sampling
-```
-
-```
-## Chain 1: ------------------------------------------------------------
-## Chain 1: EXPERIMENTAL ALGORITHM:
-## Chain 1:   This procedure has not been thoroughly tested and may be unstable
-## Chain 1:   or buggy. The interface is subject to change.
-## Chain 1: ------------------------------------------------------------
-## Chain 1: 
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Gradient evaluation took 0.012179 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 121.79 seconds.
-## Chain 1: Adjust your expectations accordingly!
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Begin eta adaptation.
-## Chain 1: Iteration:   1 / 250 [  0%]  (Adaptation)
-## Chain 1: Iteration:  50 / 250 [ 20%]  (Adaptation)
-## Chain 1: Iteration: 100 / 250 [ 40%]  (Adaptation)
-## Chain 1: Iteration: 150 / 250 [ 60%]  (Adaptation)
-## Chain 1: Iteration: 200 / 250 [ 80%]  (Adaptation)
-## Chain 1: Success! Found best value [eta = 1] earlier than expected.
-## Chain 1: 
-## Chain 1: Begin stochastic gradient ascent.
-## Chain 1:   iter             ELBO   delta_ELBO_mean   delta_ELBO_med   notes 
-## Chain 1:    100         -858.392             1.000            1.000
-## Chain 1:    200         -629.759             0.682            1.000
-## Chain 1:    300         -535.720             0.513            0.363
-## Chain 1:    400         -497.209             0.404            0.363
-## Chain 1:    500         -498.282             0.324            0.176
-## Chain 1:    600         -515.189             0.275            0.176
-## Chain 1:    700         -493.979             0.242            0.077
-## Chain 1:    800         -494.389             0.212            0.077
-## Chain 1:    900         -504.392             0.089            0.043
-## Chain 1:   1000         -517.813             0.047            0.033
-## Chain 1:   1100         -507.649             0.028            0.026
-## Chain 1:   1200         -497.967             0.020            0.020
-## Chain 1:   1300         -501.159             0.021            0.020
-## Chain 1:   1400         -497.044             0.018            0.020
-## Chain 1:   1500         -498.128             0.013            0.019
-## Chain 1:   1600         -485.447             0.016            0.020
-## Chain 1:   1700         -483.449             0.014            0.019
-## Chain 1:   1800         -477.433             0.012            0.013
-## Chain 1:   1900         -474.880             0.011            0.008   MEDIAN ELBO CONVERGED
-## Chain 1: 
-## Chain 1: Drawing a sample of size 1000 from the approximate posterior... 
-## Chain 1: COMPLETED.
-```
-
-```
-## Warning: Pareto k diagnostic value is 0.92. Resampling is unreliable.
-## Increasing the number of draws or decreasing tol_rel_obj may help.
+## Error in stanc(file = file, model_code = model_code, model_name = model_name, : 0
+## 
+## Semantic error in 'string', line 128, column 9 to column 71:
+## 
+## Ill-typed arguments supplied to function 'tQ_multiple'. Available signatures:
+## (data vector, data vector, vector, vector, data vector, data vector) => vector
+## 
+## Instead supplied arguments of incompatible type: int[], vector, vector, vector, vector, vector.
 ```
 
 
 
 ```
-## Start sampling
+## Error in update(model, sample_prior = "only"): object 'model' not found
 ```
 
 ```
-## Chain 1: ------------------------------------------------------------
-## Chain 1: EXPERIMENTAL ALGORITHM:
-## Chain 1:   This procedure has not been thoroughly tested and may be unstable
-## Chain 1:   or buggy. The interface is subject to change.
-## Chain 1: ------------------------------------------------------------
-## Chain 1: 
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Gradient evaluation took 1.3e-05 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.13 seconds.
-## Chain 1: Adjust your expectations accordingly!
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Begin eta adaptation.
-## Chain 1: Iteration:   1 / 250 [  0%]  (Adaptation)
-## Chain 1: Iteration:  50 / 250 [ 20%]  (Adaptation)
-## Chain 1: Iteration: 100 / 250 [ 40%]  (Adaptation)
-## Chain 1: Iteration: 150 / 250 [ 60%]  (Adaptation)
-## Chain 1: Iteration: 200 / 250 [ 80%]  (Adaptation)
-## Chain 1: Success! Found best value [eta = 1] earlier than expected.
-## Chain 1: 
-## Chain 1: Begin stochastic gradient ascent.
-## Chain 1:   iter             ELBO   delta_ELBO_mean   delta_ELBO_med   notes 
-## Chain 1:    100           -0.215             1.000            1.000
-## Chain 1:    200           -0.306             0.649            1.000
-## Chain 1:    300           -0.514             0.352            0.406
-## Chain 1:    400           -0.188             1.072            1.739
-## Chain 1:    500           -0.104             1.275            1.739
-## Chain 1:    600           -0.043             1.112            1.413
-## Chain 1:    700           -0.219             1.109            1.413
-## Chain 1:    800            0.201             1.447            2.090
-## Chain 1:    900           -0.229             1.985            2.090
-## Chain 1:   1000           -0.076             1.937            1.994
-## Chain 1: Informational Message: The maximum number of iterations is reached! The algorithm may not have converged.
-## Chain 1: This variational approximation is not guaranteed to be meaningful.
-## Chain 1: 
-## Chain 1: Drawing a sample of size 1000 from the approximate posterior... 
-## Chain 1: COMPLETED.
+## Error in tidybayes::tidy_draws(model_prior): object 'model_prior' not found
 ```
 
-<img src="/Users/maom/opt/bayespharma/vignettes/apply_model_tQ_ChABC_design_files/prior-posterior-multiple-scatter-1.png" alt="plot of chunk prior-posterior-multiple-scatter" width="100%" style="display: block; margin: auto;" />
+```
+## Error in tidybayes::tidy_draws(model): object 'model' not found
+```
+
+
+```
+## Error in tidyr::pivot_wider(draws_prior, id_cols = c(".chain", ".iteration", : object 'draws_prior' not found
+```
+
+```
+## Error in tidyr::pivot_wider(draws_posterior, id_cols = c(".chain", ".iteration", : object 'draws_posterior' not found
+```
+
+```
+## Error in fortify(data): object 'draws_prior_pairs' not found
+```
 
