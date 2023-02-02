@@ -79,22 +79,6 @@ Opioid Receptor Antagonists</h3>
 
     
     
-<pre><code><span><span class="co">## Loading required package: MASS</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Attaching package: 'MASS'</span></span>
-<span><span class="co">## The following object is masked from 'package:dplyr':</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##     select</span></span>
-<span><span class="co">## Loading required package: drcData</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## 'drc' has been loaded.</span></span>
-<span><span class="co">## Please cite R and 'drc' if used for a publication,</span></span>
-<span><span class="co">## for references type 'citation()' and 'citation('drc')'.</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Attaching package: 'drc'</span></span>
-<span><span class="co">## The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##     gaussian, getInitial</span></span></code></pre>
 <div class="section level2">
 <h2 id="hill">Hill Equation<a class="anchor" aria-label="anchor" href="#hill"></a>
 </h2>
@@ -127,7 +111,7 @@ opportunity for extreme responses.</p>
 <p>The level of informativeness of the prior will affect how much
 influence the prior has on the model. Here is more <a href="https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations" class="external-link">information
 on prior choice recommendations.</a></p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kor_prior</span> <span class="op">&lt;-</span> <span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/sigmoid_antagonist_prior.html">sigmoid_antagonist_prior</a></span><span class="op">(</span>top <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span><span class="va">kor_prior</span></span>
 <span><span class="co">##            prior class coef group resp dpar  nlpar   lb   ub source</span></span>
@@ -147,21 +131,21 @@ prior distributions by adding <em>sample_prior = “only”</em> as an
 argument to the <code>sigmoid_antagonist_model</code> function. We will
 use the default response distribution of the model (<em>family =
 gaussian()</em>).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kor_sample_prior</span> <span class="op">&lt;-</span> <span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/sigmoid_antagonist_model.html">sigmoid_antagonist_model</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">kor_antag</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">substance_id</span>, <span class="va">log_dose</span>, <span class="va">response</span><span class="op">)</span>,</span>
 <span>  prior <span class="op">=</span> <span class="va">kor_prior</span>,</span>
 <span>  sample_prior <span class="op">=</span> <span class="st">"only"</span><span class="op">)</span></span></code></pre></div>
 <p>And then plot of the prior predictive distributions:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kor_sample_prior</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/density_distributions_plot.html">density_distributions_plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../../../../../../Users/maom/opt/bayespharma/articles/apply_sigmoid_model_KOR_antagonists_files/kor-prior-density-plot-1.png" alt="KOR antagonists prior distribution" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="apply_sigmoid_model_KOR_antagonists_files/kor-prior-density-plot-1.png" alt="KOR antagonists prior distribution" width="100%" style="display: block; margin: auto;"></p>
 <p>To sample from the model we will the Stan NUTs Hamiltonian Monte
 Carlo, and initialize the parameters to the prior means to help with
 model convergence, using the default values of ec50 = -9, hill = -1, top
 = 100, bottom = 0.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kor_model</span> <span class="op">&lt;-</span> <span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/sigmoid_antagonist_model.html">sigmoid_antagonist_model</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">kor_antag</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">substance_id</span>, <span class="va">log_dose</span>, <span class="va">response</span><span class="op">)</span>,</span>
 <span>  formula <span class="op">=</span> <span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/sigmoid_antagonist_formula.html">sigmoid_antagonist_formula</a></span><span class="op">(</span></span>
@@ -228,10 +212,10 @@ parameter value problems or mcmc conflicts. The bulk and tail ESS
 indicate high resolution and stability. The R-hat for each parameter
 equals 1.00 and the traceplot shows the chains mixed well indicating the
 chains converged.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kor_model</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">bayesplot</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-traces.html" class="external-link">mcmc_trace</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../../../../../../Users/maom/opt/bayespharma/articles/apply_sigmoid_model_KOR_antagonists_files/kor-model-traceplot-1.png" alt="plot of chunk kor-model-traceplot" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="apply_sigmoid_model_KOR_antagonists_files/kor-model-traceplot-1.png" alt="plot of chunk kor-model-traceplot" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="compare-prior-and-posterior-marginal-distributions">Compare prior and posterior marginal distributions<a class="anchor" aria-label="anchor" href="#compare-prior-and-posterior-marginal-distributions"></a>
@@ -240,32 +224,32 @@ chains converged.</p>
 of the parameters (prior is pink and posterior is teal). this can be
 useful for comparing the density distribution of the prior and
 posterior. produced by the model:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/prior_posterior_densities_plot.html">prior_posterior_densities_plot</a></span><span class="op">(</span></span>
 <span>  model <span class="op">=</span> <span class="va">kor_model</span>,</span>
 <span>  predictors_col_name <span class="op">=</span> <span class="st">"substance_id"</span>,</span>
 <span>  half_max_label <span class="op">=</span> <span class="st">"ic50"</span>,</span>
 <span>  title_label<span class="op">=</span><span class="st">""</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../../../../../../Users/maom/opt/bayespharma/articles/apply_sigmoid_model_KOR_antagonists_files/kor-model-prior-posterior-densities-1.png" alt="KOR antagonists model, compare prior and posterior distributions for each substance" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="apply_sigmoid_model_KOR_antagonists_files/kor-model-prior-posterior-densities-1.png" alt="KOR antagonists model, compare prior and posterior distributions for each substance" width="100%" style="display: block; margin: auto;"></p>
 <p>Displayed below is a plot of the posterior distributions for each
 parameter with the confidence intervals and mean. This is a useful
 visual of the model results and to highlight the mode and high density
 intervals:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/posterior_densities_plot.html">posterior_densities_plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">kor_model</span>, </span>
 <span>  predictors_col_name <span class="op">=</span> <span class="st">"substance_id"</span>, </span>
 <span>  half_max_label <span class="op">=</span> <span class="st">"ic50"</span>,</span>
 <span>  title_label <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../../../../../../Users/maom/opt/bayespharma/articles/apply_sigmoid_model_KOR_antagonists_files/kor-model-posterior-densities-1.png" alt="KOR Antagonists, posterior distribution for each substance" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="apply_sigmoid_model_KOR_antagonists_files/kor-model-posterior-densities-1.png" alt="KOR Antagonists, posterior distribution for each substance" width="100%" style="display: block; margin: auto;"></p>
 <p>Displayed below is a plot of a sample of 100 sigmoid dose-response
 curves from the posterior distribution (purple) and the median quantile
 intervals:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/posterior_draws_plot.html">posterior_draws_plot</a></span><span class="op">(</span></span>
 <span>  model <span class="op">=</span> <span class="va">kor_model</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../../../../../../Users/maom/opt/bayespharma/articles/apply_sigmoid_model_KOR_antagonists_files/kor-model-posterior-draws-1.png" alt="KOR antagonists, posterior draws" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="apply_sigmoid_model_KOR_antagonists_files/kor-model-posterior-draws-1.png" alt="KOR antagonists, posterior draws" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level3">
@@ -312,7 +296,7 @@ preferred model, but not significantly.</p>
 <p>Here we will analyze the KOR antagonist data using the drc package
 and compare it to the results from the BayesPharma analysis.</p>
 <p>We will fix the top to 100 and fit the ic50, hill, and bottom.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">drc_models</span> <span class="op">&lt;-</span> <span class="va">kor_antag</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">substance_id</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_nest.html" class="external-link">group_nest</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -351,7 +335,7 @@ curve as evidence and has smaller confidence intervals than most of the
 standard errors provided by the drc method.</p>
 <pre><code><span><span class="co">## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
 <span><span class="co">## ℹ Please use `linewidth` instead.</span></span></code></pre>
-<p><img src="../../../../../../Users/maom/opt/bayespharma/articles/apply_sigmoid_model_KOR_antagonists_files/unnamed-chunk-2-1.png" alt="KOR antagonists conditional effects. The blue lines are samples from the BayesPharma kor_model posterior distribution, the orange line is the conditional mean, and the purple line is the conditional mean for the DRC model fit." width="100%" style="display: block; margin: auto;"></p>
+<p><img src="apply_sigmoid_model_KOR_antagonists_files/unnamed-chunk-2-1.png" alt="KOR antagonists conditional effects. The blue lines are samples from the BayesPharma kor_model posterior distribution, the orange line is the conditional mean, and the purple line is the conditional mean for the DRC model fit." width="100%" style="display: block; margin: auto;"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
