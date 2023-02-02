@@ -98,7 +98,7 @@ Suggests:
     workflows,
     xkcd
 Remotes:
-    stan-dev/cmdstanr
+    stan-dev/cmdstanr,
     maomlab/GeomIndicator
 LazyData: true
 VignetteBuilder: knitr
