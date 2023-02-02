@@ -25,7 +25,7 @@ Bayesian statistics is principled strategy to fit models to data. The key idea i
 $$
 \begin{align}
     P(\theta | D) &= \frac{P(D | \theta)\cdot P(\theta)}{P(D)}\\
-    \mbox{POSTERIOR} &= \frac{\mbox{LIKELIHOOD}&\cdot\mbox{PRIOR}}{\mbox{EVIDENCE}}
+    \mbox{POSTERIOR} &= \frac{\mbox{LIKELIHOOD}\cdot\mbox{PRIOR}}{\mbox{EVIDENCE}}
 \end{align}
 $$
 While the prior and likelihood distributions are explicitly defined in the model, the evidence is only implicitly defined by integrating the likelihood over the entire prior, and is typically intractable to compute explicitly. One way to conceptualize the evidence is simply as the (unique) constant that allows the posterior to be properly normalized and integrate to one. While range of techniques have been developed to estimate the evidence, an important technique that sidesteps the issues is to note that the relative posterior probability of two different parameters $P(\theta_1 | D)$ vs. $P(\theta_2 | D)$ reduces to the computing the likelihood ratios $P(D | \theta_1) / P(D | \theta_2)$ as the prior and the evidence cancel out. By taking small steps in the parameter space and repeatedly evaluating the relative posterior probability it is possible to (in the long run) sample points from the posterior probability distribution. Intuitively, this is akin to running dynamical simulations using the posterior as the Boltzmann distribution.       

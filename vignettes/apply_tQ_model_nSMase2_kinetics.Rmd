@@ -53,7 +53,7 @@ vignette: >
 ```
 
 ```
-## Timing stopped at: 0.996 0.191 1.471
+## Timing stopped at: 1.714 0.36 2.295
 ```
 
 

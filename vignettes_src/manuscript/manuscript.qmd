@@ -114,7 +114,7 @@ if(Sys.info()["machine"] == "arm64"){
 ```{r load-packages}
 #suppressWarnings(suppressMessages(library(tidyverse)))
 library(BayesPharma)
-library(drc)
+suppressWarnings(suppressMessages(library(drc)))
 library(brms)
 library(broom)
 set.seed(0)

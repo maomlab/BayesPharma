@@ -65,7 +65,7 @@ modeled by a sigmoidal Boltzmann distribution.
 ## ℹ Please use `linewidth` instead.
 ```
 
-<img src="/Users/maom/opt/bayespharma/vignettes/apply_sigmoid_model_Pnear_files/sigmoidal-cartoon-1.png" alt="plot of chunk sigmoidal-cartoon" width="100%" style="display: block; margin: auto;" />
+<img src="apply_sigmoid_model_Pnear_files/sigmoidal-cartoon-1.png" alt="plot of chunk sigmoidal-cartoon" width="100%" style="display: block; margin: auto;" />
 
 For a principled molecular dynamics or monte carlo simulation that maintains detailed balance, it is in
 theory possible to use thermodynamic integration to quantify the energy gap
@@ -79,17 +79,17 @@ a linear reaction coordinate.
 If we simulate, trajectory points from the sigmoid on the log(RMSD) scale,
 with a Normally distributed error we can generate synthetic score-vs-rmsd plots
 
-<img src="/Users/maom/opt/bayespharma/vignettes/apply_sigmoid_model_Pnear_files/simulate-score-vs-rmsd-data-1.png" alt="plot of chunk simulate-score-vs-rmsd-data" width="100%" style="display: block; margin: auto;" />
+<img src="apply_sigmoid_model_Pnear_files/simulate-score-vs-rmsd-data-1.png" alt="plot of chunk simulate-score-vs-rmsd-data" width="100%" style="display: block; margin: auto;" />
 
 A nice thing about having the parametric model to generate score-vs-rmsd plots,
 is that it allows us to measure measure the sensitivity of the Pnear to differently
 shaped score-vs-rmsd plots. For example we can scan both the radius of 
 
-<img src="/Users/maom/opt/bayespharma/vignettes/apply_sigmoid_model_Pnear_files/simulate-data-scan-1.png" alt="plot of chunk simulate-data-scan" width="100%" style="display: block; margin: auto;" />
+<img src="apply_sigmoid_model_Pnear_files/simulate-data-scan-1.png" alt="plot of chunk simulate-data-scan" width="100%" style="display: block; margin: auto;" />
 
 Another question we can use this model to investigate is how reproducible is the Pnear score?
 
-<img src="/Users/maom/opt/bayespharma/vignettes/apply_sigmoid_model_Pnear_files/simulated-replicates-1.png" alt="plot of chunk simulated-replicates" width="100%" style="display: block; margin: auto;" />
+<img src="apply_sigmoid_model_Pnear_files/simulated-replicates-1.png" alt="plot of chunk simulated-replicates" width="100%" style="display: block; margin: auto;" />
 
 # Antibody SnugDock Case study
 As a case study, we can look at the real score-vs-rmsd plots from the Antibody
@@ -119,34 +119,34 @@ Check the model parameter fit and estimated parameters:
 ## 
 ## Population-Level Effects: 
 ##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## ec50_target1ahw       1.70      0.11     1.43     1.87 1.00     4685     2941
-## ec50_target1jps       1.37      0.12     1.09     1.59 1.00     4766     3972
-## ec50_target1mlc       2.40      0.51     1.00     3.18 1.00     3418     2585
-## ec50_target1ztx       0.75      0.08     0.59     0.89 1.00     6137     5009
-## ec50_target2aep       1.14      0.35     0.56     1.65 1.01      672      185
-## ec50_target2jel       1.65      0.06     1.53     1.76 1.00     6537     5294
-## hill_target1ahw       1.68      0.44     0.88     2.62 1.00     3357     2280
-## hill_target1jps       1.50      0.35     0.91     2.28 1.00     4564     3836
-## hill_target1mlc       1.04      0.55     0.26     2.28 1.00     3573     3205
-## hill_target1ztx       2.72      0.54     1.78     3.88 1.00     6943     5420
-## hill_target2aep       1.96      0.70     0.39     3.36 1.01      454      126
-## hill_target2jel       3.20      0.58     2.14     4.42 1.00     7686     5633
-## top_target1ahw      -10.55      0.70   -11.54    -8.83 1.00     4424     2674
-## top_target1jps       -9.70      0.56   -10.59    -8.38 1.00     5945     3702
-## top_target1mlc       -1.33      5.84    -9.81    12.52 1.00     6481     5506
-## top_target1ztx      -17.45      0.28   -17.98   -16.89 1.00     9065     5477
-## top_target2aep      -16.11      1.71   -16.96   -13.68 1.01      429      122
-## top_target2jel      -11.09      0.33   -11.74   -10.42 1.00     9749     5683
-## bottom_target1ahw   -26.05      2.15   -31.61   -23.11 1.00     3856     2416
-## bottom_target1jps   -30.45      3.61   -39.24   -24.98 1.00     4367     3612
-## bottom_target1mlc   -18.30      4.26   -30.87   -14.74 1.00     3352     2526
-## bottom_target1ztx   -38.85      3.48   -46.75   -32.97 1.00     6485     4644
-## bottom_target2aep   -30.26      5.96   -43.97   -21.21 1.00     5037     5574
-## bottom_target2jel   -19.46      0.97   -21.56   -17.77 1.00     7245     5007
+## ec50_target1ahw       1.70      0.11     1.43     1.86 1.00     3953     2291
+## ec50_target1jps       1.37      0.13     1.08     1.59 1.00     4498     3746
+## ec50_target1mlc       2.39      0.53     0.96     3.19 1.00     2772     2019
+## ec50_target1ztx       0.75      0.08     0.59     0.90 1.00     5504     4507
+## ec50_target2aep       1.13      0.37     0.57     1.55 1.00     2119      883
+## ec50_target2jel       1.65      0.06     1.53     1.76 1.00     6454     5339
+## hill_target1ahw       1.68      0.45     0.86     2.63 1.00     3298     1816
+## hill_target1jps       1.49      0.36     0.89     2.28 1.00     3824     3753
+## hill_target1mlc       1.04      0.55     0.26     2.28 1.00     2646     2932
+## hill_target1ztx       2.72      0.56     1.75     3.91 1.00     7260     5789
+## hill_target2aep       1.98      0.68     0.59     3.38 1.00     1121      382
+## hill_target2jel       3.21      0.59     2.15     4.45 1.00     7535     5573
+## top_target1ahw      -10.54      0.75   -11.56    -8.64 1.00     4452     2288
+## top_target1jps       -9.69      0.58   -10.62    -8.34 1.00     5219     4202
+## top_target1mlc       -1.31      5.93    -9.93    12.77 1.00     6763     5064
+## top_target1ztx      -17.44      0.27   -17.97   -16.90 1.00    11553     5251
+## top_target2aep      -16.13      1.92   -16.95   -15.13 1.00     1218      401
+## top_target2jel      -11.09      0.33   -11.73   -10.45 1.00    10630     6010
+## bottom_target1ahw   -26.08      2.23   -31.80   -23.14 1.00     3373     1914
+## bottom_target1jps   -30.53      3.72   -39.60   -24.96 1.00     4356     3831
+## bottom_target1mlc   -18.48      4.42   -31.68   -14.74 1.00     2184     1868
+## bottom_target1ztx   -38.84      3.50   -46.77   -32.98 1.00     5786     4464
+## bottom_target2aep   -30.25      5.82   -43.46   -21.26 1.00     6001     4926
+## bottom_target2jel   -19.46      0.98   -21.59   -17.74 1.00     6528     4703
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     5.75      0.08     5.60     5.90 1.00    10268     5784
+## sigma     5.74      0.07     5.60     5.89 1.00    12452     5130
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -161,9 +161,9 @@ data very well
 ## Computed from 8000 by 3003 log-likelihood matrix
 ## 
 ##          Estimate   SE
-## elpd_loo  -9521.2 39.0
-## p_loo        21.3  1.2
-## looic     19042.5 77.9
+## elpd_loo  -9521.3 39.0
+## p_loo        21.4  1.2
+## looic     19042.7 78.0
 ## ------
 ## Monte Carlo SE of elpd_loo is 0.1.
 ## 
@@ -178,11 +178,11 @@ data very well
 Visualize the fit as draws from the expected mean and median quantile intvervals on the
 log(RMSD) scale:
 
-<img src="/Users/maom/opt/bayespharma/vignettes/apply_sigmoid_model_Pnear_files/plot-data-model-1.png" alt="plot of chunk plot-data-model" width="100%" style="display: block; margin: auto;" />
+<img src="apply_sigmoid_model_Pnear_files/plot-data-model-1.png" alt="plot of chunk plot-data-model" width="100%" style="display: block; margin: auto;" />
 And on the original RMSD scale:
 
 
-<img src="/Users/maom/opt/bayespharma/vignettes/apply_sigmoid_model_Pnear_files/plot-data-model-rmsd-1.png" alt="plot of chunk plot-data-model-rmsd" width="100%" style="display: block; margin: auto;" />
+<img src="apply_sigmoid_model_Pnear_files/plot-data-model-rmsd-1.png" alt="plot of chunk plot-data-model-rmsd" width="100%" style="display: block; margin: auto;" />
 
 
 ## Quantify Pnear uncertainty

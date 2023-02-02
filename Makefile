@@ -50,7 +50,7 @@ vignettes: $(patsubst vignettes_src/%,vignettes/%,$(wildcard vignettes_src/*.Rmd
 vignettes/manuscript.qmd: vignettes/references.bib
 	quarto render vignettes_src/manuscript/manuscript.qmd --output
 
-manuscript: vignettes/manuscript.qmd
+manuscript: vignettes_src/manuscript/manuscript.qmd
 
 
 site: vignettes manuscript

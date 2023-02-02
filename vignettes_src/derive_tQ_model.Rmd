@@ -11,7 +11,7 @@ vignette: >
 knitr::opts_chunk$set(
   cache = TRUE,
   echo = FALSE,
-  fig.path = here::here("vignettes", "derive_tQ_model_files/"),
+  fig.path = "derive_tQ_model_files/",
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images
   fig.height = 5, # generated images
