@@ -19,7 +19,7 @@ plate number, etc.}
 brmsformula
 }
 \description{
-setup a defaul \code{MuSyC} synergy model formula to
+setup a default \code{MuSyC} synergy model formula to
     predict the \code{E0}, \code{C1}, \code{E1}, \code{s1},
     \code{C2}, \code{E2}, \code{s2}, \code{log10alpha}, and
     \code{E3alpha} parameters.

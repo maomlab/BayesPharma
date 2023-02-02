@@ -12,7 +12,7 @@ drc_model(
 )
 }
 \arguments{
-\item{data}{data.frame}
+\item{data}{\code{data.frame}}
 
 \item{formula}{formula. Default: \code{response ~ log_dose}}
 
@@ -22,6 +22,9 @@ estimated. To fix a subset them, set the parameters to constant
 values.}
 
 \item{...}{additional arguments passed to \code{drc::drm}}
+}
+\value{
+An object of (S3) class 'drc'.
 }
 \description{
 Wrapper for DRC dose response models
