@@ -2,47 +2,46 @@
 % Please edit documentation in R/model-MuSyC-function.R
 \name{MuSyC}
 \alias{MuSyC}
-\title{Generate MuSyC Ed scores using a robust functional form
-It should give the same results as the simple one, but
-be more numerically stable}
+\title{Generate MuSyC Ed scores using a robust functional form}
 \usage{
 MuSyC(logd1, logd2, logE0, logE1, logC1, h1, logE2, logC2, h2, logE3, logalpha)
 }
 \arguments{
-\item{logd1}{log dose for treatment 1}
+\item{logd1}{\code{numeric}. log dose for treatment 1}
 
-\item{logd2}{log dose for treatment 2}
+\item{logd2}{\code{numeric}. log dose for treatment 2}
 
-\item{logE0}{numeric. Full log response with no treatment.}
+\item{logE0}{\code{numeric}. Full log response with no treatment.}
 
-\item{logE1}{numeric. Full log response for treatment 1 and the
-dose of treatment 2 is zero.}
+\item{logE1}{\code{numeric}. Full log response for treatment 1 and the dose
+of treatment 2 is zero.}
 
-\item{logC1}{numeric. IC50 for treatment 1 and dose of treatment 2
+\item{logC1}{\code{numeric}. IC50 for treatment 1 and dose of treatment 2
 is zero.}
 
-\item{h1}{numeric. Slope of treatment 1 at it's IC50 and dose of
-treatment 2 is zero in exponential form. Use
-\code{MuSyC_si_to_hi} to convert from slope form.}
+\item{h1}{\code{numeric}. Slope of treatment 1 at its IC50 and dose of
+treatment 2 is zero in exponential form. Use \code{MuSyC_si_to_hi} to
+convert from slope form.}
 
-\item{logE2}{numeric. Full log response for treatment 2 and the
-dose of treatment 1 is zero.}
+\item{logE2}{\code{numeric}. Full log response for treatment 2 and the dose
+of treatment 1 is zero.}
 
-\item{logC2}{numeric. IC50 for treatment 2 and dose of treatment 1
-is zero.}
+\item{logC2}{\code{numeric}. IC50 for treatment 2 and dose of treatment 1 is
+zero.}
 
-\item{h2}{numeric. Slope of treatment 2 at it's IC50 and dose of
-treatment 1 is zero in exponential form. Use
-\code{MuSyC_si_to_hi} to convert from slope form.}
+\item{h2}{\code{numeric}. Slope of treatment 2 at it's IC50 and dose of
+treatment 1 is zero in exponential form. Use \code{MuSyC_si_to_hi} to
+convert from slope form.}
 
-\item{logE3}{numeric. Full response for treatment 1 and treatment
-2.}
+\item{logE3}{\code{numeric}. Full response for treatment 1 and treatment 2.}
 
-\item{logalpha}{numeric. Log synergistic potency parameter with
+\item{logalpha}{\code{numeric}. Log synergistic potency parameter with
 greater than 1 is synergistic, less than 1 is antagonistic.}
+}
+\value{
+\code{numeric} for the synergistic response to treatment 1 and
+     treatment 2 at doses \code{logd1} and \code{logd2} respectively.
 }
 \description{
 Generate MuSyC Ed scores using a robust functional form
-It should give the same results as the simple one, but
-be more numerically stable
 }

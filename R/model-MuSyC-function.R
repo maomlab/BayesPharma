@@ -23,7 +23,7 @@
 #' @param logalpha \code{numeric}. Log synergistic potency parameter with
 #'      greater than 1 is synergistic, less than 1 is antagonistic.
 #'
-#' @returns \{numeric} for the synergistic response to treatment 1 and
+#' @returns \code{numeric} for the synergistic response to treatment 1 and
 #'      treatment 2 at doses \code{logd1} and \code{logd2} respectively.
 #'
 #' @export
