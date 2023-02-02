@@ -11,6 +11,38 @@ vignette: >
 
 
 
+```
+## Loading required package: Rcpp
+```
+
+```
+## Loading 'brms' package (version 2.18.0). Useful instructions
+## can be found by typing help('brms'). A more detailed introduction
+## to the package is available through vignette('brms_overview').
+```
+
+```
+## 
+## Attaching package: 'brms'
+```
+
+```
+## The following objects are masked from 'package:tidybayes':
+## 
+##     dstudent_t, pstudent_t, qstudent_t, rstudent_t
+```
+
+```
+## The following object is masked from 'package:drc':
+## 
+##     mixture
+```
+
+```
+## The following object is masked from 'package:stats':
+## 
+##     ar
+```
 ## Enzyme Kinetic Modeling
 Enzymes are proteins that catalyze chemical reactions. Not only do they
 facilitate producing virtual all biological matter, but they are crucial for
@@ -118,20 +150,26 @@ head(data_single)
 ```
 
 ```
-##   time    P_true         P ST ET
-## 1 0.00 0.0000000 0.3282803 10 10
-## 2 0.05 0.7311578 1.4506724 10 10
-## 3 0.10 1.4243598 1.3624476 10 10
-## 4 0.15 2.0794197 2.7533590 10 10
-## 5 0.20 2.6964485 2.9907217 10 10
-## 6 0.25 3.2758537 3.6788153 10 10
+##   time    P_true          P ST ET
+## 1 0.00 0.0000000  0.1657336 10 10
+## 2 0.05 0.7311578 -0.3723603 10 10
+## 3 0.10 1.4243598  1.3485076 10 10
+## 4 0.15 2.0794197  1.8451297 10 10
+## 5 0.20 2.6964485  2.3788723 10 10
+## 6 0.25 3.2758537  3.7358785 10 10
 ```
 To visualize, the true enzyme progress curve is shown in
 <span style="color:blue">blue</span>, and the enzyme progress curve fit to the
 noisy measurements with a smooth `loess` spline is shown in
 <span style="color:orange">orange</span>. While the smooth fits well, we
 cannot estimate the parameters for the curve from it.
-<img src="/Users/maom/opt/BayesPharma/vignettes/derive_tQ_model_files/data-single-plot-1.png" alt="plot of chunk data-single-plot" width="100%" style="display: block; margin: auto;" />
+
+```
+## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+```
+
+<img src="/Users/maom/opt/bayespharma/vignettes/derive_tQ_model_files/data-single-plot-1.png" alt="plot of chunk data-single-plot" width="100%" style="display: block; margin: auto;" />
 
 ## Fitting a single ODE observation in BRMS
 
@@ -179,13 +217,10 @@ vector tQ_single(
   data vector vET,
   data vector vST) {
   
-  vector[2] params;
-  params[1] = vkcat[1];
-  params[2] = vkM[1];
-  vector[1] initial_state;
-  initial_state[1] = 0.0;
+  vector[2] params = [ vkcat[1], vkM[1] ]';
+  vector[1] initial_state = [ 0.0 ]';
   real initial_time = 0.0;
-  int M = size(time);
+  int M = dims(time)[1];
 
   vector[1] P_ode[M] = ode_bdf(     // Function signature:
     tQ_ode,                         // function ode
@@ -262,49 +297,51 @@ model_single <- do.call(what = brms::brm, args = c(list(
 ## Chain 3 Iteration:    1 / 2000 [  0%]  (Warmup) 
 ## Chain 4 Iteration:    1 / 2000 [  0%]  (Warmup) 
 ## Chain 1 Iteration:  100 / 2000 [  5%]  (Warmup) 
-## Chain 3 Iteration:  100 / 2000 [  5%]  (Warmup) 
-## Chain 4 Iteration:  100 / 2000 [  5%]  (Warmup) 
 ## Chain 2 Iteration:  100 / 2000 [  5%]  (Warmup) 
-## Chain 1 Iteration:  200 / 2000 [ 10%]  (Warmup) 
-## Chain 3 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 4 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 3 Iteration:  100 / 2000 [  5%]  (Warmup) 
 ## Chain 2 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 1 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 4 Iteration:  200 / 2000 [ 10%]  (Warmup) 
+## Chain 3 Iteration:  200 / 2000 [ 10%]  (Warmup) 
 ## Chain 1 Iteration:  300 / 2000 [ 15%]  (Warmup) 
-## Chain 3 Iteration:  300 / 2000 [ 15%]  (Warmup) 
 ## Chain 2 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 3 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 4 Iteration:  300 / 2000 [ 15%]  (Warmup) 
 ## Chain 1 Iteration:  400 / 2000 [ 20%]  (Warmup) 
-## Chain 3 Iteration:  400 / 2000 [ 20%]  (Warmup) 
 ## Chain 2 Iteration:  400 / 2000 [ 20%]  (Warmup) 
-## Chain 3 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 3 Iteration:  400 / 2000 [ 20%]  (Warmup) 
 ## Chain 1 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 3 Iteration:  500 / 2000 [ 25%]  (Warmup) 
 ## Chain 2 Iteration:  500 / 2000 [ 25%]  (Warmup) 
-## Chain 3 Iteration:  600 / 2000 [ 30%]  (Warmup) 
 ## Chain 1 Iteration:  600 / 2000 [ 30%]  (Warmup) 
-## Chain 2 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 3 Iteration:  600 / 2000 [ 30%]  (Warmup) 
 ## Chain 1 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 2 Iteration:  600 / 2000 [ 30%]  (Warmup) 
 ## Chain 3 Iteration:  700 / 2000 [ 35%]  (Warmup) 
 ## Chain 2 Iteration:  700 / 2000 [ 35%]  (Warmup) 
 ## Chain 1 Iteration:  800 / 2000 [ 40%]  (Warmup) 
 ## Chain 3 Iteration:  800 / 2000 [ 40%]  (Warmup) 
-## Chain 2 Iteration:  800 / 2000 [ 40%]  (Warmup) 
 ## Chain 1 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 2 Iteration:  800 / 2000 [ 40%]  (Warmup) 
 ## Chain 3 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 1 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 1 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
 ## Chain 2 Iteration:  900 / 2000 [ 45%]  (Warmup) 
 ## Chain 3 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
 ## Chain 3 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
-## Chain 1 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
-## Chain 1 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 1 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
 ## Chain 2 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
 ## Chain 2 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
 ## Chain 3 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
-## Chain 1 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
-## Chain 3 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
-## Chain 2 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
 ## Chain 1 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
-## Chain 3 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 2 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 3 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
 ## Chain 2 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 3 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
 ## Chain 1 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
-## Chain 3 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
 ## Chain 2 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 3 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
 ## Chain 1 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
 ## Chain 3 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
 ## Chain 2 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
@@ -316,22 +353,20 @@ model_single <- do.call(what = brms::brm, args = c(list(
 ## Chain 2 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
 ## Chain 1 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
 ## Chain 3 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
-## Chain 4 Iteration:  200 / 2000 [ 10%]  (Warmup) 
 ## Chain 2 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
-## Chain 3 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
 ## Chain 1 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
-## Chain 3 Iteration: 2000 / 2000 [100%]  (Sampling) 
-## Chain 3 finished in 16.1 seconds.
+## Chain 3 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
 ## Chain 2 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
-## Chain 4 Iteration:  300 / 2000 [ 15%]  (Warmup) 
 ## Chain 1 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 3 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 3 finished in 21.6 seconds.
 ## Chain 2 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
-## Chain 4 Iteration:  400 / 2000 [ 20%]  (Warmup) 
 ## Chain 1 Iteration: 2000 / 2000 [100%]  (Sampling) 
-## Chain 1 finished in 17.4 seconds.
-## Chain 4 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 1 finished in 22.8 seconds.
 ## Chain 2 Iteration: 2000 / 2000 [100%]  (Sampling) 
-## Chain 2 finished in 18.0 seconds.
+## Chain 2 finished in 23.5 seconds.
+## Chain 4 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 4 Iteration:  500 / 2000 [ 25%]  (Warmup) 
 ## Chain 4 Iteration:  600 / 2000 [ 30%]  (Warmup) 
 ## Chain 4 Iteration:  700 / 2000 [ 35%]  (Warmup) 
 ## Chain 4 Iteration:  800 / 2000 [ 40%]  (Warmup) 
@@ -348,11 +383,11 @@ model_single <- do.call(what = brms::brm, args = c(list(
 ## Chain 4 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
 ## Chain 4 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
 ## Chain 4 Iteration: 2000 / 2000 [100%]  (Sampling) 
-## Chain 4 finished in 28.7 seconds.
+## Chain 4 finished in 60.3 seconds.
 ## 
 ## All 4 chains finished successfully.
-## Mean chain execution time: 20.1 seconds.
-## Total execution time: 28.9 seconds.
+## Mean chain execution time: 32.1 seconds.
+## Total execution time: 60.5 seconds.
 ```
 Fitting the model takes ~15 seconds, with `Rhat = 1` and
 effective sample size for the bulk and tail greater than `1400` for
@@ -370,12 +405,12 @@ both parameters. The estimates and 95% confidence intervals are good.
 ## 
 ## Population-Level Effects: 
 ##                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## kcat_Intercept     2.86      0.44     2.13     3.85 1.00     1358     1518
-## kM_Intercept       4.41      2.05     1.26     9.12 1.00     1337     1436
+## kcat_Intercept     2.81      0.45     2.08     3.82 1.00     1034     1620
+## kM_Intercept       4.19      2.09     1.13     9.03 1.00     1035     1441
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     0.53      0.05     0.45     0.65 1.00     1879     1648
+## sigma     0.53      0.05     0.44     0.64 1.00     1541     1298
 ## 
 ## Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -525,13 +560,13 @@ posterior as the <span style="color:blue">blue curve</span>, and the true
 parameter marked as a vertical line.
 
 
-<img src="/Users/maom/opt/BayesPharma/vignettes/derive_tQ_model_files/prior-posterior-single-marginal-plot-1.png" alt="plot of chunk prior-posterior-single-marginal-plot" width="100%" style="display: block; margin: auto;" />
+<img src="/Users/maom/opt/bayespharma/vignettes/derive_tQ_model_files/prior-posterior-single-marginal-plot-1.png" alt="plot of chunk prior-posterior-single-marginal-plot" width="100%" style="display: block; margin: auto;" />
 
 Next, we plot the prior and posterior samples as a scatter plot. Note that
 the high correlation of the `kcat` and `kM` parameters in the posterior. This is
 expected, and typically better estimates require varying the enzyme and
 substrate concentrations.
-<img src="/Users/maom/opt/BayesPharma/vignettes/derive_tQ_model_files/prior-posterior-single-scatter-1.png" alt="plot of chunk prior-posterior-single-scatter" width="100%" style="display: block; margin: auto;" />
+<img src="/Users/maom/opt/bayespharma/vignettes/derive_tQ_model_files/prior-posterior-single-scatter-1.png" alt="plot of chunk prior-posterior-single-scatter" width="100%" style="display: block; margin: auto;" />
 
 ## Fitting multiple observations
 
@@ -564,7 +599,7 @@ data_multiple <- tidyr::expand_grid(
     P = rnorm(dplyr::n(), P, 0.5))
 ```
 
-<img src="/Users/maom/opt/BayesPharma/vignettes/derive_tQ_model_files/data-multiple-plot-1.png" alt="plot of chunk data-multiple-plot" width="100%" style="display: block; margin: auto;" />
+<img src="/Users/maom/opt/bayespharma/vignettes/derive_tQ_model_files/data-multiple-plot-1.png" alt="plot of chunk data-multiple-plot" width="100%" style="display: block; margin: auto;" />
 
 
 ```r
@@ -640,97 +675,97 @@ model_multiple <- do.call(what = brms::brm, args = c(list(
 ## Chain 3 Iteration:    1 / 2000 [  0%]  (Warmup) 
 ## Chain 4 Iteration:    1 / 2000 [  0%]  (Warmup) 
 ## Chain 2 Iteration:  100 / 2000 [  5%]  (Warmup) 
-## Chain 1 Iteration:  100 / 2000 [  5%]  (Warmup) 
-## Chain 4 Iteration:  100 / 2000 [  5%]  (Warmup) 
 ## Chain 3 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 4 Iteration:  100 / 2000 [  5%]  (Warmup) 
+## Chain 1 Iteration:  100 / 2000 [  5%]  (Warmup) 
 ## Chain 2 Iteration:  200 / 2000 [ 10%]  (Warmup) 
-## Chain 1 Iteration:  200 / 2000 [ 10%]  (Warmup) 
 ## Chain 3 Iteration:  200 / 2000 [ 10%]  (Warmup) 
 ## Chain 4 Iteration:  200 / 2000 [ 10%]  (Warmup) 
-## Chain 3 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 1 Iteration:  200 / 2000 [ 10%]  (Warmup) 
 ## Chain 2 Iteration:  300 / 2000 [ 15%]  (Warmup) 
-## Chain 1 Iteration:  300 / 2000 [ 15%]  (Warmup) 
+## Chain 3 Iteration:  300 / 2000 [ 15%]  (Warmup) 
 ## Chain 4 Iteration:  300 / 2000 [ 15%]  (Warmup) 
-## Chain 3 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 1 Iteration:  300 / 2000 [ 15%]  (Warmup) 
 ## Chain 2 Iteration:  400 / 2000 [ 20%]  (Warmup) 
-## Chain 1 Iteration:  400 / 2000 [ 20%]  (Warmup) 
+## Chain 3 Iteration:  400 / 2000 [ 20%]  (Warmup) 
 ## Chain 4 Iteration:  400 / 2000 [ 20%]  (Warmup) 
-## Chain 3 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 1 Iteration:  400 / 2000 [ 20%]  (Warmup) 
 ## Chain 2 Iteration:  500 / 2000 [ 25%]  (Warmup) 
-## Chain 1 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 3 Iteration:  500 / 2000 [ 25%]  (Warmup) 
 ## Chain 4 Iteration:  500 / 2000 [ 25%]  (Warmup) 
-## Chain 3 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 1 Iteration:  500 / 2000 [ 25%]  (Warmup) 
 ## Chain 2 Iteration:  600 / 2000 [ 30%]  (Warmup) 
-## Chain 1 Iteration:  600 / 2000 [ 30%]  (Warmup) 
+## Chain 3 Iteration:  600 / 2000 [ 30%]  (Warmup) 
 ## Chain 4 Iteration:  600 / 2000 [ 30%]  (Warmup) 
-## Chain 3 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 1 Iteration:  600 / 2000 [ 30%]  (Warmup) 
 ## Chain 2 Iteration:  700 / 2000 [ 35%]  (Warmup) 
-## Chain 1 Iteration:  700 / 2000 [ 35%]  (Warmup) 
+## Chain 3 Iteration:  700 / 2000 [ 35%]  (Warmup) 
 ## Chain 4 Iteration:  700 / 2000 [ 35%]  (Warmup) 
-## Chain 3 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 1 Iteration:  700 / 2000 [ 35%]  (Warmup) 
 ## Chain 2 Iteration:  800 / 2000 [ 40%]  (Warmup) 
-## Chain 1 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 3 Iteration:  800 / 2000 [ 40%]  (Warmup) 
 ## Chain 4 Iteration:  800 / 2000 [ 40%]  (Warmup) 
-## Chain 3 Iteration:  900 / 2000 [ 45%]  (Warmup) 
 ## Chain 2 Iteration:  900 / 2000 [ 45%]  (Warmup) 
-## Chain 1 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 1 Iteration:  800 / 2000 [ 40%]  (Warmup) 
+## Chain 3 Iteration:  900 / 2000 [ 45%]  (Warmup) 
 ## Chain 4 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 1 Iteration:  900 / 2000 [ 45%]  (Warmup) 
+## Chain 2 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 2 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
 ## Chain 3 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
 ## Chain 3 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
-## Chain 2 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
-## Chain 1 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
-## Chain 2 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
-## Chain 1 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
 ## Chain 4 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
 ## Chain 4 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
-## Chain 3 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
-## Chain 1 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 1 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 1 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
 ## Chain 2 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 3 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
 ## Chain 4 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
+## Chain 1 Iteration: 1100 / 2000 [ 55%]  (Sampling) 
 ## Chain 3 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
-## Chain 1 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
-## Chain 2 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
-## Chain 3 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
 ## Chain 4 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
-## Chain 1 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
-## Chain 2 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
-## Chain 3 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 2 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 1 Iteration: 1200 / 2000 [ 60%]  (Sampling) 
+## Chain 3 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
 ## Chain 4 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
-## Chain 1 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
-## Chain 2 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
-## Chain 3 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 2 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 1 Iteration: 1300 / 2000 [ 65%]  (Sampling) 
+## Chain 3 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
 ## Chain 4 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
-## Chain 1 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
-## Chain 2 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
-## Chain 3 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 2 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 1 Iteration: 1400 / 2000 [ 70%]  (Sampling) 
+## Chain 3 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
 ## Chain 4 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 2 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 1 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 3 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
+## Chain 4 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
 ## Chain 1 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
 ## Chain 2 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
 ## Chain 3 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
-## Chain 4 Iteration: 1600 / 2000 [ 80%]  (Sampling) 
-## Chain 1 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
-## Chain 2 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
-## Chain 3 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
 ## Chain 4 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
-## Chain 1 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
-## Chain 2 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
-## Chain 3 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 1 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
 ## Chain 4 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 3 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 2 Iteration: 1700 / 2000 [ 85%]  (Sampling) 
+## Chain 1 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
+## Chain 4 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 3 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 2 Iteration: 1800 / 2000 [ 90%]  (Sampling) 
 ## Chain 1 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
 ## Chain 3 Iteration: 2000 / 2000 [100%]  (Sampling) 
-## Chain 3 finished in 86.5 seconds.
-## Chain 2 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
-## Chain 4 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
-## Chain 1 Iteration: 2000 / 2000 [100%]  (Sampling) 
-## Chain 1 finished in 90.4 seconds.
-## Chain 2 Iteration: 2000 / 2000 [100%]  (Sampling) 
-## Chain 2 finished in 91.1 seconds.
 ## Chain 4 Iteration: 2000 / 2000 [100%]  (Sampling) 
-## Chain 4 finished in 94.0 seconds.
+## Chain 3 finished in 124.0 seconds.
+## Chain 4 finished in 123.6 seconds.
+## Chain 2 Iteration: 1900 / 2000 [ 95%]  (Sampling) 
+## Chain 1 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 1 finished in 127.6 seconds.
+## Chain 2 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 2 finished in 131.6 seconds.
 ## 
 ## All 4 chains finished successfully.
-## Mean chain execution time: 90.5 seconds.
-## Total execution time: 94.2 seconds.
+## Mean chain execution time: 126.7 seconds.
+## Total execution time: 131.8 seconds.
 ```
 
 ```r
@@ -749,12 +784,12 @@ model_multiple
 ## 
 ## Population-Level Effects: 
 ##                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## kcat_Intercept     2.79      0.05     2.70     2.89 1.00     1170     1159
-## kM_Intercept       4.59      0.33     3.98     5.26 1.00     1254     1269
+## kcat_Intercept     2.79      0.04     2.71     2.88 1.00     1443     1627
+## kM_Intercept       4.52      0.30     3.98     5.14 1.00     1447     1590
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     0.61      0.02     0.57     0.65 1.00     2109     1874
+## sigma     0.56      0.02     0.53     0.60 1.00     2036     1630
 ## 
 ## Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -878,12 +913,12 @@ model_multiple
 
 
 
-<img src="/Users/maom/opt/BayesPharma/vignettes/derive_tQ_model_files/prior-posterior-multiple-scatter-1.png" alt="plot of chunk prior-posterior-multiple-scatter" width="100%" style="display: block; margin: auto;" />
+<img src="/Users/maom/opt/bayespharma/vignettes/derive_tQ_model_files/prior-posterior-multiple-scatter-1.png" alt="plot of chunk prior-posterior-multiple-scatter" width="100%" style="display: block; margin: auto;" />
 
 
 Next we will sample enzyme progress curves from the posterior
 
-<img src="/Users/maom/opt/BayesPharma/vignettes/derive_tQ_model_files/model-multiple-curves-1.png" alt="plot of chunk model-multiple-curves" width="100%" style="display: block; margin: auto;" />
+<img src="/Users/maom/opt/bayespharma/vignettes/derive_tQ_model_files/model-multiple-curves-1.png" alt="plot of chunk model-multiple-curves" width="100%" style="display: block; margin: auto;" />
 
 
 

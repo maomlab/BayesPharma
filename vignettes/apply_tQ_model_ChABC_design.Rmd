@@ -15,17 +15,20 @@ vignette: >
 
 
 ```
-## Warning in eval_tidy(pair$rhs, env = default_env): NAs introduced by coercion
+## Warning: There was 1 warning in `dplyr::mutate()`.
+## ℹ In argument: `product_concentration = dplyr::case_when(...)`.
+## Caused by warning:
+## ! NAs introduced by coercion
 ```
 
 
 
 ```
-## Warning: Removed 150 row(s) containing missing values (geom_path).
+## Warning: Removed 150 rows containing missing values (`geom_line()`).
 ```
 
-<img src="/Users/maom/opt/BayesPharma/vignettes/apply_model_tQ_ChABC_design_files/plot-data-1.png" alt="plot of chunk plot-data" width="100%" style="display: block; margin: auto;" />
-<img src="/Users/maom/opt/BayesPharma/vignettes/apply_model_tQ_ChABC_design_files/simulate-tQ-1.png" alt="plot of chunk simulate-tQ" width="100%" style="display: block; margin: auto;" />
+<img src="/Users/maom/opt/bayespharma/vignettes/apply_model_tQ_ChABC_design_files/plot-data-1.png" alt="plot of chunk plot-data" width="100%" style="display: block; margin: auto;" />
+<img src="/Users/maom/opt/bayespharma/vignettes/apply_model_tQ_ChABC_design_files/simulate-tQ-1.png" alt="plot of chunk simulate-tQ" width="100%" style="display: block; margin: auto;" />
 
 
 ```
@@ -45,8 +48,8 @@ vignette: >
 ## Chain 1: 
 ## Chain 1: 
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0.004271 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 42.71 seconds.
+## Chain 1: Gradient evaluation took 0.012179 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 121.79 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -60,45 +63,33 @@ vignette: >
 ## Chain 1: 
 ## Chain 1: Begin stochastic gradient ascent.
 ## Chain 1:   iter             ELBO   delta_ELBO_mean   delta_ELBO_med   notes 
-## Chain 1:    100         -917.518             1.000            1.000
-## Chain 1:    200         -503.893             0.910            1.000
-## Chain 1:    300         -502.071             0.608            0.821
-## Chain 1:    400         -497.003             0.459            0.821
-## Chain 1:    500         -561.762             0.390            0.115
-## Chain 1:    600         -514.986             0.340            0.115
-## Chain 1:    700         -496.706             0.297            0.091
-## Chain 1:    800         -524.954             0.266            0.091
-## Chain 1:    900         -493.733             0.149            0.063
-## Chain 1:   1000         -492.744             0.047            0.054
-## Chain 1:   1100         -495.727             0.047            0.054
-## Chain 1:   1200         -496.581             0.046            0.054
-## Chain 1:   1300         -488.520             0.034            0.037
-## Chain 1:   1400         -494.460             0.024            0.017
-## Chain 1:   1500         -485.994             0.022            0.017
-## Chain 1:   1600         -502.462             0.019            0.017
-## Chain 1:   1700         -491.780             0.014            0.017
-## Chain 1:   1800         -478.381             0.017            0.017
-## Chain 1:   1900         -475.756             0.017            0.017
-## Chain 1:   2000         -479.253             0.018            0.017
-## Chain 1:   2100         -467.125             0.019            0.022
-## Chain 1:   2200         -461.639             0.019            0.022
-## Chain 1:   2300         -443.524             0.022            0.026
-## Chain 1:   2400         -428.703             0.022            0.026
-## Chain 1:   2500         -410.818             0.025            0.028
-## Chain 1:   2600         -393.635             0.027            0.035
-## Chain 1:   2700         -391.060             0.027            0.035
-## Chain 1:   2800         -387.788             0.027            0.035
-## Chain 1:   2900         -388.715             0.024            0.035
-## Chain 1:   3000         -392.617             0.024            0.035
-## Chain 1:   3100         -389.125             0.020            0.010   MEDIAN ELBO CONVERGED
+## Chain 1:    100         -858.392             1.000            1.000
+## Chain 1:    200         -629.759             0.682            1.000
+## Chain 1:    300         -535.720             0.513            0.363
+## Chain 1:    400         -497.209             0.404            0.363
+## Chain 1:    500         -498.282             0.324            0.176
+## Chain 1:    600         -515.189             0.275            0.176
+## Chain 1:    700         -493.979             0.242            0.077
+## Chain 1:    800         -494.389             0.212            0.077
+## Chain 1:    900         -504.392             0.089            0.043
+## Chain 1:   1000         -517.813             0.047            0.033
+## Chain 1:   1100         -507.649             0.028            0.026
+## Chain 1:   1200         -497.967             0.020            0.020
+## Chain 1:   1300         -501.159             0.021            0.020
+## Chain 1:   1400         -497.044             0.018            0.020
+## Chain 1:   1500         -498.128             0.013            0.019
+## Chain 1:   1600         -485.447             0.016            0.020
+## Chain 1:   1700         -483.449             0.014            0.019
+## Chain 1:   1800         -477.433             0.012            0.013
+## Chain 1:   1900         -474.880             0.011            0.008   MEDIAN ELBO CONVERGED
 ## Chain 1: 
 ## Chain 1: Drawing a sample of size 1000 from the approximate posterior... 
 ## Chain 1: COMPLETED.
 ```
 
 ```
-## Warning: Pareto k diagnostic value is 0.85. Resampling is unreliable. Increasing
-## the number of draws or decreasing tol_rel_obj may help.
+## Warning: Pareto k diagnostic value is 0.92. Resampling is unreliable.
+## Increasing the number of draws or decreasing tol_rel_obj may help.
 ```
 
 
@@ -116,8 +107,8 @@ vignette: >
 ## Chain 1: 
 ## Chain 1: 
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 8.1e-05 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.81 seconds.
+## Chain 1: Gradient evaluation took 1.3e-05 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.13 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -127,21 +118,20 @@ vignette: >
 ## Chain 1: Iteration: 100 / 250 [ 40%]  (Adaptation)
 ## Chain 1: Iteration: 150 / 250 [ 60%]  (Adaptation)
 ## Chain 1: Iteration: 200 / 250 [ 80%]  (Adaptation)
-## Chain 1: Iteration: 250 / 250 [100%]  (Adaptation)
-## Chain 1: Success! Found best value [eta = 0.1].
+## Chain 1: Success! Found best value [eta = 1] earlier than expected.
 ## Chain 1: 
 ## Chain 1: Begin stochastic gradient ascent.
 ## Chain 1:   iter             ELBO   delta_ELBO_mean   delta_ELBO_med   notes 
-## Chain 1:    100           -0.152             1.000            1.000
-## Chain 1:    200           -0.052             1.458            1.916
-## Chain 1:    300           -0.315             1.375            1.916
-## Chain 1:    400           -0.099             1.505            2.176
-## Chain 1:    500            0.145             1.931            2.176
-## Chain 1:    600            0.014             5.575            9.464
-## Chain 1:    700           -0.255             5.259            9.464
-## Chain 1:    800           -0.305             0.609            1.054
-## Chain 1:    900            0.003            57.747          115.330
-## Chain 1:   1000           -0.128            58.175          115.330
+## Chain 1:    100           -0.215             1.000            1.000
+## Chain 1:    200           -0.306             0.649            1.000
+## Chain 1:    300           -0.514             0.352            0.406
+## Chain 1:    400           -0.188             1.072            1.739
+## Chain 1:    500           -0.104             1.275            1.739
+## Chain 1:    600           -0.043             1.112            1.413
+## Chain 1:    700           -0.219             1.109            1.413
+## Chain 1:    800            0.201             1.447            2.090
+## Chain 1:    900           -0.229             1.985            2.090
+## Chain 1:   1000           -0.076             1.937            1.994
 ## Chain 1: Informational Message: The maximum number of iterations is reached! The algorithm may not have converged.
 ## Chain 1: This variational approximation is not guaranteed to be meaningful.
 ## Chain 1: 
@@ -149,5 +139,5 @@ vignette: >
 ## Chain 1: COMPLETED.
 ```
 
-<img src="/Users/maom/opt/BayesPharma/vignettes/apply_model_tQ_ChABC_design_files/prior-posterior-multiple-scatter-1.png" alt="plot of chunk prior-posterior-multiple-scatter" width="100%" style="display: block; margin: auto;" />
+<img src="/Users/maom/opt/bayespharma/vignettes/apply_model_tQ_ChABC_design_files/prior-posterior-multiple-scatter-1.png" alt="plot of chunk prior-posterior-multiple-scatter" width="100%" style="display: block; margin: auto;" />
 

@@ -40,12 +40,14 @@ vignettes/references.bib: vignettes_src/references.bib
 	cp vignettes_src/references.bib vignettes/
 
 vignettes/%.Rmd: vignettes_src/%.Rmd vignettes/references.bib
+	# For each file matching vignettes_src/<vignette>.Rmd call
+	# cd vignettes && Rscript -e "knitr::knit(input = '../vignettes_src/<vignette>.Rmd', output = '<vignette>.Rmd')"
 	cd vignettes &&	Rscript -e "knitr::knit(input = '../$<', output = '$(@F)')"
 
 vignettes: $(patsubst vignettes_src/%,vignettes/%,$(wildcard vignettes_src/*.Rmd))
 
 vignettes/manuscript.qmd: vignettes/references.bib
-	quarto render vignettes_src/manuscript/manuscript.qmd --output-dir vignettes
+	quarto render vignettes_src/manuscript/manuscript.qmd --output
 
 manuscript: vignettes/manuscript.qmd
 
@@ -53,6 +55,6 @@ manuscript: vignettes/manuscript.qmd
 site: vignettes manuscript
 	Rscript -e "pkgdown::build_site()"
 
-all: build install
+all: install vignettes build install
 
-.PHONY: all site manuscript vignettes update_references test install build deps clean
+.PHONY: all site manuscript vignettes update_references test install install_no_vignettes build deps clean

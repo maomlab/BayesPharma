@@ -1,15 +1,50 @@
 
 # Introduction
-As pharmacology experiments increase in complexity, it becomes increasingly challenging to analyze them. While there are many frameworks for fitting common curves in pharmacology ranging from the user friendly GraphPad Prism, the \texttt{drc} dose response curves \texttt{R} package\ref{}, to generic \texttt{nlm} packages, a principled approach is to use Bayesian statistics to quantify model uncertainty before and after collecting data. In practice this requires defining a functional form, a prior distribution over the model parameters, and likelihood function that models the data generation process. Then using Markov Chain Monte-Carlo (MCMC) or variational inference the prior and the likelihood are combined to generate samples from the posterior distribution over the parameters. 
+As pharmacology experiments increase in complexity, it becomes increasingly challenging to analyze them. While there are many frameworks for fitting common curves in pharmacology ranging from the user friendly GraphPad Prism, the \texttt{drc} dose response curves \texttt{R} package\ref{Ritz2015-dq}, to generic \texttt{nlm} packages, a principled approach is to use Bayesian statistics to quantify model uncertainty before and after collecting data. In practice this requires defining a functional form, a prior distribution over the model parameters, and likelihood function that models the data generation process. Then using Markov Chain Monte-Carlo (MCMC) or variational inference the prior and the likelihood are combined to generate samples from the posterior distribution over the parameters. 
 
 Excitingly, there has been rapid progress in developing computational frameworks to facilitate developing and applying Bayesian models. A key example is the Stan ecosystem, which defines a model description language, inference engines, front-end interfaces to many common languages, and a suite of tools to analyze fit models ([@Carpenter2017-es, @Burkner2017-eu, @Vehtari2017-vr, @Gabry2017-ff, @Kay2018-cs, @Wickham2009-dl, @Wickham2019-zn, @Team2013-gf). To facilitate rapid application model development, the Bayesian Regression Modeling using Stan (BRMS) package in R implements a formula-based interface for Stan similar to \texttt{lme4}, that support defining linear and nonlinear predictors, hierarchical models, and a range of pre-specified or custom response functions. Once specified these models are translated into the Stan modeling language, where they are compiles and run.  
 
 Here we describe the BayesPharma R package, a novel Bayesian pharmacology modeling framework building on the \texttt{Stan} and \texttt{BRMS}. After reviewing basic Bayesian modeling concepts in the context of dose-response experiments, we will describe the package architecture and demonstrate the utility through several case studies.
 
+# Related work {#related}
+
+Dimensions of evaluation
+  - Methodology
+  - Features / functionality
+  - Generality
+  - Usability
+
+Methods
+
+
+
+
+
 # Bayesian Modeling Workflow {#workflow}
+Bayesian statistics is principled strategy to fit models to data. The key idea is that before seeing the data, the researcher defines a prior distribution over possible models indexed by model parameters, then the prior is combined with the data through Bayes theorem to produce the posterior distribution. Bayes theorem can be derived from factoring the joint probability distribution over parameters and data, $P(\theta, D)$ into conditional probability distributions two different ways, $P(\theta | D)P(D)$, and $P(D | \theta)P(\theta)$. Setting them equal to each other and dividing through by the evidence, $P(D)$, gives:
+$$
+\begin{align}
+    P(\theta | D) &= \frac{P(D | \theta)\cdot P(\theta)}{P(D)}\\
+    \mbox{POSTERIOR} &= \frac{\mbox{LIKELIHOOD}&\cdot\mbox{PRIOR}}{\mbox{EVIDENCE}}
+\end{align}
+$$
+While the prior and likelihood distributions are explicitly defined in the model, the evidence is only implicitly defined by integrating the likelihood over the entire prior, and is typically intractable to compute explicitly. One way to conceptualize the evidence is simply as the (unique) constant that allows the posterior to be properly normalized and integrate to one. While range of techniques have been developed to estimate the evidence, an important technique that sidesteps the issues is to note that the relative posterior probability of two different parameters $P(\theta_1 | D)$ vs. $P(\theta_2 | D)$ reduces to the computing the likelihood ratios $P(D | \theta_1) / P(D | \theta_2)$ as the prior and the evidence cancel out. By taking small steps in the parameter space and repeatedly evaluating the relative posterior probability it is possible to (in the long run) sample points from the posterior probability distribution. Intuitively, this is akin to running dynamical simulations using the posterior as the Boltzmann distribution.       
+
+
+The challenge in estimating the evidence is akin to estimating the partition function in the Boltzmann distribution from statistical mechanics. Another 
+
+
+is In general it is not possible to solve for the posterior distribution analytically.
+
+Alternatively, one can draw samples from the posterior using Markov chain Monte Carlo. 
+
+Stan provides a programming language and inference engine to define 
+
+, draw samples samples from the
+
 The scientific method can be conceptualized through building and analyzing models. Consider we are interested in interacting with a complex system such as an rocket ship, ecosystem, person with an illness etc., but we are cautious because doing so may be dangerous, expensive, slow, or unethical. Therefore we may develop a tractable model system to interact with instead (such as a very small rocket ship, zebrafish, or molecular simulation, etc.). If the model system corresponds with to the system of interest in relevant ways, then poking and prodding the model system can be use to anticipate how the system of interest will respond when it is in turn poked and prodded. A key step in establishing this correspondence is to collect a small amount of data from the system of interest and use it design the model system to be representative.
 
-When scientific model systems are constructed by composing conditional probability distributions, they are often called Bayesian models. This is because the key step of going from a nebulous set of possible models to more precise set of models based on observed data uses the celebrated Bayes theorem. While basic Bayesian theory is covered in range of introductory and advanced textbooks. To complement those totally reasonable expositions, here we will correct, but informal derivation of Bayesian probability, to helpfully build intuition and facilitate communication with practitioners. Let $\theta \in \Theta$ be a vector of model parameters and let $\mbox{D} \in \mathbb{D}$ observed data. For concreteness, you can think of $\theta = \left(\mbox{Top}, \mbox{Bottom}, \mbox{IC}_{\mbox{50}}, \mbox{Slope}\right)$ as the parameters for specific sigmoid function, and $\mbox{D}=\{(\mbox{dose}_i, \mbox{response}_i)_{i\in N}\}$, a set of dose-response measurements. A probability distribution naturally models an event or an occurrence. The event is sometimes called a random variable.  Given a region, the chance that the event happens in that region is the probability density over it. Assuming the event definitely happens, then the total density must integrate to unity. A joint distribution over two random variables is just the probability that both events occur.  A conditional probability distribution can be thought of as a stochastic function, where evaluation corresponds to setting the values to be conditioned and obtaining the remaining values. Concretely if you have a scatter plot, you could sample points by first sampling along the x-axis and within the narrow range of the chosen x-value, pick a y-value. Or visa versa, first sample along the y-axis and then within the narrow range of the chose y-value, pick the x-value. Then the joint probability distribution over parameters and data, $P(\theta, D)$ can be written as conditional probability distributions two different ways, $P(\theta | D)P(D)$, and $P(D | \theta)P(\theta)$. Setting them equal to each other and dividing through by $P(D)$ gives Bayes Theorem:
+When scientific model systems are constructed by composing conditional probability distributions, they are often called Bayesian models. This is because the key step of going from a nebulous set of possible models to more precise set of models based on observed data uses the celebrated Bayes theorem. While basic Bayesian theory is covered in range of introductory and advanced textbooks. To complement those totally reasonable expositions, here we will give correct, but informal derivation of Bayesian probability, to helpfully build intuition and facilitate communication with practitioners. Let $\theta \in \Theta$ be a vector of model parameters and let $\mbox{D} \in \mathbb{D}$ observed data. For concreteness, you can think of $\theta = \left(\mbox{Top}, \mbox{Bottom}, \mbox{IC}_{\mbox{50}}, \mbox{Slope}\right)$ as the parameters for specific sigmoid function, and $\mbox{D}=\{(\mbox{dose}_i, \mbox{response}_i)_{i\in N}\}$, a set of dose-response measurements. A probability distribution naturally models an event or an occurrence. The event is sometimes called a random variable.  Given a region, the chance that the event happens in that region is the probability density over it. Assuming the event definitely happens, then the total density must integrate to unity. A joint distribution over two random variables is just the probability that both events occur.  A conditional probability distribution can be thought of as a stochastic function, where evaluation corresponds to setting the values to be conditioned and obtaining the remaining values. Concretely if you have a scatter plot, you could sample points by first sampling along the x-axis and within the narrow range of the chosen x-value, pick a y-value. Or visa versa, first sample along the y-axis and then within the narrow range of the chose y-value, pick the x-value. Then the joint probability distribution over parameters and data, $P(\theta, D)$ can be written as conditional probability distributions two different ways, $P(\theta | D)P(D)$, and $P(D | \theta)P(\theta)$. Setting them equal to each other and dividing through by $P(D)$ gives Bayes Theorem:
 $$
     P(\theta | D) = \frac{P(D | \theta)P(\theta)}{P(D)}.
 $$
@@ -27,6 +62,53 @@ The principled Bayesian workflow [@Gelman2020-ab, @Van_de_Schoot2020-er], descri
 \end{enumerate}
 
 
+
+
+# BayesPharma package design {#package_design}
+We designed the BayesPharma package to support modeling of foundational pharmacology models using the principle Bayesian workflow. As described above, the workflow involves four phases: model specification, model fitting, model evaluation, and interpretation. Here we will describe the BayesPharma API and how we recommend using it. 
+
+To provide data to the BayesPharma package, the user provides R \texttt{data.frame} with columns for the response, treatments, and optionally additional covariates such as \texttt{drug\_id} or \texttt{batch\_id}. This is passed to the model function optionally including arguments to customize the formula, prior, initial values, and other arguments to control the model fitting. The BayesPharma package then passes the user input to \texttt{brms::brm()} along with custom stan code specific for the selected model. Once the model is fit, the resulting \texttt{brms::brmsfit} object is returned to the user and can be used for analysis. To illustrate
+
+\scriptsize
+```{r bayespharma-demo}
+#| echo = TRUE
+BayesPharma::sigmoid_agonist_model(
+  data = tibble::tibble(
+    log_dose = seq(-7, -5, length.out = 30),
+    mean_response = BayesPharma::sigmoid(
+      ac50 = -6, hill = 1, top = 1, bottom = 0, log_dose = log_dose),
+    response = stats::rnorm(n = 30, mean = mean_response, sd = 0.2)))
+```
+\normalsize
+
+
+
+data                model diagnostics
+formula => model => Model estimate summaries
+prior                 - parameter estimate tables
+init                  - prior / posterior densities
+                      - marginal distributions
+                    Model inference
+                      - hypothesis testing
+                      - model comparison
+
+|Name   |Type           |Treatments                |Parameters                            |Response|
+|-------|---------------|--------------------------|--------------------------------------|---------
+|Sigmoid|one treatment  |log_dose                  |top, bottom, AC50, hill               |response|
+|MuSyC  |two treatments |logd1, logd2              |logE[0-3], logC[1,2], h[1,2], logalpha|response|
+|tQ     |enzyme kinetics|series_index, time, ET, ST|Kcat, kM                              |P       |
+
+
+model implementation
+  - generate    | R code to generate synthetic data
+  - stanvars    | Stan code implementing the model
+  - formula     | build BRMS formula connecting covariates, parameters and response
+  - prior       | default priors for model parameters
+  - init        | default initial values for parameter simulations
+  - run         
+
+
+
 ## Model selection {#model_selection}
 
 (Vehtari, 2016, https://arxiv.org/abs/1507.04544)
@@ -37,9 +119,3 @@ predictive accuracy
       - expensive to re-fit model k times
       - approximation via importance sampling but may be unstable
       - Pareto smoothed importance sampling (PSIS) more stable
-
-
-# BayesPharma package design {#package_design}
-We designed the BayesPharma package to support modeling of foundational pharmacology models using the principle Bayesian workflow. As described above, the workflow involves four phases: model specification, model fitting, model evaluation, and interpretation. Here we will describe the BayesPharma API and how we recommend using it. 
-
-To provide data to the BayesPharma package, the user provides a R \texttt{data.frame} with columns \texttt{response}, \mbox{log\_dose}, optionally additional covariates such as \texttt{drug\_id} or \texttt{batch\_id}. To specify the model involves specifying the (1) the formulate relating the predictors to the response, (2) the family (3) priors over the model parameters (4) initial values, and (5) additional arguments to tune sampling.

@@ -14,123 +14,74 @@ vignette: >
 
 
 
-
-
-
 ```
-## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
-```
-
-<img src="/Users/maom/opt/BayesPharma/vignettes/apply_model_tQ_nSmase2_kinetics_files/plot_data-1.png" alt="plot of chunk plot_data" width="100%" style="display: block; margin: auto;" />
-
-
-
-
-
-
-
-
-
-```
-## Compiling Stan program...
+## Error: `path` does not exist: '~/Google Drive/My Drive/momeara_lab/Drug Discovery/nSMase2/Pharmacology Analysis/raw_data/08262022_DKswitch.cpds.xlsx'
 ```
 
 ```
-## Start sampling
+## Error in UseMethod("left_join"): no applicable method for 'left_join' applied to an object of class "function"
 ```
 
 ```
-## Chain 1: ------------------------------------------------------------
-## Chain 1: EXPERIMENTAL ALGORITHM:
-## Chain 1:   This procedure has not been thoroughly tested and may be unstable
-## Chain 1:   or buggy. The interface is subject to change.
-## Chain 1: ------------------------------------------------------------
-## Chain 1: 
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Gradient evaluation took 0.002665 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 26.65 seconds.
-## Chain 1: Adjust your expectations accordingly!
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Begin eta adaptation.
-## Chain 1: Iteration:   1 / 250 [  0%]  (Adaptation)
-## Chain 1: Iteration:  50 / 250 [ 20%]  (Adaptation)
-## Chain 1: Iteration: 100 / 250 [ 40%]  (Adaptation)
-## Chain 1: Iteration: 150 / 250 [ 60%]  (Adaptation)
-## Chain 1: Iteration: 200 / 250 [ 80%]  (Adaptation)
-## Chain 1: Success! Found best value [eta = 1] earlier than expected.
-## Chain 1: 
-## Chain 1: Begin stochastic gradient ascent.
-## Chain 1:   iter             ELBO   delta_ELBO_mean   delta_ELBO_med   notes 
-## Chain 1:    100        -3982.774             1.000            1.000
-## Chain 1:    200         -759.166             2.623            4.246
-## Chain 1:    300         -743.095             1.756            1.000
-## Chain 1:    400         -744.406             1.317            1.000
-## Chain 1:    500         -726.596             1.074            0.025
-## Chain 1:    600         -727.353             0.012            0.022
-## Chain 1:    700         -725.335             0.008            0.003   MEAN ELBO CONVERGED   MEDIAN ELBO CONVERGED
-## Chain 1: 
-## Chain 1: Drawing a sample of size 1000 from the approximate posterior... 
-## Chain 1: COMPLETED.
+## Error in UseMethod("mutate"): no applicable method for 'mutate' applied to an object of class "function"
 ```
 
 
 
 ```
-## Start sampling
+## Error in `ggplot2::ggplot()`:
+## ! `data` cannot be a function.
+## ℹ Have you misspelled the `data` argument in `ggplot()`
+```
+
+
+
+```
+## Error in UseMethod("filter"): no applicable method for 'filter' applied to an object of class "function"
+```
+
+
+
+```
+## Error in UseMethod("group_by"): no applicable method for 'group_by' applied to an object of class "function"
+```
+
+
+
+```
+## Error in UseMethod("filter"): no applicable method for 'filter' applied to an object of class "function"
 ```
 
 ```
-## Chain 1: ------------------------------------------------------------
-## Chain 1: EXPERIMENTAL ALGORITHM:
-## Chain 1:   This procedure has not been thoroughly tested and may be unstable
-## Chain 1:   or buggy. The interface is subject to change.
-## Chain 1: ------------------------------------------------------------
-## Chain 1: 
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Gradient evaluation took 4e-06 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
-## Chain 1: Adjust your expectations accordingly!
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Begin eta adaptation.
-## Chain 1: Iteration:   1 / 250 [  0%]  (Adaptation)
-## Chain 1: Iteration:  50 / 250 [ 20%]  (Adaptation)
-## Chain 1: Iteration: 100 / 250 [ 40%]  (Adaptation)
-## Chain 1: Iteration: 150 / 250 [ 60%]  (Adaptation)
-## Chain 1: Iteration: 200 / 250 [ 80%]  (Adaptation)
-## Chain 1: Success! Found best value [eta = 1] earlier than expected.
-## Chain 1: 
-## Chain 1: Begin stochastic gradient ascent.
-## Chain 1:   iter             ELBO   delta_ELBO_mean   delta_ELBO_med   notes 
-## Chain 1:    100           -0.130             1.000            1.000
-## Chain 1:    200           -0.009             7.282           13.564
-## Chain 1:    300           -0.307             7.268           13.564
-## Chain 1:    400           -0.190             0.796            0.971
-## Chain 1:    500           -0.158             0.411            0.620
-## Chain 1:    600            0.191             1.015            1.828
-## Chain 1:    700           -0.410             1.647            1.828
-## Chain 1:    800           -0.220             1.162            1.465
-## Chain 1:    900           -0.092             1.121            1.384
-## Chain 1:   1000           -0.389             1.073            1.384
-## Chain 1: Informational Message: The maximum number of iterations is reached! The algorithm may not have converged.
-## Chain 1: This variational approximation is not guaranteed to be meaningful.
-## Chain 1: 
-## Chain 1: Drawing a sample of size 1000 from the approximate posterior... 
-## Chain 1: COMPLETED.
+## Timing stopped at: 0.996 0.191 1.471
+```
+
+
+
+```
+## Error in update(model, sample_prior = "only"): object 'model' not found
 ```
 
 ```
-## Warning: Pareto k diagnostic value is 1.24. Resampling is disabled. Decreasing
-## tol_rel_obj may help if variational algorithm has terminated prematurely.
-## Otherwise consider using sampling instead.
+## Error in tidybayes::tidy_draws(model_prior): object 'model_prior' not found
 ```
 
-<img src="/Users/maom/opt/BayesPharma/vignettes/apply_model_tQ_nSmase2_kinetics_files/prior-posterior-scatter-1.png" alt="plot of chunk prior-posterior-scatter" width="100%" style="display: block; margin: auto;" />
+```
+## Error in tidybayes::tidy_draws(model): object 'model' not found
+```
+
+
+```
+## Error in tidyr::pivot_wider(draws_prior, id_cols = c(".chain", ".iteration", : object 'draws_prior' not found
+```
+
+```
+## Error in tidyr::pivot_wider(draws_posterior, id_cols = c(".chain", ".iteration", : object 'draws_posterior' not found
+```
+
+```
+## Error in fortify(data): object 'draws_prior_pairs' not found
+```
 
 
 
