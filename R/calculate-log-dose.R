@@ -1,8 +1,8 @@
 #' Add a log dose (in base 10) column to the input data.frame
 #'
-#' @description Given the dose as a column in a data.frame with a given molar
-#'   concentration add a new column of the log base-10 dose, \code{log_dose}, in
-#'   the \code{data.frame} and return it.
+#' @description Given the dose as a column in a \code{data.frame} with a given
+#'   molar concentration add a new column of the log base-10 dose,
+#'   \code{log_dose}, in the \code{data.frame} and return it.
 #' @param data \code{data.frame} containing a column representing a dose in
 #'   molar units.
 #' @param dose_col expression for dose column in the input \code{data.frame}

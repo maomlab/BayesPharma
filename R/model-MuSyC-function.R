@@ -16,7 +16,7 @@
 #'     of treatment 1 is zero.
 #' @param logC2 \code{numeric}. IC50 for treatment 2 and dose of treatment 1 is
 #'     zero.
-#' @param h2 \code{numeric}. Slope of treatment 2 at it's IC50 and dose of
+#' @param h2 \code{numeric}. Slope of treatment 2 at its IC50 and dose of
 #'     treatment 1 is zero in exponential form. Use \code{MuSyC_si_to_hi} to
 #'     convert from slope form.
 #' @param logE3 \code{numeric}. Full response for treatment 1 and treatment 2.

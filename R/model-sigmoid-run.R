@@ -78,11 +78,11 @@ sigmoid_agonist_model <- function(
     ...)
 
   model$bayes_pharma <- list(model_type = "sigmoid_agonist")
-  
+
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)
   }
-  
+
   model
 
 }
@@ -166,11 +166,11 @@ sigmoid_antagonist_model <- function(
     ...)
 
   model$bayes_pharma <- list(model_type = "sigmoid_antagonist")
-  
+
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)
   }
-  
+
   model
 
 }

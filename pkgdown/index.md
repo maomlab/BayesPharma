@@ -7,7 +7,7 @@ pharmacology data using Bayesian statistics and modeling. In comparison to
 likelihood-based inference, `BayesPharma` builds on the `stan` ecosystem and
 `brms` package. `BayesPharma` facilitates applying a principled Bayesian
 workflow to to fit and analyze several foundational pharmacology models, such as
-dose-response modeling, modeling pnear and folding funnels from molecular
+dose-response modeling, modeling Pnear and folding funnels from molecular
 modeling, and modeling potential docking 'hit-rate' curves as a function of dock
 score from ultra-large library docking
 ([Lyu et al. (2019)](https://www.nature.com/articles/s41586-019-0917-9),

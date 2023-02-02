@@ -1,28 +1,27 @@
-#' Displays a data.frame of basic statistical information about the model
-#' results
+#' Give Basic statistical information about the model results
 #'
-#' @description data.frame containing summary statistics of brmsfit
-#'     model.  The summary statistics included are mean, median,
-#'     standard deviation, lower confidence interval, and upper
+#' @description Return a \code{data.frame} containing summary statistics of
+#'     \code{brms::brmsfit} model.  The summary statistics included are
+#'     mean, median, standard deviation, lower confidence interval, and upper
 #'     confidence interval.
 #'
-#' @param model brmsfit model
-#' @param predictors_col_name string expression for predictors column
-#'     in the input data.frame (default = "_Intercept"). Predictors
-#'     are the perturbations tested during the experiment (i.e. Drug,
-#'     Temperature, etc.).
-#' @param half_max_label string of the label for the half maximal that
+#' @param model \code{brms::brmsfit} model
+#' @param predictors_col_name \code{string} expression for predictors column
+#'     in the input \code{data.frame}. Predictors are the perturbations tested
+#'     during the experiment (i.e. Drug, Temperature, etc.). [default =
+#'     "_Intercept"]
+#' @param half_max_label \code{string} of the label for the half maximal that
 #'     fits the type of experiment that was done (i.e. ec50, ic50,
 #'     ed50, id50, ld50, etc.).
-#' @param l_ci numeric unit of the lower confidence interval (default
+#' @param l_ci \code{numeric} unit of the lower confidence interval (default
 #'     = 0.025)
-#' @param u_ci numeric unit of the upper confidence interval (default
+#' @param u_ci \code{numeric} unit of the upper confidence interval (default
 #'     = 0.975)
-#' @return tibble::tibble object.
+#' @return \code{tibble::tibble} object.
 #'
 #' @examples
 #'\dontrun{
-#'   basic_stats(
+#'   BayesPharma::basic_stats(
 #'     model = my_sigmoid_model,
 #'     predictors_col_name = "predictors",
 #'     half_max_label = "ic50",
