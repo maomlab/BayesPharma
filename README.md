@@ -38,13 +38,16 @@ devtools::load_all()
 ## Build the manuscript and vignettes
 The manuscript is a multi-part Quarto document in `vignettes_src/manuscript`
 
-1) We have used paperpile to organize the references, to update
+Building the manuscript and vignettes requires pandoc, which is available
+through Rstudio. But if you are not using Rstudio you please follow the
+instructions [here](https://pandoc.org/installing.html).
 
+1) We have used Paperpile to organize the references, to update
 ```{shell update-references}
 make update_references
 ```
 
-1) To build the manuscript
+2) To build the manuscript
 
 ```{shell build-manuscript}
 make manuscript
@@ -52,7 +55,7 @@ make manuscript
 
 To build the sections into the website
 
-2) Build the website
+3) Build the website
 ```{shell build-site}
 make build_site
 ```
