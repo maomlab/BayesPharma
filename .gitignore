@@ -11,7 +11,6 @@ vignettes_working
 
 vignettes/*.rmarkdown
 vignettes/*_cache
-vignettes/*_files
 vignettes/*.R
 vignettes/*.tex
 vignettes/*.pdf
