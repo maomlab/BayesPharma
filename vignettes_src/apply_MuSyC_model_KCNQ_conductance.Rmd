@@ -1,5 +1,8 @@
 ---
 title: "Apply: MuSyC Model -- KCNQ Conductance"
+description: Demonsrate the MuSyC_model to analyze the interaction between
+  voltage and small molecules interact modulate conductance through the KCNQ2
+  voltage gated potassium channel.
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}

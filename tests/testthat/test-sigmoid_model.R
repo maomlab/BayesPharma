@@ -17,7 +17,7 @@ testthat::test_that("Agonist sigmoid model fit with zero doses", {
   model <- data |>
     BayesPharma::sigmoid_agonist_model(
       iter = 2000)
-  testthat::expect_true(inherits(formula, "brmsfit"))
+  testthat::expect_true(inherits(model, "brmsfit"))
 
   n_divergences <- model |>
     brms::nuts_params() |>
@@ -47,7 +47,7 @@ testthat::test_that("Antagonist sigmoid model fit with zero doses", {
   model <- data |>
     BayesPharma::sigmoid_antagonist_model(
       iter = 2000)
-  testthat::expect_true(inherits(formula, "brmsfit"))
+  testthat::expect_true(inherits(model, "brmsfit"))
 
   n_divergences <- model |>
     brms::nuts_params() |>

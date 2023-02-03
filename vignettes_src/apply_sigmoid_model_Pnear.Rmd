@@ -1,5 +1,8 @@
 ---
 title: "Apply: Sigmoid Model -- Pnear Folding Funnel"
+description: Demonsrate the the sigmoid model to model two-state folding
+  dynamics in molecular simulation of antibodies and compare with the Pnear
+  folding funnel score.
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}

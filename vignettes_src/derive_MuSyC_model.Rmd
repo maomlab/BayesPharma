@@ -1,6 +1,8 @@
 ---
 # For vignette -----------------------------------------------------------------
 title: "Derive: MuSyC Model -- Synergy Analysis"
+description: Derive the functional form, parameterization, and implementation
+  for the MuSyC synergy model.
 # Document ---------------------------------------------------------------------
 output: rmarkdown::html_vignette
 bibliography: references.bib

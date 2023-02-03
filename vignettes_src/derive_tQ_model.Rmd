@@ -1,5 +1,7 @@
 ---
 title: "Derive: tQ Model -- Enzyme Kinetics"
+description: Derive the functional form, parameterization, and implementation
+  for the robust tQ enzyme kinetics model.
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
