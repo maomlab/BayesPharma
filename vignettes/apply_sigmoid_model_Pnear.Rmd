@@ -1,5 +1,8 @@
 ---
 title: "Apply: Sigmoid Model -- Pnear Folding Funnel"
+description: Demonsrate the the sigmoid model to model two-state folding
+  dynamics in molecular simulation of antibodies and compare with the Pnear
+  folding funnel score.
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
@@ -119,34 +122,34 @@ Check the model parameter fit and estimated parameters:
 ## 
 ## Population-Level Effects: 
 ##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## ec50_target1ahw       1.70      0.11     1.43     1.86 1.00     3953     2291
-## ec50_target1jps       1.37      0.13     1.08     1.59 1.00     4498     3746
-## ec50_target1mlc       2.39      0.53     0.96     3.19 1.00     2772     2019
-## ec50_target1ztx       0.75      0.08     0.59     0.90 1.00     5504     4507
-## ec50_target2aep       1.13      0.37     0.57     1.55 1.00     2119      883
-## ec50_target2jel       1.65      0.06     1.53     1.76 1.00     6454     5339
-## hill_target1ahw       1.68      0.45     0.86     2.63 1.00     3298     1816
-## hill_target1jps       1.49      0.36     0.89     2.28 1.00     3824     3753
-## hill_target1mlc       1.04      0.55     0.26     2.28 1.00     2646     2932
-## hill_target1ztx       2.72      0.56     1.75     3.91 1.00     7260     5789
-## hill_target2aep       1.98      0.68     0.59     3.38 1.00     1121      382
-## hill_target2jel       3.21      0.59     2.15     4.45 1.00     7535     5573
-## top_target1ahw      -10.54      0.75   -11.56    -8.64 1.00     4452     2288
-## top_target1jps       -9.69      0.58   -10.62    -8.34 1.00     5219     4202
-## top_target1mlc       -1.31      5.93    -9.93    12.77 1.00     6763     5064
-## top_target1ztx      -17.44      0.27   -17.97   -16.90 1.00    11553     5251
-## top_target2aep      -16.13      1.92   -16.95   -15.13 1.00     1218      401
-## top_target2jel      -11.09      0.33   -11.73   -10.45 1.00    10630     6010
-## bottom_target1ahw   -26.08      2.23   -31.80   -23.14 1.00     3373     1914
-## bottom_target1jps   -30.53      3.72   -39.60   -24.96 1.00     4356     3831
-## bottom_target1mlc   -18.48      4.42   -31.68   -14.74 1.00     2184     1868
-## bottom_target1ztx   -38.84      3.50   -46.77   -32.98 1.00     5786     4464
-## bottom_target2aep   -30.25      5.82   -43.46   -21.26 1.00     6001     4926
-## bottom_target2jel   -19.46      0.98   -21.59   -17.74 1.00     6528     4703
+## ec50_target1ahw       1.69      0.11     1.42     1.87 1.00     3437     2627
+## ec50_target1jps       1.38      0.13     1.09     1.59 1.00     4828     3764
+## ec50_target1mlc       2.37      0.52     0.98     3.15 1.00     3454     2582
+## ec50_target1ztx       0.75      0.08     0.59     0.89 1.00     5772     4561
+## ec50_target2aep       1.10      0.24     0.62     1.50 1.00     3718     2670
+## ec50_target2jel       1.65      0.06     1.53     1.76 1.00     5847     5308
+## hill_target1ahw       1.66      0.45     0.86     2.62 1.00     2807     2002
+## hill_target1jps       1.51      0.37     0.90     2.34 1.00     4504     3809
+## hill_target1mlc       1.02      0.56     0.25     2.31 1.00     3199     3602
+## hill_target1ztx       2.72      0.54     1.77     3.91 1.00     6959     5541
+## hill_target2aep       2.00      0.65     0.80     3.37 1.00     3756     1889
+## hill_target2jel       3.21      0.58     2.12     4.43 1.00     7224     4631
+## top_target1ahw      -10.53      0.73   -11.55    -8.74 1.00     4037     2440
+## top_target1jps       -9.71      0.59   -10.62    -8.37 1.00     5482     3948
+## top_target1mlc       -1.43      5.76    -9.89    11.93 1.00     5940     5099
+## top_target1ztx      -17.45      0.28   -17.98   -16.90 1.00     8358     5804
+## top_target2aep      -16.34      0.43   -16.94   -15.61 1.00     5271     2640
+## top_target2jel      -11.11      0.33   -11.74   -10.46 1.00     9301     6159
+## bottom_target1ahw   -26.11      2.20   -31.88   -23.10 1.00     2828     2203
+## bottom_target1jps   -30.36      3.66   -39.27   -24.91 1.00     4600     3673
+## bottom_target1mlc   -18.61      4.46   -32.04   -14.77 1.00     2861     2731
+## bottom_target1ztx   -38.90      3.50   -46.79   -33.10 1.00     5931     3960
+## bottom_target2aep   -30.42      5.94   -44.50   -21.42 1.00     6088     4795
+## bottom_target2jel   -19.46      0.97   -21.57   -17.73 1.00     6530     4631
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     5.74      0.07     5.60     5.89 1.00    12452     5130
+## sigma     5.74      0.07     5.60     5.89 1.00     9452     5840
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -161,9 +164,9 @@ data very well
 ## Computed from 8000 by 3003 log-likelihood matrix
 ## 
 ##          Estimate   SE
-## elpd_loo  -9521.3 39.0
-## p_loo        21.4  1.2
-## looic     19042.7 78.0
+## elpd_loo  -9520.9 39.0
+## p_loo        21.0  1.1
+## looic     19041.8 77.9
 ## ------
 ## Monte Carlo SE of elpd_loo is 0.1.
 ## 
