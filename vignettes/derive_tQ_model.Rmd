@@ -1,5 +1,7 @@
 ---
 title: "Derive: tQ Model -- Enzyme Kinetics"
+description: Derive the functional form, parameterization, and implementation
+  for the robust tQ enzyme kinetics model.
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
@@ -11,38 +13,6 @@ vignette: >
 
 
 
-```
-## Loading required package: Rcpp
-```
-
-```
-## Loading 'brms' package (version 2.18.0). Useful instructions
-## can be found by typing help('brms'). A more detailed introduction
-## to the package is available through vignette('brms_overview').
-```
-
-```
-## 
-## Attaching package: 'brms'
-```
-
-```
-## The following objects are masked from 'package:tidybayes':
-## 
-##     dstudent_t, pstudent_t, qstudent_t, rstudent_t
-```
-
-```
-## The following object is masked from 'package:drc':
-## 
-##     mixture
-```
-
-```
-## The following object is masked from 'package:stats':
-## 
-##     ar
-```
 ## Enzyme Kinetic Modeling
 Enzymes are proteins that catalyze chemical reactions. Not only do they
 facilitate producing virtual all biological matter, but they are crucial for

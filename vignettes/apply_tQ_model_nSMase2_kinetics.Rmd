@@ -1,5 +1,7 @@
 ---
 title: "Apply: tQ Model -- nSMase2 Kinetics"
+description: Apply the robust tQ enzyme kinetics model to analyze the substrate
+  and mg2+ dependence of the nSMase2 enzyme
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}

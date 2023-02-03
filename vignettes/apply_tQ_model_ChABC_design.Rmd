@@ -1,5 +1,7 @@
 ---
 title: "Apply: tQ Model -- ChABC Design"
+description: Demonstate the robust tQ model for enzyme kinetics of re-design
+  of ChABC, an enzyme used to degrade extra cellular matrix.
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
