@@ -5,15 +5,15 @@
 \title{Default priors for the MuSyC model}
 \usage{
 MuSyC_prior(
-  logE0 = brms::prior(normal(-0.6931, 3), nlpar = "logE0", ub = 0),
-  logE1 = brms::prior(normal(-1.386, 3), nlpar = "logE1", ub = 0),
-  logC1 = brms::prior(normal(0, 3), nlpar = "logC1"),
-  h1 = brms::prior(normal(4, 3), nlpar = "h1", lb = 0.1),
-  logE2 = brms::prior(normal(-1.386, 3), nlpar = "logE2", ub = 0),
-  logC2 = brms::prior(normal(0, 3), nlpar = "logC2"),
-  h2 = brms::prior(normal(4, 3), nlpar = "h2", lb = 0.1),
-  logE3 = brms::prior(normal(-1.386, 3), nlpar = "logE3", ub = 0),
-  logalpha = brms::prior(normal(0, 0.5), nlpar = "logalpha"),
+  logE0 = brms::prior(prior = normal(-0.6931, 3), nlpar = "logE0", ub = 0),
+  logE1 = brms::prior(prior = normal(-1.386, 3), nlpar = "logE1", ub = 0),
+  logC1 = brms::prior(prior = normal(0, 3), nlpar = "logC1"),
+  h1 = brms::prior(prior = normal(4, 3), nlpar = "h1", lb = 0.1),
+  logE2 = brms::prior(prior = normal(-1.386, 3), nlpar = "logE2", ub = 0),
+  logC2 = brms::prior(prior = normal(0, 3), nlpar = "logC2"),
+  h2 = brms::prior(prior = normal(4, 3), nlpar = "h2", lb = 0.1),
+  logE3 = brms::prior(prior = normal(-1.386, 3), nlpar = "logE3", ub = 0),
+  logalpha = brms::prior(prior = normal(0, 0.5), nlpar = "logalpha"),
   ...
 )
 }
@@ -68,7 +68,7 @@ Creating a \code{data.frame} of priors of the dose response
 If you would like to set a parameter as a constant, enter a numeric
 value for the function argument.  If you would like to set your own
 distribution, for example, in the function arguments type
-\code{ec50 = brms::prior(normal(<mu>, <sigma>), nlpar = 'ec50')}.
+\code{ec50 = brms::prior(prior = normal(<mu>, <sigma>), nlpar = 'ec50')}.
 For other distribution options, reference
 http://mc-stan.org/rstanarm/reference/priors.html#arguments.
 }
