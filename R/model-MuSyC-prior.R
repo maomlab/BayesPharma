@@ -6,7 +6,7 @@
 #' If you would like to set a parameter as a constant, enter a numeric
 #' value for the function argument.  If you would like to set your own
 #' distribution, for example, in the function arguments type
-#' \code{ec50 = brms::prior(normal(<mu>, <sigma>), nlpar = 'ec50')}.
+#' \code{ec50 = brms::prior(prior = normal(<mu>, <sigma>), nlpar = 'ec50')}.
 #' For other distribution options, reference
 #' http://mc-stan.org/rstanarm/reference/priors.html#arguments.
 #'
@@ -45,26 +45,26 @@
 #'
 #' @export
 MuSyC_prior <- function(
-    logE0 = brms::prior(normal(-0.6931, 3), nlpar = "logE0", ub = 0),
-    logE1 = brms::prior(normal(-1.386, 3), nlpar = "logE1", ub = 0),
-    logC1 = brms::prior(normal(0, 3), nlpar = "logC1"),
-    h1 = brms::prior(normal(4, 3), nlpar = "h1", lb = .1),
-    logE2 = brms::prior(normal(-1.386, 3), nlpar = "logE2", ub = 0),
-    logC2 = brms::prior(normal(0, 3), nlpar = "logC2"),
-    h2 = brms::prior(normal(4, 3), nlpar = "h2", lb = .1),
-    logE3 = brms::prior(normal(-1.386, 3), nlpar = "logE3", ub = 0),
-    logalpha = brms::prior(normal(0, 0.5), nlpar = "logalpha"),
+    logE0 = brms::prior(prior = normal(-0.6931, 3), nlpar = "logE0", ub = 0),
+    logE1 = brms::prior(prior = normal(-1.386, 3), nlpar = "logE1", ub = 0),
+    logC1 = brms::prior(prior = normal(0, 3), nlpar = "logC1"),
+    h1 = brms::prior(prior = normal(4, 3), nlpar = "h1", lb = .1),
+    logE2 = brms::prior(prior = normal(-1.386, 3), nlpar = "logE2", ub = 0),
+    logC2 = brms::prior(prior = normal(0, 3), nlpar = "logC2"),
+    h2 = brms::prior(prior = normal(4, 3), nlpar = "h2", lb = .1),
+    logE3 = brms::prior(prior = normal(-1.386, 3), nlpar = "logE3", ub = 0),
+    logalpha = brms::prior(prior = normal(0, 0.5), nlpar = "logalpha"),
     ...) {
 
   c(
-    prepare_prior(logE0, nlpar = "logE0"),
-    prepare_prior(logE1, nlpar = "logE1"),
-    prepare_prior(logC1, nlpar = "logC1"),
-    prepare_prior(h1, nlpar = "h1"),
-    prepare_prior(logE2, nlpar = "logE2"),
-    prepare_prior(logC2, nlpar = "logC2"),
-    prepare_prior(h2, nlpar = "h2"),
-    prepare_prior(logE3, nlpar = "logE3"),
-    prepare_prior(logalpha, nlpar = "logalpha"),
+    prepare_prior(prior = logE0, nlpar = "logE0"),
+    prepare_prior(prior = logE1, nlpar = "logE1"),
+    prepare_prior(prior = logC1, nlpar = "logC1"),
+    prepare_prior(prior = h1, nlpar = "h1"),
+    prepare_prior(prior = logE2, nlpar = "logE2"),
+    prepare_prior(prior = logC2, nlpar = "logC2"),
+    prepare_prior(prior = h2, nlpar = "h2"),
+    prepare_prior(prior = logE3, nlpar = "logE3"),
+    prepare_prior(prior = logalpha, nlpar = "logalpha"),
     ...)
 }

@@ -7,7 +7,7 @@
 prepare_prior(prior, ...)
 }
 \arguments{
-\item{prior}{\code{brmsprior} or numeric.}
+\item{prior}{\code{brms::brmsprior} or numeric.}
 
 \item{...}{additional arguments to \code{brms::prior_string()}. If
 \code{prior} is a \code{brmsprior} then this will check that
@@ -18,9 +18,10 @@ these arguments are passed to \code{brms::prior_string}}
 brmsprior
 }
 \description{
-What this gives above brms::prior(...) and friends is
+What this gives above \code{brms::prior(...)} and friends is
   1) it allow just giving a numeric value rather than constant(<value>)
-  2) if it is already a brmsprior it checks that it has specified arguments
+  2) if it is already a \code{brms::brmsprior} it checks that it has
+     specified arguments
 }
 \details{
 This is used in models where want to allow user specified priors

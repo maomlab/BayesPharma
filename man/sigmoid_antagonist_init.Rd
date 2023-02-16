@@ -4,7 +4,7 @@
 \alias{sigmoid_antagonist_init}
 \title{Create initialization for the antagonist sigmoid model}
 \usage{
-sigmoid_antagonist_init(ic50 = -9, hill = -1, top = 1, bottom = 0)
+sigmoid_antagonist_init(ic50 = -6, hill = -1, top = 1, bottom = 0)
 }
 \arguments{
 \item{ic50}{numeric or numeric returning function units log_dose

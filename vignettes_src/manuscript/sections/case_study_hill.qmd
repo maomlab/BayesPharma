@@ -225,10 +225,10 @@ the model with more informative prior:
 \scriptsize
 ```{r kor-model-prior2}
 kor_prior2 <- BayesPharma::sigmoid_antagonist_prior(
-  ec50 = brms::prior(normal(-8.5, 0.5), nlpar = "ec50"),
-  hill = brms::prior(normal(-1, 0.5), ub = 0.01, nlpar = "hill"),
+  ec50 = brms::prior(prior = normal(-8.5, 0.5), nlpar = "ec50"),
+  hill = brms::prior(prior = normal(-1, 0.5), ub = 0.01, nlpar = "hill"),
   top = 100,
-  bottom = brms::prior(normal(10, 15), nlpar = "bottom"))
+  bottom = brms::prior(prior = normal(10, 15), nlpar = "bottom"))
 kor_prior2
 ```
 \normalsize

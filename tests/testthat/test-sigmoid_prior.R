@@ -60,10 +60,10 @@ testthat::test_that("sigmoid_agonist_prior with constant prior", {
 
 testthat::test_that("sigmoid_agonist_prior with custom prior", {
   prior <- BayesPharma::sigmoid_agonist_prior(
-    ec50 = brms::prior(student_t(3, -7, 3), nlpar = "ec50", ub = -4),
+    ec50 = brms::prior(prior = student_t(3, -7, 3), nlpar = "ec50", ub = -4),
     hill = brms::prior_string(paste0("constant(-1)"), nlpar = "hill"),
-    top = brms::prior(beta(10, 1), nlpar = "top"),
-    bottom = brms::prior(beta(1, 10), nlpar = "bottom"))
+    top = brms::prior(prior = beta(10, 1), nlpar = "top"),
+    bottom = brms::prior(prior = beta(1, 10), nlpar = "bottom"))
 
   testthat::expect_true("brmsprior" %in% class(prior))
 
@@ -150,10 +150,10 @@ testthat::test_that("sigmoid_antagonist_prior with constant prior", {
 
 testthat::test_that("sigmoid_antagonist_prior with custom prior", {
   prior <- BayesPharma::sigmoid_antagonist_prior(
-    ic50 = brms::prior(student_t(3, -7, 3), nlpar = "ic50", ub = -4),
+    ic50 = brms::prior(prior = student_t(3, -7, 3), nlpar = "ic50", ub = -4),
     hill = brms::prior_string("constant(-1)", nlpar = "hill"),
-    top = brms::prior(beta(10, 1), nlpar = "top"),
-    bottom = brms::prior(beta(1, 10), nlpar = "bottom"))
+    top = brms::prior(prior = beta(10, 1), nlpar = "top"),
+    bottom = brms::prior(prior = beta(1, 10), nlpar = "bottom"))
 
   testthat::expect_true("brmsprior" %in% class(prior))
 
