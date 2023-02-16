@@ -22,7 +22,7 @@
 #'}
 #'@export
 sigmoid_agonist_init <- function(
-    ec50 = -9,
+    ec50 = -6,
     hill = 1,
     top = 1,
     bottom = 0) {
@@ -59,7 +59,7 @@ sigmoid_agonist_init <- function(
 #'}
 #'@export
 sigmoid_antagonist_init <- function(
-    ic50 = -9,
+    ic50 = -6,
     hill = -1,
     top = 1,
     bottom = 0) {
