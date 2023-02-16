@@ -5,9 +5,9 @@
 \title{Default priors for the sigmoid agonist model}
 \usage{
 sigmoid_agonist_prior(
-  ec50 = brms::prior(normal(-6, 2.5), nlpar = "ec50"),
+  ec50 = brms::prior(prior = normal(-6, 2.5), nlpar = "ec50"),
   hill = brms::prior(prior = normal(1, 1), nlpar = "hill", lb = -0.01),
-  top = brms::prior(normal(1, 0.5), nlpar = "top"),
+  top = brms::prior(prior = normal(1, 0.5), nlpar = "top"),
   bottom = brms::prior(prior = normal(0, 0.5), nlpar = "bottom"),
   ...
 )
@@ -54,9 +54,8 @@ For other distribution options, reference
 # Consider an activator that has a max response around 50\%, EC50 is estimated
 # to be around 1 nM, and minimum response is known to be 0.
 priors <- sigmoid_agonist_prior(
-  ec50 = brms::prior(normal(-9, 0.5), nlpar = "ec50"),
-  inhibitor = FALSE,
-  top = brms::prior(normal(0.5, 0.2), nlpar = "top"),
+  ec50 = brms::prior(prior = normal(-9, 0.5), nlpar = "ec50"),
+  top = brms::prior(prior = normal(0.5, 0.2), nlpar = "top"),
   bottom = 0)
 }
 }

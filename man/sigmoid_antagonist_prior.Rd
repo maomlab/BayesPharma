@@ -5,34 +5,34 @@
 \title{Default priors for the sigmoid antagonist model}
 \usage{
 sigmoid_antagonist_prior(
-  ic50 = brms::prior(normal(-6, 2.5), nlpar = "ic50"),
+  ic50 = brms::prior(prior = normal(-6, 2.5), nlpar = "ic50"),
   hill = brms::prior(prior = normal(-1, 1), nlpar = "hill", ub = 0.01),
-  top = brms::prior(normal(1, 0.5), nlpar = "top"),
+  top = brms::prior(prior = normal(1, 0.5), nlpar = "top"),
   bottom = brms::prior(prior = normal(0, 0.5), nlpar = "bottom"),
   ...
 )
 }
 \arguments{
-\item{ic50}{\code{brmsprior} or numeric. Prior for the ec50
+\item{ic50}{\code{brms::brmsprior} or numeric. Prior for the ic50
 parameter.  Default: normal(-6, 2.5) where the mean -6
 corresponds to a concentration of 1e-6 or 1 μM. Setting ic50 to
 a numeric value constrains it to a constant value.}
 
-\item{hill}{\code{brmsprior} or numeric. Prior for the hill
+\item{hill}{\code{brms::brmsprior} or numeric. Prior for the hill
 parameter. Default: normal(-1, 1) upper bounded by 0.1.}
 
-\item{top}{\code{brmsprior} or numeric. Prior for the top
+\item{top}{\code{brms::brmsprior} or numeric. Prior for the top
 parameter.  Default: normal(1, 0.5). Setting top to a numeric
 value constrains it to a constant value.}
 
-\item{bottom}{\code{brmsprior} or numeric. Prior for the top
+\item{bottom}{\code{brms::brmsprior} or numeric. Prior for the top
 parameter.  Default: normal(0, 0.5). Setting bottom to a
 numeric value constrains it to a constant value.}
 
 \item{...}{additional \code{brmsprior} objects.}
 }
 \value{
-\code{brmsprior} \code{data.frame}
+\code{brms::brmsprior} \code{data.frame}
 }
 \description{
 Creates a \code{data.frame} of priors for the sigmoid antagonist
@@ -52,8 +52,8 @@ For other distribution options, reference
 # Consider an activator that has a max response around 50\%, EC50 is estimated
 # to be around 1 μM, and minimum response is known to be 0.
 priors <- sigmoid_antagonist_prior(
-  ic50 = brms::prior(normal(-6, 0.5), nlpar = "ic50"),
-  top = brms::prior(normal(0.5, 0.5), nlpar = "top"),
+  ic50 = brms::prior(prior = normal(-6, 0.5), nlpar = "ic50"),
+  top = brms::prior(prior = normal(0.5, 0.5), nlpar = "top"),
   bottom = 0)
 }
 }

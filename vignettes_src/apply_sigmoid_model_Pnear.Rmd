@@ -349,11 +349,11 @@ model <- data |>
     formula = BayesPharma::sigmoid_agonist_formula(
       predictors = 0 + target),
     prior = BayesPharma::sigmoid_agonist_prior(
-      ec50 = brms::prior(normal(1.5, 2), nlpar = "ec50"),
-      top = brms::prior(normal(-10, 10), nlpar = "top"),
-      bottom = brms::prior(normal(-20, 10), nlpar = "bottom")),
+      ec50 = brms::prior(prior = normal(1.5, 2), nlpar = "ec50"),
+      top = brms::prior(prior = normal(-10, 10), nlpar = "top"),
+      bottom = brms::prior(prior = normal(-20, 10), nlpar = "bottom")),
     init = BayesPharma::sigmoid_agonist_init(
-      ec50 = 1.2,
+      ec50 = 1.5,
       top = -10,
       bottom = -20),
     chains = 4,
