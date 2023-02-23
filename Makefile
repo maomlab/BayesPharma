@@ -20,7 +20,7 @@ update_references:
 # Set up PaperPile automatic export of bibtex files and generate link
 # https://paperpile.com/h/automatic-bibtex-export/
 	curl -R -o "vignettes_src/references.bib" -z "vignettes_src/references.bib" https://paperpile.com/eb/qxOGiPoDRL
-	rm vignettes/references.bib
+	rm -f vignettes/references.bib
   
 vignettes_src/references.bib:
 
@@ -50,10 +50,11 @@ test:
 
 
 
-vignettes/manuscript.qmd: vignettes/references.bib
+vignettes/manuscript.pdf: vignettes/references.bib
 	quarto render vignettes_src/manuscript/manuscript.qmd --output
 
-manuscript: vignettes_src/manuscript/manuscript.qmd
+manuscript: vignettes/manuscript.pdf
+
 
 
 site: vignettes manuscript
