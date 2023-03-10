@@ -1,5 +1,3 @@
-library(tidymodels)
-
 testthat::test_that("sigmoid_agonist_formula with a constant predictor", {
   formula <- BayesPharma::sigmoid_agonist_formula()
 
