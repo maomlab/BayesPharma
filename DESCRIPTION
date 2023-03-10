@@ -19,6 +19,7 @@ URL: https://api.github.com/repos/maomlab/BayesPharma/pages
 Depends:
     R (>= 4.0.0)
 Imports:
+    assertthat,
     brms,
     devtools,
     dplyr,
@@ -29,6 +30,7 @@ Imports:
     rlang,
     stats,
     tidyselect,
+    tidyr,
     viridis
 Collage:
     'calculate-log-dose.R',
