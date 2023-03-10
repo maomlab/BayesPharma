@@ -89,7 +89,7 @@ posterior_draws_plot <- function(
     facets_layer <- list(
       ggplot2::facet_wrap(
         facets = paste0("~", paste(predictor_names, collapse = "+")) |>
-          as.formula()))
+          stats::as.formula()))
   } else {
     facets_layer <- NULL
   }
