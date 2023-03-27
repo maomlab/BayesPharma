@@ -1,60 +1,41 @@
 
-# Introduction
-As pharmacology experiments increase in complexity, it becomes increasingly challenging to analyze them. While there are many frameworks for fitting common curves in pharmacology ranging from the user friendly GraphPad Prism, the \texttt{drc} dose response curves \texttt{R} package\ref{Ritz2015-dq}, to generic \texttt{nlm} packages, a principled approach is to use Bayesian statistics to quantify model uncertainty before and after collecting data. In practice this requires defining a functional form, a prior distribution over the model parameters, and likelihood function that models the data generation process. Then using Markov Chain Monte-Carlo (MCMC) or variational inference the prior and the likelihood are combined to generate samples from the posterior distribution over the parameters. 
+## Introduction {#introduction}
 
-Excitingly, there has been rapid progress in developing computational frameworks to facilitate developing and applying Bayesian models. A key example is the Stan ecosystem, which defines a model description language, inference engines, front-end interfaces to many common languages, and a suite of tools to analyze fit models ([@Carpenter2017-es, @Burkner2017-eu, @Vehtari2017-vr, @Gabry2017-ff, @Kay2018-cs, @Wickham2009-dl, @Wickham2019-zn, @Team2013-gf). To facilitate rapid application model development, the Bayesian Regression Modeling using Stan (BRMS) package in R implements a formula-based interface for Stan similar to \texttt{lme4}, that support defining linear and nonlinear predictors, hierarchical models, and a range of pre-specified or custom response functions. Once specified these models are translated into the Stan modeling language, where they are compiles and run.  
+As pharmacology experiments increase in complexity, it becomes increasingly challenging to analyze them. Although various frameworks exist for fitting curves in pharmacology, such as GraphPad \texttt{Prism}[@GraphPad_Software_LLC2023-ug] and the \texttt{drc} dose-response curves R package[@Ritz2015-dq], a principled approach is to use Bayesian statistics to quantify model uncertainty before and after data collection. In practice this requires defining a functional form, a prior distribution over the model parameters, and likelihood function that models the data generation process. Then using Markov Chain Monte-Carlo (MCMC) or variational inference the prior and the likelihood are combined to generate samples from the posterior distribution over the parameters. These samples can be used directly to answer scientific questions like "what is the parameter" and "how confident should we be?" 
 
-Here we describe the BayesPharma R package, a novel Bayesian pharmacology modeling framework building on the \texttt{Stan} and \texttt{BRMS}. After reviewing basic Bayesian modeling concepts in the context of dose-response experiments, we will describe the package architecture and demonstrate the utility through several case studies.
+There has substantial progress in computational frameworks to facilitate developing and applying Bayesian models. A key example is the \texttt{Stan} and the ecosystem of supporting tools. \texttt{Stan} provides a language to describe probabilistic models, inference engines, front-end interfaces to many common languages, and a suite of tools to analyze fit models[@Carpenter2017-es; @Burkner2017-eu; @Vehtari2017-vr; @Gabry2017-ff; @Kay2018-cs; @Wickham2009-dl; @Wickham2019-zn; @Team2013-gf]. To facilitate model development, the Bayesian Regression Modeling using Stan (BRMS) package in R implements a formula-based interface for \texttt{Stan} similar to \texttt{lme4}[@Bates2015-dg]. BRMS supports defining linear and nonlinear predictors, hierarchical models, and a range of pre-specified or custom response functions. Once specified these models are translated into the \texttt{Stan} modeling language, where they are compiled, run, and then can be analyzed.
 
-# Related work {#related}
+In pharmacology, dose-response modeling including fitting the sigmoidal Hill-equation, Michaelis Menten enzyme kinetics, and multi-drug synergy are widely used to probe biological systems and develop therapeutics. A limitation of the current tools is that it is currently not straightforward for practitioners to implement and analyze these types of models using Bayesian statistics. To fill this gap, here we describe the \texttt{BayesPharma} R package, a novel Bayesian pharmacology modeling framework building on the \texttt{Stan} and \texttt{BRMS}. After reviewing basic Bayesian modeling concepts in the context of dose-response experiments, we describe the package architecture and demonstrate the utility through several case studies.
 
-Dimensions of evaluation
-  - Methodology
-  - Features / functionality
-  - Generality
-  - Usability
+### Related work {#related}
 
-Methods
+For general Bayesian modeling theory, there are many excellent textbooks[@Gelman2013-ce; @McElreath2016-zj; @Gelman2006-xa; @Johnson2022-rd], online resources[@Betancourt2023-hn; @Posit_Software_PBC2023-it; @Herbert_Lee2023-fc], and prescriptive guidance[@Depaoli2017-ga; @Kruschke2021-pp; @Gelman2020-ab]. While in theory Bayesian modeling relies on relatively straightforward statistical principles discussed in the following section. In practice it is challenging to fit models analytically. So, to conduct Bayesian modeling in practice, it is useful to build on a computational framework that supports model specification, working with probability distributions and samples, and implements algorithms to conduct simulation and variational based inference. Frameworks differ by the language ecosystem they build on, how tightly the components are coupled, and the maturity of the framework including support for diverse models and analyses and practitioner support including documentation and usage guides. Both the \texttt{Stan} framework, on which the \texttt{BayesPharma} package is built, and the \texttt{JAGS} framework, implemented in C++ and an R front end with a domain language and inference engine[@Plummer2003-ap], grew out of the BUGS model specification language; PyMC, implemented in C++ and python with probabilistic programming API and a range of modules for Bayesian inference[@Salvatier2016-sf]; Pyro, implemented in Python, Pytoch[@Paszke2019-tt] and JAX[@James_Bradbury2018-rj] and wraps arbitrary python code as a probabilistic model, and an emphasis on deep-learning based variational inference; and Turing, implemented in Julia leveraging the expressive type system to and support specifying probabilistic models and performing inference[@Bezanson2017-ui]. Broadly the increase in maturity in Bayesian modeling frameworks is making Bayesian modeling more accessible to practitioners, where it has seen a steady increase in popularity across the social sciences, econometrics, and biostatistics. 
 
+Over the past three decades, Bayesian methods have become increasingly common in clinical pharmacology[@Ashby2006-yg; @Grieve2007-rc; @Campbell2017-zw; @Yang2019-kj; @Lakshminarayanan2019-fw; @Cooner2019-zi; @Lesaffre2020-hv; @Faya2021-kp; @Ruberg2023-os]. For example, the first approved COVID-19 Pfizer/Biontech used a Bayesian clinical trial design [@Polack2020-cb; @Senn2022-nn]. While there has been some application of Bayesian modeling for the analysis of high-throughput screening [@Wei2013-iu; @Lock2015-ms; @Shterev2021-qh; @Ma2021-yd; @Tansey2021-fn], and dose response modeling [@Smith2006-ou; @Johnstone2017-ow; @Labelle2019-jg; @Gould2019-ni; @Arezooji2020-ww; @Semenova2021-lv], the models tend to be bespoke and emphasize complexity. In contrast here we aim to lower the barrier of entry while maintaining the flexibility.
 
+## Bayesian Modeling Workflow {#workflow}
+Bayesian statistics is a principled strategy to fit models to data. The key idea is that before seeing the data, the researcher defines a prior distribution over possible models indexed by model parameters, then the prior is combined with the data through Bayes theorem to produce the posterior distribution. Bayes theorem can be derived from factoring the joint probability distribution over parameters and data, $P(\theta, D)$ into conditional probability distributions two different ways, $P(\theta | D)P(D)$, and $P(D | \theta)P(\theta)$. Setting them equal to each other and dividing through by the evidence, $P(D)$, gives:
 
-
-
-# Bayesian Modeling Workflow {#workflow}
-Bayesian statistics is principled strategy to fit models to data. The key idea is that before seeing the data, the researcher defines a prior distribution over possible models indexed by model parameters, then the prior is combined with the data through Bayes theorem to produce the posterior distribution. Bayes theorem can be derived from factoring the joint probability distribution over parameters and data, $P(\theta, D)$ into conditional probability distributions two different ways, $P(\theta | D)P(D)$, and $P(D | \theta)P(\theta)$. Setting them equal to each other and dividing through by the evidence, $P(D)$, gives:
-$$
-\begin{align}
-    P(\theta | D) &= \frac{P(D | \theta)\cdot P(\theta)}{P(D)}\\
+\begin{align*}
+    P(\theta | D) &= \frac{P(D | \theta)\cdot P(\theta)}{P(D)} \\
     \mbox{POSTERIOR} &= \frac{\mbox{LIKELIHOOD}\cdot\mbox{PRIOR}}{\mbox{EVIDENCE}}
-\end{align}
+\end{align*}
+
+Inspecting this equation, we see that while the prior and likelihood distributions are explicitly defined in the model, the evidence must be estimated. One way to estimate it is through marginalization, which involves integrating the likelihood over the entire prior, and is typically intractable to compute explicitly. One way to conceptualize the evidence is simply as the (unique) constant that allows the posterior to be properly normalized and integrate to one. While a range of techniques have been developed to estimate the evidence, two important techniques that sidesteps the issues are Markov Chain Monte Carlo (MCMC) and variational inference. For MCMC, the key idea is to note that the relative posterior probability of two different parameters $P(\theta_1 | D)$ vs. $P(\theta_2 | D)$ reduces to the computing the likelihood ratios $P(D | \theta_1) / P(D | \theta_2)$ as the prior and the evidence cancel out. Thus, by taking small steps in the parameter space and repeatedly evaluating likelihood ratios, it is possible to (in the long run) sample points from the posterior probability distribution. Intuitively, this is akin to running dynamical simulations using the posterior as the Boltzmann distribution. For variational inference, the key idea is to re-write Bayes formula and optimize a parametric function to estimate a lower-bound for the evidence[@Blei2017-xl]. Both of these techniques benefit from knowing the gradient of the likelihood with respect to the parameters, as this allows defining something akin to momentum when taking random steps in parameter for MCMC[@Hoffman2014-pd] and using gradient descent optimization for variational inference[@Kucukelbir2015-wv]. Fortunately, gradients can be computed automatically for function composition by using the chain-rule[@Carpenter2015-jd] and is used in deep-learning packages in what is called back-propagation.
+
+When using non-standard statistical analysis (such as Bayesian analysis) in fields that are dominated by frequentist statistics (such as Pharmacology), the analysis methods get more scrutiny because they may be unfamiliar to the readers. So, it may be useful to be able to conceptually describe how they compare/contrast with a frequentist analysis, if for no other reason to keep skeptics at bay. So in case, it is useful, here is how I philosophically conceptualize Bayesian analysis relative to frequentist analysis: The scientific method can be conceptualized through building and analyzing models. Consider we are interested in interacting with a complex system such as a rocket ship, ecosystem, person with an illness etc., but we are cautious because doing so may be dangerous, expensive, slow, or unethical. Therefore we may develop a tractable model system to interact with instead (such as a very small rocket ship, zebrafish, or molecular simulation, etc.). If the model system corresponds with the system of interest in relevant ways, then poking and prodding the model system can be use to anticipate how the system of interest will respond when it is in turn poked and prodded. A key step in establishing this correspondence is to collect a small amount of data from the system of interest and use it to design the model system to be representative.
+
+When scientific model systems are constructed by composing conditional probability distributions, they are often called Bayesian models. This is because the key step of going from a nebulous set of possible models to more precise set of models based on observed data uses the celebrated Bayes theorem. While basic Bayesian theory is covered in range of introductory and advanced textbooks. To complement those totally reasonable expositions, here we will give correct, but informal derivation of Bayesian probability, to helpfully build intuition and facilitate communication with practitioners. Let $\theta \in \Theta$ be a vector of model parameters and let $\mbox{D} \in \mathbb{D}$ observed data. For concreteness, you can think of $\theta = \left(\mbox{Top}, \mbox{Bottom}, \mbox{IC}_{\mbox{50}}, \mbox{Slope}\right)$ as the parameters for specific sigmoid function, and $\mbox{D}=\{(\mbox{dose}_i, \mbox{response}_i)_{i\in N}\}$, a set of dose-response measurements. A probability distribution naturally models an event or an occurrence. The event is sometimes called a random variable. Given a region, the chance that the event happens in that region is the probability density over it. Assuming the event definitely happens, then the total density must integrate to unity. A joint distribution over two random variables is just the probability that both events occur. A conditional probability distribution can be thought of as a stochastic function, where evaluation corresponds to setting the values to be conditioned and obtaining the remaining values. Concretely if you have a scatter plot, you could sample points by first sampling along the x-axis and within the narrow range of the chosen x-value, pick a y-value. Or visa versa, first sample along the y-axis and then within the narrow range of the chose y-value, pick the x-value. Then the joint probability distribution over parameters and data, $P(\theta, D)$ can be written as conditional probability distributions two different ways, $P(\theta | D)P(D)$, and $P(D | \theta)P(\theta)$. Setting them equal to each other and dividing through by $P(D)$ gives Bayes Theorem:
 $$
-While the prior and likelihood distributions are explicitly defined in the model, the evidence is only implicitly defined by integrating the likelihood over the entire prior, and is typically intractable to compute explicitly. One way to conceptualize the evidence is simply as the (unique) constant that allows the posterior to be properly normalized and integrate to one. While range of techniques have been developed to estimate the evidence, an important technique that sidesteps the issues is to note that the relative posterior probability of two different parameters $P(\theta_1 | D)$ vs. $P(\theta_2 | D)$ reduces to the computing the likelihood ratios $P(D | \theta_1) / P(D | \theta_2)$ as the prior and the evidence cancel out. By taking small steps in the parameter space and repeatedly evaluating the relative posterior probability it is possible to (in the long run) sample points from the posterior probability distribution. Intuitively, this is akin to running dynamical simulations using the posterior as the Boltzmann distribution.       
-
-
-The challenge in estimating the evidence is akin to estimating the partition function in the Boltzmann distribution from statistical mechanics. Another 
-
-
-is In general it is not possible to solve for the posterior distribution analytically.
-
-Alternatively, one can draw samples from the posterior using Markov chain Monte Carlo. 
-
-Stan provides a programming language and inference engine to define 
-
-, draw samples samples from the
-
-The scientific method can be conceptualized through building and analyzing models. Consider we are interested in interacting with a complex system such as an rocket ship, ecosystem, person with an illness etc., but we are cautious because doing so may be dangerous, expensive, slow, or unethical. Therefore we may develop a tractable model system to interact with instead (such as a very small rocket ship, zebrafish, or molecular simulation, etc.). If the model system corresponds with to the system of interest in relevant ways, then poking and prodding the model system can be use to anticipate how the system of interest will respond when it is in turn poked and prodded. A key step in establishing this correspondence is to collect a small amount of data from the system of interest and use it design the model system to be representative.
-
-When scientific model systems are constructed by composing conditional probability distributions, they are often called Bayesian models. This is because the key step of going from a nebulous set of possible models to more precise set of models based on observed data uses the celebrated Bayes theorem. While basic Bayesian theory is covered in range of introductory and advanced textbooks. To complement those totally reasonable expositions, here we will give correct, but informal derivation of Bayesian probability, to helpfully build intuition and facilitate communication with practitioners. Let $\theta \in \Theta$ be a vector of model parameters and let $\mbox{D} \in \mathbb{D}$ observed data. For concreteness, you can think of $\theta = \left(\mbox{Top}, \mbox{Bottom}, \mbox{IC}_{\mbox{50}}, \mbox{Slope}\right)$ as the parameters for specific sigmoid function, and $\mbox{D}=\{(\mbox{dose}_i, \mbox{response}_i)_{i\in N}\}$, a set of dose-response measurements. A probability distribution naturally models an event or an occurrence. The event is sometimes called a random variable.  Given a region, the chance that the event happens in that region is the probability density over it. Assuming the event definitely happens, then the total density must integrate to unity. A joint distribution over two random variables is just the probability that both events occur.  A conditional probability distribution can be thought of as a stochastic function, where evaluation corresponds to setting the values to be conditioned and obtaining the remaining values. Concretely if you have a scatter plot, you could sample points by first sampling along the x-axis and within the narrow range of the chosen x-value, pick a y-value. Or visa versa, first sample along the y-axis and then within the narrow range of the chose y-value, pick the x-value. Then the joint probability distribution over parameters and data, $P(\theta, D)$ can be written as conditional probability distributions two different ways, $P(\theta | D)P(D)$, and $P(D | \theta)P(\theta)$. Setting them equal to each other and dividing through by $P(D)$ gives Bayes Theorem:
+  P(\theta | D) = \frac{P(D | \theta)P(\theta)}{P(D)}.
 $$
-    P(\theta | D) = \frac{P(D | \theta)P(\theta)}{P(D)}.
-$$
-With that in mind, lets look at each term in the is equation. The easiest is the $P(\theta)$, this called the prior must be specified before hand. We'll come back to how to chose priors below. The term $P(D | \theta)$ is called the likelihood, and can thought of as the data generation process, the "model system" if you will. On the left is the $P(\theta | D)$, which is called the posterior. This is a little trickier to understand, but thinking of it as a stochastic function, we can at least inspect the signature: it takes in data, and produces random samples of parameters. Finally the $P(D)$ is called the evidence, and is basically there to make the left and the right be equal to each other. As we'll see below, we don't actually need to evaluate it, but if did we could use a trick called marginalization.
+With that in mind, let's look at each term in the equation. The easiest is the $P(\theta)$, this called the prior must be specified beforehand. We'll come back to how to choose priors below. The term $P(D | \theta)$ is called the likelihood, and can be thought of as the data generation process, the "model system" if you will. On the left is the $P(\theta | D)$, which is called the posterior. This is a little trickier to understand, but thinking of it as a stochastic function, we can at least inspect the signature: it takes in data, and produces random samples of parameters. Finally the $P(D)$ is called the evidence, and is basically there to make the left and the right be equal to each other. As we'll see below, we don't actually need to evaluate it, but if we did we could use a trick called marginalization.
 
-How do we sample parameter values from the posterior distribution? One way to conceptualize problem is to use Boltzmann's equation to convert the probability distribution to an energy function and temperature. Then to sample, begin at a location in parameter space and simulate the kinematic trajectory as it would move through the parameter space over time. Given enough time, if the parameter can access all parts of the probability distribution, the parameter will equilibrate and give sample from the probability distribution. While this is guaranteed to happen eventually, in practice a common concern is that for any fixed amount of equilibration, it is unclear if there has been sufficient mixing. We'll come back to strategies to detect and handle issues with mixing below. A basic kinematic sampling algorithm called Markov Chain Monte Carlo (MCMC) says to take a step, and if it has lower energy, accept, if it has higher energy accept with a probability proportional to the difference in probabilities between the two states and the simulation temperature. A key insight is that because only relative probabilities are needed, the global evidence normalization factors cancel and therefore they don't even need to be computed. More sophisticated algorithms take into account the not only the specific energy values but also the energy gradient. Thinking of the object as having inertia, the sampling allows it to overcome certain types of local minima. to take steps that are likely to be accepted, sometimes called Hamiltonian Monte Carlo. A particularly annoying pat of HMC is that in some cases, such as a narrow ravine in the energy landscape, the trajectory will vibrate back and forth without making much forward progress. A clever heuristic that is used by the Stan, called No U-turn sampling (NUTs), tries to dampen these types of unproductive moves.     
+How do we sample parameter values from the posterior distribution? One way to conceptualize the problem is to use Boltzmann's equation to convert the probability distribution to an energy function and temperature. Then to sample, begin at a location in parameter space and simulate the kinematic trajectory as it would move through the parameter space over time. Given enough time, if the parameter can access all parts of the probability distribution, the parameter will equilibrate and give a sample from the probability distribution. While this is guaranteed to happen eventually, in practice a common concern is that for any fixed amount of equilibration, it is unclear if there has been sufficient mixing. We'll come back to strategies to detect and handle issues with mixing below. A basic kinematic sampling algorithm called Markov Chain Monte Carlo (MCMC) says to take a step, and if it has lower energy, accept, if it has higher energy accept with a probability proportional to the difference in probabilities between the two states and the simulation temperature. A key insight is that because only relative probabilities are needed, the global evidence normalization factors cancel and therefore they don't even need to be computed. More sophisticated algorithms take into account not only the specific energy values but also the energy gradient. Thinking of the object as having inertia, the sampling allows it to overcome certain types of local minima. to take steps that are likely to be accepted, sometimes called Hamiltonian Monte Carlo. A particularly annoying part of MCMC is that in some cases, such as a narrow ravine in the energy landscape, the trajectory will vibrate back and forth without making much forward progress. A clever heuristic that is used by \texttt{Stan}, called No U-turn sampling (NUTs), tries to dampen these types of unproductive moves.
 
 The principled Bayesian workflow [@Gelman2020-ab, @Van_de_Schoot2020-er], describes a general protocol building robust Bayesian models and using them to draw inferences. The main steps involve
 \begin{enumerate}
-\item Define and fit a probabilistic model, which combines a *prior* distribution over a set of parameters with the data to draw samples from *posterior* distribution over the parameters using Hamiltonian Markov Chain Monte Carlo.
+\item Define and fit a probabilistic model, which combines a \emph{prior} distribution over a set of parameters with the data to draw samples from \emph{posterior} distribution over the parameters using Hamiltonian Markov Chain Monte Carlo.
 \item Check for sampling convergence.
 \item Use prior and posterior predictive checks to evaluate the model specification and fit.
 \item Use cross validation to evaluate the generalizability of the model.
@@ -64,23 +45,160 @@ The principled Bayesian workflow [@Gelman2020-ab, @Van_de_Schoot2020-er], descri
 
 
 
-# BayesPharma package design {#package_design}
-We designed the BayesPharma package to support modeling of foundational pharmacology models using the principle Bayesian workflow. As described above, the workflow involves four phases: model specification, model fitting, model evaluation, and interpretation. Here we will describe the BayesPharma API and how we recommend using it. 
+### \texttt{BayesPharma} package design {#package_design}
+We designed the \texttt{BayesPharma} package to support modeling of foundational pharmacology models using the principle Bayesian workflow. As described above, the workflow involves four phases: model specification, model fitting, model evaluation, and interpretation. Here we will describe the \texttt{BayesPharma} API and how we recommend using it. 
 
-To provide data to the BayesPharma package, the user provides R \texttt{data.frame} with columns for the response, treatments, and optionally additional covariates such as \texttt{drug\_id} or \texttt{batch\_id}. This is passed to the model function optionally including arguments to customize the formula, prior, initial values, and other arguments to control the model fitting. The BayesPharma package then passes the user input to \texttt{brms::brm()} along with custom stan code specific for the selected model. Once the model is fit, the resulting \texttt{brms::brmsfit} object is returned to the user and can be used for analysis. To illustrate
+To provide data to the \texttt{BayesPharma} package, the user provides R \texttt{data.frame} with columns for the response, treatments, and optionally additional covariates such as \texttt{drug\_id} or \texttt{batch\_id}. This is passed to the model function optionally including arguments to customize the formula, prior, initial values, and other arguments to control the model fitting. The \texttt{BayesPharma} package then passes the user input to \texttt{brms::brm()} along with custom \texttt{stan} code specific for the selected model. Once the model is fit, the resulting \texttt{brms::brmsfit} object is returned to the user and can be used for analysis. To illustrate
+
+
+#### Model specification {#model_specification}
+
+Here we will describe the components that are needed to specify the model.
+
+**Formula**: The goal of the formula is to describe how the data is generated conditional on the model parameters. Syntactically, \texttt{BayesPharma} model formulas build a \texttt{brms::brmsformula}, which is similar to the formula specification syntax in base R and other R regression modeling packages. A \texttt{brms::brmsformula} consists of an equation that declares how the response on the left side is sampled from a parameterized distribution on the right side. For the default linear formulas the right side specifies mean response with a linear combination of covariates added together with implicitly defined model parameters. For example, the formula
+
+$$
+  \mbox{response} \sim 1 + \mbox{drug\_id}
+$$ 
+says that \texttt{response} is sampled from a distribution with mean $\beta_0 \cdot 1 + \beta_1 \cdot \mbox{drug\_id}_1 + \beta_2 \cdot \mbox{drug\_id}_2 + \dots \beta_n \cdot \mbox{drug\_id}_n$ where $\beta_i$ are scalar parameters and $\mbox{drug\_id}_i$ is an indicator variable for drug $i$. By default the sampling distribution is a Gaussian, but other distributions can be specified from the distribution family with a link function using \texttt{family} argument. For example, to model count data, which is strictly positive, setting \texttt{family=brms::poissson()}. To model more general sampling equations, \texttt{brms::formula} can be specified as non-linear by setting \texttt{nl=TRUE}, and all model parmaeters must be explicitly defined. Building on this framework, the \texttt{brms} package supports a wide range types of regression models including, hierarchical models or random effects models and observational models that handle for example missing data or measurement error, which are described in detail in \cite{Burkner2017-eu}. The \texttt{BayesPharma} package extends the \texttt{brms} formula syntax by defining \texttt{Stan} functions for each model type, such as the sigmoid function to model Hill-equation dose response models. For each model functions are provided to help build the formula, for example
 
 \scriptsize
-```{r bayespharma-demo}
+```{r demo-formula}
 #| echo = TRUE
-BayesPharma::sigmoid_agonist_model(
-  data = tibble::tibble(
-    log_dose = seq(-7, -5, length.out = 30),
-    mean_response = BayesPharma::sigmoid(
-      ac50 = -6, hill = 1, top = 1, bottom = 0, log_dose = log_dose),
-    response = stats::rnorm(n = 30, mean = mean_response, sd = 0.2)))
+
+# This formula...
+demo_formula <- BayesPharma::sigmoid_agonist_formula(
+  predictors = 1 + drug_id)
+
+# will generate the equivalent formula as this
+demo_formula_alt <- brms::brmsformula(
+  response ~ sigmoid(ec50, hill, top, bottom, log_dose),
+  nl = TRUE,
+  family = brms::student()) +
+  brms::lf(ec50 ~ 1 + drug_id) + 
+  brms::lf(hill ~ 1 + drug_id) +
+  brms::lf(top ~ 1 + drug_id) +
+  brms::lf(bottom ~ 1 + drug_id)
 ```
 \normalsize
 
+\textbf{\underline{Data}}: The data to be passed to the model should be in an R \texttt{data.frame} and organized into a "tidy" format. This means that each observation is in a single row and there there are columns for the \texttt{response}, and model specific covariates such as \texttt{log\_dose} for the sigmoid model, and additional experimental covariates that can be used as predictors. See table XXX for the required columns (Treatments and Response) for each of the implemented model types:
+
+To get data in to a tidy form, it is possible to use the range of tools from the R tidyverse libraries including \texttt{dplyr}, which can \texttt{filter} subsets of rows, \texttt{select} subsets of columns, compute new columns rowwise with \texttt{mutate} or perform split-apply-combine to operate over subsets of rows, and data in different \texttt{data.frame} objects can be merged using SQL-like joins like \texttt{left\_join}. If data is organized e.g. in plate-layout with multiple observations per-row, the \texttt{tidyr} package has \texttt{pivot\_longer} and \texttt{pivot\_wider} which can be used to transform the shape of \texttt{data.frame} objects. When observation measurements and covariates come in in non-standard format, string manipulation is possible through the \texttt{stringr} package. Finally, for exploratory visualization, the \texttt{ggplots2} package implements the grammar-of-graphics workflow for mapping data in a tidy format to aesthetic attributes of geometric objects in the plot such as the coordinates of points or lines. For a good introduction to data manipulation using the tidyverse, the R for Data Science (2e) book and website (https://r4ds.hadley.nz/) are quite good. Through each of the vigenttes below we will make use of the tidyverse data manipulation.
+
+\scriptsize
+```{r demo-data}
+#| echo = TRUE
+demo_data <- tibble::tibble(
+  drug_id = c("C1", "C2", "C3"),
+  ac50 = c(-8, -7, -6)) |>
+  dplyr::cross_join(
+    tidyr::expand_grid(
+      log_dose = seq(-7, -5, length.out = 10),
+      replica = c(1,2,3))) |>
+  dplyr::mutate(
+    mean_response = BayesPharma::sigmoid(
+      ac50 = ac50,
+      hill = 1,
+      top = 1,
+      bottom = 0,
+      log_dose = log_dose),
+    response = c(
+      stats::rnorm(
+        n = dplyr::n(),
+        mean = ac50,
+        sd = ifelse(replica == 1, .2, .8))))
+      
+```
+\normalsize
+
+\textbf{\underline{Prior}}: A key principle of Bayesian models is that they require specifying priors. For newcomers, understanding how determine how they should be specified and justified tends to be one of the more challenging parts of the modeling process. From a practical perspective priors can be thought of as just defining a weighted region of parameter space over which to optimize the model to best fit the data. In particular the more compact and closely aligned the priors are with the data, the easier it is for the model to fit the data. So for setting up and getting started with a new model fit, it is best to give as strong (more constrained) of priors as possible. From a scientific perspective priors and posterior distributions can be interpreted as capturing the uncertainty in parameters before and after observing the data. So, from this perspective, weaker (less constrained) priors are preferred in order to "let the data speak for itself".  Ultimately however, in Bayesian modeling it is not possible to completely remove the bias due to the prior. This means that in a complete Bayesian analysis some substantive argument should be made that the inferences from the model are not sensitive to reasonable choices of the prior. In a way this actually makes choosing the prior less stressful there is no singular best prior choice, and instead reflect the scientific questions of the modeling process. For a deeper discussion and practical advice on selecting priors, see (https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations) and the references therein.
+  To facilitate specifying priors for each of the \texttt{BayesPharma} models, the \texttt{BayesPharma} package implements helper functions, for example
+  
+\scriptsize
+```{r demo-prior}
+#| echo = TRUE
+
+# This formula
+demo_prior <- BayesPharma::sigmoid_agonist_prior()
+
+# will generate the equivalent formula as this
+demo_prior_alt <- c(
+  brms::prior(prior = normal(-6, 2.5), nlpar = "ec50"),
+  brms::prior(prior = normal(1, 1), nlpar = "hill", lb = 0.01),
+  brms::prior(prior = normal(1, 0.5), nlpar = "top"),
+  brms::prior(prior = normal(0, 0.5), nlpar = "bottom"))
+```
+\normalsize
+The \texttt{brms::prior} function takes in \texttt{Stan} code--in the above case the normal function is defined here (https://mc-stan.org/docs/2_20/functions-reference/normal-distribution.html), the variable name, and optional arguments such as the upper or lower bounds. For each \texttt{BayesPharma} prior helper function, individual priors can either be explicitly given to override the defaults, or specified as numeric constants to fix them to a particular value.
+
+\textbf{\underline{Init}}: To estimate the posterior distribution using markov chain Monte Carlo sampling, initial parameters values must be given. From these initial parameters, the parameters are simulated in multiple independent chains in such a way that they converge to a sample from the posterior distribution. The initial parameter values should be in a feasible region of parameter space to get the simulation to rapidly mix.
+  For each model, the \texttt{BayesPharma} package provides default initialization values. Typically if a different prior is given then the initial values can be adjusted along with the updated prior.
+
+\scriptsize
+```{r demo-init}
+#| echo = TRUE
+
+# This formula
+demo_init <- BayesPharma::sigmoid_agonist_init()
+
+# will generate the equivalent initial values as this
+demo_init_alt <- function() {
+  list(
+    b_ec50 = function(){as.array(-6)},
+    b_hill = function(){as.array(1)},
+    b_top = function(){as.array(1)},
+    b_bottom = function(){as.array(0)})
+}
+```
+\normalsize
+
+To summarize the model
+
+|Name   |Type           |Treatments                |Parameters                            |Response|
+|-------|---------------|--------------------------|--------------------------------------|---------
+|Sigmoid|one treatment  |log_dose                  |top, bottom, AC50, hill               |response|
+|MuSyC  |two treatments |logd1, logd2              |logE[0-3], logC[1,2], h[1,2], logalpha|response|
+|tQ     |enzyme kinetics|series_index, time, ET, ST|Kcat, kM                              |P       |
+
+
+
+#### Model fitting {#model_fitting}
+Once the components of the model have been specified, to fit it, each model type provides a function to integrate the formula, data, prior, init and additional arguments to build and fit the model. 
+
+\scriptsize
+```{r demo-fit-demo}
+#| echo = TRUE,
+#| message=FALSE,
+#| results='hide',
+#| dependson=c("demo-formula", "demo-data", "demo-prior", "demo-init")
+
+# This model ...
+demo_model <- BayesPharma::sigmoid_agonist_model(
+  formula = demo_formula,
+  data = demo_data)
+
+# is equivalent to:
+demo_model_alt <- brms::brm(
+  formula = demo_formula,
+  data = demo_data,
+  prior = demo_prior,
+  init = demo_init,
+  control = list(adapt_delta = 0.99),
+  iter = 8000,
+  stanvars = BayesPharma::sigmoid_stanvar)
+brms::expose_functions(demo_model_alt, vectorize = TRUE)
+demo_model_alt$model_type <- "sigmoid_agonist"
+```
+\normalsize
+
+#### Model Evaluation {#model_evaluation}
+
+\textbf{\underline{Model Evaluation}}: To evaluate the model fit involves evaluating the quality of the parameter estimation. 
+
+\textbf{\underline{Convergence}}: \texttt{Stan} uses Hamiltonian Markov Chain Monte Carlo simulations to sample from the posterior. While simulations are guaranteed to converge to the posterior eventually, for any finite sample, there is a risk that the samples may be biased by the initial values. To assess convergence, a key strategy is to run multiple chains and compare the within chain against the between chain variation in parameter estimates. If the chains have not converged then the inter-chain variation will be high. To quantify [@Gelman1992-qk] define $\hat{R}$, 
+
+To mitigate this bias, there are two key strategies, first simulate independent chains and measure the intra- vs inter-chain correlation.
 
 
 data                model diagnostics
@@ -91,12 +209,6 @@ init                  - prior / posterior densities
                     Model inference
                       - hypothesis testing
                       - model comparison
-
-|Name   |Type           |Treatments                |Parameters                            |Response|
-|-------|---------------|--------------------------|--------------------------------------|---------
-|Sigmoid|one treatment  |log_dose                  |top, bottom, AC50, hill               |response|
-|MuSyC  |two treatments |logd1, logd2              |logE[0-3], logC[1,2], h[1,2], logalpha|response|
-|tQ     |enzyme kinetics|series_index, time, ET, ST|Kcat, kM                              |P       |
 
 
 model implementation
@@ -109,7 +221,7 @@ model implementation
 
 
 
-## Model selection {#model_selection}
+#### Model selection {#model_selection}
 
 (Vehtari, 2016, https://arxiv.org/abs/1507.04544)
 predictive accuracy
