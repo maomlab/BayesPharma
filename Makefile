@@ -11,6 +11,7 @@ clean:
 	rm -rf vignettes/cache
 	rm -rf vignettes/*_files
 	rm -rf vignettes/references.bib
+	rm -rf vignettes/manuscript.pdf
 
 deps:
 	Rscript -e "devtools::install_dev_deps()"
@@ -21,8 +22,6 @@ update_references:
 # https://paperpile.com/h/automatic-bibtex-export/
 	curl -R -o "vignettes_src/references.bib" -z "vignettes_src/references.bib" https://paperpile.com/eb/qxOGiPoDRL
 	rm -f vignettes/references.bib
-  
-vignettes_src/references.bib:
 
 vignettes/references.bib: vignettes_src/references.bib
 	cp vignettes_src/references.bib vignettes/
@@ -48,14 +47,11 @@ test:
 	Rscript -e "covr::covr()"
 	Rscript -e "lintr::lint_package()"
 
-
-
 vignettes/manuscript.pdf: vignettes/references.bib
-	quarto render vignettes_src/manuscript/manuscript.qmd --output
+	quarto render vignettes_src/manuscript/manuscript.qmd
+	mv vignettes_src/manuscript/manuscript.pdf vignettes/
 
 manuscript: vignettes/manuscript.pdf
-
-
 
 site: vignettes manuscript
 	Rscript -e "pkgdown::build_site()"
