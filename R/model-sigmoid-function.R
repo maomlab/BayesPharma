@@ -13,7 +13,7 @@
 #'     when log_dose = Inf
 #' @param log_dose numeric, where to evaluate the the response where
 #'     the log is base 10.
-#' @return numeric, response given the log_dose and parameters
+#' @returns numeric, response given the log_dose and parameters
 #'
 #' @examples
 #' \dontrun{

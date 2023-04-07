@@ -4,7 +4,7 @@
 #'     tQ model (Default 4)
 #' @param kM numeric initial value for the \code{kM} parameter in the
 #'     tQ model (default 4)
-#' @return input for \code{BayesPharma::model_tQ(init = ...)}
+#' @returns input for \code{BayesPharma::model_tQ(init = ...)}
 #'     parameter.
 #'
 #' @export

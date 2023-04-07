@@ -50,34 +50,47 @@ MuSyC_model <- function(
     expose_functions = TRUE,
     ...) {
 
-  if (!("response" %in% names(data))) {
+  if (!methods::is(formula, "bpformula")) {
     warning(
-      "There needs to be a column 'response' in the input 'data' data.frame\n")
+      "formula must be a 'bpformula'. You can use the ",
+      "'BayesPharma::MySYC_formula(...)' formula function.")
   }
-
-  if (!("logd1" %in% names(data))) {
-    warning(paste0(
-      "There needs to be a column 'logd1' in the input 'data' data.frame. ",
-      "This is the log dose of treatment 1.\n"))
+  
+  if (!(formula$bayes_pharma_info[["treatment_1_variable"]] %in% names(data))) {
+    warning(
+      paste0(
+        "There needs to be variable for treatment 1 '",
+        formula$bayes_pharma_info[["treatment_1_variable"]], "' ",
+        "as a column in the input 'data' data.frame\n"))
   }
+  
+  if (!(formula$bayes_pharma_info[["treatment_2_variable"]] %in% names(data))) {
+    warning(
+      paste0(
+        "There needs to be variable for treatment 2 '",
+        formula$bayes_pharma_info[["treatment_2_variable"]], "' ",
+        "as a column in the input 'data' data.frame\n"))
+  }  
 
-  if (!("logd2" %in% names(data))) {
-    warning(paste0(
-      "There needs to be a column 'logd2' in the input 'data' data.frame. ",
-      "This is the log dose of treatment 2.\n"))
-  }
-
+  if (!methods::is(prior, "brmsprior")) {
+    warning(
+      "prior must be a 'brmsprior'. You can use the ",
+      "'BayesPharma::MuSyC_prior(...)' function.")
+  }  
+  
   # To make the model more stable, the log dose values should be small.
   # So if not provided, add a scale the dose by the mean of the input.
-  # This strategy allows keeping the parameter estimates more intepretable
+  # This strategy allows keeping the parameter estimates more interpretable
   if (!("logd1scale" %in% names(data))) {
     data <- data |>
-      dplyr::mutate(logd1scale = mean(.data[["logd1"]]))
+      dplyr::mutate(logd1scale = mean(
+        .data[[ formula$bayes_pharma_info[["treatment_1_variable"]] ]]))
   }
 
   if (!("logd2scale" %in% names(data))) {
     data <- data |>
-      dplyr::mutate(logd2scale = mean(.data[["logd2"]]))
+      dplyr::mutate(logd1scale = mean(
+        .data[[ formula$bayes_pharma_info[["treatment_2_variable"]] ]]))
   }
 
   model <- brms::brm(
@@ -91,11 +104,15 @@ MuSyC_model <- function(
 
   model$bayes_pharma <- list(model_type = "MuSyC")
 
+  model$bayes_pharma_info <- c(
+    model$bayes_pharma_info,
+    formula_info = formula$bayes_pharam_info)
+  
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)
   }
 
   model
 
-
+  class(model) <- c("bpfit", class(model))
 }

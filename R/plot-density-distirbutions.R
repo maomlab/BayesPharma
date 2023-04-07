@@ -13,7 +13,7 @@
 #' @param labeller strip off the 'b_' and '_Intercept' from the parameter labels
 #' @param title_label string of the plot title. (Default = "Prior Density Plot")
 #'
-#' @return ggplot2::ggplot object.
+#' @returns ggplot2::ggplot object.
 #'
 #' @examples
 #'\dontrun{

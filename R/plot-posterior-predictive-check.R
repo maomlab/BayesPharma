@@ -19,7 +19,7 @@
 #' @param n numeric units of posterior draws to be used.
 #' @param ... additional arguments to \code{brms::pp_check}.
 #'
-#' @return ggplot object.
+#' @returns ggplot object.
 #'
 #' @examples
 #'\dontrun{

@@ -4,9 +4,32 @@
 \alias{MuSyC_formula}
 \title{Create a formula for the MuSyC synergy model}
 \usage{
-MuSyC_formula(predictors = 1, ...)
+MuSyC_formula(
+  treatment_1_variable = "logd1",
+  treatment_1_units = "Log[Molar]",
+  treatment_2_variable = "logd2",
+  treatment_2_units = "Log[Molar]",
+  response_variable = "response",
+  response_units = NULL,
+  predictors = 1,
+  ...
+)
 }
 \arguments{
+\item{treatment_1_variable}{character variable representing the treatment.
+(Default: 'logd1')}
+
+\item{treatment_1_units}{character the units of the treatment. The default is
+log base 10 of the molar concentration. (Default: "Log[Molar]")}
+
+\item{treatment_2_variable}{character variable representing the treatment.
+(Default: 'logd2')}
+
+\item{response_variable}{character variable representing the response to
+treatment. (Default: 'response')}
+
+\item{response_units}{character the units of the response. (Default: NULL)}
+
 \item{predictors}{Additional formula objects to specify predictors
 of non-linear parameters. i.e. what perturbations/experimental
 differences should be modeled separately? (Default: 1) should a

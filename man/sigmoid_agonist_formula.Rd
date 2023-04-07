@@ -2,21 +2,39 @@
 % Please edit documentation in R/model-sigmoid-formula.R
 \name{sigmoid_agonist_formula}
 \alias{sigmoid_agonist_formula}
-\title{Create an agonist sigmoid formula for the brms model}
+\title{Create an agonist sigmoid formula for the sigmoid  model}
 \usage{
-sigmoid_agonist_formula(predictors = 1, ...)
+sigmoid_agonist_formula(
+  treatment_variable = "log_dose",
+  treatment_units = "Log[Molar]",
+  response_variable = "response",
+  response_units = NULL,
+  predictors = 1,
+  ...
+)
 }
 \arguments{
-\item{predictors}{Additional formula objects to specify predictors
+\item{treatment_variable}{character variable representing the treatment.
+(Default: 'log_dose')}
+
+\item{treatment_units}{character the units of the treatment. The default is
+log base 10 of the molar concentration. (Default: "Log[Molar]")}
+
+\item{response_variable}{character variable representing the response to
+treatment. (Default: 'response')}
+
+\item{response_units}{character the units of the response. (Default: NULL)}
+
+\item{predictors}{character or expression of predictors
 of non-linear parameters. i.e. what perturbations/experimental
-differences should be modeled separately? (Default: 1) should a
-random effect be taken into consideration? i.e. cell number,
-plate number, etc.}
+differences should be modeled separately? (Default: 1)}
 
 \item{...}{additional arguments to \code{brms::brmsformula}}
 }
 \value{
-brmsformula
+a \code{bpformula}, which is a subclass of
+    \code{brms::brmsformula} and can be passed to
+    \code{BayesPharma::sigmoid_agoinst_model}.
 }
 \description{
 set-up a sigmoid dose response model formula to define
@@ -40,4 +58,9 @@ set-up a sigmoid dose response model formula to define
   BayesPharma::sigmoid_agonist_formula(predictors = 0 + (drug_id|plate_id))
 }
 
+}
+\seealso{
+[brms::brmsformula()], which this function wraps.
+    [BayesPharma::sigmiod_agonist_model()] into which the result of this
+    function can be passed.
 }

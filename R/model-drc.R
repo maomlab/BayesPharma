@@ -8,7 +8,7 @@
 #'     values.
 #' @param ... additional arguments passed to \code{drc::drm}
 #'
-#' @return An object of (S3) class 'drc'.
+#' @returns An object of (S3) class 'drc'.
 #'
 #' @export
 drc_model <- function(

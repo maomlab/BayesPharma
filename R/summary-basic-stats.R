@@ -17,7 +17,7 @@
 #'     = 0.025)
 #' @param u_ci \code{numeric} unit of the upper confidence interval (default
 #'     = 0.975)
-#' @return \code{tibble::tibble} object.
+#' @returns \code{tibble::tibble} object.
 #'
 #' @examples
 #'\dontrun{

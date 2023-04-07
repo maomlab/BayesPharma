@@ -1,18 +1,29 @@
-#' Create an agonist sigmoid formula for the brms model
+#' Create an agonist sigmoid formula for the sigmoid  model
 #'
 #' @description set-up a sigmoid dose response model formula to define
 #'     a non-linear model or multilevel non-linear model for
 #'     \code{ec50}, \code{hill}, \code{top}, and, \code{bottom} for
 #'     use in Bayesian_model and in the BRMS package.
 #'
-#' @param predictors Additional formula objects to specify predictors
+#' @param treatment_variable character variable representing the treatment.
+#'     (Default: 'log_dose')
+#' @param treatment_units character the units of the treatment. The default is
+#'     log base 10 of the molar concentration. (Default: "Log[Molar]")
+#' @param response_variable character variable representing the response to
+#'     treatment. (Default: 'response')
+#' @param response_units character the units of the response. (Default: NULL)
+#' @param predictors character or expression of predictors
 #'     of non-linear parameters. i.e. what perturbations/experimental
-#'     differences should be modeled separately? (Default: 1) should a
-#'     random effect be taken into consideration? i.e. cell number,
-#'     plate number, etc.
+#'     differences should be modeled separately? (Default: 1)
 #' @param ... additional arguments to \code{brms::brmsformula}
 #'
-#' @return brmsformula
+#' @returns a \code{bpformula}, which is a subclass of
+#'     \code{brms::brmsformula} and can be passed to
+#'     \code{BayesPharma::sigmoid_agoinst_model}.
+#' @seealso
+#'     [brms::brmsformula()], which this function wraps.
+#'     [BayesPharma::sigmiod_agonist_model()] into which the result of this
+#'     function can be passed.
 #'
 #' @examples
 #'\dontrun{
@@ -32,37 +43,65 @@
 #'
 #'@export
 sigmoid_agonist_formula <- function(
+    treatment_variable = "log_dose",
+    treatment_units = "Log[Molar]",
+    response_variable = "response",
+    response_units = NULL,
     predictors = 1,
     ...) {
-
+  # The sigmoid function is defined in BayesPharma::sigmoid_stanvar
+  response_eq <- as.formula(
+    paste0(
+      response_variable, " ~ ",
+      "sigmoid(ec50, hill, top, bottom, ", treatment_variable, ")"))
+  
   predictor_eq <- rlang::new_formula(
     lhs = quote(ec50 + hill + top + bottom),
     rhs = rlang::enexpr(predictors))
-
-  # The sigmoid function is defined in BayesPharma::sigmoid_stanvar
-  brms::brmsformula(
-    response ~ sigmoid(ec50, hill, top, bottom, log_dose),
+  
+  model_formula <- brms::brmsformula(
+    response_eq,
     predictor_eq,
     nl = TRUE,
     ...)
+  
+  model_formula$bayes_pharma_info <- list(
+    formula_type = "sigmoid_agonist",
+    treatment_variable = treatment_variable,
+    treatment_units = treatment_units,
+    response_variable = response_variable,
+    response_units = response_units)
+  
+  class(model_formula) <- c("bpformula", class(model_formula))
+  model_formula
 }
 
-#' Create an antagonist sigmoid formula for the brms model
+#' Create a formula for the sigmoid antagonist model
 #'
-#' @description set-up a sigmoid dose response model formula to define
-#'     a non-linear model or multilevel non-linear model for
+#' @description set-up an antagonist sigmoid dose response model formula to
+#'     define a non-linear model or multilevel non-linear model for
 #'     \code{ic50}, \code{hill}, \code{top}, and, \code{bottom} for
-#'     use in Bayesian_model and in the BRMS package.
+#'     use in the \code{sigmoid_antagonist_model()}
 #'
-#' @param predictors Additional formula objects to specify predictors
+#' @param treatment_variable character variable representing the treatment.
+#'     (Default: 'log_dose')
+#' @param treatment_units character the units of the treatment. The default is
+#'     log base 10 of the molar concentration. (Default: "Log[Molar]")
+#' @param response_variable character variable representing the response to
+#'     treatment. (Default: 'response')
+#' @param response_units character the units of the response. (Default: NULL)
+#' @param predictors character or expression of predictors
 #'     of non-linear parameters. i.e. what perturbations/experimental
-#'     differences should be modeled separately? (Default: 1) should a
-#'     random effect be taken into consideration? i.e. cell number,
-#'     plate number, etc.
+#'     differences should be modeled separately? (Default: 1)
 #' @param ... additional arguments to \code{brms::brmsformula}
 #'
-#' @return brmsformula
-#'
+#' @returns a \code{bpformula}, which is a subclass of
+#'     \code{brms::brmsformula} and can be passed to
+#'     \code{BayesPharma::sigmoid_antagonist_model}.
+#' @seealso
+#'     [brms::brmsformula()], which this function wraps.
+#'     [BayesPharma::sigmiod_antagonist_model()] into which the result of this
+#'     function can be passed.
 #' @examples
 #'\dontrun{
 #'   # Data has a string column drug_id with drug identifiers
@@ -82,17 +121,36 @@ sigmoid_agonist_formula <- function(
 #'
 #'@export
 sigmoid_antagonist_formula <- function(
+    treatment_variable = "log_dose",
+    treatment_units = "Log[Molar]",
+    response_variable = "response",
+    response_units = NULL,
     predictors = 1,
     ...) {
+
+  # The sigmoid function is defined in BayesPharma::sigmoid_stanvar
+  response_eq <- as.formula(
+    paste0(
+      response_variable, " ~ ",
+      "sigmoid(ic50, hill, top, bottom, ", treatment_variable, ")"))
 
   predictor_eq <- rlang::new_formula(
     lhs = quote(ic50 + hill + top + bottom),
     rhs = rlang::enexpr(predictors))
 
-  # The sigmoid function is defined in BayesPharma::sigmoid_stanvar
-  brms::brmsformula(
-    response ~ sigmoid(ic50, hill, top, bottom, log_dose),
+  model_formula <- brms::brmsformula(
+    response_eq,
     predictor_eq,
     nl = TRUE,
     ...)
+
+  model_formula$bayes_pharma_info <- list(
+    formula_type = "sigmoid_agonist",
+    treatment_variable = treatment_variable,
+    treatment_units = treatment_units,
+    response_variable = response_variable,
+    response_units = response_units)
+  
+  class(model_formula) <- c("bpformula", class(model_formula))
+  model_formula
 }

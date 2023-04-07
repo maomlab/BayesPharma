@@ -32,7 +32,7 @@
 #' @param logalpha \code{numeric} or function returning array of
 #'     length 1. Initial value for the \code{logalpha}
 #'     parameter. Default: \code{0 = log(1)}
-#' @return input for \code{BayesPharma::model_MuSyC(init = ...)}
+#' @returns input for \code{BayesPharma::model_MuSyC(init = ...)}
 #'     parameter.
 #'
 #' @examples

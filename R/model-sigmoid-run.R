@@ -29,7 +29,7 @@
 #'   model [default: TRUE].
 #' @param ... additional arguments passed to \code{brms::brm}
 #'
-#' @return \code{brmsfit} object
+#' @returns \code{brmsfit} object
 #'
 #' @examples
 #'\dontrun{
@@ -51,21 +51,32 @@ sigmoid_agonist_model <- function(
 
   if (!methods::is(formula, "brmsformula")) {
     warning(
-      "formula must be a 'brmsformula'. Use either the ",
+      "formula must be a 'brmsformula'. You can use the ",
       "'BayesPharma::sigmoid_agonist_formula(...)'")
   }
 
+  if (!(formula$bayes_pharma_info[["treatment_variable"]] %in% names(data))) {
+    warning(
+      paste0(
+        "The treatment variable ",
+        "'",formula$bayes_pharma_info[["treatment_variable"]], "' ",
+        "needs to be a column of the input 'data' data.frame\n"))
+  }
+  
+  if (!(formula$bayes_pharma_info[["response_variable"]] %in% names(data))) {
+    warning(
+      paste0(
+        "The response variable ",
+        "'",formula$bayes_pharma_info[["response_variable"]], "' ",
+        "needs to be a column of the input 'data' data.frame\n"))
+  }
+  
   if (!methods::is(prior, "brmsprior")) {
     warning(
-      "prior must be a 'brmsprior'. Use either the ",
+      "prior must be a 'brmsprior'. You can use the ",
       "'BayesPharma::sigmoid_agonist_prior(...)'")
   }
-
-
-  if (!("response" %in% names(data))) {
-    warning(
-      "There needs to be a column 'response' in the input 'data' data.frame\n")
-  }
+  
 
   model <- brms::brm(
     formula = formula,
@@ -79,12 +90,15 @@ sigmoid_agonist_model <- function(
 
   model$bayes_pharma <- list(model_type = "sigmoid_agonist")
 
+  model$bayes_pharma_info <- c(
+    model$bayes_pharma_info,
+    formula_info = formula$bayes_pharam_info)
+  
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)
   }
-
+  
   model
-
 }
 
 
@@ -118,7 +132,7 @@ sigmoid_agonist_model <- function(
 #'   model [default: TRUE].
 #' @param ... additional arguments passed to \code{brms::brm}
 #'
-#' @return \code{brmsfit} object
+#' @returns \code{brmsfit} object
 #'
 #' @examples
 #'\dontrun{
@@ -136,23 +150,33 @@ sigmoid_antagonist_model <- function(
     stanvar_function = sigmoid_stanvar,
     expose_functions = TRUE,
     ...) {
-
-  if (!methods::is(formula, "brmsformula")) {
+  
+  if (!methods::is(formula, "bpformula")) {
     warning(
-      "formula must be a 'brmsformula'. Use either the ",
-      "'BayesPharma::sigmoid_antagonist_formula(...)' prior functions")
+      "formula must be a 'bpformula'. You can use the ",
+      "'BayesPharma::sigmoid_antagonist_formula(...)' prior function")
   }
 
+  if (!(formula$bayes_pharma_info[["treatment_variable"]] %in% names(data))) {
+    warning(
+      paste0(
+        "The treatment variable ",
+        "'",formula$bayes_pharma_info[["treatment_variable"]], "' ",
+        "needs to be a column of the input 'data' data.frame\n"))
+  }
+  
+  if (!(formula$bayes_pharma_info[["response_variable"]] %in% names(data))) {
+    warning(
+      paste0(
+        "The response variable ",
+        "'",formula$bayes_pharma_info[["response_variable"]], "' ",
+        "needs to be a column of the input 'data' data.frame\n"))
+  }  
+  
   if (!methods::is(prior, "brmsprior")) {
     warning(
-      "prior must be a 'brmsprior'. Use either the ",
-      "'BayesPharma::sigmoid_antagonist_prior(...)' functions.")
-  }
-
-
-  if (!("response" %in% names(data))) {
-    warning(
-      "There needs to be a column 'response' in the input 'data' data.frame\n")
+      "prior must be a 'brmsprior'. You can use the ",
+      "'BayesPharma::sigmoid_antagonist_prior(...)' function.")
   }
 
   model <- brms::brm(
@@ -165,12 +189,19 @@ sigmoid_antagonist_model <- function(
     stanvars = stanvar_function,
     ...)
 
-  model$bayes_pharma <- list(model_type = "sigmoid_antagonist")
+  model$bayes_pharma_info <- list(
+    model_type = "sigmoid_antagonist")
 
+  model$bayes_pharma_info <- c(
+    model$bayes_pharma_info,
+    formula_info = formula$bayes_pharam_info)
+  
+  # this is needed e.g. for brms::loo_compare()
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)
   }
 
+  class(model) <- c("bpfit", class(model))
+  
   model
-
 }
