@@ -1,0 +1,164 @@
+---
+title: "Derive: Growth Model"
+description: Explore different parameterizations of generalized sigmoid models
+  to model biological growth.
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Apply: MuSyC Model -- KCNQ Conductance}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r load-packages}
+load(tidyverse)
+library(plotly)
+```
+
+(Zwietering, 1990) Table 2
+
+```{r richards-model}
+richards <- Vectorize(function(a, nu, k, lambda, time) {
+  a / (1 + nu * exp(k * (lambda - time))) ^ (1 / nu)
+})
+```
+
+
+```{r interactive-richards-plots}
+
+n_curves <- 7
+data <- dplyr::bind_rows(
+  dplyr::cross_join(
+    data.frame(
+      variable = "a",
+      nu = 1,
+      k = 0.1,
+      lambda = 50,
+      time = seq(0, 100, length.out=101)),
+    data.frame(
+      a = seq(0, 1, length.out = n_curves),
+      curve_index = 1:n_curves)),
+  dplyr::cross_join(
+    data.frame(
+      variable = "nu",
+      a = 1,
+      k = 0.1,
+      lambda = 50,
+      time = seq(0, 100, length.out=101)),
+    data.frame(
+      nu = exp(seq(-1, 1, length.out = n_curves)),
+      curve_index = 1:n_curves)),
+  dplyr::cross_join(
+    data.frame(
+      variable = "k",
+      a = 1,
+      nu = 1,
+      lambda = 50,
+      time = seq(0, 100, length.out=101)),
+    data.frame(
+      k = c(-0.1, -.03, -0.01, 0, 0.01, 0.03, 0.1),
+      curve_index = 1:n_curves)),
+  dplyr::cross_join(
+    data.frame(
+      variable = "lambda",
+      a = 1,
+      nu = 1,
+      k = 0.1,
+      time = seq(0, 100, length.out=101)),
+    data.frame(
+      lambda = seq(0, 100, length.out = n_curves),
+      curve_index = 1:n_curves))) |>
+  dplyr::mutate(
+    y = richards(a, nu, k, lambda, time))
+
+
+
+plot <- ggplot2::ggplot(data = data) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_line(
+    mapping = aes(
+      x = time,
+      y = y,
+      color = curve_index,
+      group = curve_index)) +
+  ggplot2::facet_wrap(facets = dplyr::vars(variable)) +
+  ggplot2::theme(legend.position = "none")
+plot
+
+```
+While this functional form is pretty straightforward, a problem with it is that it is that the nu parameter can only make it less sloped on one side of the inflection point. To make it less sloped on the other would probably require flipping the curve backwards (with a negative k) and upside down with swapping the top and bottom parameters. This is possible with if/else logic but would take some work to make sure it's differentiable, and it's not straight forward to describe what the functional form as a mathematical equation.
+
+
+```{r richards-grofit-model}
+
+richards_grofit <- Vectorize(function(A, nu, mu, lambda, time) {
+  A / (1 + nu * exp(1 + nu + mu/A * (1 + nu) ^ (1 + 1/nu) * (lambda - time))) ^ (1/nu)
+})
+
+```
+
+```{r richards-grofit-plots}
+
+n_curves <- 7
+data <- dplyr::bind_rows(
+  dplyr::cross_join(
+    data.frame(
+      variable = "A",
+      nu = 1,
+      mu = 2,
+      lambda = 0.5,
+      time = seq(0, 2, length.out=101)),
+    data.frame(
+      A = seq(0, 1, length.out = n_curves),
+      curve_index = 1:n_curves)),
+  dplyr::cross_join(
+    data.frame(
+      variable = "nu",
+      A = 1,
+      mu = 2,
+      lambda = 0.5,
+      time = seq(0, 2, length.out=101)),
+    data.frame(
+      nu = c(.1, .3, 1, 3, 10, 30, 100),
+      curve_index = 1:n_curves)),
+  dplyr::cross_join(
+    data.frame(
+      variable = "mu",
+      A = 1,
+      nu = 1,
+      lambda = 0.5,
+      time = seq(0, 2, length.out=101)),
+    data.frame(
+      mu = seq(0.5, 3.5, length.out = 7),
+      curve_index = 1:n_curves)),
+  dplyr::cross_join(
+    data.frame(
+      variable = "lambda",
+      A = 1,
+      nu = 1,
+      mu = 2,
+      time = seq(0, 2, length.out=101)),
+    data.frame(
+      lambda = seq(0, 1, length.out = n_curves),
+      curve_index = 1:n_curves))) |>
+  dplyr::mutate(
+    y = richards_grofit(A, nu, mu, lambda, time))
+
+
+plot <- ggplot2::ggplot(data = data) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_line(
+    mapping = aes(
+      x = time,
+      y = y,
+      color = curve_index,
+      group = curve_index)) +
+  ggplot2::facet_wrap(facets = dplyr::vars(variable)) +
+  ggplot2::theme(legend.position = "none")
+plot
+
+```
+
+
+
+
