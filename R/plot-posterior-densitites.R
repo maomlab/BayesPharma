@@ -19,7 +19,7 @@
 #'     = 0.975)
 #' @param title_label string of the plot title. (default =
 #'     "Posterior Density Plots with Mean and 95\% CI")
-#' @return ggplot2::ggplot object.
+#' @returns ggplot2::ggplot object.
 #'
 #' @examples
 #'\dontrun{

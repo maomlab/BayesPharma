@@ -8,7 +8,7 @@
 #' @param dose_col expression for dose column in the input \code{data.frame}
 #' @param molar_concentration numeric units of molar concentration of the dose
 #'   column (default = 1).
-#' @return input \code{data.frame} with an additional \code{log_dose} column.
+#' @returns input \code{data.frame} with an additional \code{log_dose} column.
 #'
 #' @examples
 #' \dontrun{

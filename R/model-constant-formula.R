@@ -9,7 +9,7 @@
 #'     plate number, etc.
 #' @param ... additional arugments to \code{brms::brmsformula}
 #'
-#' @return brmsformula
+#' @returns brmsformula
 #'
 #' @examples
 #'\dontrun{

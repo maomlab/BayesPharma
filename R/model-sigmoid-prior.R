@@ -27,7 +27,7 @@
 #'     parameter.  Default: normal(0, 0.5). Setting bottom to a
 #'     numeric value constrains it to a constant value.
 #' @param ... additional \code{brmsprior} objects.
-#' @return \code{brmsprior} \code{data.frame}
+#' @returns \code{brmsprior} \code{data.frame}
 #'
 #' @examples
 #'\dontrun{
@@ -80,7 +80,7 @@ sigmoid_agonist_prior <- function(
 #'     parameter.  Default: normal(0, 0.5). Setting bottom to a
 #'     numeric value constrains it to a constant value.
 #' @param ... additional \code{brmsprior} objects.
-#' @return \code{brms::brmsprior} \code{data.frame}
+#' @returns \code{brms::brmsprior} \code{data.frame}
 #'
 #' @examples
 #'\dontrun{

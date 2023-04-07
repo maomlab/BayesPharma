@@ -22,7 +22,7 @@
 #'     "Log[Molar]").
 #' @param ylab character name for the y-axis label (default =
 #'     "Response").
-#' @return ggplot2::ggplot object.
+#' @returns ggplot2::ggplot object.
 #'
 #' @examples
 #'\dontrun{

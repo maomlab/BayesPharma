@@ -6,7 +6,7 @@
 #' @param Ci the IC50 of drug i
 #' @param E0 the reponse with no treatments
 #' @param Ei the reponse of inifinite drug i and no other treatments
-#' @return hi the exponent in the MuSyC equation for drug i
+#' @returns hi the exponent in the MuSyC equation for drug i
 #'
 #'
 #' Claim: When d1=0 and d2=C2 then d(Ed)/d(d2) = s2
@@ -51,7 +51,7 @@ MuSyC_si_to_hi <- function(si, Ci, E0, Ei) {
 #' @param Ci the IC50 of drug i
 #' @param E0 the response with no treatments
 #' @param Ei the response of infinite drug i and no other treatments
-#' @return si slope of drug i at it's IC50 and doses of all other drugs are zero
+#' @returns si slope of drug i at it's IC50 and doses of all other drugs are zero
 #'
 #'@export
 MuSyC_hi_to_si <- function(hi, Ci, E0, Ei) {

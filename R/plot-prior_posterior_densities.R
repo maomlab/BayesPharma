@@ -16,7 +16,7 @@
 #'     ed50, id50, ld50, etc.).
 #' @param title_label string of the plot title.  (default =
 #'     "Prior Posterior Density Plots")
-#' @return ggplot2::ggplot object.
+#' @returns ggplot2::ggplot object.
 #'
 #' @examples
 #'\dontrun{

@@ -10,7 +10,7 @@
 #'     separation on the axis.
 #' @param contour_color default 'gold'
 #'
-#' @return ggplot2 plot with light-blue to dark-blue tiles the dose
+#' @returns ggplot2 plot with light-blue to dark-blue tiles the dose
 #'     response. Individual plot elements can be over-written and the
 #'     plot can be saved with \code{ggplot2::ggsave()}
 #'

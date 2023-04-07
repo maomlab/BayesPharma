@@ -41,7 +41,7 @@
 #'     \code{normal(log(0), 0.5)}.
 #' @param ... additional \code{brmsprior} objects.
 #'
-#' @return \code{brmsprior} \code{data.frame}
+#' @returns \code{brmsprior} \code{data.frame}
 #'
 #' @export
 MuSyC_prior <- function(

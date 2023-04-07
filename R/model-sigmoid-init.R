@@ -10,7 +10,7 @@
 #'     response/log_dose (default = 1)
 #' @param top numeric units of top (default = 1).
 #' @param bottom numeric units of bottom (default = 0).
-#' @return input for brms::brm(init = ...)
+#' @returns input for brms::brm(init = ...)
 #'
 #' @examples
 #'\dontrun{
@@ -47,7 +47,7 @@ sigmoid_agonist_init <- function(
 #'   response/log_dose (default = -1)
 #' @param top numeric units of top (default = 1).
 #' @param bottom numeric units of bottom (default = 0).
-#' @return input for brms::brm(init = ...)
+#' @returns input for brms::brm(init = ...)
 #'
 #' @examples
 #'\dontrun{

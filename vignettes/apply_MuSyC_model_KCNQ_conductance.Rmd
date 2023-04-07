@@ -11,16 +11,6 @@ vignette: >
 ---
 
 
-
-
-
-
-
-
-
-
-
-
 ```
 model_meanfield <- BayesPharma::MuSyC_model(
   data = model_data,
@@ -32,7 +22,7 @@ model <- BayesPharma::MuSyC_model(
 ```
 
 
-```{plot-checkerboard}
+```{r plot-checkerboard}
 
 plot_data <- data |>
   dplyr::filter(

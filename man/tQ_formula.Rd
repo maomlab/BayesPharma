@@ -4,13 +4,61 @@
 \alias{tQ_formula}
 \title{Define formula for the tQ enzyme kinetics model}
 \usage{
-tQ_formula(predictors = 1, ...)
+tQ_formula(
+  series_index_variable = "series_index",
+  time_variable = "time",
+  time_units = "seconds",
+  ET_variable = "ET",
+  ET_units = "mg/ml",
+  ST_variable = "ST",
+  ST_units = "mg/ml",
+  response_variable = "P",
+  response_units = "mg/ml",
+  predictors = 1,
+  ...
+)
 }
 \arguments{
+\item{series_index_variable}{character variable indexing which measurements
+are part of a common time series.}
+
+\item{ET_variable}{character variable representing the enzyme concentration
+(Default: 'ET')}
+
+\item{ET_units}{character variable representing the units of the enzyme
+concentration. (Default: mg/ml)}
+
+\item{ST_variable}{character variable representing the substrate
+concentration at time 0. (Default: 'ET')}
+
+\item{ST_units}{character variable representing the units of the substrate
+concentration. (Default: mg/ml)}
+
+\item{response_variable}{character variable representing the product.
+(Default: 'P')}
+
+\item{response_units}{character the units of the product. (Default: mg/ml)}
+
 \item{predictors}{predictors for \code{kcat} and \code{kM}.}
 
 \item{...}{additional arguments passed to \code{brms::brmsformula}}
+
+\item{treatment_variable}{character variable representing the treatment.
+(Default: 'log_dose')}
+
+\item{treatment_units}{character the units of the treatment. The default is
+log base 10 of the molar concentration. (Default: "Log[Molar]")}
+}
+\value{
+a \code{bpformula}, which is a subclass of
+    \code{brms::brmsformula} and can be passed to
+    \code{BayesPharma::tQ_model}.
 }
 \description{
 Define formula for the tQ enzyme kinetics model
+}
+\seealso{
+[brms::brmsformula()], which this function wraps.
+    [BayesPharma::tQ_model()] into which the result of this
+    function can be passed.
 }

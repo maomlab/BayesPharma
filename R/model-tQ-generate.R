@@ -59,7 +59,7 @@
 #' @param ST numeric value total substrate concentration
 #' @param ... additional arguments to \code{deSolve::ode}
 #'
-#' @return run the tQ ordinary differential equation forwards starting
+#' @returns run the tQ ordinary differential equation forwards starting
 #'     with initial product concentration of 0 and specified kcat and
 #'     kM parameters for the specified time steps.
 #'
