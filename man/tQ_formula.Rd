@@ -6,8 +6,8 @@
 \usage{
 tQ_formula(
   series_index_variable = "series_index",
-  time_variable = "time",
-  time_units = "seconds",
+  treatment_variable = "time",
+  treatment_units = "seconds",
   ET_variable = "ET",
   ET_units = "mg/ml",
   ST_variable = "ST",
@@ -21,6 +21,12 @@ tQ_formula(
 \arguments{
 \item{series_index_variable}{character variable indexing which measurements
 are part of a common time series.}
+
+\item{treatment_variable}{character variable representing time as the
+treatment. (Default: 'time')}
+
+\item{treatment_units}{character the units of the time variable. (Default:
+'seconds')}
 
 \item{ET_variable}{character variable representing the enzyme concentration
 (Default: 'ET')}
@@ -39,15 +45,9 @@ concentration. (Default: mg/ml)}
 
 \item{response_units}{character the units of the product. (Default: mg/ml)}
 
-\item{predictors}{predictors for \code{kcat} and \code{kM}.}
+\item{predictors}{expression of predictors for \code{kcat} and \code{kM}}
 
 \item{...}{additional arguments passed to \code{brms::brmsformula}}
-
-\item{treatment_variable}{character variable representing the treatment.
-(Default: 'log_dose')}
-
-\item{treatment_units}{character the units of the treatment. The default is
-log base 10 of the molar concentration. (Default: "Log[Molar]")}
 }
 \value{
 a \code{bpformula}, which is a subclass of

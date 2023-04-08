@@ -12,8 +12,8 @@ posterior_draws_plot(
   jitter_height = 0,
   jitter_width = 0,
   title = "Dose-Response Posterior Draws",
-  xlab = "Log[Molar]",
-  ylab = "Response"
+  xlab = NULL,
+  ylab = NULL
 )
 }
 \arguments{
@@ -38,8 +38,8 @@ points (default = 0).}
 \item{title}{character name for the plot (default =
 "Dose-Response Posterior Draws").}
 
-\item{xlab}{character name for the x-axis label (default =
-"Log[Molar]").}
+\item{xlab}{character name for the x-axis label (default:
+\code{treatment_units}).}
 
 \item{ylab}{character name for the y-axis label (default =
 "Response").}
