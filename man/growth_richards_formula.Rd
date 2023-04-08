@@ -5,8 +5,8 @@
 \title{Create a Richards growth formula for the brms model}
 \usage{
 growth_richards_formula(
-  time_variable = "time",
-  time_units = "hours",
+  treatment_variable = "time",
+  treatment_units = "hours",
   response_variable = "response",
   response_units = NULL,
   predictors = 1,
@@ -14,11 +14,11 @@ growth_richards_formula(
 )
 }
 \arguments{
-\item{time_variable}{character variable representing the treatment.
+\item{treatment_variable}{character variable representing time as a treatment
 (Default: 'time')}
 
-\item{time_units}{character the units of the treatment. The default is
-log base 10 of the molar concentration. (Default: "seconds")}
+\item{treatment_units}{character the units of the time variable. (Default:
+"seconds")}
 
 \item{response_variable}{character variable representing the response to
 treatment. (Default: 'response')}
