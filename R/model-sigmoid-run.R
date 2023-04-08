@@ -92,7 +92,7 @@ sigmoid_agonist_model <- function(
 
   model$bayes_pharma_info <- c(
     model$bayes_pharma_info,
-    formula_info = formula$bayes_pharam_info)
+    list(formula_info = formula$bayes_pharam_info))
 
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)
@@ -194,7 +194,7 @@ sigmoid_antagonist_model <- function(
 
   model$bayes_pharma_info <- c(
     model$bayes_pharma_info,
-    formula_info = formula$bayes_pharam_info)
+    list(formula_info = formula$bayes_pharam_info))
 
   # this is needed e.g. for brms::loo_compare()
   if (expose_functions) {
