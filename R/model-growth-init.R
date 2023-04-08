@@ -4,7 +4,7 @@
 #'     parameters that can be passed to the
 #'     \code{richards_growth_model}.
 #'
-#' @param K numeric or numeric returning function (default = 1). 
+#' @param K numeric or numeric returning function (default = 1).
 #' @param K0 numeric or numeric returning function (default = 0).
 #' @param rate numeric or numeric returning function (default = 1).
 #' @param lambda numeric units of top (default = 0.5).
@@ -24,7 +24,7 @@ growth_richards_init <- function(
     rate = 1,
     lambda = 0.5,
     nu = 2) {
-  
+
   function() {
     list(
       b_K = prepare_init(K),

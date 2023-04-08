@@ -55,7 +55,7 @@ MuSyC_model <- function(
       "formula must be a 'bpformula'. You can use the ",
       "'BayesPharma::MySYC_formula(...)' formula function.")
   }
-  
+
   if (!(formula$bayes_pharma_info[["treatment_1_variable"]] %in% names(data))) {
     warning(
       paste0(
@@ -63,34 +63,38 @@ MuSyC_model <- function(
         formula$bayes_pharma_info[["treatment_1_variable"]], "' ",
         "as a column in the input 'data' data.frame\n"))
   }
-  
+
   if (!(formula$bayes_pharma_info[["treatment_2_variable"]] %in% names(data))) {
     warning(
       paste0(
         "There needs to be variable for treatment 2 '",
         formula$bayes_pharma_info[["treatment_2_variable"]], "' ",
         "as a column in the input 'data' data.frame\n"))
-  }  
+  }
 
   if (!methods::is(prior, "brmsprior")) {
     warning(
       "prior must be a 'brmsprior'. You can use the ",
       "'BayesPharma::MuSyC_prior(...)' function.")
-  }  
-  
+  }
+
   # To make the model more stable, the log dose values should be small.
   # So if not provided, add a scale the dose by the mean of the input.
   # This strategy allows keeping the parameter estimates more interpretable
   if (!("logd1scale" %in% names(data))) {
     data <- data |>
       dplyr::mutate(logd1scale = mean(
-        .data[[ formula$bayes_pharma_info[["treatment_1_variable"]] ]]))
+        .data[[
+          formula$bayes_pharma_info[["treatment_1_variable"]]
+          ]]))
   }
 
   if (!("logd2scale" %in% names(data))) {
     data <- data |>
       dplyr::mutate(logd1scale = mean(
-        .data[[ formula$bayes_pharma_info[["treatment_2_variable"]] ]]))
+        .data[[
+          formula$bayes_pharma_info[["treatment_2_variable"]]
+          ]]))
   }
 
   model <- brms::brm(
@@ -107,7 +111,7 @@ MuSyC_model <- function(
   model$bayes_pharma_info <- c(
     model$bayes_pharma_info,
     formula_info = formula$bayes_pharam_info)
-  
+
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)
   }

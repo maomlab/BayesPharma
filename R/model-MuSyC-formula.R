@@ -62,7 +62,7 @@ MuSyC_formula <- function(
         "logC1, logE1, h1, ",
         "logC2, logE2, h2, ",
         "logE3, logalpha)"))
-  
+
 
   predictor_eq <- rlang::new_formula(
     lhs = quote(
@@ -71,13 +71,13 @@ MuSyC_formula <- function(
       logC2 + logE2 + h2 +
       logE3 + logalpha),
     rhs = rlang::enexpr(predictors))
-  
+
   model_formula <- brms::brmsformula(
     response_eq,
     predictor_eq,
     nl = TRUE,
     ...)
-  
+
   model_formula$bayes_pharma_info <- list(
     formula_type = "MuSyC",
     treatment_1_variable = treatment_1_variable,
@@ -86,8 +86,8 @@ MuSyC_formula <- function(
     treatment_2_units = treatment_2_units,
     response_variable = response_variable,
     response_units = response_units)
-  
+
   class(model_formula) <- c("bpformula", class(model_formula))
   model_formula
-  
+
 }

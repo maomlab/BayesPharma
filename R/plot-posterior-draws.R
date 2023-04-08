@@ -18,8 +18,8 @@
 #'     points (default = 0).
 #' @param title character name for the plot (default =
 #'     "Dose-Response Posterior Draws").
-#' @param xlab character name for the x-axis label (default =
-#'     "Log[Molar]").
+#' @param xlab character name for the x-axis label (default:
+#'     \code{treatment_units}).
 #' @param ylab character name for the y-axis label (default =
 #'     "Response").
 #' @returns ggplot2::ggplot object.
@@ -52,33 +52,45 @@ posterior_draws_plot <- function(
     jitter_height = 0,
     jitter_width = 0,
     title = "Dose-Response Posterior Draws",
-    xlab = "Log[Molar]",
-    ylab = "Response") {
+    xlab = NULL,
+    ylab = NULL) {
 
-  if (!inherits(model, "brmsfit")) {
+  if (!inherits(model, "bpfit")) {
     warning(paste0(
-      "posterior_draws_plot expects model to be of class 'brmsfit',",
+      "posterior_draws_plot expects model to be of class 'bpfit',",
       " instead it is of class ", class(model)))
+  }
+
+  info <- model$bayes_pharma_info$formula_info
+
+  if (!((info$treatment_dimension == 1) && (info$response_dimension == 1))) {
+    warning(paste0(
+      "posterior_draws_plot expects the treatment and response ",
+      "to be one dimension each. Instead, the treatment has dimension ",
+      info$treatment_dimension, " and the response has dimension ",
+      info$response_dimension, "."))
   }
 
   # expand out all combinations of the predictor
   # and add a sequence of values along the log_dose dimension
   if (is.null(newdata)) {
     predictor_values <- model$data |>
-      dplyr::select(-tidyselect::any_of(c("response", "log_dose"))) |>
+      dplyr::select(-tidyselect::any_of(c(
+        info$treatment_variable, info$response_variable))) |>
       as.list() |>
       purrr::map(unique)
-    log_dose_range <- model$data$log_dose[
-      model$data$log_dose |> is.finite() |> which()] |>
+    treatment_range <- model$data[
+      model$data[[info$tretment_variabl]] |> is.finite() |> which(),
+      info$tretment_variable] |>
       range()
-    log_dose_values <- list(
-      log_dose = seq(
-        from = log_dose_range[1],
-        to = log_dose_range[2],
+    treatment_values <- list(
+      treatment = seq(
+        from = treatment_range[1],
+        to = treatment_range[2],
         length.out = 100))
     newdata <- do.call(
       what = tidyr::expand_grid,
-      args = c(predictor_values, log_dose_values))
+      args = c(predictor_values, treatment_values))
   }
 
   predictor_names <- newdata |>
@@ -93,7 +105,7 @@ posterior_draws_plot <- function(
   } else {
     facets_layer <- NULL
   }
-  
+
   # this makes the "hair"
   ep_data <- model |>
     tidybayes::add_epred_draws(
@@ -110,7 +122,22 @@ posterior_draws_plot <- function(
       re_formula = NA,
       ndraws = 200)  |>
     ggdist:: median_qi(.width = c(.5, .8, .95))
-  
+
+  if (is.null(xlab)) {
+    if (!is.null(info$treatment_units)) {
+      xlab <- info$treatment_units
+    } else {
+      xlab <- "Treatment"
+    }
+
+    if (!is.null(info$response_units)) {
+      ylab <- info$response_units
+    } else {
+      ylab <- "Response"
+    }
+  }
+
+
   ggplot2::ggplot() +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "bottom") +
@@ -120,16 +147,16 @@ posterior_draws_plot <- function(
     ggdist::geom_lineribbon(
       data = pp_data,
       mapping = ggplot2::aes(
-        x = .data[["log_dose"]],
-        y = .data[["response"]],
+        x = .data[[info$treatment_variable]],
+        y = .data[[info$response_variable]],
         ymin = .data[[".lower"]],
         ymax = .data[[".upper"]]),
       alpha = .15) +
     ggplot2::geom_line(
       data = ep_data,
       mapping = ggplot2::aes(
-        x = .data[["log_dose"]],
-        y = .data[["response"]],
+        x = .data[[info$treatment_variable]],
+        y = .data[[info$response_variable]],
         group = .data[[".draw"]]),
       linewidth = 0.4,
       alpha = 0.2,
@@ -137,8 +164,8 @@ posterior_draws_plot <- function(
     ggplot2::geom_jitter(
       data = model$data,
       mapping = ggplot2::aes(
-        x = .data[["log_dose"]],
-        y = .data[["response"]]),
+        x = .data[[info$treatment_variable]],
+        y = .data[[info$response_variable]]),
       size = point_size,
       width = jitter_width,
       height = jitter_height) +

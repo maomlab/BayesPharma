@@ -46,7 +46,7 @@ posterior_densities_plot <- function(
     msg = "Model should be a brms::brmsfit object")
   assertthat::is.number(l_ci)
   assertthat::is.number(u_ci)
-  
+
   posterior <- dplyr::bind_rows(
     model |>
       tidybayes::tidy_draws() |>

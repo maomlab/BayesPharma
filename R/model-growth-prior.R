@@ -45,7 +45,7 @@ growth_richards_prior <- function(
     lambda = brms::prior(prior = normal(0.5, 0.5), nlpar = "lambda"),
     nu = brms::prior(prior = normal(1, 1), nlpar = "nu", lb = 0),
     ...) {
-  
+
   c(
     prepare_prior(prior = K, nlpar = "K"),
     prepare_prior(prior = K0, nlpar = "K0"),
