@@ -47,35 +47,35 @@ growth_richards_model <- function(
     stanvar_function = growth_richards_stanvar,
     expose_functions = TRUE,
     ...) {
-  
+
   if (!methods::is(formula, "bpformula")) {
     warning(
       "formula must be a 'bpformula'. You can use the ",
       "'BayesPharma::growth_richards_formula(...)' prior function")
   }
-  
+
   if (!(formula$bayes_pharma_info[["time_variable"]] %in% names(data))) {
     warning(
       paste0(
         "The time variable ",
-        "'",formula$bayes_pharma_info[["time_variable"]], "' ",
+        "'", formula$bayes_pharma_info[["time_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
   }
-  
+
   if (!(formula$bayes_pharma_info[["response_variable"]] %in% names(data))) {
     warning(
       paste0(
         "The response variable ",
         "'", formula$bayes_pharma_info[["response_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
-  }  
-  
+  }
+
   if (!methods::is(prior, "brmsprior")) {
     warning(
       "prior must be a 'brmsprior'. Use either the ",
       "'BayesPharma::growth_richards_prior(...)'")
   }
-  
+
   model <- brms::brm(
     formula = formula,
     data = data,
@@ -85,15 +85,15 @@ growth_richards_model <- function(
     control = control,
     stanvars = stanvar_function,
     ...)
-  
+
   model$bayes_pharma <- list(model_type = "growth_richards")
   model$bayes_pharma_info <- c(
     model$bayes_pharma_info,
     formula_info = formula$bayes_pharam_info)
-  
+
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)
   }
-  
+
   model
 }

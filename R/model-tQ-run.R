@@ -31,48 +31,48 @@ tQ_model <- function(
     expose_functions = TRUE,
     ...) {
 
-  
+
   if (!(
     formula$bayes_pharma_info[["series_index_variable"]] %in% names(data))) {
     warning(
       paste0(
         "The series index ",
-        "'",formula$bayes_pharma_info[["series_index_variable"]], "' ",
+        "'", formula$bayes_pharma_info[["series_index_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
   }
-  
+
   if (!(formula$bayes_pharma_info[["time_variable"]] %in% names(data))) {
     warning(
       paste0(
         "The time variable ",
-        "'",formula$bayes_pharma_info[["time_variable"]], "' ",
+        "'", formula$bayes_pharma_info[["time_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
-  }  
-  
+  }
+
   if (!(formula$bayes_pharma_info[["ET_variable"]] %in% names(data))) {
     warning(
       paste0(
         "The enzyme concentration variable ",
-        "'",formula$bayes_pharma_info[["ET_variable"]], "' ",
+        "'", formula$bayes_pharma_info[["ET_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
-  }    
-  
+  }
+
   if (!(formula$bayes_pharma_info[["ST_variable"]] %in% names(data))) {
     warning(
       paste0(
         "The substrate concentration variable ",
-        "'",formula$bayes_pharma_info[["ST_variable"]], "' ",
+        "'", formula$bayes_pharma_info[["ST_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
-  }  
-  
+  }
+
   if (!(formula$bayes_pharma_info[["response_variable"]] %in% names(data))) {
     warning(
       paste0(
         "The response variable ",
-        "'",formula$bayes_pharma_info[["response_variable"]], "' ",
+        "'", formula$bayes_pharma_info[["response_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
-  }  
-  
+  }
+
   model <- brms::brm(
     formula = formula,
     data = data,
@@ -84,8 +84,8 @@ tQ_model <- function(
     ...)
 
   model$bayes_pharma_info <- list(model_type = "tQ")
-  
-  if("bayes_pharam_info" %in% names(formula)){
+
+  if ("bayes_pharam_info" %in% names(formula)) {
     model$bayes_pharma_info <- c(
       model$bayes_pharma_info,
       formula_info = formula$bayes_pharam_info)

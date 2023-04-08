@@ -59,24 +59,24 @@ sigmoid_agonist_model <- function(
     warning(
       paste0(
         "The treatment variable ",
-        "'",formula$bayes_pharma_info[["treatment_variable"]], "' ",
+        "'", formula$bayes_pharma_info[["treatment_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
   }
-  
+
   if (!(formula$bayes_pharma_info[["response_variable"]] %in% names(data))) {
     warning(
       paste0(
         "The response variable ",
-        "'",formula$bayes_pharma_info[["response_variable"]], "' ",
+        "'", formula$bayes_pharma_info[["response_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
   }
-  
+
   if (!methods::is(prior, "brmsprior")) {
     warning(
       "prior must be a 'brmsprior'. You can use the ",
       "'BayesPharma::sigmoid_agonist_prior(...)'")
   }
-  
+
 
   model <- brms::brm(
     formula = formula,
@@ -93,11 +93,11 @@ sigmoid_agonist_model <- function(
   model$bayes_pharma_info <- c(
     model$bayes_pharma_info,
     formula_info = formula$bayes_pharam_info)
-  
+
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)
   }
-  
+
   model
 }
 
@@ -150,7 +150,7 @@ sigmoid_antagonist_model <- function(
     stanvar_function = sigmoid_stanvar,
     expose_functions = TRUE,
     ...) {
-  
+
   if (!methods::is(formula, "bpformula")) {
     warning(
       "formula must be a 'bpformula'. You can use the ",
@@ -161,18 +161,18 @@ sigmoid_antagonist_model <- function(
     warning(
       paste0(
         "The treatment variable ",
-        "'",formula$bayes_pharma_info[["treatment_variable"]], "' ",
+        "'", formula$bayes_pharma_info[["treatment_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
   }
-  
+
   if (!(formula$bayes_pharma_info[["response_variable"]] %in% names(data))) {
     warning(
       paste0(
         "The response variable ",
-        "'",formula$bayes_pharma_info[["response_variable"]], "' ",
+        "'", formula$bayes_pharma_info[["response_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
-  }  
-  
+  }
+
   if (!methods::is(prior, "brmsprior")) {
     warning(
       "prior must be a 'brmsprior'. You can use the ",
@@ -195,13 +195,13 @@ sigmoid_antagonist_model <- function(
   model$bayes_pharma_info <- c(
     model$bayes_pharma_info,
     formula_info = formula$bayes_pharam_info)
-  
+
   # this is needed e.g. for brms::loo_compare()
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)
   }
 
   class(model) <- c("bpfit", class(model))
-  
+
   model
 }

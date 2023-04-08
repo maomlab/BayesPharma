@@ -6,12 +6,12 @@
 #'     use in \code{growth_richards_model} and in the BayesPharma
 #'     package.
 #'
-#'     This parameterization follows (Zwietering, 1990) and grofit, 
+#'     This parameterization follows (Zwietering, 1990) and grofit,
 #'
-#' @param time_variable character variable representing the treatment.
+#' @param treatment_variable character variable representing time as a treatment
 #'     (Default: 'time')
-#' @param time_units character the units of the treatment. The default is
-#'     log base 10 of the molar concentration. (Default: "seconds")
+#' @param treatment_units character the units of the time variable. (Default:
+#'     "seconds")
 #' @param response_variable character variable representing the response to
 #'     treatment. (Default: 'response')
 #' @param response_units character the units of the response. (Default: NULL)
@@ -48,29 +48,39 @@
 #'
 #'@export
 growth_richards_formula <- function(
-    time_variable = "time",
-    time_units = "hours",
+    treatment_variable = "time",
+    treatment_units = "hours",
     response_variable = "response",
     response_units = NULL,
     predictors = 1,
     ...) {
-  
+
   # The growth_richards function is defined in
   # BayesPharma::growth_richards_stanvar
   response_eq <- as.formula(
     paste0(
       response_variable, " ~ ",
-      "growth_richards(K, K0, rate, lambda, nu, ", time_variable, ")"))
-  
+      "growth_richards(K, K0, rate, lambda, nu, ", treatment_variable, ")"))
+
   predictor_eq <- rlang::new_formula(
     lhs = quote(K + K0 + rate + lambda + nu),
     rhs = rlang::enexpr(predictors))
-  
+
   # The growth_richards function is defined in
   # BayesPharma::growth_richards_stanvar
-  brms::brmsformula(
+  model_formula <- brms::brmsformula(
     response_eq,
     predictor_eq,
     nl = TRUE,
     ...)
+
+  model_formula$bayes_pharma_info <- list(
+    formula_type = "growth_richards",
+    treatment_variable = treatment_variable,
+    treatment_units = treatment_units,
+    response_variable = response_variable,
+    response_units = response_units)
+
+  class(model_formula) <- c("bpformula", class(model_formula))
+  model_formula
 }

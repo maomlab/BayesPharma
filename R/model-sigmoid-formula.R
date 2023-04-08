@@ -54,24 +54,24 @@ sigmoid_agonist_formula <- function(
     paste0(
       response_variable, " ~ ",
       "sigmoid(ec50, hill, top, bottom, ", treatment_variable, ")"))
-  
+
   predictor_eq <- rlang::new_formula(
     lhs = quote(ec50 + hill + top + bottom),
     rhs = rlang::enexpr(predictors))
-  
+
   model_formula <- brms::brmsformula(
     response_eq,
     predictor_eq,
     nl = TRUE,
     ...)
-  
+
   model_formula$bayes_pharma_info <- list(
     formula_type = "sigmoid_agonist",
     treatment_variable = treatment_variable,
     treatment_units = treatment_units,
     response_variable = response_variable,
     response_units = response_units)
-  
+
   class(model_formula) <- c("bpformula", class(model_formula))
   model_formula
 }
@@ -150,7 +150,7 @@ sigmoid_antagonist_formula <- function(
     treatment_units = treatment_units,
     response_variable = response_variable,
     response_units = response_units)
-  
+
   class(model_formula) <- c("bpformula", class(model_formula))
   model_formula
 }
