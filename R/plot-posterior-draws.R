@@ -4,10 +4,24 @@
 #'     posterior distribution from the expected mean and median
 #'     quantile intervals.
 #'
-#' @param model brmsfit model.
+#' @param model bpfit object resulting from fitting a BayesPharma model
+#' @param treatment_variable string or NULL. If NULL the treatment variable
+#'     name will be looked up from the model formula. The treatment variable
+#'     the model$data or newdata if supplied must have a column corresponding to
+#'     the treatment variable (Default: NULL).
+#' @param treatment_units string or NULL. If NULL the treatment units will
+#'     be looked up in the model formula. The treatment units will be used to
+#'     label the X-axis of the plot. (Default: NULL)
+#' @param response_variable string or NULL. If NULL the response variable
+#'     name will be looked up from the model formula. The response variable
+#'     the model$data or newdata if supplied must have a column corresponding to
+#'     the response variable (Default: NULL).
+#' @param response_units string or NULL. If NULL the response units will
+#'     be looked up in the model formula. The response units will be used to
+#'     label the X-axis of the plot. (Default: NULL)
 #' @param newdata data.frame of newdata to use for
 #'     predictions. Default data.frame with each predictor and
-#'     log-dose.
+#'     treatment variable.
 #' @param n numeric value of the number of draws to be observed
 #'     (default = 50).
 #' @param point_size numeric. \code{geom_jitter} point size (default =
@@ -18,10 +32,6 @@
 #'     points (default = 0).
 #' @param title character name for the plot (default =
 #'     "Dose-Response Posterior Draws").
-#' @param xlab character name for the x-axis label (default:
-#'     \code{treatment_units}).
-#' @param ylab character name for the y-axis label (default =
-#'     "Response").
 #' @returns ggplot2::ggplot object.
 #'
 #' @examples
@@ -47,13 +57,15 @@
 posterior_draws_plot <- function(
     model,
     newdata = NULL,
+    treatment_variable = NULL,
+    treatment_units = NULL,
+    response_variable = NULL,
+    response_units = NULL,
+    title = "Dose-Response Posterior Draws",
     n = 50,
     point_size = 0.75,
     jitter_height = 0,
-    jitter_width = 0,
-    title = "Dose-Response Posterior Draws",
-    xlab = NULL,
-    ylab = NULL) {
+    jitter_width = 0) {
 
   if (!inherits(model, "bpfit")) {
     warning(paste0(
@@ -63,25 +75,56 @@ posterior_draws_plot <- function(
 
   info <- model$bayes_pharma_info$formula_info
 
-  if (!((info$treatment_dimension == 1) && (info$response_dimension == 1))) {
-    warning(paste0(
-      "posterior_draws_plot expects the treatment and response ",
-      "to be one dimension each. Instead, the treatment has dimension ",
-      info$treatment_dimension, " and the response has dimension ",
-      info$response_dimension, "."))
+  if (is.null(treatment_variable)) {
+    tryCatch({
+      info <- model$bayes_pharma_info$formula_info
+      treatment_variable <- info$treatment_variable
+      treatment_units <- info$treatment_units
+    }, error = function(e) {
+      error(
+        "Expected either treatment_variable and treatment_units to be ",
+        "specified or defined in the model$bayes_pharma_info")
+    })
   }
 
+  if (is.null(response_variable)) {
+    tryCatch({
+      info <- model$bayes_pharma_info$formula_info
+      treatment_variable <- info$response_variable
+      response_units <- info$response_units
+    }, error = function(e) {
+      error(
+        "Expected either response_variable and response_units to be ",
+        "specified or defined in the model$bayes_pharma_info")
+    })
+  }
+  
+
   # expand out all combinations of the predictor
-  # and add a sequence of values along the log_dose dimension
+  # and add a sequence of values along the treatment dimension
   if (is.null(newdata)) {
+    if (!(treatment_variable %in% model$data)) {
+      error(paste0(
+        "Expected the treatment variable '", treatment_variable, "' to be a ",
+        "column in the model$data, but instead it has columns ",
+        "[", paste0(names(model$data), collapse = ", "), "]"))
+    }    
+    
+    if (!(response_variable %in% model$data)) {
+      error(paste0(
+        "Expected the response variable '", response_variable, "' to be a ",
+        "column in the model$data, but instead it has columns ",
+        "[", paste0(names(model$data), collapse = ", "), "]"))
+    }
+    
     predictor_values <- model$data |>
       dplyr::select(-tidyselect::any_of(c(
-        info$treatment_variable, info$response_variable))) |>
+        treatment_variable, response_variable))) |>
       as.list() |>
       purrr::map(unique)
     treatment_range <- model$data[
-      model$data[[info$tretment_variabl]] |> is.finite() |> which(),
-      info$tretment_variable] |>
+      model$data[[tretment_variabl]] |> is.finite() |> which(),
+      tretment_variable] |>
       range()
     treatment_values <- list(
       treatment = seq(
@@ -95,7 +138,7 @@ posterior_draws_plot <- function(
 
   predictor_names <- newdata |>
     names() |>
-    purrr::keep(~. != "log_dose")
+    purrr::keep(~. != treatment_variable)
 
   if (length(predictor_names) > 0) {
     facets_layer <- list(
@@ -110,7 +153,7 @@ posterior_draws_plot <- function(
   ep_data <- model |>
     tidybayes::add_epred_draws(
       newdata = newdata,
-      value = "response",
+      value = response_variable,
       re_formula = NA,
       ndraws = n)
 
@@ -118,20 +161,20 @@ posterior_draws_plot <- function(
   pp_data <- model |>
     tidybayes::add_predicted_draws(
       newdata = newdata,
-      value = "response",
+      value = response_variable,
       re_formula = NA,
       ndraws = 200)  |>
     ggdist:: median_qi(.width = c(.5, .8, .95))
 
-  if (is.null(xlab)) {
-    if (!is.null(info$treatment_units)) {
-      xlab <- info$treatment_units
+  if (is.null(treatment_units)) {
+    if (!is.null(treatment_units)) {
+      xlab <- treatment_units
     } else {
       xlab <- "Treatment"
     }
 
-    if (!is.null(info$response_units)) {
-      ylab <- info$response_units
+    if (!is.null(response_units)) {
+      ylab <- response_units
     } else {
       ylab <- "Response"
     }
@@ -147,16 +190,16 @@ posterior_draws_plot <- function(
     ggdist::geom_lineribbon(
       data = pp_data,
       mapping = ggplot2::aes(
-        x = .data[[info$treatment_variable]],
-        y = .data[[info$response_variable]],
+        x = .data[[treatment_variable]],
+        y = .data[[response_variable]],
         ymin = .data[[".lower"]],
         ymax = .data[[".upper"]]),
       alpha = .15) +
     ggplot2::geom_line(
       data = ep_data,
       mapping = ggplot2::aes(
-        x = .data[[info$treatment_variable]],
-        y = .data[[info$response_variable]],
+        x = .data[[treatment_variable]],
+        y = .data[[response_variable]],
         group = .data[[".draw"]]),
       linewidth = 0.4,
       alpha = 0.2,
@@ -164,8 +207,8 @@ posterior_draws_plot <- function(
     ggplot2::geom_jitter(
       data = model$data,
       mapping = ggplot2::aes(
-        x = .data[[info$treatment_variable]],
-        y = .data[[info$response_variable]]),
+        x = .data[[treatment_variable]],
+        y = .data[[response_variable]]),
       size = point_size,
       width = jitter_width,
       height = jitter_height) +
