@@ -12,8 +12,8 @@
 #' @param iter number of iterations the model runs. Increasing iter can help
 #'   with model convergence (default = 8000).
 #' @param control a named list of parameters to control the sampler's behavior.
-#'   Adding max_treedepth and giving a greater value than 10 can improve model
-#'   convergence (default = list(adapt_delta = 0.99)).
+#'   Adding \code{max_treedepth} and giving a greater value than 10 can improve
+#'   model convergence (default = list(adapt_delta = 0.99)).
 #' @param expose_functions boolean. Expose the BayesPharma functions for the
 #'   model [default: TRUE].
 #' @param ... additional arguments passed to \code{brms::brm}.
@@ -88,7 +88,7 @@ tQ_model <- function(
   if ("bayes_pharam_info" %in% names(formula)) {
     model$bayes_pharma_info <- c(
       model$bayes_pharma_info,
-      formula_info = formula$bayes_pharam_info)
+      list(formula_info = formula$bayes_pharam_info))
   }
 
   # this is needed e.g. for brms::loo_compare()
