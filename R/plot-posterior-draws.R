@@ -94,7 +94,7 @@ posterior_draws_plot <- function(
         "specified or defined in the model$bayes_pharma_info"))
     }
   }
-  
+
   # expand out all combinations of the predictor
   # and add a sequence of values along the treatment dimension
   if (is.null(newdata)) {
@@ -103,15 +103,15 @@ posterior_draws_plot <- function(
         "Expected the treatment variable '", treatment_variable, "' to be a ",
         "column in the model$data, but instead it has columns ",
         "[", paste0(names(model$data), collapse = ", "), "]"))
-    }    
-    
+    }
+
     if (!(response_variable %in% names(model$data))) {
       stop(paste0(
         "Expected the response variable '", response_variable, "' to be a ",
         "column in the model$data, but instead it has columns ",
         "[", paste0(names(model$data), collapse = ", "), "]"))
     }
-    
+
     predictor_values <- model$data |>
       dplyr::select(-tidyselect::any_of(c(
         treatment_variable, response_variable))) |>
@@ -166,7 +166,7 @@ posterior_draws_plot <- function(
   } else {
     xlab <- paste(treatment_variable, treatment_units)
   }
-  
+
   if (is.null(response_units)) {
     ylab <- response_variable
   } else {
