@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-growth-formula.R
 \name{growth_richards_formula}
 \alias{growth_richards_formula}
-\title{Create a Richards growth formula for the brms model}
+\title{Create a formula for the Richards growth model}
 \usage{
 growth_richards_formula(
   treatment_variable = "time",

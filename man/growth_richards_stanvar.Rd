@@ -3,7 +3,7 @@
 \docType{data}
 \name{growth_richards_stanvar}
 \alias{growth_richards_stanvar}
-\title{Stan code for the growth Richards function.}
+\title{Stan code for the Richards growth function.}
 \format{
 An object of class \code{stanvars} of length 1.
 }
@@ -11,9 +11,9 @@ An object of class \code{stanvars} of length 1.
 growth_richards_stanvar
 }
 \description{
-Stan code for the growth Richards function.
+Stan code for the Richards growth function.
 }
 \note{
-stanvar script of a growth Richards dose response equation.
+stanvar script of a Richard growth model response equation.
 }
 \keyword{datasets}

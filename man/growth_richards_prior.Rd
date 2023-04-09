@@ -2,8 +2,17 @@
 % Please edit documentation in R/model-growth-prior.R
 \name{growth_richards_prior}
 \alias{growth_richards_prior}
-\title{Default priors for the Richards growth model}
+\title{Create a prior for the sigmoid growth model}
 \usage{
+growth_richards_prior(
+  K = brms::prior(prior = normal(1, 0.5), nlpar = "K"),
+  K0 = brms::prior(prior = normal(0, 0.5), nlpar = "K0"),
+  rate = brms::prior(prior = normal(2, 0.5), nlpar = "rate", lb = 0),
+  lambda = brms::prior(prior = normal(0.5, 0.5), nlpar = "lambda"),
+  nu = brms::prior(prior = normal(1, 1), nlpar = "nu", lb = 0),
+  ...
+)
+
 growth_richards_prior(
   K = brms::prior(prior = normal(1, 0.5), nlpar = "K"),
   K0 = brms::prior(prior = normal(0, 0.5), nlpar = "K0"),
@@ -14,37 +23,43 @@ growth_richards_prior(
 )
 }
 \arguments{
-\item{K}{\code{brmsprior} or numeric. Prior for the \code{K} parameter.
-(Default: \code{normal(-6, 2.5)} where the mean -7
-corresponds to a concentration of 1e-6 or 1 μM. Setting ec50 to
-a numeric value constrains it to a constant value.}
+\item{K}{\code{brmsprior} or \code{numeric}. Prior for the \code{K}
+parameter. (Default: \code{normal(1, 0.5)}).}
 
-\item{K0}{\code{brmsprior} or numeric. Prior for the \code{K0} parameter.}
+\item{K0}{\code{brmsprior} or \code{numeric}. Prior for the \code{K0}
+parameter. (Default: \code{normal(0, 0.5)}).}
 
-\item{rate}{\code{brmsprior} or numeric. Prior for the hill
-parameter. Default: normal(1, 1) with and a lower bound of
--0.1.}
+\item{rate}{\code{brmsprior} or \code{numeric}. Prior for the \code{rate}
+parameter. (Default: \code{normal(1, 1)} with and a lower bound of
+\code{0}).}
 
-\item{lambda}{\code{brmsprior} or numeric. Prior for the top
-parameter.  Default: normal(1, 0.5). Setting top to a numeric
-value constrains it to a constant value.}
+\item{lambda}{\code{brmsprior} or \code{numeric}. Prior for the \code{lambda}
+parameter. (Default: \code{normal(0.5, 0.5)}).}
+
+\item{nu}{\code{brmsprior} or \code{numeric}. Prior for the \code{nu}
+parameter.  (Default: normal(1, 1) with a lower bound of \code{0}).}
 
 \item{...}{additional \code{brmsprior} objects.}
-
-\item{mu}{\code{brmsprior} or numeric. Prior for the top
-parameter.  Default: normal(0, 0.5). Setting bottom to a
-numeric value constrains it to a constant value.}
 }
 \value{
 \code{brmsprior} \code{data.frame}
+
+\code{brmsprior} \code{data.frame}
 }
 \description{
-Creates a \code{data.frame} of priors for the Richards growth
-    model
+Creates a for the priors for the sigmoid growth model. If the
+  function arguments \code{K}, \code{K0}, \code{rate}, \code{lambda}, or
+  \code{NULL}, normal distribution priors will be set.
 
-If the function arguments \code{A}, \code{nu}, \code{mu},
-\code{lambda} are \code{NULL}, default normal distribution priors
-will be set.
+  If you would like to set a parameter as a constant, enter a numeric  value
+  for the function argument.
+
+  For other distribution options, reference
+  <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
+
+Creates a for the priors for the Richards growth model. If the
+  function arguments \code{K}, \code{K0}, \code{rate}, \code{lambda}, or
+  \code{nu} are \code{NULL}, normal distribution priors will be set.
 
 If you would like to set a parameter as a constant, enter a numeric
 value for the function argument.
@@ -54,7 +69,12 @@ For other distribution options, reference
 }
 \examples{
 \dontrun{
-priors <- sigmoid_agonist_prior(
+priors <- growth_richards_prior(
+  K = brms::prior(prior = normal(100, 20), nlpar = "K"),
+  lambda = 1)
+}
+\dontrun{
+priors <- growth_richards_prior(
   K = brms::prior(prior = normal(100, 20), nlpar = "K"),
   nu = brms::prior(prior = normal(2, 4), nlpar = "nu"),
   lambda = 1)
