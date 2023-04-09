@@ -7,21 +7,44 @@
 posterior_draws_plot(
   model,
   newdata = NULL,
+  treatment_variable = NULL,
+  treatment_units = NULL,
+  response_variable = NULL,
+  response_units = NULL,
+  title = "Dose-Response Posterior Draws",
   n = 50,
   point_size = 0.75,
   jitter_height = 0,
-  jitter_width = 0,
-  title = "Dose-Response Posterior Draws",
-  xlab = NULL,
-  ylab = NULL
+  jitter_width = 0
 )
 }
 \arguments{
-\item{model}{brmsfit model.}
+\item{model}{bpfit object resulting from fitting a BayesPharma model}
 
 \item{newdata}{data.frame of newdata to use for
 predictions. Default data.frame with each predictor and
-log-dose.}
+treatment variable.}
+
+\item{treatment_variable}{string or NULL. If NULL the treatment variable
+name will be looked up from the model formula. The treatment variable
+the model$data or newdata if supplied must have a column corresponding to
+the treatment variable (Default: NULL).}
+
+\item{treatment_units}{string or NULL. If NULL the treatment units will
+be looked up in the model formula. The treatment units will be used to
+label the X-axis of the plot. (Default: NULL)}
+
+\item{response_variable}{string or NULL. If NULL the response variable
+name will be looked up from the model formula. The response variable
+the model$data or newdata if supplied must have a column corresponding to
+the response variable (Default: NULL).}
+
+\item{response_units}{string or NULL. If NULL the response units will
+be looked up in the model formula. The response units will be used to
+label the X-axis of the plot. (Default: NULL)}
+
+\item{title}{character name for the plot (default =
+"Dose-Response Posterior Draws").}
 
 \item{n}{numeric value of the number of draws to be observed
 (default = 50).}
@@ -34,15 +57,6 @@ overlapping points (default = 0).}
 
 \item{jitter_width}{numeric. the width distance between overlapping
 points (default = 0).}
-
-\item{title}{character name for the plot (default =
-"Dose-Response Posterior Draws").}
-
-\item{xlab}{character name for the x-axis label (default:
-\code{treatment_units}).}
-
-\item{ylab}{character name for the y-axis label (default =
-"Response").}
 }
 \value{
 ggplot2::ggplot object.
