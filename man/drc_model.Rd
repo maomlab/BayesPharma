@@ -14,7 +14,7 @@ drc_model(
 \arguments{
 \item{data}{\code{data.frame}}
 
-\item{formula}{formula. Default: \code{response ~ log_dose}}
+\item{formula}{\code{formula}. Default: \code{response ~ log_dose}}
 
 \item{fct}{Non-linear link function. Default is the 4 parameter
 log-linear sigmoid equation, where all parameters are to be
