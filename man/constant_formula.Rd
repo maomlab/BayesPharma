@@ -4,19 +4,29 @@
 \alias{constant_formula}
 \title{Formula for a curve with a constant response}
 \usage{
-constant_formula(predictors = 1, ...)
+constant_formula(
+  response_variable = "response",
+  response_units = NULL,
+  predictors = 1,
+  ...
+)
 }
 \arguments{
+\item{response_variable}{character variable representing the response to
+treatment. (Default: 'response')}
+
+\item{response_units}{character the units of the response. (Default: NULL)}
+
 \item{predictors}{Additional formula objects to specify predictors
 of non-linear parameters. i.e. what perturbations/experimental
 differences should be modeled separately? (Default: 1) should a
 random effect be taken into consideration? i.e. cell number,
 plate number, etc.}
 
-\item{...}{additional arugments to \code{brms::brmsformula}}
+\item{...}{additional arguments to \code{brms::brmsformula}}
 }
 \value{
-brmsformula
+bpformula brmsformula
 }
 \description{
 set-up an equation for formula objects with a constant response.

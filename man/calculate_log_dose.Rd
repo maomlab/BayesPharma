@@ -10,13 +10,15 @@ calculate_log_dose(data, dose_col = "dose", molar_concentration = 1)
 \item{data}{\code{data.frame} containing a column representing a dose in
 molar units.}
 
-\item{dose_col}{expression for dose column in the input \code{data.frame}}
+\item{dose_col}{\code{expression} for dose column in the input
+\code{data.frame} (Default: \code{"dose"})}
 
-\item{molar_concentration}{numeric units of molar concentration of the dose
-column (default = 1).}
+\item{molar_concentration}{\code{numeric} units of molar concentration of the
+dose column (Default: 1).}
 }
 \value{
-input \code{data.frame} with an additional \code{log_dose} column.
+input \code{data.frame} with an additional \code{log_dose} column
+  which is the \code{log10(<dose_col>) * molar_concentration}.
 }
 \description{
 Given the dose as a column in a \code{data.frame} with a given
@@ -31,7 +33,7 @@ data <- data.frame(dose = c(1e-6, 1e-7)) |>
    BayesPharma::calculate_log_dose(dose_col = dose, molar_concentration = 1)
 data$log_dose == c(-6, -7)
 
-# If the doses are given with in units of nanomolar units e.g. \code{nM} then
+# If the doses are given with in units of nanomolar units e.g. nM then
 data <- data.frame(dose_nM = c(1000, 100)) |>
   BayesPharma::calculate_log_dose(
     dose_col = dose_nM,
