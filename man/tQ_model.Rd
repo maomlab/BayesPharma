@@ -33,8 +33,8 @@ of the parameters being modeled (default = 0).}
 with model convergence (default = 8000).}
 
 \item{control}{a named list of parameters to control the sampler's behavior.
-Adding max_treedepth and giving a greater value than 10 can improve model
-convergence (default = list(adapt_delta = 0.99)).}
+Adding \code{max_treedepth} and giving a greater value than 10 can improve
+model convergence (default = list(adapt_delta = 0.99)).}
 
 \item{expose_functions}{boolean. Expose the BayesPharma functions for the
 model [default: TRUE].}

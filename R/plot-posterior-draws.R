@@ -76,42 +76,37 @@ posterior_draws_plot <- function(
   info <- model$bayes_pharma_info$formula_info
 
   if (is.null(treatment_variable)) {
-    tryCatch({
-      info <- model$bayes_pharma_info$formula_info
-      treatment_variable <- info$treatment_variable
-      treatment_units <- info$treatment_units
-    }, error = function(e) {
-      error(
+    treatment_variable <- info$treatment_variable
+    treatment_units <- info$treatment_units
+    if (is.null(treatment_variable)) {
+      stop(paste0(
         "Expected either treatment_variable and treatment_units to be ",
-        "specified or defined in the model$bayes_pharma_info")
-    })
+        "specified or both defined in the model$bayes_pharma_info"))
+    }
   }
 
   if (is.null(response_variable)) {
-    tryCatch({
-      info <- model$bayes_pharma_info$formula_info
-      treatment_variable <- info$response_variable
-      response_units <- info$response_units
-    }, error = function(e) {
-      error(
+    response_variable <- info$response_variable
+    response_units <- info$response_units
+    if (is.null(response_variable)) {
+      stop(paste0(
         "Expected either response_variable and response_units to be ",
-        "specified or defined in the model$bayes_pharma_info")
-    })
+        "specified or defined in the model$bayes_pharma_info"))
+    }
   }
   
-
   # expand out all combinations of the predictor
   # and add a sequence of values along the treatment dimension
   if (is.null(newdata)) {
-    if (!(treatment_variable %in% model$data)) {
-      error(paste0(
+    if (!(treatment_variable %in% names(model$data))) {
+      stop(paste0(
         "Expected the treatment variable '", treatment_variable, "' to be a ",
         "column in the model$data, but instead it has columns ",
         "[", paste0(names(model$data), collapse = ", "), "]"))
     }    
     
-    if (!(response_variable %in% model$data)) {
-      error(paste0(
+    if (!(response_variable %in% names(model$data))) {
+      stop(paste0(
         "Expected the response variable '", response_variable, "' to be a ",
         "column in the model$data, but instead it has columns ",
         "[", paste0(names(model$data), collapse = ", "), "]"))
@@ -123,14 +118,15 @@ posterior_draws_plot <- function(
       as.list() |>
       purrr::map(unique)
     treatment_range <- model$data[
-      model$data[[tretment_variabl]] |> is.finite() |> which(),
-      tretment_variable] |>
+      model$data[[treatment_variable]] |> is.finite() |> which(),
+      treatment_variable] |>
       range()
     treatment_values <- list(
-      treatment = seq(
+      seq(
         from = treatment_range[1],
         to = treatment_range[2],
         length.out = 100))
+    names(treatment_values) <- treatment_variable
     newdata <- do.call(
       what = tidyr::expand_grid,
       args = c(predictor_values, treatment_values))
@@ -148,7 +144,6 @@ posterior_draws_plot <- function(
   } else {
     facets_layer <- NULL
   }
-
   # this makes the "hair"
   ep_data <- model |>
     tidybayes::add_epred_draws(
@@ -167,19 +162,16 @@ posterior_draws_plot <- function(
     ggdist:: median_qi(.width = c(.5, .8, .95))
 
   if (is.null(treatment_units)) {
-    if (!is.null(treatment_units)) {
-      xlab <- treatment_units
-    } else {
-      xlab <- "Treatment"
-    }
-
-    if (!is.null(response_units)) {
-      ylab <- response_units
-    } else {
-      ylab <- "Response"
-    }
+    xlab <- treatment_variable
+  } else {
+    xlab <- paste(treatment_variable, treatment_units)
   }
-
+  
+  if (is.null(response_units)) {
+    ylab <- response_variable
+  } else {
+    ylab <- paste(response_units, response_units)
+  }
 
   ggplot2::ggplot() +
     ggplot2::theme_bw() +
