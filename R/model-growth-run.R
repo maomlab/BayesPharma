@@ -54,11 +54,11 @@ growth_richards_model <- function(
       "'BayesPharma::growth_richards_formula(...)' prior function")
   }
 
-  if (!(formula$bayes_pharma_info[["time_variable"]] %in% names(data))) {
+  if (!(formula$bayes_pharma_info[["treatment_variable"]] %in% names(data))) {
     warning(
       paste0(
         "The time variable ",
-        "'", formula$bayes_pharma_info[["time_variable"]], "' ",
+        "'", formula$bayes_pharma_info[["treatment_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
   }
 
