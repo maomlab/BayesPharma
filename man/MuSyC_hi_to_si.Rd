@@ -2,24 +2,26 @@
 % Please edit documentation in R/model-MuSyC-utils.R
 \name{MuSyC_hi_to_si}
 \alias{MuSyC_hi_to_si}
-\title{Convert slope parametrization to exponent parametrization for drug i}
+\title{Convert exponent to slope parameterization for drug i}
 \usage{
 MuSyC_hi_to_si(hi, Ci, E0, Ei)
 }
 \arguments{
-\item{hi}{the exponent in the MuSyC equation for drug i}
+\item{hi}{\code{numeric} value of the exponent in the MuSyC equation for drug
+i}
 
-\item{Ci}{the IC50 of drug i}
+\item{Ci}{\code{numeric} value of the AC50 of drug i}
 
-\item{E0}{the response with no treatments}
+\item{E0}{\code{numeric} value of the response with no treatments}
 
-\item{Ei}{the response of infinite drug i and no other treatments}
+\item{Ei}{\code{numeric} value of the response of infinite drug i and no
+other treatments}
 }
 \value{
-si slope of drug i at it's IC50 and doses of all other drugs are
+si slope of drug i at it's AC50 and doses of all other drugs are
   zero
 }
 \description{
-This can be used for setting priors and interpreting parameter estimates
-see MuSyC_si_to_hi for details
+This can be used for setting priors and interpreting parameter
+  estimates see MuSyC_si_to_hi for details
 }
