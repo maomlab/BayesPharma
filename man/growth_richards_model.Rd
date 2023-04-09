@@ -2,8 +2,20 @@
 % Please edit documentation in R/model-growth-run.R
 \name{growth_richards_model}
 \alias{growth_richards_model}
-\title{Run Bayesian Richards Growth Model}
+\title{Run Bayesian sigmoid growth model}
 \usage{
+growth_richards_model(
+  data,
+  formula = growth_richards_formula(),
+  prior = growth_richards_prior(),
+  init = growth_richards_init(),
+  iter = 8000,
+  control = list(adapt_delta = 0.99),
+  stanvar_function = growth_richards_stanvar,
+  expose_functions = TRUE,
+  ...
+)
+
 growth_richards_model(
   data,
   formula = growth_richards_formula(),
@@ -17,48 +29,63 @@ growth_richards_model(
 )
 }
 \arguments{
-\item{data}{\code{data.frame} of experimental data.  must contain columns
-\code{response} and any predictors specified in the formula.}
+\item{data}{\code{data.frame} of experimental data. Must contain column
+representing the treatment, response and predictors specified in the
+formula.}
 
-\item{formula}{\code{brmsformula} object. To create a growth model formula,
-(default: \code{BayesPharma::growth_formula()}.}
+\item{formula}{\code{bpformula} object. To create a growth model formula, use
+\code{BayesPharma::growth_richards_formula} (default:
+\code{BayesPharma::growth_richards_formula()}.}
 
-\item{prior}{brmspriors data.frame for A, nu, mu, and lambda.
-Use one of the priors functions provided to create priors to
-use here.  (default:
+\item{prior}{\code{brmspriors} \code{data.frame} for \code{K}, \code{K0},
+\code{rate}, \code{lambda}, and \code{nu}. To create a prior, use
+\code{BayesPharma::growth_richards_prior}. (default:
 \code{BayesPharma::growth_richards_prior()}}
 
-\item{init}{initial values of the parameters being modeled (default
-= \code{BayesPharma::growth_richards_init()}}
+\item{init}{initial values of the parameters being modeled. To create an
+init, use \code{BayesPharma::growth_richards_init()}. (Default:
+\code{BayesPharma::growth_richards_init()}}
 
-\item{iter}{number of iterations the model runs. Increasing iter
-can help with model convergence (default: 8000).}
+\item{iter}{\code{numeric} value for the number of iterations the model runs. 
+Increasing \code{iter} can help with model convergence (Default:
+\code{8000}).}
 
-\item{control}{a named list of parameters to control the sampler's
-behavior.  Adding \code{max_treedepth} and giving a greater
-value than 10 can improve model convergence (default:
+\item{control}{a named \code{list} of parameters to control the sampler's
+behavior. Adding \code{max_treedepth} and giving a greater value than
+\code{10} can improve model convergence (Default: 
 \code{list(adapt_delta = 0.99)}).}
 
 \item{stanvar_function}{Stan code for the model (default:
-\code{BayesPharma::sigmoid_stanvar})}
+\code{BayesPharma::growth_richards_stanvar}).}
 
-\item{expose_functions}{boolean. Expose the BayesPharma functions for the
-model [default: TRUE].}
+\item{expose_functions}{\code{logical}. Expose the stan functions for the
+model. This is needed e.g. to run \code{brms::loo_compare()}. (Default:
+\code{TRUE}).}
 
 \item{...}{additional arguments passed to \code{brms::brm}}
 }
 \value{
-\code{brmsfit} object
+\code{bpfit} \code{brmsfit}
+
+\code{bpfit} \code{brmsfit}
 }
 \description{
 For additional information on additional function arguments, reference:
   <https://paul-buerkner.github.io/brms/reference/brm.html>
-  or
-  <https://rdrr.io/cran/rstan/man/stan.html>
+  or <https://rdrr.io/cran/rstan/man/stan.html>
+
+For additional information on additional function arguments, reference:
+  <https://paul-buerkner.github.io/brms/reference/brm.html>
+  or <https://rdrr.io/cran/rstan/man/stan.html>
 }
 \examples{
 \dontrun{
-  BayesPharma::growth_model(
+  BayesPharma::growth_sigmoid_model(
+    data = data,
+    formula = BayesPharma::growth_richards_formula(predictors = 0 + drug))
+}
+\dontrun{
+  BayesPharma::growth_sigmoid_model(
     data = data,
     formula = BayesPharma::growth_richards_formula(predictors = 0 + drug))
 }

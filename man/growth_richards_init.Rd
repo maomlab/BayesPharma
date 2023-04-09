@@ -4,31 +4,36 @@
 \alias{growth_richards_init}
 \title{Create initialization for the Richards growth model}
 \usage{
-growth_richards_init(K = 1, K0 = 0, rate = 1, lambda = 0.5, nu = 2)
+growth_richards_init(K = 1, K0 = 0, rate = 1, lambda = 0.5, nu = 1)
 }
 \arguments{
-\item{K}{numeric or numeric returning function (default = 1).}
+\item{K}{\code{numeric} or \code{numeric} returning \code{function}
+(Default: 1).}
 
-\item{K0}{numeric or numeric returning function (default = 0).}
+\item{K0}{\code{numeric} or \code{numeric} returning \code{function}
+(Default: 0).}
 
-\item{rate}{numeric or numeric returning function (default = 1).}
+\item{rate}{\code{numeric} or \code{numeric} returning \code{function}
+(Default: 1).}
 
-\item{lambda}{numeric units of top (default = 0.5).}
+\item{lambda}{\code{numeric} or \code{numeric} returning \code{function} 
+units of \code{time} (Default: 0.5).}
 
-\item{nu}{numeric units of bottom (default = 2).}
+\item{nu}{\code{numeric} or \code{numeric} returning \code{function}
+values range between [0, Inf], with 1 being standard sigmoid (default = 1).}
 }
 \value{
 input for brms::brm(init = ...)
 }
 \description{
 Creating initial values for Richards growth model
-    parameters that can be passed to the
-    \code{richards_growth_model}.
+  parameters that can be passed to the
+.  \code{richards_growth_model}.
 }
 \examples{
 \dontrun{
 init <- BayesPharma::growth_richards_init(
   A = 100,
-  nu = 24)
+  nu = 2)
 }
 }

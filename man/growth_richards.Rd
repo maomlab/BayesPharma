@@ -7,27 +7,28 @@
 growth_richards(K, K0, rate, lambda, nu, time)
 }
 \arguments{
-\item{K}{numeric, the carrying capacity}
+\item{K}{\code{numeric}, the carrying capacity}
 
-\item{K0}{numeric, the baseline response}
+\item{K0}{\code{numeric}, the baseline response}
 
-\item{rate}{numeric, maximum growth rate}
+\item{rate}{\code{numeric}, maximum growth rate}
 
-\item{lambda}{numeric, time line through the maximum growth rate crosses zero}
+\item{lambda}{\code{numeric}, time line through the maximum growth rate
+crosses zero}
 
-\item{nu}{numeric}
+\item{nu}{\code{numeric}, asymmetry in growth before and after the inflection
+point}
 
-\item{time}{numeric, time point at which to evaluate the response.}
+\item{time}{\code{numeric}, time point at which to evaluate the response.}
 }
 \value{
 numeric, response given the time and parameters
 
-
-Y(time) =
-  K0 + (K - K0)/(
-    1 + nu * exp(
-      1 + nu + rate/(K - K0) * (1 + nu)^(1 + 1/nu) *
-      (lambda - time))) ^ (1/nu)
+  response(time) =
+    K0 + (K - K0)/(
+      1 + nu * exp(
+        1 + nu + rate/(K - K0) * (1 + nu)^(1 + 1/nu) *
+        (lambda - time))) ^ (1/nu)
 }
 \description{
 Functional form for the Richards growth model.
