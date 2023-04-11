@@ -36,10 +36,10 @@ differences should be modeled separately? (Default: 1) should a
 random effect be taken into consideration? i.e. cell number,
 plate number, etc.}
 
-\item{...}{additional arguments passed to \code{brms::brmsformula}}
+\item{...}{additional arguments passed to \code{\link[brms]{brmsformula}}}
 }
 \value{
-brmsformula
+\code{\link[brms]{brmsformula}}
 }
 \description{
 setup a default \code{MuSyC} synergy model formula to
