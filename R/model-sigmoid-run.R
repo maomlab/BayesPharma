@@ -1,35 +1,64 @@
 #' Run Bayesian Sigmoid Agonist Model
 #'
-#' @description
-#'   For additional information on additional function arguments, reference:
-#'   <https://paul-buerkner.github.io/brms/reference/brm.html>
-#'   or
-#'   <https://rdrr.io/cran/rstan/man/stan.html>
+#' @description Fits the sigmoid agonist model. The functional form is
+#'  \preformatted{
+#'    <response> ~ sigmoid(ec50, hill, top, bottom, <treatment>)}
+#'  where
+#'  \preformatted{
+#'    sigmoid = bottom + (top - bottom)/(1 + 10^((ec50 - <treatment>) * hill))}
+#'  By default the observed data are
+#'  \itemize{
+#'    \item{\strong{<treatment>}: \code{log_dose}, the \code{log10} of the dose
+#'      as a molar concentration}
+#'    \item{\strong{<response>}: \code{response}, with unspecified units}
+#'  }
+#'      
+#'  and the modeled parameters are
+#'  \itemize{
+#'    \item{\strong{ec50}: the dose where the response reaches half maximal
+#'      activity}
+#'    \item{\strong{hill}: the hill coefficient controlling the slope at the
+#'      \code{ec50}}, by convention the slope of an agonist is positive
+#'    \item{\strong{top}: the response when <treatment> => \code{Inf}}
+#'    \item{\strong{bottom}: the response when <treatment> => \code{-Inf}}
+#'  }
+#'  To configure the model you can use the following helper functions:
+#'  \itemize{
+#'    \item{\code{\link{sigmiod_agonist_formula}}: define the \code{treatment}
+#'      and \code{response} variables, and predictors for the model parameters}
+#'    \item{\code{\link{sigmoid_agonist_prior}}: define the prior for the model
+#'      parameters}
+#'    \item{\code{\link{sigmoid_agonist_init}}: define initial values for the
+#'      model parameters}
+#'  }
 #'
-#' @param data data.frame of experimental data.  must contain columns
-#'     \code{response} and any predictors specified in the formula.
-#' @param formula brmsformula object. To create a dose-response
-#'     brmsformula, (default:
-#'     \code{BayesPharma::sigmoid_agonist_formula()}.
-#' @param prior brmspriors data.frame for ec50, hill, top, and bottom.
-#'     Use one of the priors functions provided to create priors to
-#'     use here.  (default:
-#'     \code{BayesPharma::sigmoid_agonist_prior()}
-#' @param init initial values of the parameters being modeled (default
-#'     = \code{BayesPharma::sigmoid_agonist_init()}
-#' @param iter number of iterations the model runs. Increasing iter
-#'     can help with model convergence (default: 8000).
-#' @param control a named list of parameters to control the sampler's
-#'     behavior.  Adding \code{max_treedepth} and giving a greater
-#'     value than 10 can improve model convergence (default:
-#'     \code{list(adapt_delta = 0.99)}).
+#' @param data \code{data.frame} of experimental data. It must contain columns
+#'   for the treatment, response and any additional predictors specified in the
+#'   formula. See \code{\link{sigmoid_agonist_formula}} for more details.
+#' @param formula \code{bpformula} for the sigmoid agonist model
+#'   (Default: \code{\link{sigmoid_agonist_formula}()})
+#' @param prior \code{brmsprior} defining a distribution for the model
+#'   parameters \code{ec50}, \code{hill}, \code{top}, and \code{bottom}.
+#'   Use one of the priors functions provided to create priors to
+#'   use here.  (default: \code{\link{sigmoid_agonist_prior}()}
+#' @param init \code{function} returning a named \code{list} of functions
+#'   returning arrays giving initial values of the parameters being modeled for
+#'   each chain. (Default: \code{\link{sigmoid_agonist_init}()}
+#' @param iter \code{number} of iterations the model runs. Increasing
+#'   \code{iter} can help with model convergence. (Default: \code{8000})
+#' @param control a named \code{list} of parameters to control the sampler's
+#'   behavior.  Adding \code{max_treedepth} and giving a greater
+#'   value than \code{10} can improve model convergence (default:
+#'   \code{list(adapt_delta = 0.99)}).
 #' @param stanvar_function stan code for the model (default:
-#'     \code{BayesPharma::sigmoid_stanvar})
-#' @param expose_functions boolean. Expose the BayesPharma functions for the
-#'   model [default: TRUE].
-#' @param ... additional arguments passed to \code{brms::brm}
+#'   \code{BayesPharma::sigmoid_stanvar})
+#' @param expose_functions \code{logical}. Expose the BayesPharma functions for
+#'   the model. This is needed e.g. for \code{\link[brms]{loo_compare}}
+#'   (Default: \code{TRUE}]
+#' @param ... additional arguments passed to \code{\link[brms]{brm}}
 #'
-#' @returns \code{brmsfit} object
+#' @returns \code{bpfit} object, which is a wrapper around a
+#'   \code{\link[brms]{brmsfit-class}}.
 #'
 #' @examples
 #'\dontrun{
@@ -49,9 +78,9 @@ sigmoid_agonist_model <- function(
   expose_functions = TRUE,
   ...) {
 
-  if (!methods::is(formula, "brmsformula")) {
+  if (!methods::is(formula, "bpformula")) {
     warning(
-      "formula must be a 'brmsformula'. You can use the ",
+      "formula must be a 'bpformula'. You can use the ",
       "'BayesPharma::sigmoid_agonist_formula(...)'")
   }
 
@@ -77,7 +106,6 @@ sigmoid_agonist_model <- function(
       "'BayesPharma::sigmoid_agonist_prior(...)'")
   }
 
-
   model <- brms::brm(
     formula = formula,
     data = data,
@@ -102,42 +130,76 @@ sigmoid_agonist_model <- function(
 }
 
 
+
+
+
 #' Run Bayesian Sigmoid Antagonist Model
 #'
-#' @description
-#'   For additional information on additional function arguments, reference:
-#'   <https://paul-buerkner.github.io/brms/reference/brm.html>
-#'   or
-#'   <https://rdrr.io/cran/rstan/man/stan.html>
+#' @description Fits the sigmoid antagonist model. The functional form is
+#'  \preformatted{
+#'    <response> ~ sigmoid(ic50, hill, top, bottom, <treatment>)}
+#'  where
+#'  \preformatted{
+#'    sigmoid = bottom + (top - bottom)/(1 + 10^((ic50 - <treatment>) * hill))}
+#'  By default the observed data are
+#'  \itemize{
+#'    \item{\strong{<treatment>}: \code{log_dose}, the \code{log10} of the dose
+#'      as a molar concentration}
+#'    \item{\strong{<response>}: \code{response}, with unspecified units}
+#'  }
+#'  and the modeled parameters are
+#'  \itemize{
+#'    \item{\strong{ic50}: the dose where the response reaches half maximal
+#'      activity}
+#'    \item{\strong{hill}: the hill coefficient controlling the slope at the
+#'      \code{ic50}}, by convention the slope of an antagonist is negative.
+#'    \item{\strong{top}: the response when <treatment> => \code{-Inf}}
+#'    \item{\strong{bottom}: the response when <treatment> => \code{Inf}}
+#'  }
+#'  To configure the model you can use the following helper functions:
+#'  \itemize{
+#'    \item{\code{\link{sigmiod_antagonist_formula}}: define the
+#'      \code{treatment} and \code{response} variables, and predictors for the
+#'      model parameters}
+#'    \item{\code{\link{sigmoid_antagonist_prior}}: define the prior for the
+#'      model parameters}
+#'    \item{\code{\link{sigmoid_antagonist_init}}: define initial values for the
+#'      model parameters}
+#'  }
 #'
-#' @param data data.frame of experimental data.  must contain columns
-#'     \code{sponse} and any predictors specified in the formula.
-#' @param formula brmsformula object. To create a dose-response
-#'     brmsformula, (default: \code{BayesPharma::sigmoid__formula()}.
-#' @param prior brmspriors data.frame for \code{ec50}, \code{hill},
-#'     \code{top}, and \code{bottom}.  Use one of the priors functions
-#'     provided to create priors to use here.  (default:
-#'     \code{BayesPharma::sigmoid_antagonist_prior()}
-#' @param init initial values of the parameters being modeled (default
-#'     = \code{BayesPharma::sigmoid_antagonist_init()}
-#' @param iter number of iterations the model runs. Increasing iter
-#'     can help with model convergence (default: 8000).
-#' @param control a named list of parameters to control the sampler's
-#'     behavior.  Adding \code{max_treedepth} and giving a greater
-#'     value than 10 can improve model convergence (default:
-#'     \code{list(adapt_delta = 0.99)}).
+#' @param data \code{data.frame} of experimental data. It must contain columns
+#'   for the treatment, response and any additional predictors specified in the
+#'   formula. See \code{\link{sigmoid_antagonist_formula}} for more details.
+#' @param formula \code{bpformula} for the sigmoid antagonist model
+#'   (Default: \code{\link{sigmoid_antagonist_formula}()})
+#' @param prior \code{brmsprior} defining a distribution for the model
+#'   parameters \code{ic50}, \code{hill}, \code{top}, and \code{bottom}.
+#'   Use one of the priors functions provided to create priors to
+#'   use here.  (default: \code{\link{sigmoid_antagonist_prior}()}
+#' @param init \code{function} returning a named \code{list} of functions
+#'   returning arrays giving initial values of the parameters being modeled for
+#'   each chain. (Default: \code{\link{sigmoid_antagonist_init}()}
+#' @param iter \code{number} of iterations the model runs. Increasing
+#'   \code{iter} can help with model convergence. (Default: \code{8000})
+#' @param control a named \code{list} of parameters to control the sampler's
+#'   behavior.  Adding \code{max_treedepth} and giving a greater
+#'   value than \code{10} can improve model convergence (default:
+#'   \code{list(adapt_delta = 0.99)}).
 #' @param stanvar_function stan code for the model (default:
-#'     \code{BayesPharma::sigmoid_stanvar})
-#' @param expose_functions boolean. Expose the BayesPharma functions for the
-#'   model [default: TRUE].
-#' @param ... additional arguments passed to \code{brms::brm}
+#'   \code{\link{sigmoid_stanvar}})
+#' @param expose_functions \code{logical}. Expose the BayesPharma functions for
+#'   the model. This is needed e.g. for \code{\link[brms]{loo_compare}}
+#'   (Default: \code{TRUE}]
+#' @param ... additional arguments passed to \code{\link[brms]{brm}}
 #'
-#' @returns \code{brmsfit} object
+#' @returns \code{bpfit} object, which is a wrapper around a
+#'   \code{\link[brms]{brmsfit-class}}.
 #'
 #' @examples
 #'\dontrun{
-#'   sigmoid_antagonist_model(data,
-#'    formula = sigmoid_antagonist_formula(predictors = 0 + drug))
+#'   BayesPharma::sigmoid_antagonist_model(
+#'     data = data,
+#'     formula = BayesPharma::sigmoid_antagonist_formula(predictors = 0 + drug))
 #'}
 #' @export
 sigmoid_antagonist_model <- function(
