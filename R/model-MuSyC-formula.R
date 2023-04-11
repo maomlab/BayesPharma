@@ -21,9 +21,9 @@
 #'     differences should be modeled separately? (Default: 1) should a
 #'     random effect be taken into consideration? i.e. cell number,
 #'     plate number, etc.
-#' @param ... additional arguments passed to \code{brms::brmsformula}
+#' @param ... additional arguments passed to \code{\link[brms]{brmsformula}}
 #'
-#' @returns brmsformula
+#' @returns \code{\link[brms]{brmsformula}}
 #'
 #' @examples
 #'\dontrun{
