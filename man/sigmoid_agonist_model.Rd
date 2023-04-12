@@ -17,7 +17,7 @@ sigmoid_agonist_model(
 )
 }
 \arguments{
-\item{data}{\code{data.frame} of experimental data. It must contain columns
+\item{data}{\code{data.frame} of observed data. It must contain columns
 for the treatment, response and any additional predictors specified in the
 formula. See \code{\link{sigmoid_agonist_formula}} for more details.}
 
@@ -44,9 +44,8 @@ value than \code{10} can improve model convergence (default:
 \item{stanvar_function}{stan code for the model (default:
 \code{BayesPharma::sigmoid_stanvar})}
 
-\item{expose_functions}{\code{logical}. Expose the BayesPharma functions for
-the model. This is needed e.g. for \code{\link[brms]{loo_compare}}
-(Default: \code{TRUE}]}
+\item{expose_functions}{\code{logical}. Expose the sigmoid function used in
+the model. This is needed e.g. for \code{\link[brms]{loo_compare}}}
 
 \item{...}{additional arguments passed to \code{\link[brms]{brm}}}
 }
