@@ -1,7 +1,8 @@
 #' Fit a MuSyC Synergy Model
 #'
 #' @description The MuSyC synergy model is a bivariate functional form with
-#'   Bliss and Loewe synergy models models as special cases.
+#'   Bliss and Loewe synergy models models as special cases described in
+#'   (Meyer, et al., 2019) and (Wooten, et al., 2021).
 #'   
 #'   The functional form is
 #'   \preformatted{
@@ -58,32 +59,33 @@
 #'      <treatment 1> shifts the response to <treatment 2> to higher doses and
 #'      visa versa}}
 #'  
-#' @param data \code{data.frame} of experimental data.  must contain columns
-#'     \code{response} and any predictors specified in the formula.
-#' @param formula \code{brmsformula} object. To create a dose-response
-#'     \code{brmsformula}, use the \code{MuSyC_formula} function.
-#' @param prior \code{brmspriors} for \code{kcat} and \code{kM}
-#'     parameters. Use \code{BayesPharma::MuSyC_prior(...)} to create
-#'     the prior to use here.  Default:
-#'     \code{BayesPharma::MuSyC_prior()}.
-#' @param init Initial values for the parameters, Use
-#'     \code{BayesPharma::MuSyC_init(...)} to create the init to use
-#'     here. Default \code{BayesPharma::MuSyC_init()}.
-#' @param control a named list of parameters to control the sampler's
-#'     behavior.  Adding \code{max_treedepth} and giving a greater
-#'     value than 10 can improve model convergence (default:
-#'     \code{list(adapt_delta = 0.99)}).
-#' @param stanvars \code{stanvars} code for the model. Default defines
-#'     the MuSyC function and genquant code.
-#' @param expose_functions \code{logical}. Expose the BayesPharma functions for the
-#'   model [default: TRUE].
-#' @param ... additional arguments passed to \code{brms::brm}
+#' @param data \code{data.frame} of observed data. It must contain columns
+#'   for the treatment, response and any additional predictors specified in the
+#'   formula. See \code{\link{sigmoid_agonist_formula}} for more details.
+#' @param formula \code{bpformula} object. To create a formula for the MuSyC
+#'   model, use the \code{\link{MuSyC_formula}} function.
+#' @param prior \code{brmspriors} for the model parameters. To create a prior
+#'   for the MuSyC model, use the \code{\link{MuSyC_prior}} function.
+#' @param init \code{function} giving the initial values for the parameters. To
+#'   specify the initial values, use the \code{\link{MuSyC_init}} function.
+#' @param control a named \code{list} of arguments to control the sampler's
+#'   behavior. Adding \code{max_treedepth} and giving a greater value than
+#'   \code{10} can improve model convergence.
+#' @param stanvars \code{stanvars} code for the MuSyC model.
+#' @param expose_functions \code{logical}. Expose the sigmoid function used in
+#'   the model. This is needed e.g. for \code{\link[brms]{loo_compare}}
+#' @param ... additional arguments passed to \code{\link[brms]{brm}}
 #'
 #' @references
-#' #' Wooten, D.J., Meyer, C.T., Lubbock, A.L.R. et al. MuSyC is a consensus
-#' framework that unifies multi-drug synergy metrics for combinatorial drug
-#' discovery. Nat Commun 12, 4607 (2021).
-#' https://doi.org/10.1038/s41467-021-24789-z
+#'   Meyer, D.J., Wooten, D.J., Paudel B.B., Bauer, J., Hardeman, K.N.,
+#'   Westover, D., Lovly, C.M., Harris, L.A., Tyson D.R., Quaranta, V.,
+#'   Quantifying Drug Combination Synergy along Potency and Efficacy Axes, Cell
+#'   Syst. 8, 2 (2019). https://doi.org/10.1016/j.cels.2019.01.003
+#' 
+#'   Wooten, D.J., Meyer, C.T., Lubbock, A.L.R. et al. MuSyC is a consensus
+#'   framework that unifies multi-drug synergy metrics for combinatorial drug 
+#'   discovery. Nat Commun 12, 4607 (2021).
+#'   https://doi.org/10.1038/s41467-021-24789-z
 #'
 #'@export
 MuSyC_model <- function(

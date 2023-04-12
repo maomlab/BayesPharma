@@ -33,7 +33,7 @@
 #'      model parameters}
 #'  }
 #'
-#' @param data \code{data.frame} of experimental data. It must contain columns
+#' @param data \code{data.frame} of observed data. It must contain columns
 #'   for the treatment, response and any additional predictors specified in the
 #'   formula. See \code{\link{sigmoid_agonist_formula}} for more details.
 #' @param formula \code{bpformula} for the sigmoid agonist model
@@ -53,9 +53,8 @@
 #'   \code{list(adapt_delta = 0.99)}).
 #' @param stanvar_function stan code for the model (default:
 #'   \code{BayesPharma::sigmoid_stanvar})
-#' @param expose_functions \code{logical}. Expose the BayesPharma functions for
+#' @param expose_functions \code{logical}. Expose the sigmoid function used in
 #'   the model. This is needed e.g. for \code{\link[brms]{loo_compare}}
-#'   (Default: \code{TRUE}]
 #' @param ... additional arguments passed to \code{\link[brms]{brm}}
 #'
 #' @returns \code{bpfit} object, which is a wrapper around a
