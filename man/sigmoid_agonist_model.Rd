@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-sigmoid-run.R
 \name{sigmoid_agonist_model}
 \alias{sigmoid_agonist_model}
-\title{Run Bayesian Sigmoid Agonist Model}
+\title{Fit a Bayesian sigmoid agonist model}
 \usage{
 sigmoid_agonist_model(
   data,
@@ -61,7 +61,8 @@ Fits the sigmoid agonist model. The functional form is
  where
  \preformatted{
    sigmoid = bottom + (top - bottom)/(1 + 10^((ec50 - <treatment>) * hill))}
- By default the observed data are
+ By default the observed data (and therefore should be columns in the input
+ data data.frame) are
  \itemize{
    \item{\strong{<treatment>}: \code{log_dose}, the \code{log10} of the dose
      as a molar concentration}
