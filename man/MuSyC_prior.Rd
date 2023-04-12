@@ -18,49 +18,52 @@ MuSyC_prior(
 )
 }
 \arguments{
-\item{logE0}{numeric or \code{\link[brms]{brmsprior}}. Prior for the log
-response with no treatment. Default normal(log(0.5), 3) lower
-bounded by 0.}
+\item{logE0}{\code{numeric} or \code{\link[brms]{brmsprior}}. Prior for the
+log response with no treatment. (Default: \code{normal(log(0.5), 3)} lower
+bounded by \code{0}).}
 
-\item{logE1}{numeric or \code{\link[brms]{brmsprior}}. Prior for the full
-log response for treatment 1 and the dose of treatment 2 is
-zero. Default normal(log(0.25), 3) lower bounded by 0.}
+\item{logE1}{\code{numeric} or \code{\link[brms]{brmsprior}}. Prior for the
+full log response for treatment 1 and the treatment 2 is zero. (Default:
+\code{normal(log(0.25), 3)} lower bounded by \code{0}).}
 
-\item{logC1}{numeric or \code{\link[brms]{brmsprior}}. Prior for the log
-IC50 of drug 1 Default to normal(log(1), 3).}
+\item{logC1}{\code{numeric} or \code{\link[brms]{brmsprior}}. Prior for the
+log AC50 of treatment 1 and the dose of treatment 2 is zero. (Default:
+\code{normal(log(1), 3)}).}
 
-\item{h1}{numeric or \code{\link[brms]{brmsprior}}. Prior the slope of
-drug 1 at it's IC50 and dose of the treatment 2 is zero
-converted to exponent form Default mu = MuSyC_si_to_hi(si = 1,
-Ci = 1, E0 = 0, Ei = 0); normal(mu, 3) lower bounded by .1}
+\item{h1}{\code{numeric} or \code{\link[brms]{brmsprior}}. Prior for the
+slope of treatment 1 at its AC50 and treatment 2 is zero in exponential
+form. To converted the slope to exponential form, use
+\code{\link{MuSyC_si_to_hi}}). In particular, let \code{mu =
+MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei = 0)}, then (Default:
+\code{normal(mu, 3)} lower bounded by \code{.1}).}
 
-\item{logE2}{numeric or \code{\link[brms]{brmsprior}}. Prior for the full
-log response for treatment 2 and the dose of treatment 1 is
-zero. Default normal(log(0.25), 3) lower bounded by 0.}
+\item{logE2}{\code{numeric} or \code{\link[brms]{brmsprior}}. Prior for the
+full log response for treatment 2 and the treatment 1 is zero. (Default: 
+\code{normal(log(0.25), 3)} lower bounded by \code{0}).}
 
-\item{logC2}{numeric or \code{\link[brms]{brmsprior}}. Prior for the log
-IC50 of drug 2 Default to normal(log(1), 3).}
+\item{logC2}{\code{numeric} or \code{\link[brms]{brmsprior}}. Prior for the
+log AC50 of treatment 2. (Default: to \code{normal(log(1), 3)}).}
 
-\item{h2}{numeric or \code{\link[brms]{brmsprior}}. Prior the slope of
-drug 2 at it's IC50 and dose of the treatment 1 is zero
-converted to exponent form Default \code{mu = MuSyC_si_to_hi(si
-= 1, Ci = 1, E0 = 0, Ei = 0)}; \code{normal(mu, 3)} lower
-bounded by 0.1}
+\item{h2}{\code{numeric} or \code{\link[brms]{brmsprior}}. Prior the slope of
+treatment 2 at its AC50 and treatment 1 is zero in exponential form. To
+converted the slope to exponential form, use \code{\link{MuSyC_si_to_hi}}).
+In particular, let \code{mu = MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei =
+0)}, then (Default: \code{normal(mu, 3)} lower bounded by \code{.1}).}
 
-\item{logE3}{numeric or \code{\link[brms]{brmsprior}}. Prior for the low
-full response for treatment 1 and treatment 2. Default to
-\code{normal(log(0.25), 3)} lower bounded by 0.}
+\item{logE3}{\code{numeric} or \code{\link[brms]{brmsprior}}. Prior for the
+combined full response for treatment 1 and treatment 2. (Default:
+\code{normal(log(0.25), 3)} lower bounded by 0).}
 
-\item{logalpha}{numeric or \code{\link[brms]{brmsprior}}. Prior for the
-log synergistic potency parameter with greater than 1
-synergistic, less than 1 antagonistic. Default
+\item{logalpha}{\code{numeric} or \code{\link[brms]{brmsprior}}. Prior for
+the log synergistic potency. Where values greater than \code{1} are
+synergistic, values less than \code{1} are antagonistic. (Default:
 \code{normal(log(0), 0.5)}.}
 
 \item{...}{additional \code{\link[brms]{brmsprior}} objects to add to the
 prior.}
 }
 \value{
-\code{brmsprior} \code{data.frame}
+\code{\link[brms]{brmsprior}} \code{data.frame}
 }
 \description{
 Creating a \code{data.frame} of priors of the dose response

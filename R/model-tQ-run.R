@@ -14,7 +14,7 @@
 #' @param control a named list of parameters to control the sampler's behavior.
 #'   Adding \code{max_treedepth} and giving a greater value than 10 can improve
 #'   model convergence (default = list(adapt_delta = 0.99)).
-#' @param expose_functions boolean. Expose the BayesPharma functions for the
+#' @param expose_functions \code{logical}. Expose the BayesPharma functions for the
 #'   model [default: TRUE].
 #' @param ... additional arguments passed to \code{brms::brm}.
 #'
