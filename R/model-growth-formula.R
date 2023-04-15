@@ -1,10 +1,9 @@
 #' Create a formula for the sigmoid growth model
 #'
 #' @description set-up a sigmoid growth model formula to for use in
-#'   \code{growth_sigmoid_model} and in the BayesPharma package. The functional
-#'   form is
-#'   
-#'     response ~ sigmoid_growth(K, K0, rate, lambda, time)
+#'   \code{\link{growth_sigmoid_model}}. The functional form is
+#'   \preformatted{
+#'     response ~ sigmoid_growth(K, K0, rate, lambda, time)}
 #'   
 #'   The parameterization follows (Zwietering, 1990) and grofit:
 #'   
@@ -22,25 +21,26 @@
 #'     See the vignettes(topic = "derive_growth_model", package = "BayesPharma")   
 #'
 #' @param treatment_variable character variable representing time as a treatment
-#'     (Default: 'time')
+#'   (Default: 'time')
 #' @param treatment_units character the units of the time variable. (Default:
-#'     "seconds")
+#'   "seconds")
 #' @param response_variable character variable representing the response to
-#'     treatment. (Default: 'response')
+#'   treatment. (Default: 'response')
 #' @param response_units character the units of the response. (Default: NULL)
 #' @param predictors Additional formula objects to specify predictors
-#'     of non-linear parameters. i.e. what perturbations/experimental
-#'     differences should be modeled separately? (Default: 1) should a
-#'     random effect be taken into consideration? i.e. cell number,
-#'     plate number, etc.
+#'   of non-linear parameters. i.e. what perturbations/experimental
+#'   differences should be modeled separately? (Default: 1) should a
+#'   random effect be taken into consideration? i.e. cell number,
+#'   plate number, etc.
 #' @param ... additional arguments to \code{brms::brmsformula}
 #'
 #' @returns a \code{bpformula}, which is a subclass of
-#'     \code{brms::brmsformula} and can be passed to
-#'     \code{BayesPharma::growth_sigmoid_model}.
+#'   \code{\link[brms]{brmsformula}} and can be passed to
+#'   \code{\link{growth_sigmoid_model}}.
+#'
 #' @seealso
-#'     [brms::brmsformula()], which this function wraps.
-#'     [BayesPharma::growth_sigmoid_model()] into which the result of this
+#'     \code{\link[brms]{brmsformula}}, which this function wraps.
+#'     \code{\link{growth_sigmoid_model]}} into which the result of this
 #'     function can be passed.
 #'
 #' @examples

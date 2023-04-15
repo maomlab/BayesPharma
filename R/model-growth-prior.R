@@ -10,18 +10,18 @@
 #'   For other distribution options, reference
 #'   <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
 #'
-#' @param K \code{brmsprior} or \code{numeric}. Prior for the \code{K}
-#'   parameter. (Default: \code{normal(1, 0.5)})
-#' @param K0 \code{brmsprior} or \code{numeric}. Prior for the \code{K0}
-#'   parameter. (Default: \code{normal(0, 0.5)})
-#' @param rate \code{brmsprior} or \code{numeric}. Prior for the \code{rate}
-#'   parameter. (Default: \code{normal(1, 1)} with and a lower bound of
-#'   \code{0}).
-#' @param lambda \code{brmsprior} or \code{numeric}. Prior for the \code{lambda}
-#'   parameter. (Default: \code{normal(0.5, 0.5)}).
-#' @param ... additional \code{brmsprior} objects.
+#' @param K \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+#'   \code{K} parameter. (Default: \code{normal(1, 0.5)})
+#' @param K0 \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+#'   \code{K0} parameter. (Default: \code{normal(0, 0.5)})
+#' @param rate \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+#'   \code{rate} parameter. (Default: \code{normal(1, 1)} with and a lower bound
+#'   of \code{0}).
+#' @param lambda \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+#'   \code{lambda} parameter. (Default: \code{normal(0.5, 0.5)}).
+#' @param ... additional \code{\link[brms]{brmsprior}} objects.
 #'
-#' @returns \code{brmsprior} \code{data.frame}
+#' @returns \code{\link[brms]{brmsprior}} \code{data.frame}
 #'
 #' @examples
 #'\dontrun{
@@ -57,20 +57,21 @@ growth_richards_prior <- function(
 #' For other distribution options, reference
 #' <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
 #'
-#' @param K \code{brmsprior} or \code{numeric}. Prior for the \code{K}
-#'   parameter. (Default: \code{normal(1, 0.5)}).
-#' @param K0 \code{brmsprior} or \code{numeric}. Prior for the \code{K0}
-#'   parameter. (Default: \code{normal(0, 0.5)}).
-#' @param rate \code{brmsprior} or \code{numeric}. Prior for the \code{rate}
-#'   parameter. (Default: \code{normal(1, 1)} with and a lower bound of
+#' @param K \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+#'   \code{K} parameter. (Default: \code{normal(1, 0.5)}).
+#' @param K0 \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+#'   \code{K0} parameter. (Default: \code{normal(0, 0.5)}).
+#' @param rate \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+#'   \code{rate} parameter. (Default: \code{normal(1, 1)} with and a lower bound
+#'   of \code{0}).
+#' @param lambda \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+#'   \code{lambda} parameter. (Default: \code{normal(0.5, 0.5)}).
+#' @param nu \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+#'   \code{nu} parameter.  (Default: normal(1, 1) with a lower bound of
 #'   \code{0}).
-#' @param lambda \code{brmsprior} or \code{numeric}. Prior for the \code{lambda}
-#'   parameter. (Default: \code{normal(0.5, 0.5)}).
-#' @param nu \code{brmsprior} or \code{numeric}. Prior for the \code{nu}
-#'   parameter.  (Default: normal(1, 1) with a lower bound of \code{0}).
-#' @param ... additional \code{brmsprior} objects.
+#' @param ... additional \code{\link[brms]{brmsprior}} objects.
 #'
-#' @returns \code{brmsprior} \code{data.frame}
+#' @returns \code{\link[brms]{brmsprior}} \code{data.frame}
 #'
 #' @examples
 #'\dontrun{

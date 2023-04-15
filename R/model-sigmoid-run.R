@@ -61,11 +61,11 @@
 #'   \code{\link[brms]{brmsfit-class}}.
 #'
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #'   BayesPharma::sigmoid_agonist_model(
 #'     data = data,
 #'     formula = BayesPharma::sigmoid_agonist_formula(predictors = 0 + drug))
-#'}
+#' }
 #' @export
 sigmoid_agonist_model <- function(
   data,

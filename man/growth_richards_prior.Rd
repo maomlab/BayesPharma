@@ -23,28 +23,29 @@ growth_richards_prior(
 )
 }
 \arguments{
-\item{K}{\code{brmsprior} or \code{numeric}. Prior for the \code{K}
-parameter. (Default: \code{normal(1, 0.5)}).}
+\item{K}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\code{K} parameter. (Default: \code{normal(1, 0.5)}).}
 
-\item{K0}{\code{brmsprior} or \code{numeric}. Prior for the \code{K0}
-parameter. (Default: \code{normal(0, 0.5)}).}
+\item{K0}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\code{K0} parameter. (Default: \code{normal(0, 0.5)}).}
 
-\item{rate}{\code{brmsprior} or \code{numeric}. Prior for the \code{rate}
-parameter. (Default: \code{normal(1, 1)} with and a lower bound of
+\item{rate}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\code{rate} parameter. (Default: \code{normal(1, 1)} with and a lower bound
+of \code{0}).}
+
+\item{lambda}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\code{lambda} parameter. (Default: \code{normal(0.5, 0.5)}).}
+
+\item{nu}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\code{nu} parameter.  (Default: normal(1, 1) with a lower bound of
 \code{0}).}
 
-\item{lambda}{\code{brmsprior} or \code{numeric}. Prior for the \code{lambda}
-parameter. (Default: \code{normal(0.5, 0.5)}).}
-
-\item{nu}{\code{brmsprior} or \code{numeric}. Prior for the \code{nu}
-parameter.  (Default: normal(1, 1) with a lower bound of \code{0}).}
-
-\item{...}{additional \code{brmsprior} objects.}
+\item{...}{additional \code{\link[brms]{brmsprior}} objects.}
 }
 \value{
-\code{brmsprior} \code{data.frame}
+\code{\link[brms]{brmsprior}} \code{data.frame}
 
-\code{brmsprior} \code{data.frame}
+\code{\link[brms]{brmsprior}} \code{data.frame}
 }
 \description{
 Creates a for the priors for the sigmoid growth model. If the
