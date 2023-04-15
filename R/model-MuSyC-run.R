@@ -64,8 +64,9 @@
 #'   formula. See \code{\link{sigmoid_agonist_formula}} for more details.
 #' @param formula \code{bpformula} object. To create a formula for the MuSyC
 #'   model, use the \code{\link{MuSyC_formula}} function.
-#' @param prior \code{brmspriors} for the model parameters. To create a prior
-#'   for the MuSyC model, use the \code{\link{MuSyC_prior}} function.
+#' @param prior \code{\link[brms]{brmsprior}} for the model parameters. To
+#'   create a prior for the MuSyC model, use the \code{\link{MuSyC_prior}}
+#'   function.
 #' @param init \code{function} giving the initial values for the parameters. To
 #'   specify the initial values, use the \code{\link{MuSyC_init}} function.
 #' @param control a named \code{list} of arguments to control the sampler's

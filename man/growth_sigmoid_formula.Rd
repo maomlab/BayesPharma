@@ -35,15 +35,14 @@ plate number, etc.}
 }
 \value{
 a \code{bpformula}, which is a subclass of
-    \code{brms::brmsformula} and can be passed to
-    \code{BayesPharma::growth_sigmoid_model}.
+  \code{\link[brms]{brmsformula}} and can be passed to
+  \code{\link{growth_sigmoid_model}}.
 }
 \description{
 set-up a sigmoid growth model formula to for use in
-  \code{growth_sigmoid_model} and in the BayesPharma package. The functional
-  form is
-  
-    response ~ sigmoid_growth(K, K0, rate, lambda, time)
+  \code{\link{growth_sigmoid_model}}. The functional form is
+  \preformatted{
+    response ~ sigmoid_growth(K, K0, rate, lambda, time)}
   
   The parameterization follows (Zwietering, 1990) and grofit:
   
@@ -78,7 +77,7 @@ set-up a sigmoid growth model formula to for use in
 
 }
 \seealso{
-[brms::brmsformula()], which this function wraps.
-    [BayesPharma::growth_sigmoid_model()] into which the result of this
+\code{\link[brms]{brmsformula}}, which this function wraps.
+    \code{\link{growth_sigmoid_model]}} into which the result of this
     function can be passed.
 }

@@ -20,8 +20,9 @@ MuSyC_model(
 for the treatment, response and any additional predictors specified in the
 formula. See \code{\link{sigmoid_agonist_formula}} for more details.}
 
-\item{prior}{\code{brmspriors} for the model parameters. To create a prior
-for the MuSyC model, use the \code{\link{MuSyC_prior}} function.}
+\item{prior}{\code{\link[brms]{brmsprior}} for the model parameters. To
+create a prior for the MuSyC model, use the \code{\link{MuSyC_prior}}
+function.}
 
 \item{init}{\code{function} giving the initial values for the parameters. To
 specify the initial values, use the \code{\link{MuSyC_init}} function.}
