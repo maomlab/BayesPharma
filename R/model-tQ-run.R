@@ -96,5 +96,6 @@ tQ_model <- function(
     brms::expose_functions(model, vectorize = TRUE)
   }
 
+  class(model) <- c("bpfit", class(model))
   model
 }
