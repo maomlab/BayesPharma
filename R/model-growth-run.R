@@ -195,7 +195,7 @@ growth_richards_model <- function(
     stanvars = stanvar_function,
     ...)
 
-  model$bayes_pharma <- list(model_type = "growth_richards")
+  model$bayes_pharma_info <- list(model_type = "growth_richards")
   model$bayes_pharma_info <- c(
     model$bayes_pharma_info,
     list(formula_info = formula$bayes_pharam_info))
@@ -204,5 +204,6 @@ growth_richards_model <- function(
     brms::expose_functions(model, vectorize = TRUE)
   }
 
+  class(model) <- c("bpfit", class(model))
   model
 }

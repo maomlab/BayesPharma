@@ -144,7 +144,7 @@ MuSyC_model <- function(
 
   if (!("logd2scale" %in% names(data))) {
     data <- data |>
-      dplyr::mutate(logd1scale = mean(
+      dplyr::mutate(logd2scale = mean(
         .data[[
           formula$bayes_pharma_info[["treatment_2_variable"]]
           ]]))
@@ -159,7 +159,7 @@ MuSyC_model <- function(
     stanvars = stanvars,
     ...)
 
-  model$bayes_pharma <- list(model_type = "MuSyC")
+  model$bayes_pharma_info <- list(model_type = "MuSyC")
 
   model$bayes_pharma_info <- c(
     model$bayes_pharma_info,
@@ -169,7 +169,6 @@ MuSyC_model <- function(
     brms::expose_functions(model, vectorize = TRUE)
   }
 
-  model
-
   class(model) <- c("bpfit", class(model))
+  model
 }

@@ -116,7 +116,7 @@ sigmoid_agonist_model <- function(
     stanvars = stanvar_function,
     ...)
 
-  model$bayes_pharma <- list(model_type = "sigmoid_agonist")
+  model$bayes_pharma_info <- list(model_type = "sigmoid_agonist")
 
   model$bayes_pharma_info <- c(
     model$bayes_pharma_info,
@@ -126,6 +126,7 @@ sigmoid_agonist_model <- function(
     brms::expose_functions(model, vectorize = TRUE)
   }
 
+  class(model) <- c("bpfit", class(model))
   model
 }
 
@@ -264,6 +265,5 @@ sigmoid_antagonist_model <- function(
   }
 
   class(model) <- c("bpfit", class(model))
-
   model
 }
