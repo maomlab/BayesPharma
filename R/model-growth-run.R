@@ -93,7 +93,7 @@ growth_richards_model <- function(
   model$bayes_pharma <- list(model_type = "growth_sigmoid")
   model$bayes_pharma_info <- c(
     model$bayes_pharma_info,
-    list(formula_info = formula$bayes_pharam_info))
+    list(formula_info = formula$bayes_pharma_info))
   
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)
@@ -198,7 +198,7 @@ growth_richards_model <- function(
   model$bayes_pharma_info <- list(model_type = "growth_richards")
   model$bayes_pharma_info <- c(
     model$bayes_pharma_info,
-    list(formula_info = formula$bayes_pharam_info))
+    list(formula_info = formula$bayes_pharma_info))
 
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)

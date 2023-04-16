@@ -85,10 +85,10 @@ tQ_model <- function(
 
   model$bayes_pharma_info <- list(model_type = "tQ")
 
-  if ("bayes_pharam_info" %in% names(formula)) {
+  if ("bayes_pharma_info" %in% names(formula)) {
     model$bayes_pharma_info <- c(
       model$bayes_pharma_info,
-      list(formula_info = formula$bayes_pharam_info))
+      list(formula_info = formula$bayes_pharma_info))
   }
 
   # this is needed e.g. for brms::loo_compare()
