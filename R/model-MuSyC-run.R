@@ -103,7 +103,7 @@ MuSyC_model <- function(
     expose_functions = TRUE,
     ...) {
 
-  if (!methods::is(formula, "bpformula")) {
+  if (!inherits(formula, "bpformula")) {
     warning(
       "formula must be a 'bpformula'. You can use the ",
       "'BayesPharma::MySYC_formula(...)' formula function.")
@@ -125,7 +125,7 @@ MuSyC_model <- function(
         "as a column in the input 'data' data.frame\n"))
   }
 
-  if (!methods::is(prior, "brmsprior")) {
+  if (!inherits(prior, "brmsprior")) {
     warning(
       "prior must be a 'brmsprior'. You can use the ",
       "'BayesPharma::MuSyC_prior(...)' function.")

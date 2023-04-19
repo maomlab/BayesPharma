@@ -41,7 +41,7 @@ plot_posterior_density <- function(
     title_label = "Posterior Density Plots w/ Mean & 95% CI") {
 
   assertthat::assert_that(
-    methods::is(model, "brmsfit"),
+    inherits(model, "bpfit"),
     msg = "Model should be a brms::brmsfit object")
   assertthat::is.number(l_ci)
   assertthat::is.number(u_ci)
