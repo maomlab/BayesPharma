@@ -29,12 +29,12 @@ treatment. (Default: 'response')}
 of non-linear parameters. i.e. what perturbations/experimental
 differences should be modeled separately? (Default: 1)}
 
-\item{...}{additional arguments to \code{brms::brmsformula}}
+\item{...}{additional arguments to \code{\link[brms]{brmsformula}}}
 }
 \value{
 a \code{bpformula}, which is a subclass of
-    \code{brms::brmsformula} and can be passed to
-    \code{BayesPharma::sigmoid_antagonist_model}.
+    \code{\link[brms]{brmsformula}} and can be passed to
+    \code{\link{sigmoid_antagonist_model}}.
 }
 \description{
 set-up an antagonist sigmoid dose response model formula to
@@ -61,7 +61,7 @@ set-up an antagonist sigmoid dose response model formula to
 
 }
 \seealso{
-[brms::brmsformula()], which this function wraps.
-    [BayesPharma::sigmiod_antagonist_model()] into which the result of this
+\code{\link[brms]{brmsformula}}, which this function wraps.
+    \code{\link{sigmiod_antagonist_model}} into which the result of this
     function can be passed.
 }

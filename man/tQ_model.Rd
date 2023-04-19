@@ -39,10 +39,10 @@ model convergence (default = list(adapt_delta = 0.99)).}
 \item{expose_functions}{\code{logical}. Expose the BayesPharma functions for the
 model [default: TRUE].}
 
-\item{...}{additional arguments passed to \code{brms::brm}.}
+\item{...}{additional arguments passed to \code{\link[brms]{brm}}.}
 }
 \value{
-brmsfit model
+\code{bpfit} model
 }
 \description{
 Model for the tQ enzyme kinetics model

@@ -1,33 +1,31 @@
 #' Define formula for the tQ enzyme kinetics model
 #'
-#' @param series_index_variable character variable indexing which measurements
-#'     are part of a common time series.
-#' @param treatment_variable character variable representing time as the
-#'     treatment. (Default: 'time')
-#' @param treatment_units character the units of the time variable. (Default:
-#'     'seconds')
-#' @param ET_variable character variable representing the enzyme concentration
-#'     (Default: 'ET')
-#' @param ET_units character variable representing the units of the enzyme
-#'     concentration. (Default: mg/ml)
-#' @param ST_variable character variable representing the substrate
-#'     concentration at time 0. (Default: 'ET')
-#' @param ST_units character variable representing the units of the substrate
-#'     concentration. (Default: mg/ml)
-#' @param response_variable character variable representing the product.
-#'     (Default: 'P')
-#' @param response_units character the units of the product. (Default: mg/ml)
-#'
-#' @param predictors expression of predictors for \code{kcat} and \code{kM}
-#' @param ... additional arguments passed to \code{brms::brmsformula}
+#' @param series_index_variable \code{character} variable indexing which
+#'   measurements are part of a common time series.
+#' @param treatment_variable \code{character} variable representing time as the
+#'   treatment.
+#' @param treatment_units \code{character} the units of the treatment variable.
+#' @param ET_variable \code{character} variable representing the total enzyme
+#'   concentration.
+#' @param ET_units \code{character} variable representing the units of the
+#'   enzyme concentration.
+#' @param ST_variable \code{character} variable representing the total substrate
+#'   concentration.
+#' @param ST_units \code{character} variable representing the units of the
+#'   substrate concentration.
+#' @param response_variable \code{character} variable representing the product.
+#' @param response_units \code{character} the units of the product.
+#' @param predictors \code{expression} of predictors for \code{kcat} and
+#'   \code{kM} parameters
+#' @param ... additional arguments passed to \code{\link[brms]{brmsformula}}
 #'
 #' @returns a \code{bpformula}, which is a subclass of
-#'     \code{brms::brmsformula} and can be passed to
-#'     \code{BayesPharma::tQ_model}.
+#'   \code{\link[brms]{brmsformula}} and can be passed to
+#'   \code{\link{tQ_model}}.
 #' @seealso
-#'     [brms::brmsformula()], which this function wraps.
-#'     [BayesPharma::tQ_model()] into which the result of this
-#'     function can be passed.
+#'   \code{\link[brms]{brmsformula}}, which this function wraps.
+#'   \code{\link{tQ_model}} into which the result of this function can be
+#'   passed.
 #'
 #' @export
 tQ_formula <- function(
@@ -43,7 +41,7 @@ tQ_formula <- function(
     predictors = 1,
     ...) {
 
-  # The sigmoid function is defined in BayesPharma::sigmoid_stanvar
+  # The tQ function is defined in BayesPharma::tQ_stanvars
   response_eq <- as.formula(
     paste0(
       response_variable, " ~ tQ(",
@@ -78,5 +76,4 @@ tQ_formula <- function(
 
   class(model_formula) <- c("bpformula", class(model_formula))
   model_formula
-
 }

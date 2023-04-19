@@ -7,7 +7,7 @@
 sigmoid_antagonist_init(ic50 = -6, hill = -1, top = 1, bottom = 0)
 }
 \arguments{
-\item{ic50}{numeric or numeric returning function units log_dose
+\item{ic50}{\code{numeric} or numeric returning function units log_dose
 (default = -6, corresponding to 1e-6 = 1 μM)}
 
 \item{hill}{numeric or numeric returning function with units
@@ -18,11 +18,11 @@ response/log_dose (default = -1)}
 \item{bottom}{numeric units of bottom (default = 0).}
 }
 \value{
-input for brms::brm(init = ...)
+input for \code{\link[brms]{brm}(init = ...)}
 }
 \description{
 Creating initial values for the sigmoid model parameters that
-  can be passed to the \code{sigmoid_antagonist_model}
+  can be passed to the \code{\link{sigmoid_antagonist_model}}
 }
 \examples{
 \dontrun{

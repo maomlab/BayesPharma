@@ -28,11 +28,11 @@
 #' @param stanvar_function Stan code for the model (default:
 #'   \code{BayesPharma::growth_richards_stanvar}).
 #' @param expose_functions \code{logical}. Expose the stan functions for the
-#'   model. This is needed e.g. to run \code{brms::loo_compare()}. (Default:
+#'   model. This is needed e.g. to run \code{\link[brms]{loo_compare}}. (Default:
 #'   \code{TRUE}). 
-#' @param ... additional arguments passed to \code{brms::brm}
+#' @param ... additional arguments passed to \code{\link[brms]{brm}}
 #'
-#' @returns \code{bpfit} \code{brmsfit}
+#' @returns \code{bpfit} \code{\link[brms]{brmsfit}}
 #'
 #' @examples
 #'\dontrun{
@@ -133,11 +133,11 @@ growth_richards_model <- function(
 #' @param stanvar_function Stan code for the model (default:
 #'   \code{BayesPharma::growth_richards_stanvar}).
 #' @param expose_functions \code{logical}. Expose the stan functions for the
-#'   model. This is needed e.g. to run \code{brms::loo_compare()}. (Default:
-#'   \code{TRUE}). 
-#' @param ... additional arguments passed to \code{brms::brm}
+#'   model. This is needed e.g. to run \code{\link[brms]{loo_compare}}.
+#'   (Default: \code{TRUE}). 
+#' @param ... additional arguments passed to \code{\link[brms]{brm}}
 #'
-#' @returns \code{bpfit} \code{brmsfit}
+#' @returns \code{bpfit} \code{\link[brms]{brmsfit}}
 #'
 #' @examples
 #'\dontrun{

@@ -7,16 +7,16 @@
 plot_pp_check(model, plot_type = "dens_overlay", n = 50, ...)
 }
 \arguments{
-\item{model}{brmsfit model.}
+\item{model}{\code{brmsfit} model.}
 
-\item{plot_type}{string expression of a plot function.}
+\item{plot_type}{\code{character} for the plot type.}
 
-\item{n}{numeric units of posterior draws to be used.}
+\item{n}{\code{numeric} number of posterior draws to be used.}
 
-\item{...}{additional arguments to \code{brms::pp_check}.}
+\item{...}{additional arguments to \code{\link[brms]{pp_check}}.}
 }
 \value{
-ggplot object.
+\code{\link[ggplot2]{ggplot}} object.
 }
 \description{
 Given a brms model, perform a graphical posterior
