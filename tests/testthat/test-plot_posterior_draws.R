@@ -3,9 +3,9 @@ library(BayesPharma)
 load("../testdata/ggplot_test_model.rda")
 
 testthat::test_that(
-  desc = "posterior_draws_plot with facet_var returns ggplot object",
+  desc = "plot_posterior_draws with facet_var returns ggplot object",
   code = {
   expect_gg(
-    BayesPharma::posterior_draws_plot(
+    BayesPharma::plot_posterior_draws(
       model = test_model))
 })

@@ -1,4 +1,9 @@
-MuSyC_function_stanvar <- brms::stanvar(
+#' Stan code for the MuSyC function.
+#'
+#' @note stanvar script of a MuSyC equation.
+#'     
+#' @export
+MuSyC_stanvar <- brms::stanvar(
   scode = paste(
     "  real MuSyC(",
     "    real logd1, real logd2,",

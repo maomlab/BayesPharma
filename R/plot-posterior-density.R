@@ -1,9 +1,8 @@
 #' Create a plot of the posterior density distributions of modeled parameters
 #' from brmsfit model
 #'
-#' @description plots the brmsfit model density distribution of each
-#'     parameter and the mean, lower confidence interval, and upper
-#'     confidence interval.
+#' @description plots the \code{\link{bpfit}} model density distribution of each
+#'   parameter and the mean, lower confidence interval, and upper confidence interval.
 #'
 #' @param model brmsfit model.
 #' @param predictors_col_name string expression for predictors column
@@ -23,7 +22,7 @@
 #'
 #' @examples
 #'\dontrun{
-#'   posterior_densities_plot(
+#'   plot_posterior_density(
 #'     model = my_sigmoid_model,
 #'     predictors_col_name = "predictors",
 #'     half_max_label = "ic50",
@@ -33,7 +32,7 @@
 #'}
 #' @importFrom rlang .data
 #'@export
-posterior_densities_plot <- function(
+plot_posterior_density <- function(
     model,
     predictors_col_name = "_Intercept",
     half_max_label = "ec50",

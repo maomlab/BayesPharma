@@ -290,7 +290,7 @@ ggplot2::ggplot() +
 
 
 ```{r test list-column}
-#BayesPharma::posterior_draws_plot(
+#BayesPharma::plot_posterior_draws(
 #  model = model)
 ```
 

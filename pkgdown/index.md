@@ -67,7 +67,7 @@ model |> BayesPharma::basic_stats()
 ```
 #### Regression plot
 ```{r}
-model |> BayesPharma::posterior_draws_plot()
+model |> BayesPharma::plot_posterior_draws()
 ```
 #### Prior densities
 ```{r}
