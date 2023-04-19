@@ -4,10 +4,10 @@
 #'     numeric value.
 #' @returns function returning a numeric array of length 1.
 prepare_init <- function(init) {
-  if (methods::is(init, "function")) {
+  if (inherits(init, "function")) {
     # init is a function, check that it returns a numeric array of dimension 1
     x <- init()
-    assertthat::assert_that(methods::is(x, "array"))
+    assertthat::assert_that(inherits(x, "array"))
     assertthat::assert_that(dim(x) == 1)
     assertthat::assert_that(is.numeric(x))
     init_fn <- init
@@ -42,7 +42,7 @@ prepare_init <- function(init) {
 #'
 #' @returns \code{\link[brms]{brmsprior}}
 prepare_prior <- function(prior, ...) {
-  if (methods::is(prior, "brmsprior")) {
+  if (inherits(prior, "brmsprior")) {
     args <- list(...)
     for (arg in names(args)) {
       assertthat::assert_that(prior[[arg]] == args[[arg]])

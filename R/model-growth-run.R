@@ -52,7 +52,7 @@ growth_richards_model <- function(
     expose_functions = TRUE,
     ...) {
   
-  if (!methods::is(formula, "bpformula")) {
+  if (!inherits(formula, "bpformula")) {
     warning(
       "formula must be a 'bpformula'. You can use the ",
       "'BayesPharma::growth_sigmoid_formula(...)' prior function")
@@ -74,7 +74,7 @@ growth_richards_model <- function(
         "needs to be a column of the input 'data' data.frame\n"))
   }
   
-  if (!methods::is(prior, "brmsprior")) {
+  if (!inherits(prior, "brmsprior")) {
     warning(
       "prior must be a 'brmsprior'. Use either the ",
       "'BayesPharma::growth_sigmoid_prior(...)'")
@@ -157,7 +157,7 @@ growth_richards_model <- function(
     expose_functions = TRUE,
     ...) {
 
-  if (!methods::is(formula, "bpformula")) {
+  if (!inherits(formula, "bpformula")) {
     warning(
       "formula must be a 'bpformula'. You can use the ",
       "'BayesPharma::growth_richards_formula(...)' prior function")
@@ -179,7 +179,7 @@ growth_richards_model <- function(
         "needs to be a column of the input 'data' data.frame\n"))
   }
 
-  if (!methods::is(prior, "brmsprior")) {
+  if (!inherits(prior, "brmsprior")) {
     warning(
       "prior must be a 'brmsprior'. Use either the ",
       "'BayesPharma::growth_richards_prior(...)'")

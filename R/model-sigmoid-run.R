@@ -78,7 +78,7 @@ sigmoid_agonist_model <- function(
   expose_functions = TRUE,
   ...) {
 
-  if (!methods::is(formula, "bpformula")) {
+  if (!inherits(formula, "bpformula")) {
     warning(
       "formula must be a 'bpformula'. You can use the ",
       "'BayesPharma::sigmoid_agonist_formula(...)'")
@@ -100,7 +100,7 @@ sigmoid_agonist_model <- function(
         "needs to be a column of the input 'data' data.frame\n"))
   }
 
-  if (!methods::is(prior, "brmsprior")) {
+  if (!inherits(prior, "brmsprior")) {
     warning(
       "prior must be a 'brmsprior'. You can use the ",
       "'BayesPharma::sigmoid_agonist_prior(...)'")
@@ -214,7 +214,7 @@ sigmoid_antagonist_model <- function(
     expose_functions = TRUE,
     ...) {
 
-  if (!methods::is(formula, "bpformula")) {
+  if (!inherits(formula, "bpformula")) {
     warning(
       "formula must be a 'bpformula'. You can use the ",
       "'BayesPharma::sigmoid_antagonist_formula(...)' prior function")
@@ -236,7 +236,7 @@ sigmoid_antagonist_model <- function(
         "needs to be a column of the input 'data' data.frame\n"))
   }
 
-  if (!methods::is(prior, "brmsprior")) {
+  if (!inherits(prior, "brmsprior")) {
     warning(
       "prior must be a 'brmsprior'. You can use the ",
       "'BayesPharma::sigmoid_antagonist_prior(...)' function.")

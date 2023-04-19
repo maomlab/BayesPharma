@@ -31,7 +31,7 @@ plot_drc <- function(
         from = log_dose_range[1],
         to = log_dose_range[2],
         length.out = 100))
-  } else if (methods::is(newdata, "data.frame")) {
+  } else if (inherits(newdata, "data.frame")) {
     assertthat::assert_that("log_dose" %in% names(newdata))
   } else {
     warning(
@@ -40,9 +40,9 @@ plot_drc <- function(
         "class ", class(newdata), "\n"))
   }
 
-  assertthat::assert_that(methods::is(aes_mapping, "uneval"))
+  assertthat::assert_that(inherits(aes_mapping, "uneval"))
   assertthat::assert_that(
-    is.null(title) || methods::is(title, "character"))
+    is.null(title) || inherits(title, "character"))
 
   predicted_values <- newdata |>
     dplyr::bind_cols(
