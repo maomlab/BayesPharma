@@ -87,7 +87,7 @@ And then plot of the prior predictive distributions:
 #| fig.cap = "KOR antagonists prior distribution"
 
 kor_sample_prior |>
-  BayesPharma::density_distributions_plot()
+  BayesPharma::plot_density_distribution()
   
 
 ```
@@ -171,7 +171,7 @@ posterior produced by the model:
 #| fig.height = 5,
 #| fig.cap="KOR antagonists model, compare prior and posterior distributions for each substance"
 
-BayesPharma::prior_posterior_densities_plot(
+BayesPharma::plot_prior_posterior_densities(
   model = kor_model,
   predictors_col_name = "substance_id",
   half_max_label = "ic50",
@@ -194,7 +194,7 @@ intervals:
 #| fig.height=5,
 #| fig.cap="KOR Antagonists, posterior distribution for each substance"
 
-BayesPharma::posterior_densities_plot(
+BayesPharma::plot_posterior_density(
   kor_model, 
   predictors_col_name = "substance_id", 
   half_max_label = "ic50",
@@ -215,7 +215,7 @@ quantile intervals:
 #| dependson=c("kor-model"),
 #| fig.cap="KOR antagonists, posterior draws"
 
-BayesPharma::posterior_draws_plot(
+BayesPharma::plot_posterior_draws(
   model = kor_model,
   title = "")
 ```

@@ -26,7 +26,7 @@ either the \code{ec50} for the \code{\link{sigmoid_agonist_model}} or the
 \item{bottom}{\code{numeric} value for the \code{bottom} parameter.}
 }
 \value{
-\code\link[ggplot2]{ggplot} object
+\code{\link[ggplot2]{ggplot}} object
 }
 \description{
 Generates a plot of the \code{\link{sigmoid}} functional form with the values

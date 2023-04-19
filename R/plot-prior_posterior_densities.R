@@ -1,12 +1,10 @@
-#' Create a plot of the prior & posterior density distributions of
-#' modeled parameters from brmsfit model
+#' Plot Prior and Posterior Marginal Distributions
+#' 
+#' Generate a plot that shows for each model variable the distribution of the
+#' marginal posterior uncertainty overlaid on the distribution of the marginal
+#' prior uncertainty.
 #'
-#' @description Plot of the prior and posterior density distributions
-#'     of each parameter from brmsfit model. The prior and posterior
-#'     density distributions will be displayed on the same plot and
-#'     color labeled.
-#'
-#' @param model brmsfit model.
+#' @param model \code{bpfit} object resulting from fitting a BayesPharma model
 #' @param predictors_col_name string expression for predictors column
 #'     in the input data.frame (default = "_Intercept"). Predictors
 #'     are the perturbations tested during the experiment (i.e. Drug,
@@ -16,24 +14,34 @@
 #'     ed50, id50, ld50, etc.).
 #' @param title_label string of the plot title.  (default =
 #'     "Prior Posterior Density Plots")
-#' @returns ggplot2::ggplot object.
+#' @returns \code{\link[ggplot]{ggplot}} object.
 #'
 #' @examples
 #'\dontrun{
-#'   prior_posterior_densities_plot(
+#'   plot_prior_posterior_densities(
 #'     model = my_sigmoid_model,
 #'     predictors_col_name = "predictors",
 #'     half_max_response = "ic50",
 #'     title_label = "Prior Posterior Density Plots")
 #'}
 #' @export
-prior_posterior_densities_plot <- function(
+plot_prior_posterior_densities <- function(
   model,
+  
   predictors_col_name = "_Intercept",
   half_max_label = "ec50",
   title_label = "Prior Posterior Density
   Plots") {
 
+  if (!inherits(model, "bpfit")) {
+    warning(paste0(
+      "plot_prior_posterior_densities expects model to be of class 'bpfit',",
+      " instead it is of class ", class(model)))
+  }
+  
+  info <- model$bayes_pharma_info$formula_info
+  
+  
   model_prior <- model |>
     stats::update(
       sample_prior = "only",

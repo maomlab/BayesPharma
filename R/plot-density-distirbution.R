@@ -17,13 +17,13 @@
 #'
 #' @examples
 #'\dontrun{
-#'   density_distributions_plot(
+#'   plot_density_distribution(
 #'     model = my_sigmoid_model)
 #'}
 #'
 #' @importFrom rlang .data
 #' @export
-density_distributions_plot <- function(
+plot_density_distribution <- function(
   model,
   pars = NULL,
   labeller = NULL,

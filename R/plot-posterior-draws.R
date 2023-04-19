@@ -4,30 +4,28 @@
 #'     posterior distribution from the expected mean and median
 #'     quantile intervals.
 #'
-#' @param model bpfit object resulting from fitting a BayesPharma model
-#' @param treatment_variable string or NULL. If NULL the treatment variable
-#'     name will be looked up from the model formula. The treatment variable
-#'     the model$data or newdata if supplied must have a column corresponding to
-#'     the treatment variable (Default: NULL).
-#' @param treatment_units string or NULL. If NULL the treatment units will
-#'     be looked up in the model formula. The treatment units will be used to
-#'     label the X-axis of the plot. (Default: NULL)
-#' @param response_variable string or NULL. If NULL the response variable
-#'     name will be looked up from the model formula. The response variable
-#'     the model$data or newdata if supplied must have a column corresponding to
-#'     the response variable (Default: NULL).
-#' @param response_units string or NULL. If NULL the response units will
-#'     be looked up in the model formula. The response units will be used to
-#'     label the X-axis of the plot. (Default: NULL)
-#' @param newdata data.frame of newdata to use for
-#'     predictions. Default data.frame with each predictor and
-#'     treatment variable.
-#' @param n numeric value of the number of draws to be observed
-#'     (default = 50).
-#' @param point_size numeric. \code{geom_jitter} point size (default =
-#'     0.75).
-#' @param jitter_height numeric. the height distance between
-#'     overlapping points (default = 0).
+#' @param model \code{bpfit} object resulting from fitting a BayesPharma model
+#' @param treatment_variable \code{string} or \code{NULL}. If \code{NULL} the
+#'   treatment variable name will be looked up in the model. The treatment
+#'   variable the \code{model$data} or \code{newdata} if supplied must have a
+#'   column corresponding to the treatment variable.
+#' @param treatment_units \code{string} or \code{NULL}. If \code{NULL} the
+#'   treatment units will be looked up in the model. The treatment units will be
+#'   used to label the X-axis of the plot.
+#' @param response_variable \code{string} or \code{NULL}. If \code{NULL} the
+#'   response variable name will be looked up in the model. The response
+#'   variable the \code{model$data} or \code{newdata} if supplied must have a
+#'   column corresponding to the response variable.
+#' @param response_units \code{string} or \code{NULL}. If \code{NULL} the
+#'   response units will be looked up in the model. The response units will be
+#'   used to label the Y-axis of the plot.
+#' @param newdata \code{data.frame} or \code{NULL} of new data to use for
+#'   predictions. Default data.frame with each predictor and treatment variable.
+#' @param n \code{numeric} value of the number of draws to shown.
+#' @param point_size \code{numeric}. \code{\link[ggplot2]{geom_jitter}} point
+#'   size.
+#' @param jitter_height \code{numeric}. the height distance between overlapping
+#'   points (default = 0).
 #' @param jitter_width numeric. the width distance between overlapping
 #'     points (default = 0).
 #' @param title character name for the plot (default =
@@ -38,7 +36,7 @@
 #'\dontrun{
 #'   # Consider a model named my_model and data named my_data with a column
 #'   # named predictors containing multiple different perturbations.
-#'   posterior_draws_plot(
+#'   plot_posterior_draws(
 #'     model = my_model,
 #'     newdata = my_data,
 #'     predictors_col_name = "predictors",
@@ -54,7 +52,7 @@
 #'
 #' @importFrom rlang :=
 #' @export
-posterior_draws_plot <- function(
+plot_posterior_draws <- function(
     model,
     newdata = NULL,
     treatment_variable = NULL,
@@ -69,7 +67,7 @@ posterior_draws_plot <- function(
 
   if (!inherits(model, "bpfit")) {
     warning(paste0(
-      "posterior_draws_plot expects model to be of class 'bpfit',",
+      "plot_posterior_draws expects model to be of class 'bpfit',",
       " instead it is of class ", class(model)))
   }
 
