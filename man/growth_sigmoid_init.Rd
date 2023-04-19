@@ -20,7 +20,7 @@ growth_sigmoid_init(K = 1, K0 = 0, rate = 1, lambda = 0.5)
 units of \code{time} (Default: 0.5).}
 }
 \value{
-input for brms::brm(init = ...)
+input for \code{\link[brms]{brm}(init = ...)}
 }
 \description{
 Creating initial values for sigmoid growth model

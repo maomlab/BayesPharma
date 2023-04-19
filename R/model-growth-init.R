@@ -13,7 +13,7 @@
 #' @param lambda \code{numeric} or \code{numeric} returning \code{function} 
 #'   units of \code{time} (Default: 0.5).
 #'
-#' @returns input for brms::brm(init = ...)
+#' @returns input for \code{\link[brms]{brm}(init = ...)}
 #'
 #' @examples
 #'\dontrun{
@@ -55,7 +55,7 @@ growth_sigmoid_init <- function(
 #' @param nu \code{numeric} or \code{numeric} returning \code{function}
 #'   values range between [0, Inf], with 1 being standard sigmoid (default = 1).
 #'
-#' @returns input for brms::brm(init = ...)
+#' @returns input for \code{\link[brms]{brm}(init = ...)}
 #'
 #' @examples
 #'\dontrun{

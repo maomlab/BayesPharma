@@ -16,9 +16,9 @@
 #'   model convergence (default = list(adapt_delta = 0.99)).
 #' @param expose_functions \code{logical}. Expose the BayesPharma functions for the
 #'   model [default: TRUE].
-#' @param ... additional arguments passed to \code{brms::brm}.
+#' @param ... additional arguments passed to \code{\link[brms]{brm}}.
 #'
-#' @returns brmsfit model
+#' @returns \code{bpfit} model
 #'
 #' @export
 tQ_model <- function(
@@ -44,8 +44,8 @@ tQ_model <- function(
   if (!(formula$bayes_pharma_info[["time_variable"]] %in% names(data))) {
     warning(
       paste0(
-        "The time variable ",
-        "'", formula$bayes_pharma_info[["time_variable"]], "' ",
+        "The treatment (time) variable ",
+        "'", formula$bayes_pharma_info[["treatment_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
   }
 

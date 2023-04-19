@@ -31,7 +31,7 @@ differences should be modeled separately? (Default: 1) should a
 random effect be taken into consideration? i.e. cell number,
 plate number, etc.}
 
-\item{...}{additional arguments to \code{brms::brmsformula}}
+\item{...}{additional arguments to \code{\link[brms]{brmsformula}}}
 }
 \value{
 a \code{bpformula}, which is a subclass of

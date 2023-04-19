@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary-basic-stats.R
 \name{basic_stats}
 \alias{basic_stats}
-\title{Give Basic statistical information about the model results}
+\title{Give basic statistical information about the model results}
 \usage{
 basic_stats(
   model,
@@ -13,31 +13,31 @@ basic_stats(
 )
 }
 \arguments{
-\item{model}{\code{brms::brmsfit} model}
+\item{model}{\code{\link[brms]{brmsfit}} model}
 
-\item{predictors_col_name}{\code{string} expression for predictors column
+\item{predictors_col_name}{\code{character} expression for predictors column
 in the input \code{data.frame}. Predictors are the perturbations tested
 during the experiment (i.e. Drug, Temperature, etc.). [default =
-"_Intercept"]}
+\code{"_Intercept"}]}
 
-\item{half_max_label}{\code{string} of the label for the half maximal that
-fits the type of experiment that was done (i.e. ec50, ic50,
-ed50, id50, ld50, etc.).}
+\item{half_max_label}{\code{character} of the label for the half maximal that
+fits the type of experiment that was done (i.e. ec50, ic50, ed50, id50,
+ld50, etc.).}
 
 \item{l_ci}{\code{numeric} unit of the lower confidence interval (default
-= 0.025)}
+= \code{0.025})}
 
 \item{u_ci}{\code{numeric} unit of the upper confidence interval (default
-= 0.975)}
+= \code{0.975})}
 }
 \value{
-\code{tibble::tibble} object.
+\code{\link[tibble]{tibble}} object.
 }
 \description{
 Return a \code{data.frame} containing summary statistics of
-    \code{brms::brmsfit} model.  The summary statistics included are
-    mean, median, standard deviation, lower confidence interval, and upper
-    confidence interval.
+  \code{bpfit} model. The summary statistics included are mean, median,
+  standard deviation, lower confidence interval, and upper confidence
+  interval.
 }
 \examples{
 \dontrun{

@@ -13,26 +13,27 @@ sigmoid_antagonist_prior(
 )
 }
 \arguments{
-\item{ic50}{\code{brms::brmsprior} or numeric. Prior for the ic50
-parameter.  Default: normal(-6, 2.5) where the mean -6
-corresponds to a concentration of 1e-6 or 1 μM. Setting ic50 to
+\item{ic50}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\code{ic50} parameter. (Default: \code{normal(-6, 2.5)} where the mean
+\code{-6} corresponds to a concentration of 1e-6 or 1 μM. Setting
+\code{ic50} to a numeric value constrains it to a constant value.}
+
+\item{hill}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\code{hill} parameter. (Default: \code{normal(-1, 1)} upper bounded by
+\code{0.1}).}
+
+\item{top}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\code{top} parameter. (Default: \code{normal(1, 0.5)}. Setting \code{top}
+to a numeric value constrains it to a constant value.}
+
+\item{bottom}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+bottom parameter. (Default: \code{normal(0, 0.5)}. Setting \code{bottom} to
 a numeric value constrains it to a constant value.}
 
-\item{hill}{\code{brms::brmsprior} or numeric. Prior for the hill
-parameter. Default: normal(-1, 1) upper bounded by 0.1.}
-
-\item{top}{\code{brms::brmsprior} or numeric. Prior for the top
-parameter.  Default: normal(1, 0.5). Setting top to a numeric
-value constrains it to a constant value.}
-
-\item{bottom}{\code{brms::brmsprior} or numeric. Prior for the top
-parameter.  Default: normal(0, 0.5). Setting bottom to a
-numeric value constrains it to a constant value.}
-
-\item{...}{additional \code{brmsprior} objects.}
+\item{...}{additional \code{\link[brms]{brmsprior}} objects.}
 }
 \value{
-\code{brms::brmsprior} \code{data.frame}
+\code{\link[brms]{brmsprior}} \code{data.frame}
 }
 \description{
 Creates a \code{data.frame} of priors for the sigmoid antagonist

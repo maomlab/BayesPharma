@@ -15,14 +15,14 @@
 #' @param predictors character or expression of predictors
 #'     of non-linear parameters. i.e. what perturbations/experimental
 #'     differences should be modeled separately? (Default: 1)
-#' @param ... additional arguments to \code{brms::brmsformula}
+#' @param ... additional arguments to \code{\link[brms]{brmsformula}}
 #'
 #' @returns a \code{bpformula}, which is a subclass of
-#'     \code{brms::brmsformula} and can be passed to
-#'     \code{BayesPharma::sigmoid_agoinst_model}.
+#'     \code{\link[brms]{brmsformula}} and can be passed to
+#'     \code{\link{sigmoid_agoinst_model}}.
 #' @seealso
-#'     [brms::brmsformula()], which this function wraps.
-#'     [BayesPharma::sigmiod_agonist_model()] into which the result of this
+#'     \code{\link[brms]{brmsformula}}, which this function wraps.
+#'     \code{\link{sigmiod_agonist_model}} into which the result of this
 #'     function can be passed.
 #'
 #' @examples
@@ -93,14 +93,14 @@ sigmoid_agonist_formula <- function(
 #' @param predictors character or expression of predictors
 #'     of non-linear parameters. i.e. what perturbations/experimental
 #'     differences should be modeled separately? (Default: 1)
-#' @param ... additional arguments to \code{brms::brmsformula}
+#' @param ... additional arguments to \code{\link[brms]{brmsformula}}
 #'
 #' @returns a \code{bpformula}, which is a subclass of
-#'     \code{brms::brmsformula} and can be passed to
-#'     \code{BayesPharma::sigmoid_antagonist_model}.
+#'     \code{\link[brms]{brmsformula}} and can be passed to
+#'     \code{\link{sigmoid_antagonist_model}}.
 #' @seealso
-#'     [brms::brmsformula()], which this function wraps.
-#'     [BayesPharma::sigmiod_antagonist_model()] into which the result of this
+#'     \code{\link[brms]{brmsformula}}, which this function wraps.
+#'     \code{\link{sigmiod_antagonist_model}} into which the result of this
 #'     function can be passed.
 #' @examples
 #'\dontrun{

@@ -19,46 +19,45 @@ tQ_formula(
 )
 }
 \arguments{
-\item{series_index_variable}{character variable indexing which measurements
-are part of a common time series.}
+\item{series_index_variable}{\code{character} variable indexing which
+measurements are part of a common time series.}
 
-\item{treatment_variable}{character variable representing time as the
-treatment. (Default: 'time')}
+\item{treatment_variable}{\code{character} variable representing time as the
+treatment.}
 
-\item{treatment_units}{character the units of the time variable. (Default:
-'seconds')}
+\item{treatment_units}{\code{character} the units of the treatment variable.}
 
-\item{ET_variable}{character variable representing the enzyme concentration
-(Default: 'ET')}
+\item{ET_variable}{\code{character} variable representing the total enzyme
+concentration.}
 
-\item{ET_units}{character variable representing the units of the enzyme
-concentration. (Default: mg/ml)}
+\item{ET_units}{\code{character} variable representing the units of the
+enzyme concentration.}
 
-\item{ST_variable}{character variable representing the substrate
-concentration at time 0. (Default: 'ET')}
+\item{ST_variable}{\code{character} variable representing the total substrate
+concentration.}
 
-\item{ST_units}{character variable representing the units of the substrate
-concentration. (Default: mg/ml)}
+\item{ST_units}{\code{character} variable representing the units of the
+substrate concentration.}
 
-\item{response_variable}{character variable representing the product.
-(Default: 'P')}
+\item{response_variable}{\code{character} variable representing the product.}
 
-\item{response_units}{character the units of the product. (Default: mg/ml)}
+\item{response_units}{\code{character} the units of the product.}
 
-\item{predictors}{expression of predictors for \code{kcat} and \code{kM}}
+\item{predictors}{\code{expression} of predictors for \code{kcat} and
+\code{kM} parameters}
 
-\item{...}{additional arguments passed to \code{brms::brmsformula}}
+\item{...}{additional arguments passed to \code{\link[brms]{brmsformula}}}
 }
 \value{
 a \code{bpformula}, which is a subclass of
-    \code{brms::brmsformula} and can be passed to
-    \code{BayesPharma::tQ_model}.
+  \code{\link[brms]{brmsformula}} and can be passed to
+  \code{\link{tQ_model}}.
 }
 \description{
 Define formula for the tQ enzyme kinetics model
 }
 \seealso{
-[brms::brmsformula()], which this function wraps.
-    [BayesPharma::tQ_model()] into which the result of this
-    function can be passed.
+\code{\link[brms]{brmsformula}}, which this function wraps.
+  \code{\link{tQ_model}} into which the result of this function can be
+  passed.
 }

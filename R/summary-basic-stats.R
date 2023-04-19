@@ -1,23 +1,23 @@
-#' Give Basic statistical information about the model results
+#' Give basic statistical information about the model results
 #'
 #' @description Return a \code{data.frame} containing summary statistics of
-#'     \code{brms::brmsfit} model.  The summary statistics included are
-#'     mean, median, standard deviation, lower confidence interval, and upper
-#'     confidence interval.
+#'   \code{bpfit} model. The summary statistics included are mean, median,
+#'   standard deviation, lower confidence interval, and upper confidence
+#'   interval.
 #'
-#' @param model \code{brms::brmsfit} model
-#' @param predictors_col_name \code{string} expression for predictors column
-#'     in the input \code{data.frame}. Predictors are the perturbations tested
-#'     during the experiment (i.e. Drug, Temperature, etc.). [default =
-#'     "_Intercept"]
-#' @param half_max_label \code{string} of the label for the half maximal that
-#'     fits the type of experiment that was done (i.e. ec50, ic50,
-#'     ed50, id50, ld50, etc.).
+#' @param model \code{\link[brms]{brmsfit}} model
+#' @param predictors_col_name \code{character} expression for predictors column
+#'   in the input \code{data.frame}. Predictors are the perturbations tested
+#'   during the experiment (i.e. Drug, Temperature, etc.). [default =
+#'   \code{"_Intercept"}]
+#' @param half_max_label \code{character} of the label for the half maximal that
+#'   fits the type of experiment that was done (i.e. ec50, ic50, ed50, id50,
+#'   ld50, etc.).
 #' @param l_ci \code{numeric} unit of the lower confidence interval (default
-#'     = 0.025)
+#'   = \code{0.025})
 #' @param u_ci \code{numeric} unit of the upper confidence interval (default
-#'     = 0.975)
-#' @returns \code{tibble::tibble} object.
+#'   = \code{0.975})
+#' @returns \code{\link[tibble]{tibble}} object.
 #'
 #' @examples
 #'\dontrun{

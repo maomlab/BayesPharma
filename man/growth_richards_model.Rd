@@ -59,15 +59,15 @@ behavior. Adding \code{max_treedepth} and giving a greater value than
 \code{BayesPharma::growth_richards_stanvar}).}
 
 \item{expose_functions}{\code{logical}. Expose the stan functions for the
-model. This is needed e.g. to run \code{brms::loo_compare()}. (Default:
-\code{TRUE}).}
+model. This is needed e.g. to run \code{\link[brms]{loo_compare}}.
+(Default: \code{TRUE}).}
 
-\item{...}{additional arguments passed to \code{brms::brm}}
+\item{...}{additional arguments passed to \code{\link[brms]{brm}}}
 }
 \value{
-\code{bpfit} \code{brmsfit}
+\code{bpfit} \code{\link[brms]{brmsfit}}
 
-\code{bpfit} \code{brmsfit}
+\code{bpfit} \code{\link[brms]{brmsfit}}
 }
 \description{
 For additional information on additional function arguments, reference:

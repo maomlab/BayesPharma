@@ -52,7 +52,7 @@
 #'   value than \code{10} can improve model convergence (default:
 #'   \code{list(adapt_delta = 0.99)}).
 #' @param stanvar_function stan code for the model (default:
-#'   \code{BayesPharma::sigmoid_stanvar})
+#'   \code{\link{sigmoid_stanvar}}
 #' @param expose_functions \code{logical}. Expose the sigmoid function used in
 #'   the model. This is needed e.g. for \code{\link[brms]{loo_compare}}
 #' @param ... additional arguments passed to \code{\link[brms]{brm}}
@@ -74,7 +74,7 @@ sigmoid_agonist_model <- function(
   init = sigmoid_agonist_init(),
   iter = 8000,
   control = list(adapt_delta = 0.99),
-  stanvar_function = sigmoid_function_stanvar,
+  stanvar_function = sigmoid_stanvar,
   expose_functions = TRUE,
   ...) {
 

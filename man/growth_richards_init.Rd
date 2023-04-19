@@ -23,7 +23,7 @@ units of \code{time} (Default: 0.5).}
 values range between [0, Inf], with 1 being standard sigmoid (default = 1).}
 }
 \value{
-input for brms::brm(init = ...)
+input for \code{\link[brms]{brm}(init = ...)}
 }
 \description{
 Creating initial values for Richards growth model

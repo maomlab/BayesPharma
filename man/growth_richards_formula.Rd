@@ -26,17 +26,16 @@ treatment. (Default: 'response')}
 \item{response_units}{character the units of the response. (Default: NULL)}
 
 \item{predictors}{Additional formula objects to specify predictors
-of non-linear parameters. i.e. what perturbations/experimental
-differences should be modeled separately? (Default: 1) should a
-random effect be taken into consideration? i.e. cell number,
-plate number, etc.}
+of non-linear parameters. i.e. what perturbations/experimental differences
+should be modeled separately? (Default: 1) should a random effect be taken
+into consideration? i.e. cell number, plate number, etc.}
 
-\item{...}{additional arguments to \code{brms::brmsformula}}
+\item{...}{additional arguments to \code{\link[brms]{brmsformula}}}
 }
 \value{
 a \code{bpformula}, which is a subclass of
-    \code{brms::brmsformula} and can be passed to
-    \code{BayesPharma::growth_richards_model}.
+  \code{\link[brms]{brmsformula}} and can be passed to
+  \code{\link{growth_richards_model}}.
 }
 \description{
 set-up a Richards growth model formula to for use in
@@ -80,7 +79,7 @@ set-up a Richards growth model formula to for use in
 
 }
 \seealso{
-[brms::brmsformula()], which this function wraps.
-    [BayesPharma::growth_richards_model()] into which the result of this
-    function can be passed.
+\code{\link[brms]{brmsformula}}, which this function wraps.
+  \code{\link{growth_richards_model}} into which the result of this
+  function can be passed.
 }
