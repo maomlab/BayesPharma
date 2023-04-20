@@ -104,7 +104,7 @@ Suggests:
     tidybayes,
     testthat (>= 3.0.0),
     workflows,
-    urlchecker
+    urlchecker,
     xkcd
 Remotes:
     stan-dev/cmdstanr,
