@@ -48,6 +48,18 @@ test:
 	Rscript -e "lintr::lint_package()"
 	Rscript -e "urlchecker::url_check()"
 
+test_alt_builds:
+  # this will email the package developer
+  Rscript -e "devtools::check_win_devel(quiet = TRUE)"
+  Rscript -e "devtools::check_win_release(quiet = TRUE)"
+  Rscript -e "devtools::check_win_release(quiet = TRUE)"
+  Rscript -e "devtools::check_mac_release(quiet = TRUE)"
+  
+  # call rhub::validate_email_first(email = <email>) first
+  Rscript -e "devtools::check_rhub()"
+  Rscript -e "revdepcheck::revdep_check(num_workers = 4)"
+  
+
 vignettes/manuscript.pdf: vignettes/references.bib
 	quarto render vignettes_src/manuscript/manuscript.qmd
 	mv vignettes_src/manuscript/manuscript.pdf vignettes/

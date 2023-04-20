@@ -5,6 +5,7 @@
 inst/doc
 .DS_Store
 docs
+revdep
 *~
 
 vignettes_working
