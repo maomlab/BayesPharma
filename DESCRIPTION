@@ -7,12 +7,12 @@ Authors@R: c(
       given = "Madeline",
       famil = "Martin",
       email = "mmarti29@uoregon.edu",
-      role = c("aut", "cre")),
+      role = c("aut")),
     person(
       given = "Matthew",
       family = "O'Meara",
       email = "maom@umich.edu",
-      role = c("aut"),
+      role = c("aut", "cre"),
       comment = c(ORCID = "0000-0002-3128-5331")))
 Description: Tools to analyze pharmacology data using Bayesian statistics.
 URL: https://maomlab.github.io/BayesPharma/
@@ -96,6 +96,7 @@ Suggests:
     readr,
     readxl,
     recipes,
+    revdepcheck,
     qpdf,
     rmarkdown,
     stringr,
@@ -107,8 +108,9 @@ Suggests:
     urlchecker,
     xkcd
 Remotes:
-    stan-dev/cmdstanr,
-    maomlab/GeomIndicator
+    maomlab/GeomIndicator,
+    r-lib/revdepcheck,
+    stan-dev/cmdstanr
 LazyData: true
 VignetteBuilder: knitr
 Config/testthat/edition: 3
