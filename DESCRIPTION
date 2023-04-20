@@ -15,7 +15,7 @@ Authors@R: c(
       role = c("aut"),
       comment = c(ORCID = "0000-0002-3128-5331")))
 Description: Tools to analyze pharmacology data using Bayesian statistics.
-URL: https://api.github.com/repos/maomlab/BayesPharma/pages
+URL: https://maomlab.github.io/BayesPharma/
 Depends:
     R (>= 4.0.0)
 Imports:
@@ -104,6 +104,7 @@ Suggests:
     tidybayes,
     testthat (>= 3.0.0),
     workflows,
+    urlchecker
     xkcd
 Remotes:
     stan-dev/cmdstanr,
