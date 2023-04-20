@@ -13,21 +13,22 @@ plot_drc(
 )
 }
 \arguments{
-\item{model}{drc object. drc model generated with drc::drm(...)}
+\item{model}{\code{\link[drc]{drc}} model object generated with
+\code{\link[drc]{drm}}}
 
-\item{newdata}{data.frame where the predictions should be made. Default: use
-the range of log_dose values in the model object.}
+\item{newdata}{\code{data.frame} where the predictions should be made.
+Default: use the range of treatment values in the model object.}
 
-\item{predict_args}{list of arguments passed to predict(model, ...)
-including interval will generate ribbon of the given type, see
-\code{drc:::predict.drc} for more details, Default:
-\code{list(interval = "prediction")}}
+\item{predict_args}{\code{list} of arguments passed to
+\code{predict(model, ...)} including interval will generate ribbon of the
+given type, see \code{\link[drc]{predict.drc}} for more details, (Default:
+\code{list(interval = "prediction")})}
 
-\item{aes_mapping}{ggplot2::aes(...) mapping columns of the model data
-and new data to the plot. Default:
-\code{ggplot2::aes(x = log_dose, y = response)}}
+\item{aes_mapping}{\code{\link[ggplot2]{aes}(...)} mapping columns of the
+model data and new data to the plot. (Default:
+\code{ggplot2::\link[ggplot2]{aes}(x = log_dose, y = response)})}
 
-\item{title}{character, plot title. Default: NULL}
+\item{title}{\code{character} giving the plot title. (Default: \code{NULL})}
 }
 \description{
 Create plot of drc model

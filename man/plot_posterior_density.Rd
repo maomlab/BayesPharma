@@ -15,28 +15,28 @@ plot_posterior_density(
 )
 }
 \arguments{
-\item{model}{brmsfit model.}
+\item{model}{\code{bpfit} model.}
 
-\item{predictors_col_name}{string expression for predictors column
+\item{predictors_col_name}{\code{character} of the predictors column
 in the input data.frame (default = "_Intercept"). Predictors
 are the perturbations tested during the experiment (i.e. Drug,
 Temperature, etc.).}
 
-\item{half_max_label}{string of the label for the half maximal that
+\item{half_max_label}{\code{character} of the label for the half maximal that
 fits the type of experiment that was done (i.e. ec50, ic50,
 ed50, id50, ld50, etc.).}
 
-\item{l_ci}{numeric unit of the lower confidence interval (default
+\item{l_ci}{\code{numeric} unit of the lower confidence interval (default
 = 0.025)}
 
-\item{u_ci}{numeric unit of the upper confidence interval (default
+\item{u_ci}{\code{numeric} unit of the upper confidence interval (default
 = 0.975)}
 
-\item{title_label}{string of the plot title. (default =
-"Posterior Density Plots with Mean and 95\% CI")}
+\item{title_label}{string of the plot title. (default = "Posterior Density
+Plots with Mean and 95\% CI")}
 }
 \value{
-ggplot2::ggplot object.
+\code{\link[ggplot2]{gplot}} object.
 }
 \description{
 plots the \code{\link{bpfit}} model density distribution of each
