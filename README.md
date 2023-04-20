@@ -2,7 +2,7 @@
   [![Codecov test coverage](https://codecov.io/gh/maomlab/BayesPharma/branch/main/graph/badge.svg)](https://app.codecov.io/gh/maomlab/BayesPharma?branch=main)
   <!-- badges: end -->
 
-The [BayesPharma](https://maomlab.github.io/BayesPharma) website package contains a collection of R tools for analyzing pharmacology data using Bayesian statistics.
+The [BayesPharma](https://maomlab.github.io/BayesPharma/) website package contains a collection of R tools for analyzing pharmacology data using Bayesian statistics.
 
 ## Package Development Workflows
 
