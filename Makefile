@@ -46,6 +46,7 @@ test:
 	Rscript -e "devtools::check()"
 	Rscript -e "covr::covr()"
 	Rscript -e "lintr::lint_package()"
+	Rscript -e "urlchecker::url_check()"
 
 vignettes/manuscript.pdf: vignettes/references.bib
 	quarto render vignettes_src/manuscript/manuscript.qmd
