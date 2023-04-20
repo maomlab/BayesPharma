@@ -4,7 +4,7 @@ testthat::test_that(
   desc = "sigmoid_agonist_inits with default inits",
   code = {
     init <- sigmoid_agonist_init()
-    testthat::expect_true(methods::is(init, "function"))
+    testthat::expect_true(inherits(init, "function"))
   })
 
 testthat::test_that(
@@ -16,14 +16,14 @@ testthat::test_that(
     top = 50,
     bottom = 0)
 
-  testthat::expect_true(methods::is(init, "function"))
+  testthat::expect_true(inherits(init, "function"))
 })
 
 testthat::test_that(
   desc = "sigmoid_antagonist_inits with default inits",
   code = {
     init <- sigmoid_antagonist_init()
-    testthat::expect_true(methods::is(init, "function"))
+    testthat::expect_true(inherits(init, "function"))
   })
 
 testthat::test_that(
@@ -35,5 +35,5 @@ testthat::test_that(
       top = 50,
       bottom = 0)
 
-    testthat::expect_true(methods::is(init, "function"))
+    testthat::expect_true(inherits(init, "function"))
   })

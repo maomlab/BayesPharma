@@ -4,21 +4,21 @@
 #' @description plots the \code{\link{bpfit}} model density distribution of each
 #'   parameter and the mean, lower confidence interval, and upper confidence interval.
 #'
-#' @param model brmsfit model.
-#' @param predictors_col_name string expression for predictors column
-#'     in the input data.frame (default = "_Intercept"). Predictors
-#'     are the perturbations tested during the experiment (i.e. Drug,
-#'     Temperature, etc.).
-#' @param half_max_label string of the label for the half maximal that
-#'     fits the type of experiment that was done (i.e. ec50, ic50,
-#'     ed50, id50, ld50, etc.).
-#' @param l_ci numeric unit of the lower confidence interval (default
-#'     = 0.025)
-#' @param u_ci numeric unit of the upper confidence interval (default
-#'     = 0.975)
-#' @param title_label string of the plot title. (default =
-#'     "Posterior Density Plots with Mean and 95\% CI")
-#' @returns ggplot2::ggplot object.
+#' @param model \code{bpfit} model.
+#' @param predictors_col_name \code{character} of the predictors column
+#'   in the input data.frame (default = "_Intercept"). Predictors
+#'   are the perturbations tested during the experiment (i.e. Drug,
+#'   Temperature, etc.).
+#' @param half_max_label \code{character} of the label for the half maximal that
+#'   fits the type of experiment that was done (i.e. ec50, ic50,
+#'   ed50, id50, ld50, etc.).
+#' @param l_ci \code{numeric} unit of the lower confidence interval (default
+#'   = 0.025)
+#' @param u_ci \code{numeric} unit of the upper confidence interval (default
+#'   = 0.975)
+#' @param title_label string of the plot title. (default = "Posterior Density
+#'   Plots with Mean and 95\% CI")
+#' @returns \code{\link[ggplot2]{gplot}} object.
 #'
 #' @examples
 #'\dontrun{
