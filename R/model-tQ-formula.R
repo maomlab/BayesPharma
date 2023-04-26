@@ -22,10 +22,9 @@
 #' @returns a `bpformula`, which is a subclass of
 #'   [brms::brmsformula()] and can be passed to
 #'   [tQ_model()].
-#' @seealso
+#'
+#' @seealso [tQ_model], [tQ_prior], [tQ_init], [tQ_stanvar] and
 #'   [brms::brmsformula()], which this function wraps.
-#'   [tQ_model()] into which the result of this function can be
-#'   passed.
 #'
 #' @export
 tQ_formula <- function(
@@ -41,7 +40,7 @@ tQ_formula <- function(
     predictors = 1,
     ...) {
 
-  # The tQ function is defined in BayesPharma::tQ_stanvars
+  # The tQ function is defined in BayesPharma::tQ_stanvar
   response_eq <- as.formula(
     paste0(
       response_variable, " ~ tQ(",

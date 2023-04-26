@@ -13,6 +13,9 @@
 #' @param kM prior for `kM` parameter (Default: NULL). Given a
 #'     numeric value, it will be used as a constant and not estimated.
 #'
+#'
+#' @seealso [tQ_model], [tQ_formula], [tQ_init], or [tQ_stanvar]
+#'
 #' @export
 tQ_prior <- function(
     kcat = NULL,

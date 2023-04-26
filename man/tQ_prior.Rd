@@ -22,3 +22,6 @@ lower bounded by 0. The first parameter is the shape,
 of gamma distributions is \code{alpha/beta} and the variance is
 \code{alpha/beta^2}.
 }
+\seealso{
+\link{tQ_model}, \link{tQ_formula}, \link{tQ_init}, or \link{tQ_stanvar}
+}

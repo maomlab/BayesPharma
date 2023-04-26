@@ -18,7 +18,9 @@
 #'   model [default: TRUE].
 #' @param ... additional arguments passed to [brms::brm()].
 #'
-#' @returns `bpfit` model
+#' @returns `bpfit` object, which is a wrapper around a [brms::brmsfit] object.
+#'
+#' @seealso [tQ_formula], [tQ_prior], [tQ_init], or [tQ_stanvar]
 #'
 #' @export
 tQ_model <- function(

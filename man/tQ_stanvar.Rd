@@ -8,7 +8,13 @@
 An object of class \code{stanvars} of length 1.
 }
 \usage{
-tQ_stanvar
+brms::brm(
+  formula = brms::brmsformula(
+    P ~ tQ_multiple(series_index, time, kcat, kM, ET, ST),
+    kcat + kM ~ 1,
+    nl = TRUE,
+    loop=FALSE),
+  stanvars = BayesPhrama::tQ_stanvar)
 }
 \description{
 The tQ is an ordinary differential equation model for the total
@@ -17,6 +23,20 @@ quasi-steady-state assumption kinetics defined in
 but doesn't assume the enzyme concentration is negligibly small.
 }
 \details{
-To implement it in \pkg{Stan}, the ODE function \code{tQ_ode} is defined
+To implement the tQ model in \pkg{Stan}, the function \code{tQ_ode} is defined
+and then passed to \code{tQ_single} to integrate it using the \emph{stiff backward
+differentiation formula (BDF) method}. To fit multiple time series
+in one model, the \code{tQ_multiple} can be used. Note that to handle fitting
+time-series with different numbers of observations, an additional
+\code{series_index} argument is used. Note that observations in the same
+time-series should be in sequential order in the supplied data.
+}
+\references{
+Choi, B., Rempala, G.A. & Kim, J.K. Beyond the Michaelis-Menten equation:
+Accurate and efficient estimation of enzyme kinetic parameters. Sci Rep 7,
+17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
+}
+\seealso{
+\link{tQ_model}, \link{tQ_formula}, \link{tQ_prior}, or \link{tQ_init}
 }
 \keyword{datasets}

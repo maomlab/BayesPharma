@@ -20,3 +20,6 @@ parameter.
 \description{
 Initialize parameter values for the tQ enyzme kinetic model
 }
+\seealso{
+\link{tQ_model}, \link{tQ_formula}, \link{tQ_prior}, or \link{tQ_stanvar}
+}

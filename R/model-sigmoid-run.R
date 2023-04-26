@@ -57,8 +57,7 @@
 #'   the model. This is needed e.g. for [brms::loo_compare()]
 #' @param ... additional arguments passed to [brms::brm()]
 #'
-#' @returns `bpfit` object, which is a wrapper around a
-#'   [brms::brmsfit-class()].
+#' @returns `bpfit` object, which is a wrapper around a [brms::brmsfit] object.
 #'
 #' @examples
 #' \dontrun{

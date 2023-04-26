@@ -7,6 +7,9 @@
 #' @returns input for `BayesPharma::model_tQ(init = ...)`
 #'     parameter.
 #'
+#'
+#' @seealso [tQ_model], [tQ_formula], [tQ_prior], or [tQ_stanvar]
+#'
 #' @export
 tQ_init <- function(
     kcat = 4,
