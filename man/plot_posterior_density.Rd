@@ -33,14 +33,14 @@ ed50, id50, ld50, etc.).}
 = 0.975)}
 
 \item{title_label}{string of the plot title. (default = "Posterior Density
-Plots with Mean and 95\% CI")}
+Plots with Mean and 95\\% CI")}
 }
 \value{
-\code{\link[ggplot2]{gplot}} object.
+\code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.
 }
 \description{
-plots the \code{\link{bpfit}} model density distribution of each
-  parameter and the mean, lower confidence interval, and upper confidence interval.
+plots the \code{\link[=bpfit]{bpfit()}} model density distribution of each
+parameter and the mean, lower confidence interval, and upper confidence interval.
 }
 \examples{
 \dontrun{

@@ -18,11 +18,11 @@ response/log_dose (default = 1)}
 \item{bottom}{numeric units of bottom (default = 0).}
 }
 \value{
-input for \code{\link[brms]{brm}(init = ...)}
+input for \verb{[brm][brms::brm](init = ...)}
 }
 \description{
 Creating initial values for an agonist sigmoid model
- parameters that can be passed to the \code{\link{sigmoid_agoninst_model}}.
+parameters that can be passed to the \code{\link[=sigmoid_agoninst_model]{sigmoid_agoninst_model()}}.
 }
 \examples{
 \dontrun{

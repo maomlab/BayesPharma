@@ -37,7 +37,7 @@ numeric value constrains it to a constant value.}
 }
 \description{
 Creates a \code{data.frame} of priors for the sigmoid agonist
-    model
+model
 
 If the function arguments \code{ec50}, \code{hill}, \code{top},
 \code{bottom} are \code{NULL}, default normal distribution priors
@@ -47,7 +47,7 @@ If you would like to set a parameter as a constant, enter a numeric
 value for the function argument.
 
 For other distribution options, reference
-<http://mc-stan.org/rstanarm/reference/priors.html#arguments>
+\url{http://mc-stan.org/rstanarm/reference/priors.html#arguments}
 }
 \examples{
 \dontrun{

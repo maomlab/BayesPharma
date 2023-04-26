@@ -2,18 +2,18 @@
 #'
 #' @description Creating initial values for sigmoid growth model
 #'   parameters that can be passed to the
-#'.  \code{richards_growth_model}.
+#'.  `richards_growth_model`.
 #'
-#' @param K \code{numeric} or \code{numeric} returning \code{function}
+#' @param K `numeric` or `numeric` returning `function`
 #'   (Default: 1).
-#' @param K0 \code{numeric} or \code{numeric} returning \code{function}
+#' @param K0 `numeric` or `numeric` returning `function`
 #'   (Default: 0).
-#' @param rate \code{numeric} or \code{numeric} returning \code{function}
+#' @param rate `numeric` or `numeric` returning `function`
 #'   (Default: 1).
-#' @param lambda \code{numeric} or \code{numeric} returning \code{function} 
-#'   units of \code{time} (Default: 0.5).
+#' @param lambda `numeric` or `numeric` returning `function` 
+#'   units of `time` (Default: 0.5).
 #'
-#' @returns input for \code{\link[brms]{brm}(init = ...)}
+#' @returns input for `[brm][brms::brm](init = ...)`
 #'
 #' @examples
 #'\dontrun{
@@ -42,20 +42,20 @@ growth_sigmoid_init <- function(
 #'
 #' @description Creating initial values for Richards growth model
 #'   parameters that can be passed to the
-#'.  \code{richards_growth_model}.
+#'.  `richards_growth_model`.
 #'
-#' @param K \code{numeric} or \code{numeric} returning \code{function}
+#' @param K `numeric` or `numeric` returning `function`
 #'   (Default: 1).
-#' @param K0 \code{numeric} or \code{numeric} returning \code{function}
+#' @param K0 `numeric` or `numeric` returning `function`
 #'   (Default: 0).
-#' @param rate \code{numeric} or \code{numeric} returning \code{function}
+#' @param rate `numeric` or `numeric` returning `function`
 #'   (Default: 1).
-#' @param lambda \code{numeric} or \code{numeric} returning \code{function} 
-#'   units of \code{time} (Default: 0.5).
-#' @param nu \code{numeric} or \code{numeric} returning \code{function}
+#' @param lambda `numeric` or `numeric` returning `function` 
+#'   units of `time` (Default: 0.5).
+#' @param nu `numeric` or `numeric` returning `function`
 #'   values range between [0, Inf], with 1 being standard sigmoid (default = 1).
 #'
-#' @returns input for \code{\link[brms]{brm}(init = ...)}
+#' @returns input for `[brm][brms::brm](init = ...)`
 #'
 #' @examples
 #'\dontrun{

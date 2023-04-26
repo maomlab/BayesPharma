@@ -1,10 +1,10 @@
 #' Default priors for the sigmoid agonist model
 #'
-#' @description Creates a \code{data.frame} of priors for the sigmoid agonist
+#' @description Creates a `data.frame` of priors for the sigmoid agonist
 #'     model
 #'
-#' If the function arguments \code{ec50}, \code{hill}, \code{top},
-#' \code{bottom} are \code{NULL}, default normal distribution priors
+#' If the function arguments `ec50`, `hill`, `top`,
+#' `bottom` are `NULL`, default normal distribution priors
 #' will be set.
 #'
 #' If you would like to set a parameter as a constant, enter a numeric
@@ -13,21 +13,21 @@
 #' For other distribution options, reference
 #' <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
 #'
-#' @param ec50 \code{brmsprior} or numeric. Prior for the ec50
+#' @param ec50 `brmsprior` or numeric. Prior for the ec50
 #'     parameter.  Default: normal(-6, 2.5) where the mean -7
 #'     corresponds to a concentration of 1e-6 or 1 μM. Setting ec50 to
 #'     a numeric value constrains it to a constant value.
-#' @param hill \code{brmsprior} or numeric. Prior for the hill
+#' @param hill `brmsprior` or numeric. Prior for the hill
 #'     parameter. Default: normal(1, 1) with and a lower bound of
 #'     -0.1.
-#' @param top \code{brmsprior} or numeric. Prior for the top
+#' @param top `brmsprior` or numeric. Prior for the top
 #'     parameter.  Default: normal(1, 0.5). Setting top to a numeric
 #'     value constrains it to a constant value.
-#' @param bottom \code{brmsprior} or numeric. Prior for the top
+#' @param bottom `brmsprior` or numeric. Prior for the top
 #'     parameter.  Default: normal(0, 0.5). Setting bottom to a
 #'     numeric value constrains it to a constant value.
-#' @param ... additional \code{brmsprior} objects.
-#' @returns \code{brmsprior} \code{data.frame}
+#' @param ... additional `brmsprior` objects.
+#' @returns `brmsprior` `data.frame`
 #'
 #' @examples
 #'\dontrun{
@@ -55,7 +55,7 @@ sigmoid_agonist_prior <- function(
 
 #' Default priors for the sigmoid antagonist model
 #'
-#' @description Creates a \code{data.frame} of priors for the sigmoid antagonist
+#' @description Creates a `data.frame` of priors for the sigmoid antagonist
 #'     model
 #'
 #' If the function arguments ic50, hill, top, bottom = NULL, default
@@ -67,21 +67,21 @@ sigmoid_agonist_prior <- function(
 #' For other distribution options, reference
 #' <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
 #'
-#' @param ic50 \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
-#'   \code{ic50} parameter. (Default: \code{normal(-6, 2.5)} where the mean
-#'   \code{-6} corresponds to a concentration of 1e-6 or 1 μM. Setting
-#'   \code{ic50} to a numeric value constrains it to a constant value.
-#' @param hill \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
-#'   \code{hill} parameter. (Default: \code{normal(-1, 1)} upper bounded by
-#'   \code{0.1}).
-#' @param top \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
-#'   \code{top} parameter. (Default: \code{normal(1, 0.5)}. Setting \code{top}
+#' @param ic50 [brms::brmsprior()] or `numeric`. Prior for the
+#'   `ic50` parameter. (Default: `normal(-6, 2.5)` where the mean
+#'   `-6` corresponds to a concentration of 1e-6 or 1 μM. Setting
+#'   `ic50` to a numeric value constrains it to a constant value.
+#' @param hill [brms::brmsprior()] or `numeric`. Prior for the
+#'   `hill` parameter. (Default: `normal(-1, 1)` upper bounded by
+#'   `0.1`).
+#' @param top [brms::brmsprior()] or `numeric`. Prior for the
+#'   `top` parameter. (Default: `normal(1, 0.5)`. Setting `top`
 #'   to a numeric value constrains it to a constant value.
-#' @param bottom \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
-#'   bottom parameter. (Default: \code{normal(0, 0.5)}. Setting \code{bottom} to
+#' @param bottom [brms::brmsprior()] or `numeric`. Prior for the
+#'   bottom parameter. (Default: `normal(0, 0.5)`. Setting `bottom` to
 #'   a numeric value constrains it to a constant value.
-#' @param ... additional \code{\link[brms]{brmsprior}} objects.
-#' @returns \code{\link[brms]{brmsprior}} \code{data.frame}
+#' @param ... additional [brms::brmsprior()] objects.
+#' @returns [brms::brmsprior()] `data.frame`
 #'
 #' @examples
 #'\dontrun{

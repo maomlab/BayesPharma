@@ -13,69 +13,69 @@
 #'       logC1, logE1, h1,
 #'       logC2, logE2, h2,
 #'       logE3, logalpha)}
-#'  See \code{\link{MuSyC}} for the full mathematical description of the
-#'  \code{MuSyC} function. By default the observed data (and therefore should be
+#'  See [MuSyC()] for the full mathematical description of the
+#'  `MuSyC` function. By default the observed data (and therefore should be
 #'  columns in the input data data.frame) are
 #'  \itemize{
-#'    \item{\strong{<treatment 1>}: \code{logd1}, the \code{log10} of the dose
+#'    \item{**<treatment 1>**: `logd1`, the `log10` of the dose
 #'      as a molar concentration of treatment 1}
-#'    \item{\strong{<treatment 2>}: \code{logd2}, the \code{log10} of the dose
+#'    \item{**<treatment 2>**: `logd2`, the `log10` of the dose
 #'      as a molar concentration of treatment 2}
-#'    \item{\strong{<response>}: \code{response}, with unspecified units}
+#'    \item{**<response>**: `response`, with unspecified units}
 #'  }
-#'  The \code{logd1scale} and \code{logd2scale} are used to center <treatment 1>
+#'  The `logd1scale` and `logd2scale` are used to center <treatment 1>
 #'  and <treatment 2> to make fitting more numerically stable. If they are not
-#'  in the input \code{data}, then they are taken to be the mean of
+#'  in the input `data`, then they are taken to be the mean of
 #'  <treatment 1> and <treatment 2> respectively.
 #'      
 #'  The modeled parameters are
 #'  \itemize{
-#'    \item{\strong{logE0}: the \code{log(<response>)} when <treatment 1> = 0
+#'    \item{**logE0**: the `log(<response>)` when <treatment 1> = 0
 #'      and <treatment 2> = 0}
-#'    \item{\strong{logC1}: the \code{log(<treatment 1>} where when <treatment
-#'      2> = 0, the \code{<response>}} is halfway between \code{E0} and
-#'      \code{E1}
-#'    \item{\strong{logE1}: the \code{log(response)} when <treatment 1> =>
-#'      \code{Inf} and <treatment 2> = 0}
-#'    \item{\strong{h1}: the hill slope of the response with respect to
+#'    \item{**logC1**: the `log(<treatment 1>` where when <treatment
+#'      2> = 0, the `<response>`} is halfway between `E0` and
+#'      `E1`
+#'    \item{**logE1**: the `log(response)` when <treatment 1> =>
+#'      `Inf` and <treatment 2> = 0}
+#'    \item{**h1**: the hill slope of the response with respect to
 #'      <treatment 1> when <treatment 1> = C1 and <treatment 2> = 0}. See
-#'      \code{\link{MuSyC_hi_to_si}} and \code{\link{MuSyC_si_hi}} for
+#'      [MuSyC_hi_to_si()] and [MuSyC_si_hi()] for
 #'      converting between the slope (si) and hill slope (hi).
-#'    \item{\strong{logC2}: the dose of <treatment 2> where when <treatment 1> =
-#'      0, the \code{<response>}} is halfway between \code{E0} and \code{E2}
-#'    \item{\strong{logE2}: the \code{log(response)} when <treatment 2> =>
-#'      \code{Inf} and <treatment 1> = 0}
-#'    \item{\strong{h2}: the hill slope of the response with respect to
+#'    \item{**logC2**: the dose of <treatment 2> where when <treatment 1> =
+#'      0, the `<response>`} is halfway between `E0` and `E2`
+#'    \item{**logE2**: the `log(response)` when <treatment 2> =>
+#'      `Inf` and <treatment 1> = 0}
+#'    \item{**h2**: the hill slope of the response with respect to
 #'      <treatment 2> when <treatment 2> = C2 and <treatment 1> = 0}. See
-#'      \code{\link{MuSyC_hi_to_si}} and \code{\link{MuSyC_si_hi}} for
+#'      [MuSyC_hi_to_si()] and [MuSyC_si_hi()] for
 #'      converting between the slope (si) and hill slope (hi).
-#'    \item{\strong{logE3}: the \code{log(response)} when <treatment1 1> =>
-#'      \code{Inf} and <treatment 2> => \code{Inf}, modeling the synergistic
-#'      \emph{efficacy}}
-#'    \item{\strong{logaalpha}: the log of the synergistic \emph{potency} alpha.
-#'      When alpha > \code{1} the treatments are synergistic so that <treatment
+#'    \item{**logE3**: the `log(response)` when <treatment1 1> =>
+#'      `Inf` and <treatment 2> => `Inf`, modeling the synergistic
+#'      *efficacy*}
+#'    \item{**logaalpha**: the log of the synergistic *potency* alpha.
+#'      When alpha > `1` the treatments are synergistic so that <treatment
 #'      1> shifts the response due to <treatment 2> to lower doses and visa
-#'      versa. When alpha < \code{1} the treatments are antagonistic so that
+#'      versa. When alpha < `1` the treatments are antagonistic so that
 #'      <treatment 1> shifts the response to <treatment 2> to higher doses and
 #'      visa versa}}
 #'  
-#' @param data \code{data.frame} of observed data. It must contain columns
+#' @param data `data.frame` of observed data. It must contain columns
 #'   for the treatment, response and any additional predictors specified in the
-#'   formula. See \code{\link{sigmoid_agonist_formula}} for more details.
-#' @param formula \code{bpformula} object. To create a formula for the MuSyC
-#'   model, use the \code{\link{MuSyC_formula}} function.
-#' @param prior \code{\link[brms]{brmsprior}} for the model parameters. To
-#'   create a prior for the MuSyC model, use the \code{\link{MuSyC_prior}}
+#'   formula. See [sigmoid_agonist_formula()] for more details.
+#' @param formula `bpformula` object. To create a formula for the MuSyC
+#'   model, use the [MuSyC_formula()] function.
+#' @param prior [brms::brmsprior()] for the model parameters. To
+#'   create a prior for the MuSyC model, use the [MuSyC_prior()]
 #'   function.
-#' @param init \code{function} giving the initial values for the parameters. To
-#'   specify the initial values, use the \code{\link{MuSyC_init}} function.
-#' @param control a named \code{list} of arguments to control the sampler's
-#'   behavior. Adding \code{max_treedepth} and giving a greater value than
-#'   \code{10} can improve model convergence.
-#' @param stanvars \code{stanvars} code for the MuSyC model.
-#' @param expose_functions \code{logical}. Expose the sigmoid function used in
-#'   the model. This is needed e.g. for \code{\link[brms]{loo_compare}}
-#' @param ... additional arguments passed to \code{\link[brms]{brm}}
+#' @param init `function` giving the initial values for the parameters. To
+#'   specify the initial values, use the [MuSyC_init()] function.
+#' @param control a named `list` of arguments to control the sampler's
+#'   behavior. Adding `max_treedepth` and giving a greater value than
+#'   `10` can improve model convergence.
+#' @param stanvars `stanvars` code for the MuSyC model.
+#' @param expose_functions `logical`. Expose the sigmoid function used in
+#'   the model. This is needed e.g. for [brms::loo_compare()]
+#' @param ... additional arguments passed to [brms::brm()]
 #'
 #' @references
 #'   Meyer, D.J., Wooten, D.J., Paudel B.B., Bauer, J., Hardeman, K.N.,

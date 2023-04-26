@@ -19,19 +19,19 @@ sigmoid_antagonist_model(
 \arguments{
 \item{data}{\code{data.frame} of experimental data. It must contain columns
 for the treatment, response and any additional predictors specified in the
-formula. See \code{\link{sigmoid_antagonist_formula}} for more details.}
+formula. See \code{\link[=sigmoid_antagonist_formula]{sigmoid_antagonist_formula()}} for more details.}
 
 \item{formula}{\code{bpformula} for the sigmoid antagonist model
-(Default: \code{\link{sigmoid_antagonist_formula}()})}
+(Default: \code{\link[=sigmoid_antagonist_formula]{sigmoid_antagonist_formula()}})}
 
 \item{prior}{\code{brmsprior} defining a distribution for the model
 parameters \code{ic50}, \code{hill}, \code{top}, and \code{bottom}.
 Use one of the priors functions provided to create priors to
-use here.  (default: \code{\link{sigmoid_antagonist_prior}()}}
+use here.  (default: \code{\link[=sigmoid_antagonist_prior]{sigmoid_antagonist_prior()}}}
 
 \item{init}{\code{function} returning a named \code{list} of functions
 returning arrays giving initial values of the parameters being modeled for
-each chain. (Default: \code{\link{sigmoid_antagonist_init}()}}
+each chain. (Default: \code{\link[=sigmoid_antagonist_init]{sigmoid_antagonist_init()}}}
 
 \item{iter}{\code{number} of iterations the model runs. Increasing
 \code{iter} can help with model convergence. (Default: \code{8000})}
@@ -42,50 +42,50 @@ value than \code{10} can improve model convergence (default:
 \code{list(adapt_delta = 0.99)}).}
 
 \item{stanvar_function}{stan code for the model (default:
-\code{\link{sigmoid_stanvar}})}
+\code{\link[=sigmoid_stanvar]{sigmoid_stanvar()}})}
 
 \item{expose_functions}{\code{logical}. Expose the BayesPharma functions for
-the model. This is needed e.g. for \code{\link[brms]{loo_compare}}
+the model. This is needed e.g. for \code{\link[brms:loo_compare.brmsfit]{brms::loo_compare()}}
 (Default: \code{TRUE}]}
 
-\item{...}{additional arguments passed to \code{\link[brms]{brm}}}
+\item{...}{additional arguments passed to \code{\link[brms:brm]{brms::brm()}}}
 }
 \value{
 \code{bpfit} object, which is a wrapper around a
-  \code{\link[brms]{brmsfit-class}}.
+\code{\link[brms:brmsfit-class]{brms::brmsfit-class()}}.
 }
 \description{
 Fits the sigmoid antagonist model. The functional form is
- \preformatted{
+\preformatted{
    <response> ~ sigmoid(ic50, hill, top, bottom, <treatment>)}
- where
- \preformatted{
+where
+\preformatted{
    sigmoid = bottom + (top - bottom)/(1 + 10^((ic50 - <treatment>) * hill))}
- By default the observed data are
- \itemize{
-   \item{\strong{<treatment>}: \code{log_dose}, the \code{log10} of the dose
-     as a molar concentration}
-   \item{\strong{<response>}: \code{response}, with unspecified units}
- }
- and the modeled parameters are
- \itemize{
-   \item{\strong{ic50}: the dose where the response reaches half maximal
-     activity}
-   \item{\strong{hill}: the hill coefficient controlling the slope at the
-     \code{ic50}}, by convention the slope of an antagonist is negative.
-   \item{\strong{top}: the response when <treatment> => \code{-Inf}}
-   \item{\strong{bottom}: the response when <treatment> => \code{Inf}}
- }
- To configure the model you can use the following helper functions:
- \itemize{
-   \item{\code{\link{sigmiod_antagonist_formula}}: define the
-     \code{treatment} and \code{response} variables, and predictors for the
-     model parameters}
-   \item{\code{\link{sigmoid_antagonist_prior}}: define the prior for the
-     model parameters}
-   \item{\code{\link{sigmoid_antagonist_init}}: define initial values for the
-     model parameters}
- }
+By default the observed data are
+\itemize{
+\item{\strong{\if{html}{\out{<treatment>}}}: \code{log_dose}, the \code{log10} of the dose
+as a molar concentration}
+\item{\strong{\if{html}{\out{<response>}}}: \code{response}, with unspecified units}
+}
+and the modeled parameters are
+\itemize{
+\item{\strong{ic50}: the dose where the response reaches half maximal
+activity}
+\item{\strong{hill}: the hill coefficient controlling the slope at the
+\code{ic50}}, by convention the slope of an antagonist is negative.
+\item{\strong{top}: the response when \if{html}{\out{<treatment>}} => \code{-Inf}}
+\item{\strong{bottom}: the response when \if{html}{\out{<treatment>}} => \code{Inf}}
+}
+To configure the model you can use the following helper functions:
+\itemize{
+\item{\code{\link[=sigmiod_antagonist_formula]{sigmiod_antagonist_formula()}}: define the
+\code{treatment} and \code{response} variables, and predictors for the
+model parameters}
+\item{\code{\link[=sigmoid_antagonist_prior]{sigmoid_antagonist_prior()}}: define the prior for the
+model parameters}
+\item{\code{\link[=sigmoid_antagonist_init]{sigmoid_antagonist_init()}}: define initial values for the
+model parameters}
+}
 }
 \examples{
 \dontrun{

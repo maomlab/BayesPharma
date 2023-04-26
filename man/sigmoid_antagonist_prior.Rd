@@ -13,31 +13,31 @@ sigmoid_antagonist_prior(
 )
 }
 \arguments{
-\item{ic50}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\item{ic50}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric}. Prior for the
 \code{ic50} parameter. (Default: \code{normal(-6, 2.5)} where the mean
 \code{-6} corresponds to a concentration of 1e-6 or 1 μM. Setting
 \code{ic50} to a numeric value constrains it to a constant value.}
 
-\item{hill}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\item{hill}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric}. Prior for the
 \code{hill} parameter. (Default: \code{normal(-1, 1)} upper bounded by
 \code{0.1}).}
 
-\item{top}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\item{top}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric}. Prior for the
 \code{top} parameter. (Default: \code{normal(1, 0.5)}. Setting \code{top}
 to a numeric value constrains it to a constant value.}
 
-\item{bottom}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\item{bottom}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric}. Prior for the
 bottom parameter. (Default: \code{normal(0, 0.5)}. Setting \code{bottom} to
 a numeric value constrains it to a constant value.}
 
-\item{...}{additional \code{\link[brms]{brmsprior}} objects.}
+\item{...}{additional \code{\link[brms:set_prior]{brms::brmsprior()}} objects.}
 }
 \value{
-\code{\link[brms]{brmsprior}} \code{data.frame}
+\code{\link[brms:set_prior]{brms::brmsprior()}} \code{data.frame}
 }
 \description{
 Creates a \code{data.frame} of priors for the sigmoid antagonist
-    model
+model
 
 If the function arguments ic50, hill, top, bottom = NULL, default
 normal distribution priors will be set.
@@ -46,7 +46,7 @@ If you would like to set a parameter as a constant, enter a numeric value for
 the function argument.
 
 For other distribution options, reference
-<http://mc-stan.org/rstanarm/reference/priors.html#arguments>
+\url{http://mc-stan.org/rstanarm/reference/priors.html#arguments}
 }
 \examples{
 \dontrun{

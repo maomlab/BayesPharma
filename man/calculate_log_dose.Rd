@@ -18,12 +18,12 @@ dose column (Default: 1).}
 }
 \value{
 input \code{data.frame} with an additional \code{log_dose} column
-  which is the \code{log10(<dose_col>) * molar_concentration}.
+which is the \verb{log10(<dose_col>) * molar_concentration}.
 }
 \description{
 Given the dose as a column in a \code{data.frame} with a given
-  molar concentration add a new column of the log base-10 dose,
-  \code{log_dose}, in the \code{data.frame} and return it.
+molar concentration add a new column of the log base-10 dose,
+\code{log_dose}, in the \code{data.frame} and return it.
 }
 \examples{
 \dontrun{

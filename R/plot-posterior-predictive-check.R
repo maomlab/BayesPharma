@@ -14,12 +14,12 @@
 #' plotting functions:
 #' <https://mc-stan.org/bayesplot/reference/PPC-overview.html>
 #'
-#' @param model \code{brmsfit} model.
-#' @param plot_type \code{character} for the plot type.
-#' @param n \code{numeric} number of posterior draws to be used.
-#' @param ... additional arguments to \code{\link[brms]{pp_check}}.
+#' @param model `brmsfit` model.
+#' @param plot_type `character` for the plot type.
+#' @param n `numeric` number of posterior draws to be used.
+#' @param ... additional arguments to [brms::pp_check()].
 #'
-#' @returns \code{\link[ggplot2]{ggplot}} object.
+#' @returns [ggplot2::ggplot()] object.
 #'
 #' @examples
 #'\dontrun{

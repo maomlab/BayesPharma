@@ -15,21 +15,20 @@ plot_density_distribution(
 \arguments{
 \item{model}{brmsfit model.}
 
-\item{pars}{parameters to choose (Default b_<parameter>_Intercept')}
+\item{pars}{parameters to choose (Default b_\if{html}{\out{<parameter>}}_Intercept')}
 
 \item{labeller}{strip off the 'b_' and '_Intercept' from the parameter labels}
 
 \item{title_label}{\code{character} of the plot title.}
 }
 \value{
-\code{\link[ggplot2]{ggplot}} object.
+\code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.
 }
 \description{
 This function is useful to observe the distributions
-  of the priors set for the brmsfit model. By adding \code{sample_prior =
-  "only"} to the sigmoid_model or a brmsfit model, the model samples only
-  from the prior distributions and can be observed using this plot function
-  to verify that the values intended to be covered are being included.
+of the priors set for the brmsfit model. By adding \code{sample_prior = "only"} to the sigmoid_model or a brmsfit model, the model samples only
+from the prior distributions and can be observed using this plot function
+to verify that the values intended to be covered are being included.
 }
 \examples{
 \dontrun{

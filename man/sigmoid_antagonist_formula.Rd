@@ -18,7 +18,7 @@ sigmoid_antagonist_formula(
 (Default: 'log_dose')}
 
 \item{treatment_units}{character the units of the treatment. The default is
-log base 10 of the molar concentration. (Default: "Log[Molar]")}
+log base 10 of the molar concentration. (Default: "Log\link{Molar}")}
 
 \item{response_variable}{character variable representing the response to
 treatment. (Default: 'response')}
@@ -29,18 +29,18 @@ treatment. (Default: 'response')}
 of non-linear parameters. i.e. what perturbations/experimental
 differences should be modeled separately? (Default: 1)}
 
-\item{...}{additional arguments to \code{\link[brms]{brmsformula}}}
+\item{...}{additional arguments to \code{\link[brms:brmsformula]{brms::brmsformula()}}}
 }
 \value{
 a \code{bpformula}, which is a subclass of
-    \code{\link[brms]{brmsformula}} and can be passed to
-    \code{\link{sigmoid_antagonist_model}}.
+\code{\link[brms:brmsformula]{brms::brmsformula()}} and can be passed to
+\code{\link[=sigmoid_antagonist_model]{sigmoid_antagonist_model()}}.
 }
 \description{
 set-up an antagonist sigmoid dose response model formula to
-    define a non-linear model or multilevel non-linear model for
-    \code{ic50}, \code{hill}, \code{top}, and, \code{bottom} for
-    use in the \code{sigmoid_antagonist_model()}
+define a non-linear model or multilevel non-linear model for
+\code{ic50}, \code{hill}, \code{top}, and, \code{bottom} for
+use in the \code{sigmoid_antagonist_model()}
 }
 \examples{
 \dontrun{
@@ -61,7 +61,8 @@ set-up an antagonist sigmoid dose response model formula to
 
 }
 \seealso{
-\code{\link[brms]{brmsformula}}, which this function wraps.
-    \code{\link{sigmiod_antagonist_model}} into which the result of this
-    function can be passed.
+\if{html}{\out{<div class="sourceCode">}}\preformatted{[brms::brmsformula()], which this function wraps.
+[sigmiod_antagonist_model()] into which the result of this
+function can be passed.
+}\if{html}{\out{</div>}}
 }

@@ -28,15 +28,12 @@ temperature for ref2015 or any other scorefunction with units of kcal/mol.}
 numeric value.
 }
 \description{
-The Pnear metric defined in [(Bhardwaj, et al., Nature,
-2016)](https://www.nature.com/articles/nature19791)
+The Pnear metric defined in \href{https://www.nature.com/articles/nature19791}{(Bhardwaj, et al., Nature, 2016)}
 measures the how "funnel-like" a score-vs-rmsd plot is.
-\code{paste0("<https://github.com/RosettaCommons/",
-"main/blob/master/tests/benchmark/util/quality_measures.py#L268>")}
+\code{paste0("<https://github.com/RosettaCommons/", "main/blob/master/tests/benchmark/util/quality_measures.py#L268>")}
 }
 \details{
-```{r}
-# subtract off the min-score as is done in the Rosetta Code
+\if{html}{\out{<div class="sourceCode">}}\preformatted{# subtract off the min-score as is done in the Rosetta Code
 scores = scores - min(scores)
 
 # write down the equation in more code-like notation
@@ -55,7 +52,7 @@ Pnear = Sum_i[exp(-RMSD[i]^2/lambda^2*k_BT/scores])]
 # Use the log-sum-exponential trick
 log(Pnear) =   log_sum_exp(-RMSD[i]^2/lambda^2 - scores[i]/k_BT)
              - log_sum_exp(-scores[i]/k_BT)
-```
+}\if{html}{\out{</div>}}
 }
 \note{
 Unlike the Conway discrimination score, the PNear calculation uses no
@@ -73,5 +70,5 @@ RMSD threshold.
 }
 \author{
 Vikram K. Mulligan (vmulligan\@flatironinstitute.org) adapted from
-  Rosetta
+Rosetta
 }

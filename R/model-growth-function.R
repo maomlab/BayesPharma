@@ -3,14 +3,14 @@
 #' Functional form for the sigmoid growth model, related to the Richards growth
 #' model by setting nu = 1.
 #'
-#' @param K \code{numeric}, the carrying capacity
-#' @param K0 \code{numeric}, the baseline response
-#' @param rate \code{numeric}, maximum growth rate
-#' @param lambda \code{numeric}, time line through the maximum growth rate
+#' @param K `numeric`, the carrying capacity
+#' @param K0 `numeric`, the baseline response
+#' @param rate `numeric`, maximum growth rate
+#' @param lambda `numeric`, time line through the maximum growth rate
 #'   crosses zero
-#' @param time \code{numeric}, time point at which to evaluate the response.
+#' @param time `numeric`, time point at which to evaluate the response.
 #'
-#' @returns \code{numeric}, response given the time and parameters
+#' @returns `numeric`, response given the time and parameters
 #'
 #' @details The Richards growth model is given by
 #' 
@@ -75,14 +75,14 @@ growth_sigmoid <- Vectorize(
 #'
 #' Functional form for the Richards growth model.
 #'
-#' @param K \code{numeric}, the carrying capacity
-#' @param K0 \code{numeric}, the baseline response
-#' @param rate \code{numeric}, maximum growth rate
-#' @param lambda \code{numeric}, time line through the maximum growth rate
+#' @param K `numeric`, the carrying capacity
+#' @param K0 `numeric`, the baseline response
+#' @param rate `numeric`, maximum growth rate
+#' @param lambda `numeric`, time line through the maximum growth rate
 #'   crosses zero
-#' @param nu \code{numeric}, asymmetry in growth before and after the inflection
+#' @param nu `numeric`, asymmetry in growth before and after the inflection
 #'   point
-#' @param time \code{numeric}, time point at which to evaluate the response.
+#' @param time `numeric`, time point at which to evaluate the response.
 #'
 #' @returns numeric, response given the time and parameters
 #'

@@ -3,11 +3,11 @@
 #' The Pnear metric defined in [(Bhardwaj, et al., Nature,
 #' 2016)](https://www.nature.com/articles/nature19791)
 #' measures the how "funnel-like" a score-vs-rmsd plot is.
-#' \code{paste0("<https://github.com/RosettaCommons/",
-#' "main/blob/master/tests/benchmark/util/quality_measures.py#L268>")}
+#' `paste0("<https://github.com/RosettaCommons/",
+#' "main/blob/master/tests/benchmark/util/quality_measures.py#L268>")`
 #'
 #' @details
-#' ```{r}
+#' ```
 #' # subtract off the min-score as is done in the Rosetta Code
 #' scores = scores - min(scores)
 #'

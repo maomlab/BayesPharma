@@ -2,7 +2,7 @@
 #'
 #' @description set-up a sigmoid dose response model formula to define
 #'     a non-linear model or multilevel non-linear model for
-#'     \code{ec50}, \code{hill}, \code{top}, and, \code{bottom} for
+#'     `ec50`, `hill`, `top`, and, `bottom` for
 #'     use in Bayesian_model and in the BRMS package.
 #'
 #' @param treatment_variable character variable representing the treatment.
@@ -15,14 +15,14 @@
 #' @param predictors character or expression of predictors
 #'     of non-linear parameters. i.e. what perturbations/experimental
 #'     differences should be modeled separately? (Default: 1)
-#' @param ... additional arguments to \code{\link[brms]{brmsformula}}
+#' @param ... additional arguments to [brms::brmsformula()]
 #'
-#' @returns a \code{bpformula}, which is a subclass of
-#'     \code{\link[brms]{brmsformula}} and can be passed to
-#'     \code{\link{sigmoid_agoinst_model}}.
+#' @returns a `bpformula`, which is a subclass of
+#'     [brms::brmsformula()] and can be passed to
+#'     [sigmoid_agoinst_model()].
 #' @seealso
-#'     \code{\link[brms]{brmsformula}}, which this function wraps.
-#'     \code{\link{sigmiod_agonist_model}} into which the result of this
+#'     [brms::brmsformula()], which this function wraps.
+#'     [sigmiod_agonist_model()] into which the result of this
 #'     function can be passed.
 #'
 #' @examples
@@ -80,8 +80,8 @@ sigmoid_agonist_formula <- function(
 #'
 #' @description set-up an antagonist sigmoid dose response model formula to
 #'     define a non-linear model or multilevel non-linear model for
-#'     \code{ic50}, \code{hill}, \code{top}, and, \code{bottom} for
-#'     use in the \code{sigmoid_antagonist_model()}
+#'     `ic50`, `hill`, `top`, and, `bottom` for
+#'     use in the `sigmoid_antagonist_model()`
 #'
 #' @param treatment_variable character variable representing the treatment.
 #'     (Default: 'log_dose')
@@ -93,14 +93,14 @@ sigmoid_agonist_formula <- function(
 #' @param predictors character or expression of predictors
 #'     of non-linear parameters. i.e. what perturbations/experimental
 #'     differences should be modeled separately? (Default: 1)
-#' @param ... additional arguments to \code{\link[brms]{brmsformula}}
+#' @param ... additional arguments to [brms::brmsformula()]
 #'
-#' @returns a \code{bpformula}, which is a subclass of
-#'     \code{\link[brms]{brmsformula}} and can be passed to
-#'     \code{\link{sigmoid_antagonist_model}}.
+#' @returns a `bpformula`, which is a subclass of
+#'     [brms::brmsformula()] and can be passed to
+#'     [sigmoid_antagonist_model()].
 #' @seealso
-#'     \code{\link[brms]{brmsformula}}, which this function wraps.
-#'     \code{\link{sigmiod_antagonist_model}} into which the result of this
+#'     [brms::brmsformula()], which this function wraps.
+#'     [sigmiod_antagonist_model()] into which the result of this
 #'     function can be passed.
 #' @examples
 #'\dontrun{

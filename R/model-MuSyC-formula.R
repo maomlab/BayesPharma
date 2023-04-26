@@ -1,9 +1,9 @@
 #' Create a formula for the MuSyC synergy model
 #'
-#' @description setup a default \code{MuSyC} synergy model formula to
-#'     predict the \code{E0}, \code{C1}, \code{E1}, \code{s1},
-#'     \code{C2}, \code{E2}, \code{s2}, \code{log10alpha}, and
-#'     \code{E3alpha} parameters.
+#' @description setup a default `MuSyC` synergy model formula to
+#'     predict the `E0`, `C1`, `E1`, `s1`,
+#'     `C2`, `E2`, `s2`, `log10alpha`, and
+#'     `E3alpha` parameters.
 #'
 #' @param treatment_1_variable character variable representing the treatment.
 #'     (Default: 'logd1')
@@ -21,9 +21,9 @@
 #'     differences should be modeled separately? (Default: 1) should a
 #'     random effect be taken into consideration? i.e. cell number,
 #'     plate number, etc.
-#' @param ... additional arguments passed to \code{\link[brms]{brmsformula}}
+#' @param ... additional arguments passed to [brms::brmsformula()]
 #'
-#' @returns \code{\link[brms]{brmsformula}}
+#' @returns [brms::brmsformula()]
 #'
 #' @examples
 #'\dontrun{

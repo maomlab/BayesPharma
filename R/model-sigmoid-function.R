@@ -42,14 +42,14 @@ sigmoid <- Vectorize(
 
 #' For the sigmoid functional form, convert hill to slope parameter
 #'
-#' The \code{hill} parameter controls the slope at the ac50 (\code{slope}) but
-#' the \code{slope} also depends on the \code{top} and \code{bottom} parameters.
-#' This helper function facilitates computing the \code{slope} from the 
+#' The `hill` parameter controls the slope at the ac50 (`slope`) but
+#' the `slope` also depends on the `top` and `bottom` parameters.
+#' This helper function facilitates computing the `slope` from the 
 #' parameters.
 #'
 #' To prove the this function is correct, consider the derivative of the
-#' response of the \code{\link{sigmoid}} function with respect to the
-#' \code{log_dose}:
+#' response of the [sigmoid()] function with respect to the
+#' `log_dose`:
 #' \preformatted{
 #'   d(response)/d(log_dose) =
 #'     hill * log(10) * (top - bottom) * 10 ^ ((ac50 - log_dose) * hill) /
@@ -59,17 +59,17 @@ sigmoid <- Vectorize(
 #'   slope = hill * log(10) * (top - bottom) / (1 + 1) ^ 2)
 #'         = hill * log(10) * (top - bottom) / 4}
 #'
-#' @param hill \code{numeric} the hill coefficient for the \code{\link{sigmoid}}
+#' @param hill `numeric` the hill coefficient for the [sigmoid()]
 #'   function.
-#' @param top \code{numeric} the top parameter for the \code{\link{sigmoid}}
+#' @param top `numeric` the top parameter for the [sigmoid()]
 #'   function.
-#' @param bottom \code{numeric} the bottom parameter for the
-#'   \code{\link{sigmoid}} function.
+#' @param bottom `numeric` the bottom parameter for the
+#'   [sigmoid()] function.
 #'   
-#' @returns \code{numeric} the slope of the \code{\link{sigmoid}} function at
+#' @returns `numeric` the slope of the [sigmoid()] function at
 #'   the ac50.
 #'
-#' @seealso \code{\link{sigmoid}} \code{\link{sigmoid_slope_to_hill}}
+#' @seealso [sigmoid()] [sigmoid_slope_to_hill()]
 #' 
 #' @export
 sigmoid_hill_to_slope <- function(hill, top, bottom){
@@ -78,28 +78,28 @@ sigmoid_hill_to_slope <- function(hill, top, bottom){
   
 #' For the sigmoid functional form, convert slope to the hill parameter
 #'
-#' The \code{hill} parameter controls the slope at the ac50 (\code{slope}) but
-#' the \code{slope} also depends on the \code{top} and \code{bottom} parameters.
-#' This helper function facilitates computing the \code{hill} from the 
+#' The `hill` parameter controls the slope at the ac50 (`slope`) but
+#' the `slope` also depends on the `top` and `bottom` parameters.
+#' This helper function facilitates computing the `hill` from the 
 #' parameters.
 #'
 #' To prove the this function is correct, we will re-arrange the equation
-#' relating the \code{slope} to the \code{hill} parameters
+#' relating the `slope` to the `hill` parameters
 #' \preformatted{
 #'   hill * log(10) * (top - bottom) / 4 = slope
 #'   hill = slope * 4 / (log10 * (top - bottom))}
 #'
-#' @param slope \code{numeric} the slope of the \code{\link{sigmoid}} at the
+#' @param slope `numeric` the slope of the [sigmoid()] at the
 #'   ac50
-#' @param top \code{numeric} the top parameter for the \code{\link{sigmoid}}
+#' @param top `numeric` the top parameter for the [sigmoid()]
 #'   function.
-#' @param bottom \code{numeric} the bottom parameter for the
-#'   \code{\link{sigmoid}} function.
+#' @param bottom `numeric` the bottom parameter for the
+#'   [sigmoid()] function.
 #'   
-#' @returns \code{numeric} the hill coefficient of the \code{\link{sigmoid}}
+#' @returns `numeric` the hill coefficient of the [sigmoid()]
 #'   function at.
 #'
-#' @seealso \code{\link{sigmoid}} \code{\link{sigmoid_hill_to_slope}}
+#' @seealso [sigmoid()] [sigmoid_hill_to_slope()]
 #' 
 #' @export
 sigmoid_slope_to_hill <- function(slope, top, bottom){
@@ -109,19 +109,19 @@ sigmoid_slope_to_hill <- function(slope, top, bottom){
 
 #' Plot the sigmoid functional form with labeled parameters
 #' 
-#' Generates a plot of the \code{\link{sigmoid}} functional form with the values
-#' of the parameters \code{ac50}, \code{hill}, \code{top}, and \code{bottom}
+#' Generates a plot of the [sigmoid()] functional form with the values
+#' of the parameters `ac50`, `hill`, `top`, and `bottom`
 #' labeled.
-#' @param ac50 \code{numeric} value for the \code{ac50} parameter, which is
-#'   either the \code{ec50} for the \code{\link{sigmoid_agonist_model}} or the
-#'   \code{ic50} for the \code{\link{sigmoid_antagoinst_model}}.
-#' @param hill \code{numeric} value for the \code{hill} parameter.
-#' @param top \code{numeric} value for the \code{top} parameter. 
-#' @param bottom \code{numeric} value for the \code{bottom} parameter.
+#' @param ac50 `numeric` value for the `ac50` parameter, which is
+#'   either the `ec50` for the [sigmoid_agonist_model()] or the
+#'   `ic50` for the [sigmoid_antagoinst_model()].
+#' @param hill `numeric` value for the `hill` parameter.
+#' @param top `numeric` value for the `top` parameter. 
+#' @param bottom `numeric` value for the `bottom` parameter.
 #' 
-#' @returns \code{\link[ggplot2]{ggplot}} object
+#' @returns [ggplot2::ggplot()] object
 #' 
-#' @seealso \code{\link{sigmoid}}
+#' @seealso [sigmoid()]
 #' 
 #' @examples
 #' \dontrun{

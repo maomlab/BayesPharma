@@ -1,6 +1,13 @@
-#' stanvar for the tQ enzyme kinetics model
+#' Stan code for the tQ enzyme kinetics model
 #'
-#'
+#' The tQ is an ordinary differential equation model for the total
+#' quasi-steady-state assumption kinetics defined in
+#' (Choi et al., 2017), which is related to the Michaelis-Menten kinetics model,
+#' but doesn't assume the enzyme concentration is negligibly small.
+#' 
+#' 
+#' To implement it in \pkg{Stan}, the ODE function `tQ_ode` is defined
+#' 
 #' @export
 tQ_stanvar <- brms::stanvar(
   scode = paste("

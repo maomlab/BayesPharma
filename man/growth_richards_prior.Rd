@@ -23,50 +23,50 @@ growth_richards_prior(
 )
 }
 \arguments{
-\item{K}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\item{K}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric}. Prior for the
 \code{K} parameter. (Default: \code{normal(1, 0.5)}).}
 
-\item{K0}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\item{K0}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric}. Prior for the
 \code{K0} parameter. (Default: \code{normal(0, 0.5)}).}
 
-\item{rate}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\item{rate}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric}. Prior for the
 \code{rate} parameter. (Default: \code{normal(1, 1)} with and a lower bound
 of \code{0}).}
 
-\item{lambda}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\item{lambda}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric}. Prior for the
 \code{lambda} parameter. (Default: \code{normal(0.5, 0.5)}).}
 
-\item{nu}{\code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
+\item{nu}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric}. Prior for the
 \code{nu} parameter.  (Default: normal(1, 1) with a lower bound of
 \code{0}).}
 
-\item{...}{additional \code{\link[brms]{brmsprior}} objects.}
+\item{...}{additional \code{\link[brms:set_prior]{brms::brmsprior()}} objects.}
 }
 \value{
-\code{\link[brms]{brmsprior}} \code{data.frame}
+\code{\link[brms:set_prior]{brms::brmsprior()}} \code{data.frame}
 
-\code{\link[brms]{brmsprior}} \code{data.frame}
+\code{\link[brms:set_prior]{brms::brmsprior()}} \code{data.frame}
 }
 \description{
 Creates a for the priors for the sigmoid growth model. If the
-  function arguments \code{K}, \code{K0}, \code{rate}, \code{lambda}, or
-  \code{NULL}, normal distribution priors will be set.
+function arguments \code{K}, \code{K0}, \code{rate}, \code{lambda}, or
+\code{NULL}, normal distribution priors will be set.
 
-  If you would like to set a parameter as a constant, enter a numeric  value
-  for the function argument.
+If you would like to set a parameter as a constant, enter a numeric  value
+for the function argument.
 
-  For other distribution options, reference
-  <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
+For other distribution options, reference
+\url{http://mc-stan.org/rstanarm/reference/priors.html#arguments}
 
 Creates a for the priors for the Richards growth model. If the
-  function arguments \code{K}, \code{K0}, \code{rate}, \code{lambda}, or
-  \code{nu} are \code{NULL}, normal distribution priors will be set.
+function arguments \code{K}, \code{K0}, \code{rate}, \code{lambda}, or
+\code{nu} are \code{NULL}, normal distribution priors will be set.
 
 If you would like to set a parameter as a constant, enter a numeric
 value for the function argument.
 
 For other distribution options, reference
-<http://mc-stan.org/rstanarm/reference/priors.html#arguments>
+\url{http://mc-stan.org/rstanarm/reference/priors.html#arguments}
 }
 \examples{
 \dontrun{

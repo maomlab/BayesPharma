@@ -5,34 +5,34 @@
 #'   <https://paul-buerkner.github.io/brms/reference/brm.html>
 #'   or <https://rdrr.io/cran/rstan/man/stan.html>
 #'
-#' @param data \code{data.frame} of experimental data. Must contain column
+#' @param data `data.frame` of experimental data. Must contain column
 #'   representing the treatment, response and predictors specified in the
 #'   formula.
-#' @param formula \code{bpformula} object. To create a growth model formula, use
-#'   \code{BayesPharma::growth_sigmoid_formula} (default:
-#'   \code{BayesPharma::growth_sigmoid_formula()}.
-#' @param prior \code{brmspriors} \code{data.frame} for \code{K}, \code{K0},
-#'   \code{rate}, and \code{lambda}. To create a prior, use
-#'   \code{BayesPharma::growth_sigmoid_prior}. (default:
-#'   \code{BayesPharma::growth_sigmoid_prior()}
+#' @param formula `bpformula` object. To create a growth model formula, use
+#'   `BayesPharma::growth_sigmoid_formula` (default:
+#'   `BayesPharma::growth_sigmoid_formula()`.
+#' @param prior `brmspriors` `data.frame` for `K`, `K0`,
+#'   `rate`, and `lambda`. To create a prior, use
+#'   `BayesPharma::growth_sigmoid_prior`. (default:
+#'   `BayesPharma::growth_sigmoid_prior()`
 #' @param init initial values of the parameters being modeled. To create an
-#'   init, use \code{BayesPharma::growth_sigmoid_init()}. (Default:
-#'   \code{BayesPharma::growth_sigmoid_init()}
-#' @param iter \code{numeric} value for the number of iterations the model runs. 
-#'   Increasing \code{iter} can help with model convergence (Default:
-#'   \code{8000}).
-#' @param control a named \code{list} of parameters to control the sampler's
-#'   behavior. Adding \code{max_treedepth} and giving a greater value than
-#'   \code{10} can improve model convergence (Default: 
-#'   \code{list(adapt_delta = 0.99)}).
+#'   init, use `BayesPharma::growth_sigmoid_init()`. (Default:
+#'   `BayesPharma::growth_sigmoid_init()`
+#' @param iter `numeric` value for the number of iterations the model runs. 
+#'   Increasing `iter` can help with model convergence (Default:
+#'   `8000`).
+#' @param control a named `list` of parameters to control the sampler's
+#'   behavior. Adding `max_treedepth` and giving a greater value than
+#'   `10` can improve model convergence (Default: 
+#'   `list(adapt_delta = 0.99)`).
 #' @param stanvar_function Stan code for the model (default:
-#'   \code{BayesPharma::growth_richards_stanvar}).
-#' @param expose_functions \code{logical}. Expose the stan functions for the
-#'   model. This is needed e.g. to run \code{\link[brms]{loo_compare}}. (Default:
-#'   \code{TRUE}). 
-#' @param ... additional arguments passed to \code{\link[brms]{brm}}
+#'   `BayesPharma::growth_richards_stanvar`).
+#' @param expose_functions `logical`. Expose the stan functions for the
+#'   model. This is needed e.g. to run [brms::loo_compare()]. (Default:
+#'   `TRUE`). 
+#' @param ... additional arguments passed to [brms::brm()]
 #'
-#' @returns \code{bpfit} \code{\link[brms]{brmsfit}}
+#' @returns `bpfit` [brms::brmsfit()]
 #'
 #' @examples
 #'\dontrun{
@@ -110,34 +110,34 @@ growth_richards_model <- function(
 #'   <https://paul-buerkner.github.io/brms/reference/brm.html>
 #'   or <https://rdrr.io/cran/rstan/man/stan.html>
 #'
-#' @param data \code{data.frame} of experimental data. Must contain column
+#' @param data `data.frame` of experimental data. Must contain column
 #'   representing the treatment, response and predictors specified in the
 #'   formula.
-#' @param formula \code{bpformula} object. To create a growth model formula, use
-#'   \code{BayesPharma::growth_richards_formula} (default:
-#'   \code{BayesPharma::growth_richards_formula()}.
-#' @param prior \code{brmspriors} \code{data.frame} for \code{K}, \code{K0},
-#'   \code{rate}, \code{lambda}, and \code{nu}. To create a prior, use
-#'   \code{BayesPharma::growth_richards_prior}. (default:
-#'   \code{BayesPharma::growth_richards_prior()}
+#' @param formula `bpformula` object. To create a growth model formula, use
+#'   `BayesPharma::growth_richards_formula` (default:
+#'   `BayesPharma::growth_richards_formula()`.
+#' @param prior `brmspriors` `data.frame` for `K`, `K0`,
+#'   `rate`, `lambda`, and `nu`. To create a prior, use
+#'   `BayesPharma::growth_richards_prior`. (default:
+#'   `BayesPharma::growth_richards_prior()`
 #' @param init initial values of the parameters being modeled. To create an
-#'   init, use \code{BayesPharma::growth_richards_init()}. (Default:
-#'   \code{BayesPharma::growth_richards_init()}
-#' @param iter \code{numeric} value for the number of iterations the model runs. 
-#'   Increasing \code{iter} can help with model convergence (Default:
-#'   \code{8000}).
-#' @param control a named \code{list} of parameters to control the sampler's
-#'   behavior. Adding \code{max_treedepth} and giving a greater value than
-#'   \code{10} can improve model convergence (Default: 
-#'   \code{list(adapt_delta = 0.99)}).
+#'   init, use `BayesPharma::growth_richards_init()`. (Default:
+#'   `BayesPharma::growth_richards_init()`
+#' @param iter `numeric` value for the number of iterations the model runs. 
+#'   Increasing `iter` can help with model convergence (Default:
+#'   `8000`).
+#' @param control a named `list` of parameters to control the sampler's
+#'   behavior. Adding `max_treedepth` and giving a greater value than
+#'   `10` can improve model convergence (Default: 
+#'   `list(adapt_delta = 0.99)`).
 #' @param stanvar_function Stan code for the model (default:
-#'   \code{BayesPharma::growth_richards_stanvar}).
-#' @param expose_functions \code{logical}. Expose the stan functions for the
-#'   model. This is needed e.g. to run \code{\link[brms]{loo_compare}}.
-#'   (Default: \code{TRUE}). 
-#' @param ... additional arguments passed to \code{\link[brms]{brm}}
+#'   `BayesPharma::growth_richards_stanvar`).
+#' @param expose_functions `logical`. Expose the stan functions for the
+#'   model. This is needed e.g. to run [brms::loo_compare()].
+#'   (Default: `TRUE`). 
+#' @param ... additional arguments passed to [brms::brm()]
 #'
-#' @returns \code{bpfit} \code{\link[brms]{brmsfit}}
+#' @returns `bpfit` [brms::brmsfit()]
 #'
 #' @examples
 #'\dontrun{

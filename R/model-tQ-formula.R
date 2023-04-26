@@ -1,30 +1,30 @@
 #' Define formula for the tQ enzyme kinetics model
 #'
-#' @param series_index_variable \code{character} variable indexing which
+#' @param series_index_variable `character` variable indexing which
 #'   measurements are part of a common time series.
-#' @param treatment_variable \code{character} variable representing time as the
+#' @param treatment_variable `character` variable representing time as the
 #'   treatment.
-#' @param treatment_units \code{character} the units of the treatment variable.
-#' @param ET_variable \code{character} variable representing the total enzyme
+#' @param treatment_units `character` the units of the treatment variable.
+#' @param ET_variable `character` variable representing the total enzyme
 #'   concentration.
-#' @param ET_units \code{character} variable representing the units of the
+#' @param ET_units `character` variable representing the units of the
 #'   enzyme concentration.
-#' @param ST_variable \code{character} variable representing the total substrate
+#' @param ST_variable `character` variable representing the total substrate
 #'   concentration.
-#' @param ST_units \code{character} variable representing the units of the
+#' @param ST_units `character` variable representing the units of the
 #'   substrate concentration.
-#' @param response_variable \code{character} variable representing the product.
-#' @param response_units \code{character} the units of the product.
-#' @param predictors \code{expression} of predictors for \code{kcat} and
-#'   \code{kM} parameters
-#' @param ... additional arguments passed to \code{\link[brms]{brmsformula}}
+#' @param response_variable `character` variable representing the product.
+#' @param response_units `character` the units of the product.
+#' @param predictors `expression` of predictors for `kcat` and
+#'   `kM` parameters
+#' @param ... additional arguments passed to [brms::brmsformula()]
 #'
-#' @returns a \code{bpformula}, which is a subclass of
-#'   \code{\link[brms]{brmsformula}} and can be passed to
-#'   \code{\link{tQ_model}}.
+#' @returns a `bpformula`, which is a subclass of
+#'   [brms::brmsformula()] and can be passed to
+#'   [tQ_model()].
 #' @seealso
-#'   \code{\link[brms]{brmsformula}}, which this function wraps.
-#'   \code{\link{tQ_model}} into which the result of this function can be
+#'   [brms::brmsformula()], which this function wraps.
+#'   [tQ_model()] into which the result of this function can be
 #'   passed.
 #'
 #' @export

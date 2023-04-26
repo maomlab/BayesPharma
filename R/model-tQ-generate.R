@@ -15,12 +15,12 @@
 #' and kb, which is irreversibly catalyzed into the product (P), with
 #' rate constant of kcat, releasing the enzyme to catalyze additional
 #' substrate. The total enzyme concentration is defined to be the
-#' \code{ET := E + C}. The total substrate and product concentration
-#' is defined to be \code{ST := S + C + P}. The Michaelis constant is
-#' the defined to be the \code{kM := (kb + kcat) / kf}. The kcat rate
+#' `ET := E + C`. The total substrate and product concentration
+#' is defined to be `ST := S + C + P`. The Michaelis constant is
+#' the defined to be the `kM := (kb + kcat) / kf`. The kcat rate
 #' constant determines the maximum turn over at saturating substrate
-#' concentrations, \code{Vmax := kcat * ET}. The rate constants \code{kcat}
-#' and \code{kM} can be estimated by monitoring the product accumulation
+#' concentrations, `Vmax := kcat * ET`. The rate constants `kcat`
+#' and `kM` can be estimated by monitoring the product accumulation
 #' over time (enzyme progress curves), by varying the enzyme and
 #' substrate concentrations.
 #'
@@ -57,7 +57,7 @@
 #' @param kM numeric value Michaelis rate constant
 #' @param ET numeric value total enzyme concentration
 #' @param ST numeric value total substrate concentration
-#' @param ... additional arguments to \code{deSolve::ode}
+#' @param ... additional arguments to `deSolve::ode`
 #'
 #' @returns run the tQ ordinary differential equation forwards starting
 #'     with initial product concentration of 0 and specified kcat and

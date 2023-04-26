@@ -1,24 +1,24 @@
 #' Create a plot of the posterior density distributions of modeled parameters
 #' from brmsfit model
 #'
-#' @description plots the \code{\link{bpfit}} model density distribution of each
+#' @description plots the [bpfit()] model density distribution of each
 #'   parameter and the mean, lower confidence interval, and upper confidence interval.
 #'
-#' @param model \code{bpfit} model.
-#' @param predictors_col_name \code{character} of the predictors column
+#' @param model `bpfit` model.
+#' @param predictors_col_name `character` of the predictors column
 #'   in the input data.frame (default = "_Intercept"). Predictors
 #'   are the perturbations tested during the experiment (i.e. Drug,
 #'   Temperature, etc.).
-#' @param half_max_label \code{character} of the label for the half maximal that
+#' @param half_max_label `character` of the label for the half maximal that
 #'   fits the type of experiment that was done (i.e. ec50, ic50,
 #'   ed50, id50, ld50, etc.).
-#' @param l_ci \code{numeric} unit of the lower confidence interval (default
+#' @param l_ci `numeric` unit of the lower confidence interval (default
 #'   = 0.025)
-#' @param u_ci \code{numeric} unit of the upper confidence interval (default
+#' @param u_ci `numeric` unit of the upper confidence interval (default
 #'   = 0.975)
 #' @param title_label string of the plot title. (default = "Posterior Density
 #'   Plots with Mean and 95\% CI")
-#' @returns \code{\link[ggplot2]{gplot}} object.
+#' @returns [ggplot2::ggplot()] object.
 #'
 #' @examples
 #'\dontrun{

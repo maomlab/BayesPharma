@@ -20,7 +20,7 @@ MuSyC_formula(
 (Default: 'logd1')}
 
 \item{treatment_1_units}{character the units of the treatment. The default is
-log base 10 of the molar concentration. (Default: "Log[Molar]")}
+log base 10 of the molar concentration. (Default: "Log\link{Molar}")}
 
 \item{treatment_2_variable}{character variable representing the treatment.
 (Default: 'logd2')}
@@ -36,16 +36,16 @@ differences should be modeled separately? (Default: 1) should a
 random effect be taken into consideration? i.e. cell number,
 plate number, etc.}
 
-\item{...}{additional arguments passed to \code{\link[brms]{brmsformula}}}
+\item{...}{additional arguments passed to \code{\link[brms:brmsformula]{brms::brmsformula()}}}
 }
 \value{
-\code{\link[brms]{brmsformula}}
+\code{\link[brms:brmsformula]{brms::brmsformula()}}
 }
 \description{
 setup a default \code{MuSyC} synergy model formula to
-    predict the \code{E0}, \code{C1}, \code{E1}, \code{s1},
-    \code{C2}, \code{E2}, \code{s2}, \code{log10alpha}, and
-    \code{E3alpha} parameters.
+predict the \code{E0}, \code{C1}, \code{E1}, \code{s1},
+\code{C2}, \code{E2}, \code{s2}, \code{log10alpha}, and
+\code{E3alpha} parameters.
 }
 \examples{
 \dontrun{

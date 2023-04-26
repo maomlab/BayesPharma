@@ -15,12 +15,12 @@ Stan code for the sigmoid function.
 }
 \note{
 stanvar script of a sigmoid dose response equation.  For log
-    dose greater than negative infinity (dose greater than 0), the
-    sigmoid dose response equation is used. \code{ac50} is the half
-    maximal response, hill is the slope, top is the maximum
-    response, and bottom is the minimum response. For log dose
-    equal to negative infinity (dose equal to 0), if hill is
-    positive, then the bottom value is returned. If hill is
-    negative, then the top value is returned.
+dose greater than negative infinity (dose greater than 0), the
+sigmoid dose response equation is used. \code{ac50} is the half
+maximal response, hill is the slope, top is the maximum
+response, and bottom is the minimum response. For log dose
+equal to negative infinity (dose equal to 0), if hill is
+positive, then the bottom value is returned. If hill is
+negative, then the top value is returned.
 }
 \keyword{datasets}

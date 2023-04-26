@@ -3,14 +3,14 @@
 #' @description This can be used for setting priors and interpreting parameter
 #'   estimates
 #'
-#' @param si \code{numeric} value of slope of drug i at its AC50 and doses of
+#' @param si `numeric` value of slope of drug i at its AC50 and doses of
 #'   all other drugs are zero
-#' @param Ci \code{numeric} value of the AC50 of drug i
-#' @param E0 \code{numeric} value of the response with no treatments
-#' @param Ei \code{numeric} value of the response of infinite drug i and no
+#' @param Ci `numeric` value of the AC50 of drug i
+#' @param E0 `numeric` value of the response with no treatments
+#' @param Ei `numeric` value of the response of infinite drug i and no
 #'   other treatments
 #'
-#' @returns hi \code{numeric} value of the exponent in the MuSyC equation for
+#' @returns hi `numeric` value of the exponent in the MuSyC equation for
 #'   drug i
 #'
 #' @details Claim: When d1=0 and d2=C2 then the gradient of the response with
@@ -52,11 +52,11 @@ MuSyC_si_to_hi <- function(si, Ci, E0, Ei) {
 #' @description This can be used for setting priors and interpreting parameter
 #'   estimates see MuSyC_si_to_hi for details
 #'
-#' @param hi \code{numeric} value of the exponent in the MuSyC equation for drug
+#' @param hi `numeric` value of the exponent in the MuSyC equation for drug
 #'   i
-#' @param Ci \code{numeric} value of the AC50 of drug i
-#' @param E0 \code{numeric} value of the response with no treatments
-#' @param Ei \code{numeric} value of the response of infinite drug i and no
+#' @param Ci `numeric` value of the AC50 of drug i
+#' @param E0 `numeric` value of the response with no treatments
+#' @param Ei `numeric` value of the response of infinite drug i and no
 #'   other treatments
 #' @returns si slope of drug i at it's AC50 and doses of all other drugs are
 #'   zero

@@ -13,31 +13,28 @@ basic_stats(
 )
 }
 \arguments{
-\item{model}{\code{\link[brms]{brmsfit}} model}
+\item{model}{\code{\link[brms:brmsfit-class]{brms::brmsfit()}} model}
 
 \item{predictors_col_name}{\code{character} expression for predictors column
 in the input \code{data.frame}. Predictors are the perturbations tested
-during the experiment (i.e. Drug, Temperature, etc.). [default =
-\code{"_Intercept"}]}
+during the experiment (i.e. Drug, Temperature, etc.)}
 
 \item{half_max_label}{\code{character} of the label for the half maximal that
 fits the type of experiment that was done (i.e. ec50, ic50, ed50, id50,
 ld50, etc.).}
 
-\item{l_ci}{\code{numeric} unit of the lower confidence interval (default
-= \code{0.025})}
+\item{l_ci}{\code{numeric} unit of the lower confidence interval}
 
-\item{u_ci}{\code{numeric} unit of the upper confidence interval (default
-= \code{0.975})}
+\item{u_ci}{\code{numeric} unit of the upper confidence interval}
 }
 \value{
-\code{\link[tibble]{tibble}} object.
+\code{\link[tibble:tibble]{tibble::tibble()}} object.
 }
 \description{
 Return a \code{data.frame} containing summary statistics of
-  \code{bpfit} model. The summary statistics included are mean, median,
-  standard deviation, lower confidence interval, and upper confidence
-  interval.
+\code{bpfit} model. The summary statistics included are mean, median,
+standard deviation, lower confidence interval, and upper confidence
+interval.
 }
 \examples{
 \dontrun{

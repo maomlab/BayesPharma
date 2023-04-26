@@ -1,8 +1,8 @@
 #' Create a prior for the sigmoid growth model
 #'
 #' @description Creates a for the priors for the sigmoid growth model. If the
-#'   function arguments \code{K}, \code{K0}, \code{rate}, \code{lambda}, or
-#'   \code{NULL}, normal distribution priors will be set.
+#'   function arguments `K`, `K0`, `rate`, `lambda`, or
+#'   `NULL`, normal distribution priors will be set.
 #'
 #'   If you would like to set a parameter as a constant, enter a numeric  value
 #'   for the function argument.
@@ -10,18 +10,18 @@
 #'   For other distribution options, reference
 #'   <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
 #'
-#' @param K \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
-#'   \code{K} parameter. (Default: \code{normal(1, 0.5)})
-#' @param K0 \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
-#'   \code{K0} parameter. (Default: \code{normal(0, 0.5)})
-#' @param rate \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
-#'   \code{rate} parameter. (Default: \code{normal(1, 1)} with and a lower bound
-#'   of \code{0}).
-#' @param lambda \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
-#'   \code{lambda} parameter. (Default: \code{normal(0.5, 0.5)}).
-#' @param ... additional \code{\link[brms]{brmsprior}} objects.
+#' @param K [brms::brmsprior()] or `numeric`. Prior for the
+#'   `K` parameter. (Default: `normal(1, 0.5)`)
+#' @param K0 [brms::brmsprior()] or `numeric`. Prior for the
+#'   `K0` parameter. (Default: `normal(0, 0.5)`)
+#' @param rate [brms::brmsprior()] or `numeric`. Prior for the
+#'   `rate` parameter. (Default: `normal(1, 1)` with and a lower bound
+#'   of `0`).
+#' @param lambda [brms::brmsprior()] or `numeric`. Prior for the
+#'   `lambda` parameter. (Default: `normal(0.5, 0.5)`).
+#' @param ... additional [brms::brmsprior()] objects.
 #'
-#' @returns \code{\link[brms]{brmsprior}} \code{data.frame}
+#' @returns [brms::brmsprior()] `data.frame`
 #'
 #' @examples
 #'\dontrun{
@@ -48,8 +48,8 @@ growth_richards_prior <- function(
 #' Create a prior for the Richards growth model
 #'
 #' @description Creates a for the priors for the Richards growth model. If the
-#'   function arguments \code{K}, \code{K0}, \code{rate}, \code{lambda}, or
-#'   \code{nu} are \code{NULL}, normal distribution priors will be set.
+#'   function arguments `K`, `K0`, `rate`, `lambda`, or
+#'   `nu` are `NULL`, normal distribution priors will be set.
 #'
 #' If you would like to set a parameter as a constant, enter a numeric
 #' value for the function argument.
@@ -57,21 +57,21 @@ growth_richards_prior <- function(
 #' For other distribution options, reference
 #' <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
 #'
-#' @param K \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
-#'   \code{K} parameter. (Default: \code{normal(1, 0.5)}).
-#' @param K0 \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
-#'   \code{K0} parameter. (Default: \code{normal(0, 0.5)}).
-#' @param rate \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
-#'   \code{rate} parameter. (Default: \code{normal(1, 1)} with and a lower bound
-#'   of \code{0}).
-#' @param lambda \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
-#'   \code{lambda} parameter. (Default: \code{normal(0.5, 0.5)}).
-#' @param nu \code{\link[brms]{brmsprior}} or \code{numeric}. Prior for the
-#'   \code{nu} parameter.  (Default: normal(1, 1) with a lower bound of
-#'   \code{0}).
-#' @param ... additional \code{\link[brms]{brmsprior}} objects.
+#' @param K [brms::brmsprior()] or `numeric`. Prior for the
+#'   `K` parameter. (Default: `normal(1, 0.5)`).
+#' @param K0 [brms::brmsprior()] or `numeric`. Prior for the
+#'   `K0` parameter. (Default: `normal(0, 0.5)`).
+#' @param rate [brms::brmsprior()] or `numeric`. Prior for the
+#'   `rate` parameter. (Default: `normal(1, 1)` with and a lower bound
+#'   of `0`).
+#' @param lambda [brms::brmsprior()] or `numeric`. Prior for the
+#'   `lambda` parameter. (Default: `normal(0.5, 0.5)`).
+#' @param nu [brms::brmsprior()] or `numeric`. Prior for the
+#'   `nu` parameter.  (Default: normal(1, 1) with a lower bound of
+#'   `0`).
+#' @param ... additional [brms::brmsprior()] objects.
 #'
-#' @returns \code{\link[brms]{brmsprior}} \code{data.frame}
+#' @returns [brms::brmsprior()] `data.frame`
 #'
 #' @examples
 #'\dontrun{

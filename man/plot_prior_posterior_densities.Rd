@@ -27,7 +27,7 @@ ed50, id50, ld50, etc.).}
 "Prior Posterior Density Plots")}
 }
 \value{
-\code{\link[ggplot]{ggplot}} object.
+\code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.
 }
 \description{
 Generate a plot that shows for each model variable the distribution of the

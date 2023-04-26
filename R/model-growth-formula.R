@@ -1,7 +1,7 @@
 #' Create a formula for the sigmoid growth model
 #'
 #' @description set-up a sigmoid growth model formula to for use in
-#'   \code{\link{growth_sigmoid_model}}. The functional form is
+#'   [growth_sigmoid_model()]. The functional form is
 #'   \preformatted{
 #'     response ~ sigmoid_growth(K, K0, rate, lambda, time)}
 #'   
@@ -32,15 +32,15 @@
 #'   differences should be modeled separately? (Default: 1) should a
 #'   random effect be taken into consideration? i.e. cell number,
 #'   plate number, etc.
-#' @param ... additional arguments to \code{\link[brms]{brmsformula}}
+#' @param ... additional arguments to [brms::brmsformula()]
 #'
-#' @returns a \code{bpformula}, which is a subclass of
-#'   \code{\link[brms]{brmsformula}} and can be passed to
-#'   \code{\link{growth_sigmoid_model}}.
+#' @returns a `bpformula`, which is a subclass of
+#'   [brms::brmsformula()] and can be passed to
+#'   [growth_sigmoid_model()].
 #'
 #' @seealso
-#'     \code{\link[brms]{brmsformula}}, which this function wraps.
-#'     \code{\link{growth_sigmoid_model]}} into which the result of this
+#'     [brms::brmsformula()], which this function wraps.
+#'     [growth_sigmoid_model]()] into which the result of this
 #'     function can be passed.
 #'
 #' @examples
@@ -103,7 +103,7 @@ growth_sigmoid_formula <- function(
 #' Create a formula for the Richards growth model
 #'
 #' @description set-up a Richards growth model formula to for use in
-#'   \code{growth_richards_model} and in the BayesPharma package. The functional
+#'   `growth_richards_model` and in the BayesPharma package. The functional
 #'   form is
 #'   
 #'     response ~ richards_growth(K, K0, rate, lambda, nu, time)
@@ -136,14 +136,14 @@ growth_sigmoid_formula <- function(
 #'   of non-linear parameters. i.e. what perturbations/experimental differences
 #'   should be modeled separately? (Default: 1) should a random effect be taken
 #'   into consideration? i.e. cell number, plate number, etc.
-#' @param ... additional arguments to \code{\link[brms]{brmsformula}}
+#' @param ... additional arguments to [brms::brmsformula()]
 #'
-#' @returns a \code{bpformula}, which is a subclass of
-#'   \code{\link[brms]{brmsformula}} and can be passed to
-#'   \code{\link{growth_richards_model}}.
+#' @returns a `bpformula`, which is a subclass of
+#'   [brms::brmsformula()] and can be passed to
+#'   [growth_richards_model()].
 #' @seealso
-#'   \code{\link[brms]{brmsformula}}, which this function wraps.
-#'   \code{\link{growth_richards_model}} into which the result of this
+#'   [brms::brmsformula()], which this function wraps.
+#'   [growth_richards_model()] into which the result of this
 #'   function can be passed.
 #'
 #' @examples
