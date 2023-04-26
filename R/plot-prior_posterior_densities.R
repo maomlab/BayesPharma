@@ -4,7 +4,7 @@
 #' marginal posterior uncertainty overlaid on the distribution of the marginal
 #' prior uncertainty.
 #'
-#' @param model \code{bpfit} object resulting from fitting a BayesPharma model
+#' @param model `bpfit` object resulting from fitting a BayesPharma model
 #' @param predictors_col_name string expression for predictors column
 #'     in the input data.frame (default = "_Intercept"). Predictors
 #'     are the perturbations tested during the experiment (i.e. Drug,
@@ -14,7 +14,7 @@
 #'     ed50, id50, ld50, etc.).
 #' @param title_label string of the plot title.  (default =
 #'     "Prior Posterior Density Plots")
-#' @returns \code{\link[ggplot]{ggplot}} object.
+#' @returns [ggplot2::ggplot()] object.
 #'
 #' @examples
 #'\dontrun{

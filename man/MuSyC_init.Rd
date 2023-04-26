@@ -30,8 +30,7 @@ parameter. Default: \code{log(0.5)}}
 log(0.5)}
 
 \item{h1}{\code{numeric} or function returning array of length
-1. Initial value for the \code{h1} parameter. Default: \code{4
-= MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)} the exponent for
+1. Initial value for the \code{h1} parameter. Default: \code{4 = MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)} the exponent for
 treatment \code{1} corresponding to a slope of \code{1}}
 
 \item{logC2}{\code{numeric} or function returning array of length
@@ -58,7 +57,7 @@ parameter. Default: \code{0 = log(1)}}
 }
 \value{
 input for \code{BayesPharma::model_MuSyC(init = ...)}
-    parameter.
+parameter.
 }
 \description{
 Initial values for the MuSyC model

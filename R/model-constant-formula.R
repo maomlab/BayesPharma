@@ -3,16 +3,16 @@
 #' @description set-up an equation for formula objects with a constant response.
 #'
 #' @param response_variable character variable representing the response to
-#'   treatment. (Default: \code{'response'})
+#'   treatment. (Default: `'response'`)
 #' @param response_units character the units of the response. (Default:
-#'   \code{NULL})
+#'   `NULL`)
 #' @param predictors Additional formula objects to specify predictors of
 #'   non-linear parameters. i.e. what perturbations/experimental differences
 #'   should be modeled separately? (Default: 1) should a random effect be taken
 #'   into consideration? i.e. cell number, plate number, etc.
-#' @param ... additional arguments to \code{\link[brms]{brmsformula}}
+#' @param ... additional arguments to [brms::brmsformula()]
 #'
-#' @returns bpformula \code{\link[brms]{brmsformula}}
+#' @returns bpformula [brms::brmsformula()]
 #'
 #' @examples
 #'\dontrun{

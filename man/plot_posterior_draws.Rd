@@ -47,7 +47,7 @@ used to label the Y-axis of the plot.}
 
 \item{n}{\code{numeric} value of the number of draws to shown.}
 
-\item{point_size}{\code{numeric}. \code{\link[ggplot2]{geom_jitter}} point
+\item{point_size}{\code{numeric}. \code{\link[ggplot2:geom_jitter]{ggplot2::geom_jitter()}} point
 size.}
 
 \item{jitter_height}{\code{numeric}. the height distance between overlapping
@@ -61,8 +61,8 @@ ggplot2::ggplot object.
 }
 \description{
 A plot of a sample of model fit draws from the
-    posterior distribution from the expected mean and median
-    quantile intervals.
+posterior distribution from the expected mean and median
+quantile intervals.
 }
 \examples{
 \dontrun{

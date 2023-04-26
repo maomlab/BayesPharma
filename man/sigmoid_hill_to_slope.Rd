@@ -7,28 +7,28 @@
 sigmoid_hill_to_slope(hill, top, bottom)
 }
 \arguments{
-\item{hill}{\code{numeric} the hill coefficient for the \code{\link{sigmoid}}
+\item{hill}{\code{numeric} the hill coefficient for the \code{\link[=sigmoid]{sigmoid()}}
 function.}
 
-\item{top}{\code{numeric} the top parameter for the \code{\link{sigmoid}}
+\item{top}{\code{numeric} the top parameter for the \code{\link[=sigmoid]{sigmoid()}}
 function.}
 
 \item{bottom}{\code{numeric} the bottom parameter for the
-\code{\link{sigmoid}} function.}
+\code{\link[=sigmoid]{sigmoid()}} function.}
 }
 \value{
-\code{numeric} the slope of the \code{\link{sigmoid}} function at
-  the ac50.
+\code{numeric} the slope of the \code{\link[=sigmoid]{sigmoid()}} function at
+the ac50.
 }
 \description{
 The \code{hill} parameter controls the slope at the ac50 (\code{slope}) but
 the \code{slope} also depends on the \code{top} and \code{bottom} parameters.
-This helper function facilitates computing the \code{slope} from the 
+This helper function facilitates computing the \code{slope} from the
 parameters.
 }
 \details{
 To prove the this function is correct, consider the derivative of the
-response of the \code{\link{sigmoid}} function with respect to the
+response of the \code{\link[=sigmoid]{sigmoid()}} function with respect to the
 \code{log_dose}:
 \preformatted{
   d(response)/d(log_dose) =
@@ -40,5 +40,5 @@ Evaluating this derivative at log_dose == ac50 simplifies the exponents:
         = hill * log(10) * (top - bottom) / 4}
 }
 \seealso{
-\code{\link{sigmoid}} \code{\link{sigmoid_slope_to_hill}}
+\code{\link[=sigmoid]{sigmoid()}} \code{\link[=sigmoid_slope_to_hill]{sigmoid_slope_to_hill()}}
 }

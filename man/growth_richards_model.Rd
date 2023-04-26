@@ -46,37 +46,37 @@ formula.}
 init, use \code{BayesPharma::growth_richards_init()}. (Default:
 \code{BayesPharma::growth_richards_init()}}
 
-\item{iter}{\code{numeric} value for the number of iterations the model runs. 
+\item{iter}{\code{numeric} value for the number of iterations the model runs.
 Increasing \code{iter} can help with model convergence (Default:
 \code{8000}).}
 
 \item{control}{a named \code{list} of parameters to control the sampler's
 behavior. Adding \code{max_treedepth} and giving a greater value than
-\code{10} can improve model convergence (Default: 
+\code{10} can improve model convergence (Default:
 \code{list(adapt_delta = 0.99)}).}
 
 \item{stanvar_function}{Stan code for the model (default:
 \code{BayesPharma::growth_richards_stanvar}).}
 
 \item{expose_functions}{\code{logical}. Expose the stan functions for the
-model. This is needed e.g. to run \code{\link[brms]{loo_compare}}.
+model. This is needed e.g. to run \code{\link[brms:loo_compare.brmsfit]{brms::loo_compare()}}.
 (Default: \code{TRUE}).}
 
-\item{...}{additional arguments passed to \code{\link[brms]{brm}}}
+\item{...}{additional arguments passed to \code{\link[brms:brm]{brms::brm()}}}
 }
 \value{
-\code{bpfit} \code{\link[brms]{brmsfit}}
+\code{bpfit} \code{\link[brms:brmsfit-class]{brms::brmsfit()}}
 
-\code{bpfit} \code{\link[brms]{brmsfit}}
+\code{bpfit} \code{\link[brms:brmsfit-class]{brms::brmsfit()}}
 }
 \description{
 For additional information on additional function arguments, reference:
-  <https://paul-buerkner.github.io/brms/reference/brm.html>
-  or <https://rdrr.io/cran/rstan/man/stan.html>
+\url{https://paul-buerkner.github.io/brms/reference/brm.html}
+or \url{https://rdrr.io/cran/rstan/man/stan.html}
 
 For additional information on additional function arguments, reference:
-  <https://paul-buerkner.github.io/brms/reference/brm.html>
-  or <https://rdrr.io/cran/rstan/man/stan.html>
+\url{https://paul-buerkner.github.io/brms/reference/brm.html}
+or \url{https://rdrr.io/cran/rstan/man/stan.html}
 }
 \examples{
 \dontrun{

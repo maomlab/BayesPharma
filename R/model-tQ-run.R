@@ -1,10 +1,10 @@
 #' Model for the tQ enzyme kinetics model
 #'
 #' @param data data.frame of experimental data.
-#'   must contain columns \code{response} and any predictors specified in
+#'   must contain columns `response` and any predictors specified in
 #'   the formula.
 #' @param formula brmsformula object. To create a dose-response brmsformula,
-#'   use the \code{tQ_formula} function.
+#'   use the `tQ_formula` function.
 #' @param prior brmspriors data.frame for kcat, and kM.
 #'   Use one of the priors functions provided to create priors to use here.
 #' @param init list of lists, numeric value, or "random" for the initial values
@@ -12,13 +12,13 @@
 #' @param iter number of iterations the model runs. Increasing iter can help
 #'   with model convergence (default = 8000).
 #' @param control a named list of parameters to control the sampler's behavior.
-#'   Adding \code{max_treedepth} and giving a greater value than 10 can improve
+#'   Adding `max_treedepth` and giving a greater value than 10 can improve
 #'   model convergence (default = list(adapt_delta = 0.99)).
-#' @param expose_functions \code{logical}. Expose the BayesPharma functions for the
+#' @param expose_functions `logical`. Expose the BayesPharma functions for the
 #'   model [default: TRUE].
-#' @param ... additional arguments passed to \code{\link[brms]{brm}}.
+#' @param ... additional arguments passed to [brms::brm()].
 #'
-#' @returns \code{bpfit} model
+#' @returns `bpfit` model
 #'
 #' @export
 tQ_model <- function(

@@ -19,19 +19,19 @@ sigmoid_agonist_model(
 \arguments{
 \item{data}{\code{data.frame} of observed data. It must contain columns
 for the treatment, response and any additional predictors specified in the
-formula. See \code{\link{sigmoid_agonist_formula}} for more details.}
+formula. See \code{\link[=sigmoid_agonist_formula]{sigmoid_agonist_formula()}} for more details.}
 
 \item{formula}{\code{bpformula} for the sigmoid agonist model
-(Default: \code{\link{sigmoid_agonist_formula}()})}
+(Default: \code{\link[=sigmoid_agonist_formula]{sigmoid_agonist_formula()}})}
 
 \item{prior}{\code{brmsprior} defining a distribution for the model
 parameters \code{ec50}, \code{hill}, \code{top}, and \code{bottom}.
 Use one of the priors functions provided to create priors to
-use here.  (default: \code{\link{sigmoid_agonist_prior}()}}
+use here.  (default: \code{\link[=sigmoid_agonist_prior]{sigmoid_agonist_prior()}}}
 
 \item{init}{\code{function} returning a named \code{list} of functions
 returning arrays giving initial values of the parameters being modeled for
-each chain. (Default: \code{\link{sigmoid_agonist_init}()}}
+each chain. (Default: \code{\link[=sigmoid_agonist_init]{sigmoid_agonist_init()}}}
 
 \item{iter}{\code{number} of iterations the model runs. Increasing
 \code{iter} can help with model convergence. (Default: \code{8000})}
@@ -42,50 +42,50 @@ value than \code{10} can improve model convergence (default:
 \code{list(adapt_delta = 0.99)}).}
 
 \item{stanvar_function}{stan code for the model (default:
-\code{\link{sigmoid_stanvar}}}
+\code{\link[=sigmoid_stanvar]{sigmoid_stanvar()}}}
 
 \item{expose_functions}{\code{logical}. Expose the sigmoid function used in
-the model. This is needed e.g. for \code{\link[brms]{loo_compare}}}
+the model. This is needed e.g. for \code{\link[brms:loo_compare.brmsfit]{brms::loo_compare()}}}
 
-\item{...}{additional arguments passed to \code{\link[brms]{brm}}}
+\item{...}{additional arguments passed to \code{\link[brms:brm]{brms::brm()}}}
 }
 \value{
 \code{bpfit} object, which is a wrapper around a
-  \code{\link[brms]{brmsfit-class}}.
+\code{\link[brms:brmsfit-class]{brms::brmsfit-class()}}.
 }
 \description{
 Fits the sigmoid agonist model. The functional form is
- \preformatted{
+\preformatted{
    <response> ~ sigmoid(ec50, hill, top, bottom, <treatment>)}
- where
- \preformatted{
+where
+\preformatted{
    sigmoid = bottom + (top - bottom)/(1 + 10^((ec50 - <treatment>) * hill))}
- By default the observed data (and therefore should be columns in the input
- data data.frame) are
- \itemize{
-   \item{\strong{<treatment>}: \code{log_dose}, the \code{log10} of the dose
-     as a molar concentration}
-   \item{\strong{<response>}: \code{response}, with unspecified units}
- }
-     
- and the modeled parameters are
- \itemize{
-   \item{\strong{ec50}: the dose where the response reaches half maximal
-     activity}
-   \item{\strong{hill}: the hill coefficient controlling the slope at the
-     \code{ec50}}, by convention the slope of an agonist is positive
-   \item{\strong{top}: the response when <treatment> => \code{Inf}}
-   \item{\strong{bottom}: the response when <treatment> => \code{-Inf}}
- }
- To configure the model you can use the following helper functions:
- \itemize{
-   \item{\code{\link{sigmiod_agonist_formula}}: define the \code{treatment}
-     and \code{response} variables, and predictors for the model parameters}
-   \item{\code{\link{sigmoid_agonist_prior}}: define the prior for the model
-     parameters}
-   \item{\code{\link{sigmoid_agonist_init}}: define initial values for the
-     model parameters}
- }
+By default the observed data (and therefore should be columns in the input
+data data.frame) are
+\itemize{
+\item{\strong{\if{html}{\out{<treatment>}}}: \code{log_dose}, the \code{log10} of the dose
+as a molar concentration}
+\item{\strong{\if{html}{\out{<response>}}}: \code{response}, with unspecified units}
+}
+
+and the modeled parameters are
+\itemize{
+\item{\strong{ec50}: the dose where the response reaches half maximal
+activity}
+\item{\strong{hill}: the hill coefficient controlling the slope at the
+\code{ec50}}, by convention the slope of an agonist is positive
+\item{\strong{top}: the response when \if{html}{\out{<treatment>}} => \code{Inf}}
+\item{\strong{bottom}: the response when \if{html}{\out{<treatment>}} => \code{-Inf}}
+}
+To configure the model you can use the following helper functions:
+\itemize{
+\item{\code{\link[=sigmiod_agonist_formula]{sigmiod_agonist_formula()}}: define the \code{treatment}
+and \code{response} variables, and predictors for the model parameters}
+\item{\code{\link[=sigmoid_agonist_prior]{sigmoid_agonist_prior()}}: define the prior for the model
+parameters}
+\item{\code{\link[=sigmoid_agonist_init]{sigmoid_agonist_init()}}: define initial values for the
+model parameters}
+}
 }
 \examples{
 \dontrun{

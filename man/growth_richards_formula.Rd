@@ -30,36 +30,38 @@ of non-linear parameters. i.e. what perturbations/experimental differences
 should be modeled separately? (Default: 1) should a random effect be taken
 into consideration? i.e. cell number, plate number, etc.}
 
-\item{...}{additional arguments to \code{\link[brms]{brmsformula}}}
+\item{...}{additional arguments to \code{\link[brms:brmsformula]{brms::brmsformula()}}}
 }
 \value{
 a \code{bpformula}, which is a subclass of
-  \code{\link[brms]{brmsformula}} and can be passed to
-  \code{\link{growth_richards_model}}.
+\code{\link[brms:brmsformula]{brms::brmsformula()}} and can be passed to
+\code{\link[=growth_richards_model]{growth_richards_model()}}.
 }
 \description{
 set-up a Richards growth model formula to for use in
-  \code{growth_richards_model} and in the BayesPharma package. The functional
-  form is
-  
-    response ~ richards_growth(K, K0, rate, lambda, nu, time)
-  
-  The parameterization follows (Zwietering, 1990) and grofit:
-  
-    K      = carrying capacity, K = response(time = Inf). In the grofit
-             package this is parameter is called "A", having the same units
-             as the response
-    K0     = initial population size K0 = response(time = 0). In the grofit
-             package K0 is assumed to be zero, having the same units as the
-             response.
-    rate   = the maximum growth rate The grofit package calls this μ, having
-             with of response/time
-    nu     = how asymmetric the growth is before and after the inflection
-             point
-    lambda = the length of the lag-phase, defined by to be the time point at
-             which the tangent through the growth curve crosses response =
-             K0.
-    See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
+\code{growth_richards_model} and in the BayesPharma package. The functional
+form is
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{response ~ richards_growth(K, K0, rate, lambda, nu, time)
+}\if{html}{\out{</div>}}
+
+The parameterization follows (Zwietering, 1990) and grofit:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{K      = carrying capacity, K = response(time = Inf). In the grofit
+         package this is parameter is called "A", having the same units
+         as the response
+K0     = initial population size K0 = response(time = 0). In the grofit
+         package K0 is assumed to be zero, having the same units as the
+         response.
+rate   = the maximum growth rate The grofit package calls this μ, having
+         with of response/time
+nu     = how asymmetric the growth is before and after the inflection
+         point
+lambda = the length of the lag-phase, defined by to be the time point at
+         which the tangent through the growth curve crosses response =
+         K0.
+See the vignettes(topic = "derive_growth_model", package = "BayesPharma")   
+}\if{html}{\out{</div>}}
 }
 \examples{
 \dontrun{
@@ -79,7 +81,7 @@ set-up a Richards growth model formula to for use in
 
 }
 \seealso{
-\code{\link[brms]{brmsformula}}, which this function wraps.
-  \code{\link{growth_richards_model}} into which the result of this
-  function can be passed.
+\code{\link[brms:brmsformula]{brms::brmsformula()}}, which this function wraps.
+\code{\link[=growth_richards_model]{growth_richards_model()}} into which the result of this
+function can be passed.
 }

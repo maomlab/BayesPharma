@@ -28,38 +28,38 @@ model by setting nu = 1.
 \details{
 The Richards growth model is given by
 
-  response(time) =
-    K0 + (K - K0)/(1 + nu * exp(
-    1 + nu + rate/(K - K0) * (1 + nu)^(1 + 1/nu) * (lambda - time))) ^ (1/nu)
+response(time) =
+K0 + (K - K0)/(1 + nu * exp(
+1 + nu + rate/(K - K0) * (1 + nu)^(1 + 1/nu) * (lambda - time))) ^ (1/nu)
 
 Setting nu = 1, and simplifying gives
-  
-  response(time) =
-    K0 + (K - K0)/(1 + 1 * exp(
-    1 + 1 + rate/(K - K0) * (1 + 1)^(1 + 1/1) * (lambda - time))) ^ (1/1)
-   
-  response(time) =
-    K0 + (K - K0)/(1 + exp(
-    2 + rate/(K - K0) * (2)^(2) * (lambda - time))) ^ (1/1)
 
-  response(time) =
-    K0 + (K - K0)/(1 + exp(2 + rate/(K - K0) * 4 * (lambda - time)))
-    
-  response(time) =
-    K0 + (K - K0)/(1 + exp(4 * rate/(K - K0) * (lambda - time) + 2))
+response(time) =
+K0 + (K - K0)/(1 + 1 * exp(
+1 + 1 + rate/(K - K0) * (1 + 1)^(1 + 1/1) * (lambda - time))) ^ (1/1)
+
+response(time) =
+K0 + (K - K0)/(1 + exp(
+2 + rate/(K - K0) * (2)^(2) * (lambda - time))) ^ (1/1)
+
+response(time) =
+K0 + (K - K0)/(1 + exp(2 + rate/(K - K0) * 4 * (lambda - time)))
+
+response(time) =
+K0 + (K - K0)/(1 + exp(4 * rate/(K - K0) * (lambda - time) + 2))
 
 The sigmoid growth curve is related to the sigmoid agoinst model by setting
 top = K, bottom = K0, hill = 4 * rate / (K - K0) / log10(e), AC50 = lambda +
 2 * log10(e) / hill, and log_dose = time, where e is exp(1):
 
-  response(time) = 
-    bottom + (top - bottom)/(1 + exp(hill/log10(e) * (lambda - time) + 2))
-    
-  response(time) = 
-    bottom + (top - bottom)/(1 + exp(hill/log10(e) * (AC50 - time))) 
-    
-  response(log_dose) = 
-    bottom + (top - bottom)/(1 + 10^((ac50 - log_dose) * hill))
+response(time) =
+bottom + (top - bottom)/(1 + exp(hill/log10(e) * (lambda - time) + 2))
+
+response(time) =
+bottom + (top - bottom)/(1 + exp(hill/log10(e) * (AC50 - time)))
+
+response(log_dose) =
+bottom + (top - bottom)/(1 + 10^((ac50 - log_dose) * hill))
 }
 \examples{
 \dontrun{

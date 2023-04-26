@@ -37,9 +37,9 @@ Adding \code{max_treedepth} and giving a greater value than 10 can improve
 model convergence (default = list(adapt_delta = 0.99)).}
 
 \item{expose_functions}{\code{logical}. Expose the BayesPharma functions for the
-model [default: TRUE].}
+model \link{default: TRUE}.}
 
-\item{...}{additional arguments passed to \code{\link[brms]{brm}}.}
+\item{...}{additional arguments passed to \code{\link[brms:brm]{brms::brm()}}.}
 }
 \value{
 \code{bpfit} model

@@ -15,7 +15,7 @@ tQ model (default 4)}
 }
 \value{
 input for \code{BayesPharma::model_tQ(init = ...)}
-    parameter.
+parameter.
 }
 \description{
 Initialize parameter values for the tQ enyzme kinetic model

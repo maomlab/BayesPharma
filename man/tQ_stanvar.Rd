@@ -3,7 +3,7 @@
 \docType{data}
 \name{tQ_stanvar}
 \alias{tQ_stanvar}
-\title{stanvar for the tQ enzyme kinetics model}
+\title{Stan code for the tQ enzyme kinetics model}
 \format{
 An object of class \code{stanvars} of length 1.
 }
@@ -11,6 +11,12 @@ An object of class \code{stanvars} of length 1.
 tQ_stanvar
 }
 \description{
-stanvar for the tQ enzyme kinetics model
+The tQ is an ordinary differential equation model for the total
+quasi-steady-state assumption kinetics defined in
+(Choi et al., 2017), which is related to the Michaelis-Menten kinetics model,
+but doesn't assume the enzyme concentration is negligibly small.
+}
+\details{
+To implement it in \pkg{Stan}, the ODE function \code{tQ_ode} is defined
 }
 \keyword{datasets}

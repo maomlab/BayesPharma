@@ -46,18 +46,18 @@ substrate concentration.}
 \item{predictors}{\code{expression} of predictors for \code{kcat} and
 \code{kM} parameters}
 
-\item{...}{additional arguments passed to \code{\link[brms]{brmsformula}}}
+\item{...}{additional arguments passed to \code{\link[brms:brmsformula]{brms::brmsformula()}}}
 }
 \value{
 a \code{bpformula}, which is a subclass of
-  \code{\link[brms]{brmsformula}} and can be passed to
-  \code{\link{tQ_model}}.
+\code{\link[brms:brmsformula]{brms::brmsformula()}} and can be passed to
+\code{\link[=tQ_model]{tQ_model()}}.
 }
 \description{
 Define formula for the tQ enzyme kinetics model
 }
 \seealso{
-\code{\link[brms]{brmsformula}}, which this function wraps.
-  \code{\link{tQ_model}} into which the result of this function can be
-  passed.
+\code{\link[brms:brmsformula]{brms::brmsformula()}}, which this function wraps.
+\code{\link[=tQ_model]{tQ_model()}} into which the result of this function can be
+passed.
 }

@@ -1,12 +1,12 @@
 #' Wrapper for DRC dose response models
 #'
-#' @param data \code{data.frame}
-#' @param formula \code{formula}. Default: \code{response ~ log_dose}
+#' @param data `data.frame`
+#' @param formula `formula`. Default: `response ~ log_dose`
 #' @param fct Non-linear link function. Default is the 4 parameter
 #'     log-linear sigmoid equation, where all parameters are to be
 #'     estimated. To fix a subset them, set the parameters to constant
 #'     values.
-#' @param ... additional arguments passed to \code{drc::drm}
+#' @param ... additional arguments passed to `drc::drm`
 #'
 #' @returns An object of (S3) class 'drc'.
 #'

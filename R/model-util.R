@@ -25,22 +25,22 @@ prepare_init <- function(init) {
 
 #' Prepare a brmsprior
 #'
-#' What this gives above \code{brms::\link[brms]{prior}(...)} and friends is
+#' What this gives above `brms::[prior][brms::prior](...)` and friends is
 #'   1) it allow just giving a numeric value rather than constant(<value>)
-#'   2) if it is already a \code{brms::\link[brms]{brmsprior}} it checks that it
+#'   2) if it is already a `brms::[brmsprior][brms::brmsprior]` it checks that it
 #'      has specified arguments
 #'
 #' This is used in models where want to allow user specified priors but make
 #' sure they are for the right parameters to make sure the model is well
 #' specified.
 #'
-#' @param prior \code{\link[brms]{brmsprior}} or \code{numeric}.
-#' @param ... additional arguments to \code{\link[brms]{prior_string}}. If
-#'   \code{prior} is a \code{\link[brms]{brmsprior}} then this will check that
+#' @param prior [brms::brmsprior()] or `numeric`.
+#' @param ... additional arguments to [brms::prior_string()]. If
+#'   `prior` is a [brms::brmsprior()] then this will check that
 #'   the slots have the given values. If prior is numeric, then these arguments
-#'   are passed to \code{\link[brms]{prior_string}}
+#'   are passed to [brms::prior_string()]
 #'
-#' @returns \code{\link[brms]{brmsprior}}
+#' @returns [brms::brmsprior()]
 prepare_prior <- function(prior, ...) {
   if (inherits(prior, "brmsprior")) {
     args <- list(...)

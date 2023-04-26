@@ -1,10 +1,10 @@
 #' Initialize parameter values for the tQ enyzme kinetic model
 #'
-#' @param kcat numeric initial value for \code{kcat} parameter in the
+#' @param kcat numeric initial value for `kcat` parameter in the
 #'     tQ model (Default 4)
-#' @param kM numeric initial value for the \code{kM} parameter in the
+#' @param kM numeric initial value for the `kM` parameter in the
 #'     tQ model (default 4)
-#' @returns input for \code{BayesPharma::model_tQ(init = ...)}
+#' @returns input for `BayesPharma::model_tQ(init = ...)`
 #'     parameter.
 #'
 #' @export

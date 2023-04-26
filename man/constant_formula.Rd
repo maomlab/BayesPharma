@@ -23,10 +23,10 @@ non-linear parameters. i.e. what perturbations/experimental differences
 should be modeled separately? (Default: 1) should a random effect be taken
 into consideration? i.e. cell number, plate number, etc.}
 
-\item{...}{additional arguments to \code{\link[brms]{brmsformula}}}
+\item{...}{additional arguments to \code{\link[brms:brmsformula]{brms::brmsformula()}}}
 }
 \value{
-bpformula \code{\link[brms]{brmsformula}}
+bpformula \code{\link[brms:brmsformula]{brms::brmsformula()}}
 }
 \description{
 set-up an equation for formula objects with a constant response.

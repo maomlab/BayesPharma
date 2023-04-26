@@ -19,9 +19,9 @@ other treatments}
 }
 \value{
 si slope of drug i at it's AC50 and doses of all other drugs are
-  zero
+zero
 }
 \description{
 This can be used for setting priors and interpreting parameter
-  estimates see MuSyC_si_to_hi for details
+estimates see MuSyC_si_to_hi for details
 }

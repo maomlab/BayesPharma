@@ -24,11 +24,11 @@ point}
 \value{
 numeric, response given the time and parameters
 
-  response(time) =
-    K0 + (K - K0)/(
-      1 + nu * exp(
-        1 + nu + rate/(K - K0) * (1 + nu)^(1 + 1/nu) *
-        (lambda - time))) ^ (1/nu)
+response(time) =
+K0 + (K - K0)/(
+1 + nu * exp(
+1 + nu + rate/(K - K0) * (1 + nu)^(1 + 1/nu) *
+(lambda - time))) ^ (1/nu)
 }
 \description{
 Functional form for the Richards growth model.

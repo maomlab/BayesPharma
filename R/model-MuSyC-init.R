@@ -2,37 +2,37 @@
 #'
 #' @description Initial values for the MuSyC model
 #'
-#' @param logE0 \code{numeric} or function returning \code{array} of
-#'     length \code{1}.  Initial value for the \code{logE0}
-#'     parameter. Default: \code{log(0.5)}
-#' @param logC1 \code{numeric} or function returning array of length
-#'     1. Initial value for the \code{logC1} parameter. Default:
-#'     \code{0 = log(1)}
-#' @param logE1 \code{numeric} or function returning array of length
-#'     1. Initial value for the \code{logE1} parameter. Default:
+#' @param logE0 `numeric` or function returning `array` of
+#'     length `1`.  Initial value for the `logE0`
+#'     parameter. Default: `log(0.5)`
+#' @param logC1 `numeric` or function returning array of length
+#'     1. Initial value for the `logC1` parameter. Default:
+#'     `0 = log(1)`
+#' @param logE1 `numeric` or function returning array of length
+#'     1. Initial value for the `logE1` parameter. Default:
 #'     log(0.5)
-#' @param h1 \code{numeric} or function returning array of length
-#'     1. Initial value for the \code{h1} parameter. Default: \code{4
-#'     = MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)} the exponent for
-#'     treatment \code{1} corresponding to a slope of \code{1}
-#' @param logC2 \code{numeric} or function returning array of length
-#'     \code{1}. Initial value for the \code{logC2}
-#'     parameter. Default: \code{0 = log(1)}
-#' @param logE2 \code{numeric} or function returning array of length
-#'     \code{1}. Initial value for the \code{logE2} parameter. Default:
-#'     \code{log(0.5)}
-#' @param h2 \code{numeric} or function returning array of length
-#'     \code{1}. Initial value for the \code{h2} parameter. Default:
-#'     \code{4 = MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)} the
-#'     exponent for treatment \code{1} corresponding to a slope of
-#'     \code{1}
-#' @param logE3 \code{numeric} or function returning array of length
-#'     1. Initial value for the \code{logE3} parameter. Default:
-#'     \code{log(0.5)}
-#' @param logalpha \code{numeric} or function returning array of
-#'     length 1. Initial value for the \code{logalpha}
-#'     parameter. Default: \code{0 = log(1)}
-#' @returns input for \code{BayesPharma::model_MuSyC(init = ...)}
+#' @param h1 `numeric` or function returning array of length
+#'     1. Initial value for the `h1` parameter. Default: `4
+#'     = MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)` the exponent for
+#'     treatment `1` corresponding to a slope of `1`
+#' @param logC2 `numeric` or function returning array of length
+#'     `1`. Initial value for the `logC2`
+#'     parameter. Default: `0 = log(1)`
+#' @param logE2 `numeric` or function returning array of length
+#'     `1`. Initial value for the `logE2` parameter. Default:
+#'     `log(0.5)`
+#' @param h2 `numeric` or function returning array of length
+#'     `1`. Initial value for the `h2` parameter. Default:
+#'     `4 = MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)` the
+#'     exponent for treatment `1` corresponding to a slope of
+#'     `1`
+#' @param logE3 `numeric` or function returning array of length
+#'     1. Initial value for the `logE3` parameter. Default:
+#'     `log(0.5)`
+#' @param logalpha `numeric` or function returning array of
+#'     length 1. Initial value for the `logalpha`
+#'     parameter. Default: `0 = log(1)`
+#' @returns input for `BayesPharma::model_MuSyC(init = ...)`
 #'     parameter.
 #'
 #' @examples

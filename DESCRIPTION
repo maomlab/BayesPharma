@@ -116,3 +116,4 @@ LazyData: true
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 RoxygenNote: 7.2.3
+Roxygen: list(markdown = TRUE)

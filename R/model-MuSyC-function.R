@@ -1,30 +1,30 @@
 #' Generate MuSyC Ed scores using a robust functional form
 #'
 #'
-#' @param logd1 \code{numeric}. log dose for treatment 1
-#' @param logd2 \code{numeric}. log dose for treatment 2
+#' @param logd1 `numeric`. log dose for treatment 1
+#' @param logd2 `numeric`. log dose for treatment 2
 #'
-#' @param logE0 \code{numeric}. Full log response with no treatment.
-#' @param logE1 \code{numeric}. Full log response for treatment 1 and the dose
+#' @param logE0 `numeric`. Full log response with no treatment.
+#' @param logE1 `numeric`. Full log response for treatment 1 and the dose
 #'     of treatment 2 is zero.
-#' @param logC1 \code{numeric}. IC50 for treatment 1 and dose of treatment 2
+#' @param logC1 `numeric`. IC50 for treatment 1 and dose of treatment 2
 #'     is zero.
-#' @param h1 \code{numeric}. Slope of treatment 1 at its IC50 and dose of
-#'     treatment 2 is zero in exponential form. Use \code{MuSyC_si_to_hi} to
+#' @param h1 `numeric`. Slope of treatment 1 at its IC50 and dose of
+#'     treatment 2 is zero in exponential form. Use `MuSyC_si_to_hi` to
 #'     convert from slope form.
-#' @param logE2 \code{numeric}. Full log response for treatment 2 and the dose
+#' @param logE2 `numeric`. Full log response for treatment 2 and the dose
 #'     of treatment 1 is zero.
-#' @param logC2 \code{numeric}. IC50 for treatment 2 and dose of treatment 1 is
+#' @param logC2 `numeric`. IC50 for treatment 2 and dose of treatment 1 is
 #'     zero.
-#' @param h2 \code{numeric}. Slope of treatment 2 at its IC50 and dose of
-#'     treatment 1 is zero in exponential form. Use \code{MuSyC_si_to_hi} to
+#' @param h2 `numeric`. Slope of treatment 2 at its IC50 and dose of
+#'     treatment 1 is zero in exponential form. Use `MuSyC_si_to_hi` to
 #'     convert from slope form.
-#' @param logE3 \code{numeric}. Full response for treatment 1 and treatment 2.
-#' @param logalpha \code{numeric}. Log synergistic potency parameter with
+#' @param logE3 `numeric`. Full response for treatment 1 and treatment 2.
+#' @param logalpha `numeric`. Log synergistic potency parameter with
 #'      greater than 1 is synergistic, less than 1 is antagonistic.
 #'
-#' @returns \code{numeric} for the synergistic response to treatment 1 and
-#'      treatment 2 at doses \code{logd1} and \code{logd2} respectively.
+#' @returns `numeric` for the synergistic response to treatment 1 and
+#'      treatment 2 at doses `logd1` and `logd2` respectively.
 #'
 #' @export
 MuSyC <- function(

@@ -15,7 +15,7 @@ plot_synergy_checkerboard(
 )
 }
 \arguments{
-\item{data}{data.frame with columns [dose1, dose2, response]}
+\item{data}{data.frame with columns \link{dose1, dose2, response}}
 
 \item{treatment_1_label}{used to make default title and axis labels}
 
@@ -33,8 +33,8 @@ separation on the axis.}
 }
 \value{
 ggplot2 plot with light-blue to dark-blue tiles the dose
-    response. Individual plot elements can be over-written and the
-    plot can be saved with \code{ggplot2::ggsave()}
+response. Individual plot elements can be over-written and the
+plot can be saved with \code{ggplot2::ggsave()}
 }
 \description{
 Plot synergy checkerboard

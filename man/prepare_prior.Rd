@@ -7,21 +7,23 @@
 prepare_prior(prior, ...)
 }
 \arguments{
-\item{prior}{\code{\link[brms]{brmsprior}} or \code{numeric}.}
+\item{prior}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric}.}
 
-\item{...}{additional arguments to \code{\link[brms]{prior_string}}. If
-\code{prior} is a \code{\link[brms]{brmsprior}} then this will check that
+\item{...}{additional arguments to \code{\link[brms:set_prior]{brms::prior_string()}}. If
+\code{prior} is a \code{\link[brms:set_prior]{brms::brmsprior()}} then this will check that
 the slots have the given values. If prior is numeric, then these arguments
-are passed to \code{\link[brms]{prior_string}}}
+are passed to \code{\link[brms:set_prior]{brms::prior_string()}}}
 }
 \value{
-\code{\link[brms]{brmsprior}}
+\code{\link[brms:set_prior]{brms::brmsprior()}}
 }
 \description{
-What this gives above \code{brms::\link[brms]{prior}(...)} and friends is
-  1) it allow just giving a numeric value rather than constant(<value>)
-  2) if it is already a \code{brms::\link[brms]{brmsprior}} it checks that it
-     has specified arguments
+What this gives above \verb{brms::[prior][brms::prior](...)} and friends is
+\enumerate{
+\item it allow just giving a numeric value rather than constant(\if{html}{\out{<value>}})
+\item if it is already a \verb{brms::[brmsprior][brms::brmsprior]} it checks that it
+has specified arguments
+}
 }
 \details{
 This is used in models where want to allow user specified priors but make

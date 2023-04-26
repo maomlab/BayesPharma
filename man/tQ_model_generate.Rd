@@ -21,8 +21,8 @@ tQ_model_generate(time, kcat, kM, ET, ST, ...)
 }
 \value{
 run the tQ ordinary differential equation forwards starting
-    with initial product concentration of 0 and specified kcat and
-    kM parameters for the specified time steps.
+with initial product concentration of 0 and specified kcat and
+kM parameters for the specified time steps.
 }
 \description{
 Simulate data from the total QSSA model a refinement of the
@@ -31,10 +31,11 @@ equation described in (Choi, et al., 2017, DOI:
 10.1038/s41598-017-17072-z). Consider the kinetic rate equation
 }
 \details{
-kf
-                 --->    kcat
-          E + S  <---  C --->  E + P
-                  kb
+\if{html}{\out{<div class="sourceCode">}}\preformatted{              kf
+             --->    kcat
+      E + S  <---  C --->  E + P
+              kb
+}\if{html}{\out{</div>}}
 
 where the free enzyme (E) reversibly binds to the stubstrate (S) to
 form a complex (C) with forward and backward rate constants of kf
@@ -53,28 +54,29 @@ substrate concentrations.
 From (Choi, et al, 2017, equation 2, the total quasi-steady-state
 approximation (tQ) differential equation is defined by
 
-  Observed data:
-     M     = number of measurements        # number of measurements
-     t[M]  = time                          # measured in seconds
-     Pt[M] = product                       # product produced at time t
-     ST    = substrate total concentration # specified for each experiment
-     ET    = enzyme total concentration    # specified for each experiment
+Observed data:
+M     = number of measurements        # number of measurements
+t\link{M}  = time                          # measured in seconds
+Pt\link{M} = product                       # product produced at time t
+ST    = substrate total concentration # specified for each experiment
+ET    = enzyme total concentration    # specified for each experiment
 
-  Model parameters:
-    kcat    # catalytic constant (min^-1)
-    kM      # Michaelis constant ()
+Model parameters:
+kcat    # catalytic constant (min^-1)
+kM      # Michaelis constant ()
 
-  ODE formulation:
-    dPdt = kcat * (
-             ET + kM + ST - Pt +
-             -sqrt((ET + kM + ST - Pt)^2 - 2 * ET * (ST - Pt))) / 2
+ODE formulation:
+dPdt = kcat * (
+ET + kM + ST - Pt +
+-sqrt((ET + kM + ST - Pt)^2 - 2 * ET * (ST - Pt))) / 2
 
-  initial condition:
-     P := 0
+initial condition:
+P := 0
 
 In (Choi, et al. 2017) they prove, that the tQ model is valid when
 
-    K/(2*ST) * (ET+kM+ST) / sqrt((ET+kM+ST+P)^2 - 4*ET(ST-P)) << 1,
+\if{html}{\out{<div class="sourceCode">}}\preformatted{K/(2*ST) * (ET+kM+ST) / sqrt((ET+kM+ST+P)^2 - 4*ET(ST-P)) << 1,
+}\if{html}{\out{</div>}}
 
 where K = kb/kf is the dissociation constant.
 }

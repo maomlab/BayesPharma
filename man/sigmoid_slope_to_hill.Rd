@@ -7,23 +7,23 @@
 sigmoid_slope_to_hill(slope, top, bottom)
 }
 \arguments{
-\item{slope}{\code{numeric} the slope of the \code{\link{sigmoid}} at the
+\item{slope}{\code{numeric} the slope of the \code{\link[=sigmoid]{sigmoid()}} at the
 ac50}
 
-\item{top}{\code{numeric} the top parameter for the \code{\link{sigmoid}}
+\item{top}{\code{numeric} the top parameter for the \code{\link[=sigmoid]{sigmoid()}}
 function.}
 
 \item{bottom}{\code{numeric} the bottom parameter for the
-\code{\link{sigmoid}} function.}
+\code{\link[=sigmoid]{sigmoid()}} function.}
 }
 \value{
-\code{numeric} the hill coefficient of the \code{\link{sigmoid}}
-  function at.
+\code{numeric} the hill coefficient of the \code{\link[=sigmoid]{sigmoid()}}
+function at.
 }
 \description{
 The \code{hill} parameter controls the slope at the ac50 (\code{slope}) but
 the \code{slope} also depends on the \code{top} and \code{bottom} parameters.
-This helper function facilitates computing the \code{hill} from the 
+This helper function facilitates computing the \code{hill} from the
 parameters.
 }
 \details{
@@ -34,5 +34,5 @@ relating the \code{slope} to the \code{hill} parameters
   hill = slope * 4 / (log10 * (top - bottom))}
 }
 \seealso{
-\code{\link{sigmoid}} \code{\link{sigmoid_hill_to_slope}}
+\code{\link[=sigmoid]{sigmoid()}} \code{\link[=sigmoid_hill_to_slope]{sigmoid_hill_to_slope()}}
 }

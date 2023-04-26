@@ -1,15 +1,15 @@
 #' Create initialization for the agonist sigmoid model
 #'
 #' @description Creating initial values for an agonist sigmoid model
-#'  parameters that can be passed to the \code{\link{sigmoid_agoninst_model}}.
+#'  parameters that can be passed to the [sigmoid_agoninst_model()].
 #'
-#' @param ec50 \code{numeric} or \code{numeric} returning function units
+#' @param ec50 `numeric` or `numeric` returning function units
 #'   log_dose (Default: -6, corresponding to 1 μM)
 #' @param hill numeric or numeric returning function with units
 #'   response/log_dose (default = 1)
 #' @param top numeric units of top (default = 1).
 #' @param bottom numeric units of bottom (default = 0).
-#' @returns input for \code{\link[brms]{brm}(init = ...)}
+#' @returns input for `[brm][brms::brm](init = ...)`
 #'
 #' @examples
 #'\dontrun{
@@ -38,15 +38,15 @@ sigmoid_agonist_init <- function(
 #' Create initialization for the antagonist sigmoid model
 #'
 #' @description Creating initial values for the sigmoid model parameters that
-#'   can be passed to the \code{\link{sigmoid_antagonist_model}}
+#'   can be passed to the [sigmoid_antagonist_model()]
 #'
-#' @param ic50 \code{numeric} or numeric returning function units log_dose
+#' @param ic50 `numeric` or numeric returning function units log_dose
 #'   (default = -6, corresponding to 1e-6 = 1 μM)
 #' @param hill numeric or numeric returning function with units
 #'   response/log_dose (default = -1)
 #' @param top numeric units of top (default = 1).
 #' @param bottom numeric units of bottom (default = 0).
-#' @returns input for \code{\link[brms]{brm}(init = ...)}
+#' @returns input for `[brm][brms::brm](init = ...)`
 #'
 #' @examples
 #'\dontrun{

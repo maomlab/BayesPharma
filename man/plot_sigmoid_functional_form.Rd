@@ -16,8 +16,8 @@ plot_sigmoid_functional_form(
 }
 \arguments{
 \item{ac50}{\code{numeric} value for the \code{ac50} parameter, which is
-either the \code{ec50} for the \code{\link{sigmoid_agonist_model}} or the
-\code{ic50} for the \code{\link{sigmoid_antagoinst_model}}.}
+either the \code{ec50} for the \code{\link[=sigmoid_agonist_model]{sigmoid_agonist_model()}} or the
+\code{ic50} for the \code{\link[=sigmoid_antagoinst_model]{sigmoid_antagoinst_model()}}.}
 
 \item{hill}{\code{numeric} value for the \code{hill} parameter.}
 
@@ -26,10 +26,10 @@ either the \code{ec50} for the \code{\link{sigmoid_agonist_model}} or the
 \item{bottom}{\code{numeric} value for the \code{bottom} parameter.}
 }
 \value{
-\code{\link[ggplot2]{ggplot}} object
+\code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object
 }
 \description{
-Generates a plot of the \code{\link{sigmoid}} functional form with the values
+Generates a plot of the \code{\link[=sigmoid]{sigmoid()}} functional form with the values
 of the parameters \code{ac50}, \code{hill}, \code{top}, and \code{bottom}
 labeled.
 }
@@ -45,5 +45,5 @@ labeled.
 
 }
 \seealso{
-\code{\link{sigmoid}}
+\code{\link[=sigmoid]{sigmoid()}}
 }

@@ -4,27 +4,27 @@
 #'     posterior distribution from the expected mean and median
 #'     quantile intervals.
 #'
-#' @param model \code{bpfit} object resulting from fitting a BayesPharma model
-#' @param treatment_variable \code{string} or \code{NULL}. If \code{NULL} the
+#' @param model `bpfit` object resulting from fitting a BayesPharma model
+#' @param treatment_variable `string` or `NULL`. If `NULL` the
 #'   treatment variable name will be looked up in the model. The treatment
-#'   variable the \code{model$data} or \code{newdata} if supplied must have a
+#'   variable the `model$data` or `newdata` if supplied must have a
 #'   column corresponding to the treatment variable.
-#' @param treatment_units \code{string} or \code{NULL}. If \code{NULL} the
+#' @param treatment_units `string` or `NULL`. If `NULL` the
 #'   treatment units will be looked up in the model. The treatment units will be
 #'   used to label the X-axis of the plot.
-#' @param response_variable \code{string} or \code{NULL}. If \code{NULL} the
+#' @param response_variable `string` or `NULL`. If `NULL` the
 #'   response variable name will be looked up in the model. The response
-#'   variable the \code{model$data} or \code{newdata} if supplied must have a
+#'   variable the `model$data` or `newdata` if supplied must have a
 #'   column corresponding to the response variable.
-#' @param response_units \code{string} or \code{NULL}. If \code{NULL} the
+#' @param response_units `string` or `NULL`. If `NULL` the
 #'   response units will be looked up in the model. The response units will be
 #'   used to label the Y-axis of the plot.
-#' @param newdata \code{data.frame} or \code{NULL} of new data to use for
+#' @param newdata `data.frame` or `NULL` of new data to use for
 #'   predictions. Default data.frame with each predictor and treatment variable.
-#' @param n \code{numeric} value of the number of draws to shown.
-#' @param point_size \code{numeric}. \code{\link[ggplot2]{geom_jitter}} point
+#' @param n `numeric` value of the number of draws to shown.
+#' @param point_size `numeric`. [ggplot2::geom_jitter()] point
 #'   size.
-#' @param jitter_height \code{numeric}. the height distance between overlapping
+#' @param jitter_height `numeric`. the height distance between overlapping
 #'   points (default = 0).
 #' @param jitter_width numeric. the width distance between overlapping
 #'     points (default = 0).

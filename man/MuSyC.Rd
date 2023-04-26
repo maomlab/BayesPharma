@@ -40,7 +40,7 @@ greater than 1 is synergistic, less than 1 is antagonistic.}
 }
 \value{
 \code{numeric} for the synergistic response to treatment 1 and
-     treatment 2 at doses \code{logd1} and \code{logd2} respectively.
+treatment 2 at doses \code{logd1} and \code{logd2} respectively.
 }
 \description{
 Generate MuSyC Ed scores using a robust functional form

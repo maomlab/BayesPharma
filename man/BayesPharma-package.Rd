@@ -10,26 +10,26 @@ The \pkg{BayesPharma} package builds on the \pkg{Stan} and \pkg{brms} to
 provide support for Bayesian regression modeling for foundational
 pharmacology models. For each type of model, the user provides
 \itemize{
-  \item{\strong{formula}: }{Describing how the model parameters, treatment,
-    and optional predictors lead to the measured response using functions
-    provided by BayesPharma for each type of model.}
-  \item{\strong{observed data}: }{response, treatment, and optional
-    predictors as a \code{data.frame}}
-  \item{\strong{prior}: }{Initial distributions over the model parameters}
+\item{\strong{formula}: }{Describing how the model parameters, treatment,
+and optional predictors lead to the measured response using functions
+provided by BayesPharma for each type of model.}
+\item{\strong{observed data}: }{response, treatment, and optional
+predictors as a \code{data.frame}}
+\item{\strong{prior}: }{Initial distributions over the model parameters}
 }
 
 The models that BayesPharma support are
 \itemize{
-  \item{\strong{\link{sigmoid_model}}: }{4-parameter Hill equation}
-  \item{\strong{\link{MuSyC_model}}: }{Bivariate synergy model with Bliss and
-    Loewe interaction models as special cases}
-  \item{\strong{\link{tQ_model}}: }{Generalization of enzyme progress curve
-    kinetics ordinary differential equation}
-  \item{\strong{\link{growth_sigmoid_model}}: }{Sigmoid model for growth
-    kinetics}
-  \item{\strong{\link{growth_richards_model}}: }{Generalized Richards model
-    for growth kinetics}
-}   
+\item{\strong{\link{sigmoid_model}}: }{4-parameter Hill equation}
+\item{\strong{\link{MuSyC_model}}: }{Bivariate synergy model with Bliss and
+Loewe interaction models as special cases}
+\item{\strong{\link{tQ_model}}: }{Generalization of enzyme progress curve
+kinetics ordinary differential equation}
+\item{\strong{\link{growth_sigmoid_model}}: }{Sigmoid model for growth
+kinetics}
+\item{\strong{\link{growth_richards_model}}: }{Generalized Richards model
+for growth kinetics}
+}
 
 The BayesPharma package also provides a range of case studies as templates
 and examples for getting started at applying Bayesian modeling to

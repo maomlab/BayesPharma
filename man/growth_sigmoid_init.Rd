@@ -16,15 +16,15 @@ growth_sigmoid_init(K = 1, K0 = 0, rate = 1, lambda = 0.5)
 \item{rate}{\code{numeric} or \code{numeric} returning \code{function}
 (Default: 1).}
 
-\item{lambda}{\code{numeric} or \code{numeric} returning \code{function} 
+\item{lambda}{\code{numeric} or \code{numeric} returning \code{function}
 units of \code{time} (Default: 0.5).}
 }
 \value{
-input for \code{\link[brms]{brm}(init = ...)}
+input for \verb{[brm][brms::brm](init = ...)}
 }
 \description{
 Creating initial values for sigmoid growth model
-  parameters that can be passed to the
+parameters that can be passed to the
 .  \code{richards_growth_model}.
 }
 \examples{
