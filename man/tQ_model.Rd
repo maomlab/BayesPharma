@@ -42,8 +42,11 @@ model \link{default: TRUE}.}
 \item{...}{additional arguments passed to \code{\link[brms:brm]{brms::brm()}}.}
 }
 \value{
-\code{bpfit} model
+\code{bpfit} object, which is a wrapper around a \link[brms:brmsfit-class]{brms::brmsfit} object.
 }
 \description{
 Model for the tQ enzyme kinetics model
+}
+\seealso{
+\link{tQ_formula}, \link{tQ_prior}, \link{tQ_init}, or \link{tQ_stanvar}
 }

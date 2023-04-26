@@ -5,8 +5,29 @@
 #' (Choi et al., 2017), which is related to the Michaelis-Menten kinetics model,
 #' but doesn't assume the enzyme concentration is negligibly small.
 #' 
+#' To implement the tQ model in \pkg{Stan}, the function `tQ_ode` is defined
+#' and then passed to `tQ_single` to integrate it using the _stiff backward
+#' differentiation formula (BDF) method_. To fit multiple time series
+#' in one model, the `tQ_multiple` can be used. Note that to handle fitting
+#' time-series with different numbers of observations, an additional
+#' `series_index` argument is used. Note that observations in the same
+#' time-series should be in sequential order in the supplied data.
 #' 
-#' To implement it in \pkg{Stan}, the ODE function `tQ_ode` is defined
+#' @usage
+#' brms::brm(
+#'   formula = brms::brmsformula(
+#'     P ~ tQ_multiple(series_index, time, kcat, kM, ET, ST),
+#'     kcat + kM ~ 1,
+#'     nl = TRUE,
+#'     loop=FALSE),
+#'   stanvars = BayesPhrama::tQ_stanvar)
+#' 
+#' @seealso [tQ_model], [tQ_formula], [tQ_prior], or [tQ_init]
+#' 
+#' @references
+#' Choi, B., Rempala, G.A. & Kim, J.K. Beyond the Michaelis-Menten equation:
+#' Accurate and efficient estimation of enzyme kinetic parameters. Sci Rep 7,
+#' 17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
 #' 
 #' @export
 tQ_stanvar <- brms::stanvar(

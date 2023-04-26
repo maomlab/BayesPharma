@@ -50,8 +50,7 @@ the model. This is needed e.g. for \code{\link[brms:loo_compare.brmsfit]{brms::l
 \item{...}{additional arguments passed to \code{\link[brms:brm]{brms::brm()}}}
 }
 \value{
-\code{bpfit} object, which is a wrapper around a
-\code{\link[brms:brmsfit-class]{brms::brmsfit-class()}}.
+\code{bpfit} object, which is a wrapper around a \link[brms:brmsfit-class]{brms::brmsfit} object.
 }
 \description{
 Fits the sigmoid agonist model. The functional form is

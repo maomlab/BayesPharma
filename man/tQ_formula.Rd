@@ -57,7 +57,6 @@ a \code{bpformula}, which is a subclass of
 Define formula for the tQ enzyme kinetics model
 }
 \seealso{
+\link{tQ_model}, \link{tQ_prior}, \link{tQ_init}, \link{tQ_stanvar} and
 \code{\link[brms:brmsformula]{brms::brmsformula()}}, which this function wraps.
-\code{\link[=tQ_model]{tQ_model()}} into which the result of this function can be
-passed.
 }
