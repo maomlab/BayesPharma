@@ -78,7 +78,7 @@ activity}
 }
 To configure the model you can use the following helper functions:
 \itemize{
-\item{\code{\link[=sigmiod_antagonist_formula]{sigmiod_antagonist_formula()}}: define the
+\item{\code{\link[=sigmoid_antagonist_formula]{sigmoid_antagonist_formula()}}: define the
 \code{treatment} and \code{response} variables, and predictors for the
 model parameters}
 \item{\code{\link[=sigmoid_antagonist_prior]{sigmoid_antagonist_prior()}}: define the prior for the

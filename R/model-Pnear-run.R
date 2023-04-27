@@ -51,7 +51,7 @@
 #'   native state. The default value, 0.62, should correspond to physiological
 #'   temperature for ref2015 or any other scorefunction with units of kcal/mol.
 #' @param verbose give verbose output.
-#' @returns numeric value.
+#' @returns `numeric` value.
 #'
 #' @examples
 #'\dontrun{

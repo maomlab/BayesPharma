@@ -14,26 +14,25 @@ sigmoid_antagonist_formula(
 )
 }
 \arguments{
-\item{treatment_variable}{character variable representing the treatment.
-(Default: 'log_dose')}
+\item{treatment_variable}{character variable representing the treatment.}
 
 \item{treatment_units}{character the units of the treatment. The default is
-log base 10 of the molar concentration. (Default: "Log\link{Molar}")}
+log base 10 of the molar concentration.}
 
 \item{response_variable}{character variable representing the response to
-treatment. (Default: 'response')}
+treatment.}
 
-\item{response_units}{character the units of the response. (Default: NULL)}
+\item{response_units}{character the units of the response.}
 
 \item{predictors}{character or expression of predictors
 of non-linear parameters. i.e. what perturbations/experimental
-differences should be modeled separately? (Default: 1)}
+differences should be modeled separately?}
 
 \item{...}{additional arguments to \code{\link[brms:brmsformula]{brms::brmsformula()}}}
 }
 \value{
 a \code{bpformula}, which is a subclass of
-\code{\link[brms:brmsformula]{brms::brmsformula()}} and can be passed to
+\link[brms:brmsformula]{brms::brmsformula} and can be passed to
 \code{\link[=sigmoid_antagonist_model]{sigmoid_antagonist_model()}}.
 }
 \description{
@@ -61,8 +60,8 @@ use in the \code{sigmoid_antagonist_model()}
 
 }
 \seealso{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{[brms::brmsformula()], which this function wraps.
-[sigmiod_antagonist_model()] into which the result of this
+\if{html}{\out{<div class="sourceCode">}}\preformatted{[brms::brmsformula], which this function wraps.
+[sigmoid_antagonist_model()] into which the result of this
 function can be passed.
 }\if{html}{\out{</div>}}
 }

@@ -22,18 +22,18 @@ sigmoid_antagonist_prior(
 \code{hill} parameter. (Default: \code{normal(-1, 1)} upper bounded by
 \code{0.1}).}
 
-\item{top}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric}. Prior for the
-\code{top} parameter. (Default: \code{normal(1, 0.5)}. Setting \code{top}
-to a numeric value constrains it to a constant value.}
+\item{top}{\code{brmsprior} or \code{numeric} giving the prior for the \code{top}
+parameter. Setting \code{top} to a \code{numeric} constrains it to a constant
+value.}
 
-\item{bottom}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric}. Prior for the
-bottom parameter. (Default: \code{normal(0, 0.5)}. Setting \code{bottom} to
-a numeric value constrains it to a constant value.}
+\item{bottom}{\code{brmsprior} or \code{numeric} giving the prior for the \code{bottom}
+parameter. Setting \code{bottom} to \code{numeric} constrains it to a constant
+value.}
 
-\item{...}{additional \code{\link[brms:set_prior]{brms::brmsprior()}} objects.}
+\item{...}{additional \link[brms:set_prior]{brms::brmsprior} objects.}
 }
 \value{
-\code{\link[brms:set_prior]{brms::brmsprior()}} \code{data.frame}
+\link[brms:set_prior]{brms::brmsprior}
 }
 \description{
 Creates a \code{data.frame} of priors for the sigmoid antagonist
@@ -45,8 +45,7 @@ normal distribution priors will be set.
 If you would like to set a parameter as a constant, enter a numeric value for
 the function argument.
 
-For other distribution options, reference
-\url{http://mc-stan.org/rstanarm/reference/priors.html#arguments}
+For other distribution options, reference \link[brms:set_prior]{brms::prior} and \href{https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations}{Prior Choice Recommendations }
 }
 \examples{
 \dontrun{

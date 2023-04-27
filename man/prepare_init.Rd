@@ -2,17 +2,17 @@
 % Please edit documentation in R/model-util.R
 \name{prepare_init}
 \alias{prepare_init}
-\title{Prepare an init for a brms model}
+\title{Helper function to prepare an init for a brms model}
 \usage{
 prepare_init(init)
 }
 \arguments{
-\item{init}{function returning an numeric array of length one or a
-numeric value.}
+\item{init}{\code{function} returning an \code{numeric} \code{array} of length \code{1} or a
+\code{numeric} value.}
 }
 \value{
-function returning a numeric array of length 1.
+\code{function} returning a \code{numeric} \code{array} of length \code{1}.
 }
 \description{
-Prepare an init for a brms model
+Helper function to prepare an init for a brms model
 }

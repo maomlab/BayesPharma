@@ -13,41 +13,38 @@ sigmoid_agonist_prior(
 )
 }
 \arguments{
-\item{ec50}{\code{brmsprior} or numeric. Prior for the ec50
-parameter.  Default: normal(-6, 2.5) where the mean -7
-corresponds to a concentration of 1e-6 or 1 μM. Setting ec50 to
-a numeric value constrains it to a constant value.}
+\item{ec50}{\link[brms:set_prior]{brms::brmsprior} or \code{numeric}. Prior for the \code{ec50}
+parameter.  Setting ec50 to a numeric value constrains it to a constant
+value. Default: normal(-6, 2.5) where the mean -6 corresponds to a
+concentration of 1e-6 or 1 μM.}
 
-\item{hill}{\code{brmsprior} or numeric. Prior for the hill
-parameter. Default: normal(1, 1) with and a lower bound of
--0.1.}
+\item{hill}{\link[brms:set_prior]{brms::brmsprior} or \code{numeric}. Prior for the \code{hill}
+parameter. Default: \code{normal(1, 1)} with and a lower bound of
+\code{-0.1}.}
 
-\item{top}{\code{brmsprior} or numeric. Prior for the top
-parameter.  Default: normal(1, 0.5). Setting top to a numeric
-value constrains it to a constant value.}
+\item{top}{\link[brms:set_prior]{brms::brmsprior} or \code{numeric} giving the prior for the \code{top}
+parameter. Setting \code{top} to a \code{numeric} constrains it to a constant
+value.}
 
-\item{bottom}{\code{brmsprior} or numeric. Prior for the top
-parameter.  Default: normal(0, 0.5). Setting bottom to a
-numeric value constrains it to a constant value.}
+\item{bottom}{\link[brms:set_prior]{brms::brmsprior} or \code{numeric} giving the prior for the \code{bottom}
+parameter. Setting \code{bottom} to \code{numeric} constrains it to a constant
+value.}
 
-\item{...}{additional \code{brmsprior} objects.}
+\item{...}{additional \link[brms:set_prior]{brms::brmsprior} objects.}
 }
 \value{
-\code{brmsprior} \code{data.frame}
+\link[brms:set_prior]{brms::brmsprior}
 }
 \description{
-Creates a \code{data.frame} of priors for the sigmoid agonist
-model
+Creates a \code{data.frame} of priors for the sigmoid agonist model
 
-If the function arguments \code{ec50}, \code{hill}, \code{top},
-\code{bottom} are \code{NULL}, default normal distribution priors
-will be set.
+If the function arguments \code{ec50}, \code{hill}, \code{top}, \code{bottom} are \code{NULL}, default
+normal distribution priors will be set.
 
 If you would like to set a parameter as a constant, enter a numeric
 value for the function argument.
 
-For other distribution options, reference
-\url{http://mc-stan.org/rstanarm/reference/priors.html#arguments}
+For other distribution options, reference \link[brms:set_prior]{brms::prior} and \href{https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations}{Prior Choice Recommendations }
 }
 \examples{
 \dontrun{
@@ -58,4 +55,8 @@ priors <- sigmoid_agonist_prior(
   top = brms::prior(prior = normal(0.5, 0.2), nlpar = "top"),
   bottom = 0)
 }
+}
+\seealso{
+\link{sigmoid_agonist_formula}, \link{sigmoid_agonist_init}, and
+\link{sigmoid_agonist_model}
 }

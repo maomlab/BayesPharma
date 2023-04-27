@@ -25,7 +25,7 @@
 #'  }
 #'  To configure the model you can use the following helper functions:
 #'  \itemize{
-#'    \item{[sigmiod_agonist_formula()]: define the `treatment`
+#'    \item{[sigmoid_agonist_formula()]: define the `treatment`
 #'      and `response` variables, and predictors for the model parameters}
 #'    \item{[sigmoid_agonist_prior()]: define the prior for the model
 #'      parameters}
@@ -158,7 +158,7 @@ sigmoid_agonist_model <- function(
 #'  }
 #'  To configure the model you can use the following helper functions:
 #'  \itemize{
-#'    \item{[sigmiod_antagonist_formula()]: define the
+#'    \item{[sigmoid_antagonist_formula()]: define the
 #'      `treatment` and `response` variables, and predictors for the
 #'      model parameters}
 #'    \item{[sigmoid_antagonist_prior()]: define the prior for the

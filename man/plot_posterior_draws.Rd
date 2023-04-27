@@ -9,6 +9,8 @@ plot_posterior_draws(
   newdata = NULL,
   treatment_variable = NULL,
   treatment_units = NULL,
+  treatment_from = NULL,
+  treatment_to = NULL,
   response_variable = NULL,
   response_units = NULL,
   title = "Dose-Response Posterior Draws",
@@ -19,45 +21,50 @@ plot_posterior_draws(
 )
 }
 \arguments{
-\item{model}{\code{bpfit} object resulting from fitting a BayesPharma model}
+\item{model}{\code{bpfit} object resulting from fitting a \link{BayesPharma} model}
 
 \item{newdata}{\code{data.frame} or \code{NULL} of new data to use for
 predictions. Default data.frame with each predictor and treatment variable.}
 
-\item{treatment_variable}{\code{string} or \code{NULL}. If \code{NULL} the
-treatment variable name will be looked up in the model. The treatment
-variable the \code{model$data} or \code{newdata} if supplied must have a
-column corresponding to the treatment variable.}
+\item{treatment_variable}{\code{character} or \code{NULL}. If \code{NULL} the treatment
+variable name will be looked up in the model. The treatment variable the
+\code{model$data} or \code{newdata} if supplied must have a column corresponding to
+the treatment variable.}
 
-\item{treatment_units}{\code{string} or \code{NULL}. If \code{NULL} the
-treatment units will be looked up in the model. The treatment units will be
-used to label the X-axis of the plot.}
+\item{treatment_units}{\code{character} or \code{NULL}. If \code{NULL} the treatment units will
+be looked up in the model. The treatment units will be used to label the
+X-axis of the plot.}
 
-\item{response_variable}{\code{string} or \code{NULL}. If \code{NULL} the
-response variable name will be looked up in the model. The response
-variable the \code{model$data} or \code{newdata} if supplied must have a
-column corresponding to the response variable.}
+\item{treatment_from}{\code{numeric} or \code{NULL}, for the lower bound on the
+treatment range. If \code{NULL}, then use the (finite) lower bound of the
+treatment variable in the model data.}
 
-\item{response_units}{\code{string} or \code{NULL}. If \code{NULL} the
-response units will be looked up in the model. The response units will be
-used to label the Y-axis of the plot.}
+\item{treatment_to}{\code{numeric} or \code{NULL}, for the upper bound on the
+treatment range. If \code{NULL}, then use the (finite) upper bound of the
+treatment variable in the model data.}
 
-\item{title}{character name for the plot (default =
-"Dose-Response Posterior Draws").}
+\item{response_variable}{\code{string} or \code{NULL}. If \code{NULL} the response variable
+name will be looked up in the model. The response variable the \code{model$data}
+or \code{newdata} if supplied must have a column corresponding to the response
+variable.}
 
-\item{n}{\code{numeric} value of the number of draws to shown.}
+\item{response_units}{\code{character} or \code{NULL}. If \code{NULL} the response units
+will be looked up in the model. The response units will be used to label
+the Y-axis of the plot.}
 
-\item{point_size}{\code{numeric}. \code{\link[ggplot2:geom_jitter]{ggplot2::geom_jitter()}} point
-size.}
+\item{title}{character name for the plot}
+
+\item{n}{\code{numeric} value of the number of draws to show.}
+
+\item{point_size}{\code{numeric}. \code{\link[ggplot2:geom_jitter]{ggplot2::geom_jitter()}} point size.}
 
 \item{jitter_height}{\code{numeric}. the height distance between overlapping
-points (default = 0).}
+points.}
 
-\item{jitter_width}{numeric. the width distance between overlapping
-points (default = 0).}
+\item{jitter_width}{\code{numeric}. the width distance between overlapping points.}
 }
 \value{
-ggplot2::ggplot object.
+\link[ggplot2:ggplot]{ggplot2::ggplot} object.
 }
 \description{
 A plot of a sample of model fit draws from the

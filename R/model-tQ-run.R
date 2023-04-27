@@ -1,26 +1,31 @@
 #' Model for the tQ enzyme kinetics model
 #'
-#' @param data data.frame of experimental data.
+#' @param data `data.frame` of experimental data.
 #'   must contain columns `response` and any predictors specified in
 #'   the formula.
-#' @param formula brmsformula object. To create a dose-response brmsformula,
-#'   use the `tQ_formula` function.
-#' @param prior brmspriors data.frame for kcat, and kM.
-#'   Use one of the priors functions provided to create priors to use here.
-#' @param init list of lists, numeric value, or "random" for the initial values
-#'   of the parameters being modeled (default = 0).
-#' @param iter number of iterations the model runs. Increasing iter can help
-#'   with model convergence (default = 8000).
-#' @param control a named list of parameters to control the sampler's behavior.
-#'   Adding `max_treedepth` and giving a greater value than 10 can improve
-#'   model convergence (default = list(adapt_delta = 0.99)).
+#' @param formula [brms::brmsformula] object. To create a dose-response
+#'   [brms::brmsformula], use the [tQ_formula] function.
+#' @param prior [brms::brmsprior] for `kcat`, and `kM`. Use [tQ_formula()] to
+#'   create priors to use here.
+#' @param init `list` of `lists`, `numeric` value, or "random" for the initial
+#'   values of the parameters being modeled.
+#' @param iter `numeric` of iterations the model runs. Increasing `iter` can
+#'   help with model convergence.
+#' @param control a named `list` of parameters to control the sampler's
+#'   behavior. Adding `max_treedepth` and giving a greater value than `10` can
+#'   improve model convergence.
 #' @param expose_functions `logical`. Expose the BayesPharma functions for the
-#'   model [default: TRUE].
+#'   model
 #' @param ... additional arguments passed to [brms::brm()].
 #'
 #' @returns `bpfit` object, which is a wrapper around a [brms::brmsfit] object.
 #'
 #' @seealso [tQ_formula], [tQ_prior], [tQ_init], or [tQ_stanvar]
+#'
+#' @references
+#' Choi, B., Rempala, G.A. & Kim, J.K. Beyond the Michaelis-Menten equation:
+#' Accurate and efficient estimation of enzyme kinetic parameters. Sci Rep 7,
+#' 17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
 #'
 #' @export
 tQ_model <- function(

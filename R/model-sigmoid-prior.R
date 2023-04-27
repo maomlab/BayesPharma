@@ -1,33 +1,36 @@
 #' Default priors for the sigmoid agonist model
 #'
-#' @description Creates a `data.frame` of priors for the sigmoid agonist
-#'     model
+#' @description
+#' Creates a `data.frame` of priors for the sigmoid agonist model
 #'
-#' If the function arguments `ec50`, `hill`, `top`,
-#' `bottom` are `NULL`, default normal distribution priors
-#' will be set.
+#' If the function arguments `ec50`, `hill`, `top`, `bottom` are `NULL`, default
+#' normal distribution priors will be set.
 #'
 #' If you would like to set a parameter as a constant, enter a numeric
 #' value for the function argument.
 #'
-#' For other distribution options, reference
-#' <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
+#' For other distribution options, reference [brms::prior] and [Prior Choice
+#' Recommendations
+#' ](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
 #'
-#' @param ec50 `brmsprior` or numeric. Prior for the ec50
-#'     parameter.  Default: normal(-6, 2.5) where the mean -7
-#'     corresponds to a concentration of 1e-6 or 1 μM. Setting ec50 to
-#'     a numeric value constrains it to a constant value.
-#' @param hill `brmsprior` or numeric. Prior for the hill
-#'     parameter. Default: normal(1, 1) with and a lower bound of
-#'     -0.1.
-#' @param top `brmsprior` or numeric. Prior for the top
-#'     parameter.  Default: normal(1, 0.5). Setting top to a numeric
-#'     value constrains it to a constant value.
-#' @param bottom `brmsprior` or numeric. Prior for the top
-#'     parameter.  Default: normal(0, 0.5). Setting bottom to a
-#'     numeric value constrains it to a constant value.
-#' @param ... additional `brmsprior` objects.
-#' @returns `brmsprior` `data.frame`
+#' @param ec50 [brms::brmsprior] or `numeric`. Prior for the `ec50`
+#'  parameter.  Setting ec50 to a numeric value constrains it to a constant
+#'  value. Default: normal(-6, 2.5) where the mean -6 corresponds to a
+#'  concentration of 1e-6 or 1 μM. 
+#' @param hill [brms::brmsprior] or `numeric`. Prior for the `hill`
+#'  parameter. Default: `normal(1, 1)` with and a lower bound of
+#'  `-0.1`.
+#' @param top [brms::brmsprior] or `numeric` giving the prior for the `top`
+#'  parameter. Setting `top` to a `numeric` constrains it to a constant
+#'  value.
+#' @param bottom [brms::brmsprior] or `numeric` giving the prior for the `bottom`
+#'  parameter. Setting `bottom` to `numeric` constrains it to a constant
+#'  value.
+#' @param ... additional [brms::brmsprior] objects.
+#' @returns [brms::brmsprior]
+#'
+#' @seealso [sigmoid_agonist_formula], [sigmoid_agonist_init], and
+#'   [sigmoid_agonist_model]
 #'
 #' @examples
 #'\dontrun{
@@ -64,8 +67,9 @@ sigmoid_agonist_prior <- function(
 #' If you would like to set a parameter as a constant, enter a numeric value for
 #' the function argument.
 #'
-#' For other distribution options, reference
-#' <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
+#' For other distribution options, reference [brms::prior] and [Prior Choice
+#' Recommendations
+#' ](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
 #'
 #' @param ic50 [brms::brmsprior()] or `numeric`. Prior for the
 #'   `ic50` parameter. (Default: `normal(-6, 2.5)` where the mean
@@ -74,14 +78,14 @@ sigmoid_agonist_prior <- function(
 #' @param hill [brms::brmsprior()] or `numeric`. Prior for the
 #'   `hill` parameter. (Default: `normal(-1, 1)` upper bounded by
 #'   `0.1`).
-#' @param top [brms::brmsprior()] or `numeric`. Prior for the
-#'   `top` parameter. (Default: `normal(1, 0.5)`. Setting `top`
-#'   to a numeric value constrains it to a constant value.
-#' @param bottom [brms::brmsprior()] or `numeric`. Prior for the
-#'   bottom parameter. (Default: `normal(0, 0.5)`. Setting `bottom` to
-#'   a numeric value constrains it to a constant value.
-#' @param ... additional [brms::brmsprior()] objects.
-#' @returns [brms::brmsprior()] `data.frame`
+#' @param top `brmsprior` or `numeric` giving the prior for the `top`
+#'  parameter. Setting `top` to a `numeric` constrains it to a constant
+#'  value.
+#' @param bottom `brmsprior` or `numeric` giving the prior for the `bottom`
+#'  parameter. Setting `bottom` to `numeric` constrains it to a constant
+#'  value.
+#' @param ... additional [brms::brmsprior] objects.
+#' @returns [brms::brmsprior]
 #'
 #' @examples
 #'\dontrun{

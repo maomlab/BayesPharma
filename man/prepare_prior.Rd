@@ -9,24 +9,25 @@ prepare_prior(prior, ...)
 \arguments{
 \item{prior}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric}.}
 
-\item{...}{additional arguments to \code{\link[brms:set_prior]{brms::prior_string()}}. If
-\code{prior} is a \code{\link[brms:set_prior]{brms::brmsprior()}} then this will check that
-the slots have the given values. If prior is numeric, then these arguments
-are passed to \code{\link[brms:set_prior]{brms::prior_string()}}}
+\item{...}{additional arguments to \code{\link[brms:set_prior]{brms::prior_string()}}. If \code{prior} is a
+\code{\link[brms:set_prior]{brms::brmsprior()}} then this will check that the slots have the given
+values. If prior is \code{numeric}, then these arguments are passed to
+\code{\link[brms:set_prior]{brms::prior_string()}}}
 }
 \value{
 \code{\link[brms:set_prior]{brms::brmsprior()}}
 }
 \description{
-What this gives above \verb{brms::[prior][brms::prior](...)} and friends is
+This extends \code{\link[brms:set_prior]{brms::prior()}} by
 \enumerate{
-\item it allow just giving a numeric value rather than constant(\if{html}{\out{<value>}})
-\item if it is already a \verb{brms::[brmsprior][brms::brmsprior]} it checks that it
-has specified arguments
+\item allowing just taking a \code{numeric} value rather than \verb{constant(<value>)}
+to specify a constant prior
+\item if \link[brms:set_prior]{brms::brmsprior} is given, it checks that it has the specified
+arguments
 }
 }
 \details{
-This is used in models where want to allow user specified priors but make
-sure they are for the right parameters to make sure the model is well
-specified.
+This is used in building \link{BayesPharma} models to allow user specified priors
+but make sure they are for the right parameters to make sure the model is
+well specified.
 }

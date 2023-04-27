@@ -15,9 +15,9 @@ estimated.}
 numeric value, it will be used as a constant and not estimated.}
 }
 \description{
-Default priors are gamma(4, 1) for both \code{kcat} and
+Default priors are \code{gamma(4, 1)} for both \code{kcat} and
 \code{kM}. We use the gamma distribution because it is naturally
-lower bounded by 0. The first parameter is the shape,
+lower bounded by \code{0}. The first parameter is the shape,
 \code{alpha=4}, and the second is the rate, \code{beta=1}. The mean
 of gamma distributions is \code{alpha/beta} and the variance is
 \code{alpha/beta^2}.

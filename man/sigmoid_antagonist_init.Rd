@@ -7,15 +7,18 @@
 sigmoid_antagonist_init(ic50 = -6, hill = -1, top = 1, bottom = 0)
 }
 \arguments{
-\item{ic50}{\code{numeric} or numeric returning function units log_dose
-(default = -6, corresponding to 1e-6 = 1 μM)}
+\item{ic50}{\code{numeric} or \code{numeric} returning \code{function} units of the
+treatment. If the treatment is \code{log(dose)}, the default value of \code{-6}
+corresponds 1e-6 molar = 1 μM}
 
-\item{hill}{numeric or numeric returning function with units
-response/log_dose (default = -1)}
+\item{hill}{\code{numeric} or \code{numeric} returning \code{function} with units
+response/log_dose}
 
-\item{top}{numeric units of top (default = 1).}
+\item{top}{\code{numeric} or \code{numeric} returning \code{function} in units of the
+response}
 
-\item{bottom}{numeric units of bottom (default = 0).}
+\item{bottom}{\code{numeric} or \code{numeric} returning \code{funciton} in units of the
+response}
 }
 \value{
 input for \verb{[brm][brms::brm](init = ...)}
@@ -27,9 +30,13 @@ can be passed to the \code{\link[=sigmoid_antagonist_model]{sigmoid_antagonist_m
 \examples{
 \dontrun{
 #Consider an inhibitor that has a min response around 50\%, IC50 is estimated
-#to be around 1 nM, minimum response is known to be around 0,
+#to be around 1 nM, maximum response is known to be around 1,
 init <- BayesPharma::sigmoid_antagonist_init(
   ec50 = -9,
   bottom = 0.5)
 }
+}
+\seealso{
+\code{\link[=sigma_agonist_formula]{sigma_agonist_formula()}}, \code{\link[=sigma_agonist_prior]{sigma_agonist_prior()}}, and
+\code{\link[=sigmoid_agonist_model]{sigmoid_agonist_model()}}
 }

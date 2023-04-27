@@ -5,19 +5,16 @@
 #'   parameter and the mean, lower confidence interval, and upper confidence interval.
 #'
 #' @param model `bpfit` model.
-#' @param predictors_col_name `character` of the predictors column
-#'   in the input data.frame (default = "_Intercept"). Predictors
-#'   are the perturbations tested during the experiment (i.e. Drug,
-#'   Temperature, etc.).
+#' @param predictors_col_name `character` of the predictors column in the input
+#'   `data.frame`. Predictors are the perturbations tested during the experiment
+#'   (i.e. Drug, Temperature, etc.).
 #' @param half_max_label `character` of the label for the half maximal that
-#'   fits the type of experiment that was done (i.e. ec50, ic50,
-#'   ed50, id50, ld50, etc.).
-#' @param l_ci `numeric` unit of the lower confidence interval (default
-#'   = 0.025)
-#' @param u_ci `numeric` unit of the upper confidence interval (default
-#'   = 0.975)
-#' @param title_label string of the plot title. (default = "Posterior Density
-#'   Plots with Mean and 95\% CI")
+#'   fits the type of experiment that was done (i.e. ec50, ic50, ed50, id50,
+#'   ld50, etc.).
+#' @param l_ci `numeric` unit of the lower confidence interval
+#' @param u_ci `numeric` unit of the upper confidence interval
+#' @param title_label string of the plot title.
+#'
 #' @returns [ggplot2::ggplot()] object.
 #'
 #' @examples
@@ -35,14 +32,14 @@
 plot_posterior_density <- function(
     model,
     predictors_col_name = "_Intercept",
-    half_max_label = "ec50",
+    half_max_label = "ac50",
     l_ci = 0.025,
     u_ci = 0.975,
     title_label = "Posterior Density Plots w/ Mean & 95% CI") {
 
   assertthat::assert_that(
     inherits(model, "bpfit"),
-    msg = "Model should be a brms::brmsfit object")
+    msg = "Model should be model fit with BayesPharma")
   assertthat::is.number(l_ci)
   assertthat::is.number(u_ci)
 
