@@ -21,11 +21,9 @@
 #'     See the vignettes(topic = "derive_growth_model", package = "BayesPharma")   
 #'
 #' @param treatment_variable character variable representing time as a treatment
-#'   (Default: 'time')
-#' @param treatment_units character the units of the time variable. (Default:
-#'   "seconds")
+#' @param treatment_units character the units of the time variable
 #' @param response_variable character variable representing the response to
-#'   treatment. (Default: 'response')
+#'   treatment
 #' @param response_units character the units of the response. (Default: NULL)
 #' @param predictors Additional formula objects to specify predictors
 #'   of non-linear parameters. i.e. what perturbations/experimental
@@ -35,7 +33,7 @@
 #' @param ... additional arguments to [brms::brmsformula()]
 #'
 #' @returns a `bpformula`, which is a subclass of
-#'   [brms::brmsformula()] and can be passed to
+#'   [brms::brmsformula] and can be passed to
 #'   [growth_sigmoid_model()].
 #'
 #' @seealso
@@ -103,12 +101,12 @@ growth_sigmoid_formula <- function(
 #' Create a formula for the Richards growth model
 #'
 #' @description set-up a Richards growth model formula to for use in
-#'   `growth_richards_model` and in the BayesPharma package. The functional
+#'   `growth_richards_model` and in the [BayesPharma] package. The functional
 #'   form is
 #'   
 #'     response ~ richards_growth(K, K0, rate, lambda, nu, time)
 #'   
-#'   The parameterization follows (Zwietering, 1990) and grofit:
+#'   The parameterization follows (Zwietering, 1990) and [grofit]:
 #'   
 #'     K      = carrying capacity, K = response(time = Inf). In the grofit
 #'              package this is parameter is called "A", having the same units

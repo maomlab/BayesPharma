@@ -16,28 +16,28 @@ tQ_model(
 )
 }
 \arguments{
-\item{data}{data.frame of experimental data.
+\item{data}{\code{data.frame} of experimental data.
 must contain columns \code{response} and any predictors specified in
 the formula.}
 
-\item{formula}{brmsformula object. To create a dose-response brmsformula,
-use the \code{tQ_formula} function.}
+\item{formula}{\link[brms:brmsformula]{brms::brmsformula} object. To create a dose-response
+\link[brms:brmsformula]{brms::brmsformula}, use the \link{tQ_formula} function.}
 
-\item{prior}{brmspriors data.frame for kcat, and kM.
-Use one of the priors functions provided to create priors to use here.}
+\item{prior}{\link[brms:set_prior]{brms::brmsprior} for \code{kcat}, and \code{kM}. Use \code{\link[=tQ_formula]{tQ_formula()}} to
+create priors to use here.}
 
-\item{init}{list of lists, numeric value, or "random" for the initial values
-of the parameters being modeled (default = 0).}
+\item{init}{\code{list} of \code{lists}, \code{numeric} value, or "random" for the initial
+values of the parameters being modeled.}
 
-\item{iter}{number of iterations the model runs. Increasing iter can help
-with model convergence (default = 8000).}
+\item{iter}{\code{numeric} of iterations the model runs. Increasing \code{iter} can
+help with model convergence.}
 
-\item{control}{a named list of parameters to control the sampler's behavior.
-Adding \code{max_treedepth} and giving a greater value than 10 can improve
-model convergence (default = list(adapt_delta = 0.99)).}
+\item{control}{a named \code{list} of parameters to control the sampler's
+behavior. Adding \code{max_treedepth} and giving a greater value than \code{10} can
+improve model convergence.}
 
 \item{expose_functions}{\code{logical}. Expose the BayesPharma functions for the
-model \link{default: TRUE}.}
+model}
 
 \item{...}{additional arguments passed to \code{\link[brms:brm]{brms::brm()}}.}
 }
@@ -46,6 +46,11 @@ model \link{default: TRUE}.}
 }
 \description{
 Model for the tQ enzyme kinetics model
+}
+\references{
+Choi, B., Rempala, G.A. & Kim, J.K. Beyond the Michaelis-Menten equation:
+Accurate and efficient estimation of enzyme kinetic parameters. Sci Rep 7,
+17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
 }
 \seealso{
 \link{tQ_formula}, \link{tQ_prior}, \link{tQ_init}, or \link{tQ_stanvar}

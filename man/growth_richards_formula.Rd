@@ -39,13 +39,13 @@ a \code{bpformula}, which is a subclass of
 }
 \description{
 set-up a Richards growth model formula to for use in
-\code{growth_richards_model} and in the BayesPharma package. The functional
+\code{growth_richards_model} and in the \link{BayesPharma} package. The functional
 form is
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{response ~ richards_growth(K, K0, rate, lambda, nu, time)
 }\if{html}{\out{</div>}}
 
-The parameterization follows (Zwietering, 1990) and grofit:
+The parameterization follows (Zwietering, 1990) and \link{grofit}:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{K      = carrying capacity, K = response(time = Inf). In the grofit
          package this is parameter is called "A", having the same units

@@ -1,28 +1,27 @@
-#' Create an agonist sigmoid formula for the sigmoid  model
+#' Create an agonist sigmoid formula for the sigmoid model
 #'
 #' @description set-up a sigmoid dose response model formula to define
 #'     a non-linear model or multilevel non-linear model for
 #'     `ec50`, `hill`, `top`, and, `bottom` for
-#'     use in Bayesian_model and in the BRMS package.
+#'     use in `sigmoid_agonist_model` and in the [brms] package.
 #'
 #' @param treatment_variable character variable representing the treatment.
-#'     (Default: 'log_dose')
 #' @param treatment_units character the units of the treatment. The default is
-#'     log base 10 of the molar concentration. (Default: "Log[Molar]")
+#'     log base 10 of the molar concentration.
 #' @param response_variable character variable representing the response to
-#'     treatment. (Default: 'response')
-#' @param response_units character the units of the response. (Default: NULL)
+#'     treatment.
+#' @param response_units character the units of the response.
 #' @param predictors character or expression of predictors
 #'     of non-linear parameters. i.e. what perturbations/experimental
-#'     differences should be modeled separately? (Default: 1)
+#'     differences should be modeled separately?
 #' @param ... additional arguments to [brms::brmsformula()]
 #'
 #' @returns a `bpformula`, which is a subclass of
-#'     [brms::brmsformula()] and can be passed to
+#'     [brms::brmsformula] and can be passed to
 #'     [sigmoid_agoinst_model()].
 #' @seealso
-#'     [brms::brmsformula()], which this function wraps.
-#'     [sigmiod_agonist_model()] into which the result of this
+#'     [brms::brmsformula], which this function wraps.
+#'     [sigmoid_agonist_model()] into which the result of this
 #'     function can be passed.
 #'
 #' @examples
@@ -84,23 +83,22 @@ sigmoid_agonist_formula <- function(
 #'     use in the `sigmoid_antagonist_model()`
 #'
 #' @param treatment_variable character variable representing the treatment.
-#'     (Default: 'log_dose')
 #' @param treatment_units character the units of the treatment. The default is
-#'     log base 10 of the molar concentration. (Default: "Log[Molar]")
+#'     log base 10 of the molar concentration.
 #' @param response_variable character variable representing the response to
-#'     treatment. (Default: 'response')
-#' @param response_units character the units of the response. (Default: NULL)
+#'     treatment.
+#' @param response_units character the units of the response.
 #' @param predictors character or expression of predictors
 #'     of non-linear parameters. i.e. what perturbations/experimental
-#'     differences should be modeled separately? (Default: 1)
+#'     differences should be modeled separately?
 #' @param ... additional arguments to [brms::brmsformula()]
 #'
 #' @returns a `bpformula`, which is a subclass of
-#'     [brms::brmsformula()] and can be passed to
+#'     [brms::brmsformula] and can be passed to
 #'     [sigmoid_antagonist_model()].
 #' @seealso
-#'     [brms::brmsformula()], which this function wraps.
-#'     [sigmiod_antagonist_model()] into which the result of this
+#'     [brms::brmsformula], which this function wraps.
+#'     [sigmoid_antagonist_model()] into which the result of this
 #'     function can be passed.
 #' @examples
 #'\dontrun{

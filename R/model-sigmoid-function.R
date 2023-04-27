@@ -2,18 +2,20 @@
 #'
 #' Functional form for the sigmoid model.
 #'
-#' @param ac50 numeric, the log_dose of half maximal activity
-#' @param hill numeric, slope of curve at the ac50 units of
+#' @param ac50 `numeric`, the log_dose of half maximal activity
+#' @param hill `numeric`, slope of curve at the ac50 units of
 #'     response/log_dose
-#' @param top numeric, value of maximal response for positive slope,
+#' @param top `numeric`, value of maximal response for positive slope,
 #'     this occurs when log_dose = Inf, with negative slope when
 #'     log_dose = -Inf
-#' @param bottom numeric, value of minimal response for positive
+#' @param bottom `numeric`, value of minimal response for positive
 #'     slope, this occurs when log_dose = -Inf, with negative slope
 #'     when log_dose = Inf
-#' @param log_dose numeric, where to evaluate the the response where
+#' @param log_dose `numeric`, where to evaluate the the response where
 #'     the log is base 10.
-#' @returns numeric, response given the log_dose and parameters
+#' @returns `numeric`, response given the log_dose and parameters
+#'
+#' @seealso [sigmoid_model]
 #'
 #' @examples
 #' \dontrun{

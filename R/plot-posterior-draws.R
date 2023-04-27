@@ -4,33 +4,37 @@
 #'     posterior distribution from the expected mean and median
 #'     quantile intervals.
 #'
-#' @param model `bpfit` object resulting from fitting a BayesPharma model
-#' @param treatment_variable `string` or `NULL`. If `NULL` the
-#'   treatment variable name will be looked up in the model. The treatment
-#'   variable the `model$data` or `newdata` if supplied must have a
-#'   column corresponding to the treatment variable.
-#' @param treatment_units `string` or `NULL`. If `NULL` the
-#'   treatment units will be looked up in the model. The treatment units will be
-#'   used to label the X-axis of the plot.
-#' @param response_variable `string` or `NULL`. If `NULL` the
-#'   response variable name will be looked up in the model. The response
-#'   variable the `model$data` or `newdata` if supplied must have a
-#'   column corresponding to the response variable.
-#' @param response_units `string` or `NULL`. If `NULL` the
-#'   response units will be looked up in the model. The response units will be
-#'   used to label the Y-axis of the plot.
+#' @param model `bpfit` object resulting from fitting a [BayesPharma] model
+#' @param treatment_variable `character` or `NULL`. If `NULL` the treatment
+#'   variable name will be looked up in the model. The treatment variable the
+#'   `model$data` or `newdata` if supplied must have a column corresponding to
+#'   the treatment variable.
+#' @param treatment_units `character` or `NULL`. If `NULL` the treatment units will
+#'   be looked up in the model. The treatment units will be used to label the
+#'   X-axis of the plot.
+#' @param treatment_from `numeric` or `NULL`, for the lower bound on the
+#'   treatment range. If `NULL`, then use the (finite) lower bound of the
+#'   treatment variable in the model data.
+#' @param treatment_to `numeric` or `NULL`, for the upper bound on the
+#'   treatment range. If `NULL`, then use the (finite) upper bound of the
+#'   treatment variable in the model data.
+#' @param response_variable `string` or `NULL`. If `NULL` the response variable
+#'   name will be looked up in the model. The response variable the `model$data`
+#'   or `newdata` if supplied must have a column corresponding to the response
+#'   variable.
+#' @param response_units `character` or `NULL`. If `NULL` the response units
+#'   will be looked up in the model. The response units will be used to label
+#'   the Y-axis of the plot.
 #' @param newdata `data.frame` or `NULL` of new data to use for
 #'   predictions. Default data.frame with each predictor and treatment variable.
-#' @param n `numeric` value of the number of draws to shown.
-#' @param point_size `numeric`. [ggplot2::geom_jitter()] point
-#'   size.
+#' @param n `numeric` value of the number of draws to show.
+#' @param point_size `numeric`. [ggplot2::geom_jitter()] point size.
 #' @param jitter_height `numeric`. the height distance between overlapping
-#'   points (default = 0).
-#' @param jitter_width numeric. the width distance between overlapping
-#'     points (default = 0).
-#' @param title character name for the plot (default =
-#'     "Dose-Response Posterior Draws").
-#' @returns ggplot2::ggplot object.
+#'   points.
+#' @param jitter_width `numeric`. the width distance between overlapping points.
+#' @param title character name for the plot
+#'
+#' @returns [ggplot2::ggplot] object.
 #'
 #' @examples
 #'\dontrun{
@@ -57,6 +61,8 @@ plot_posterior_draws <- function(
     newdata = NULL,
     treatment_variable = NULL,
     treatment_units = NULL,
+    treatment_from = NULL,
+    treatment_to = NULL,
     response_variable = NULL,
     response_units = NULL,
     title = "Dose-Response Posterior Draws",
@@ -115,15 +121,27 @@ plot_posterior_draws <- function(
         treatment_variable, response_variable))) |>
       as.list() |>
       purrr::map(unique)
-    treatment_range <- model$data[
-      model$data[[treatment_variable]] |> is.finite() |> which(),
-      treatment_variable] |>
-      range()
+    
+    # if the treatment range isn't given, then use the (finite) range of the
+    # model data
+    if (is.null(treatment_from) | is.null(treatment_to)){
+      treatment_range <- model$data[
+        model$data[[treatment_variable]] |> is.finite() |> which(),
+        treatment_variable] |>
+        range()
+      if (is.null(treatment_from)) {
+        treatment_from <- treatment_range[1]
+      }
+      if (is.null(treatment_to)) {
+        treatment_to <- treatment_range[2]
+      }
+    }
     treatment_values <- list(
       seq(
-        from = treatment_range[1],
-        to = treatment_range[2],
+        from = treatment_from,
+        to = treatment_to,
         length.out = 100))
+
     names(treatment_values) <- treatment_variable
     newdata <- do.call(
       what = tidyr::expand_grid,

@@ -20,11 +20,11 @@
 #' @param ... additional arguments passed to [brms::brmsformula()]
 #'
 #' @returns a `bpformula`, which is a subclass of
-#'   [brms::brmsformula()] and can be passed to
+#'   [brms::brmsformula] and can be passed to
 #'   [tQ_model()].
 #'
 #' @seealso [tQ_model], [tQ_prior], [tQ_init], [tQ_stanvar] and
-#'   [brms::brmsformula()], which this function wraps.
+#'   [brms::brmsformula], which this function wraps.
 #'
 #' @export
 tQ_formula <- function(

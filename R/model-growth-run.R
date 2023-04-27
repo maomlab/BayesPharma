@@ -1,38 +1,33 @@
-#' Run Bayesian sigmoid growth model
+#' Run Bayesian Sigmoid Growth Model
 #'
 #' @description
-#'   For additional information on additional function arguments, reference:
-#'   <https://paul-buerkner.github.io/brms/reference/brm.html>
-#'   or <https://rdrr.io/cran/rstan/man/stan.html>
+#' For additional information on additional function arguments, reference:
+#' [brms::brms()] and the [stan](https://rdrr.io/cran/rstan/man/stan.html)
+#' documentation.
 #'
 #' @param data `data.frame` of experimental data. Must contain column
 #'   representing the treatment, response and predictors specified in the
 #'   formula.
 #' @param formula `bpformula` object. To create a growth model formula, use
-#'   `BayesPharma::growth_sigmoid_formula` (default:
-#'   `BayesPharma::growth_sigmoid_formula()`.
-#' @param prior `brmspriors` `data.frame` for `K`, `K0`,
-#'   `rate`, and `lambda`. To create a prior, use
-#'   `BayesPharma::growth_sigmoid_prior`. (default:
-#'   `BayesPharma::growth_sigmoid_prior()`
+#'   [growth_sigmoid_formula()]
+#' @param prior `brmspriors` `data.frame` for `K`, `K0`, `rate`, and `lambda`.
+#'   To create a prior, use [growth_sigmoid_prior()].
 #' @param init initial values of the parameters being modeled. To create an
-#'   init, use `BayesPharma::growth_sigmoid_init()`. (Default:
-#'   `BayesPharma::growth_sigmoid_init()`
+#'   init, use [growth_sigmoid_init()]
 #' @param iter `numeric` value for the number of iterations the model runs. 
-#'   Increasing `iter` can help with model convergence (Default:
-#'   `8000`).
+#'   Increasing `iter` can help with model convergence
 #' @param control a named `list` of parameters to control the sampler's
 #'   behavior. Adding `max_treedepth` and giving a greater value than
-#'   `10` can improve model convergence (Default: 
-#'   `list(adapt_delta = 0.99)`).
-#' @param stanvar_function Stan code for the model (default:
-#'   `BayesPharma::growth_richards_stanvar`).
+#'   `10` can improve model convergence
+#' @param stanvar_function Stan code for the model
 #' @param expose_functions `logical`. Expose the stan functions for the
-#'   model. This is needed e.g. to run [brms::loo_compare()]. (Default:
-#'   `TRUE`). 
+#'   model. This is needed e.g. to run [brms::loo_compare()]
 #' @param ... additional arguments passed to [brms::brm()]
 #'
-#' @returns `bpfit` [brms::brmsfit()]
+#' @returns `bpfit` a wrapper for [brms::brmsfit()]
+#' 
+#' @seealso Helper functions: [growth_sigmoid_formula], and
+#'   [growth_sigmoid_prior], [growth_sigmoid_init] and [brms::brmsfit]
 #'
 #' @examples
 #'\dontrun{
@@ -41,7 +36,7 @@
 #'     formula = BayesPharma::growth_richards_formula(predictors = 0 + drug))
 #'}
 #' @export
-growth_richards_model <- function(
+growth_sigmoid_model <- function(
     data,
     formula = growth_richards_formula(),
     prior = growth_richards_prior(),
@@ -107,37 +102,34 @@ growth_richards_model <- function(
 #'
 #' @description
 #'   For additional information on additional function arguments, reference:
-#'   <https://paul-buerkner.github.io/brms/reference/brm.html>
-#'   or <https://rdrr.io/cran/rstan/man/stan.html>
+#'   [brm] and the [stan](https://rdrr.io/cran/rstan/man/stan.html)
+#'   documentation.
 #'
 #' @param data `data.frame` of experimental data. Must contain column
 #'   representing the treatment, response and predictors specified in the
 #'   formula.
 #' @param formula `bpformula` object. To create a growth model formula, use
-#'   `BayesPharma::growth_richards_formula` (default:
-#'   `BayesPharma::growth_richards_formula()`.
+#'   [growth_richards_formula()]
 #' @param prior `brmspriors` `data.frame` for `K`, `K0`,
 #'   `rate`, `lambda`, and `nu`. To create a prior, use
-#'   `BayesPharma::growth_richards_prior`. (default:
-#'   `BayesPharma::growth_richards_prior()`
+#'   [growth_richards_prior()]
 #' @param init initial values of the parameters being modeled. To create an
-#'   init, use `BayesPharma::growth_richards_init()`. (Default:
-#'   `BayesPharma::growth_richards_init()`
+#'   init, use [growth_richards_init()]
 #' @param iter `numeric` value for the number of iterations the model runs. 
-#'   Increasing `iter` can help with model convergence (Default:
-#'   `8000`).
+#'   Increasing `iter` can help with model convergence
 #' @param control a named `list` of parameters to control the sampler's
 #'   behavior. Adding `max_treedepth` and giving a greater value than
-#'   `10` can improve model convergence (Default: 
-#'   `list(adapt_delta = 0.99)`).
-#' @param stanvar_function Stan code for the model (default:
-#'   `BayesPharma::growth_richards_stanvar`).
+#'   `10` can improve model convergence
+#' @param stanvar_function Stan code for the model
 #' @param expose_functions `logical`. Expose the stan functions for the
-#'   model. This is needed e.g. to run [brms::loo_compare()].
-#'   (Default: `TRUE`). 
+#'   model. This is needed e.g. to run [brms::loo_compare()]
 #' @param ... additional arguments passed to [brms::brm()]
 #'
-#' @returns `bpfit` [brms::brmsfit()]
+#' @returns `bpfit` which wraps [brms::brmsfit()]
+#' 
+#' @seealso Helper functions: [growth_richards_formula],
+#'   [growth_richards_prior], and [growth_richards_init], and [brms::brmsfit]
+#'   
 #'
 #' @examples
 #'\dontrun{

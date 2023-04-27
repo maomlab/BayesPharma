@@ -14,14 +14,12 @@ growth_sigmoid_formula(
 )
 }
 \arguments{
-\item{treatment_variable}{character variable representing time as a treatment
-(Default: 'time')}
+\item{treatment_variable}{character variable representing time as a treatment}
 
-\item{treatment_units}{character the units of the time variable. (Default:
-"seconds")}
+\item{treatment_units}{character the units of the time variable}
 
 \item{response_variable}{character variable representing the response to
-treatment. (Default: 'response')}
+treatment}
 
 \item{response_units}{character the units of the response. (Default: NULL)}
 
@@ -35,7 +33,7 @@ plate number, etc.}
 }
 \value{
 a \code{bpformula}, which is a subclass of
-\code{\link[brms:brmsformula]{brms::brmsformula()}} and can be passed to
+\link[brms:brmsformula]{brms::brmsformula} and can be passed to
 \code{\link[=growth_sigmoid_model]{growth_sigmoid_model()}}.
 }
 \description{

@@ -7,37 +7,36 @@
 tQ_model_generate(time, kcat, kM, ET, ST, ...)
 }
 \arguments{
-\item{time}{numeric vector. Increasing time points}
+\item{time}{\code{numeric} vector. Increasing time points}
 
-\item{kcat}{numeric value catalytic rate constant}
+\item{kcat}{\code{numeric} value catalytic rate constant}
 
-\item{kM}{numeric value Michaelis rate constant}
+\item{kM}{\code{numeric} value Michaelis rate constant}
 
-\item{ET}{numeric value total enzyme concentration}
+\item{ET}{\code{numeric} value total enzyme concentration}
 
-\item{ST}{numeric value total substrate concentration}
+\item{ST}{\code{numeric} value total substrate concentration}
 
-\item{...}{additional arguments to \code{deSolve::ode}}
+\item{...}{additional arguments to \code{\link[deSolve:ode]{deSolve::ode()}}}
 }
 \value{
 run the tQ ordinary differential equation forwards starting
-with initial product concentration of 0 and specified kcat and
-kM parameters for the specified time steps.
+with initial product concentration of \code{0} and specified \code{kcat} and
+\code{kM} parameters for the specified time steps.
 }
 \description{
 Simulate data from the total QSSA model a refinement of the
 classical Michaelis-Menten enzyme kinetics ordinary differential
 equation described in (Choi, et al., 2017, DOI:
 10.1038/s41598-017-17072-z). Consider the kinetic rate equation
+\preformatted{
+                  kf
+                 --->    kcat
+          E + S  <---  C --->  E + P
+                  kb}
 }
 \details{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{              kf
-             --->    kcat
-      E + S  <---  C --->  E + P
-              kb
-}\if{html}{\out{</div>}}
-
-where the free enzyme (E) reversibly binds to the stubstrate (S) to
+where the free enzyme (E) reversibly binds to the substrate (S) to
 form a complex (C) with forward and backward rate constants of kf
 and kb, which is irreversibly catalyzed into the product (P), with
 rate constant of kcat, releasing the enzyme to catalyze additional
@@ -53,30 +52,37 @@ substrate concentrations.
 
 From (Choi, et al, 2017, equation 2, the total quasi-steady-state
 approximation (tQ) differential equation is defined by
+\preformatted{
+  Observed data:
+     M     = number of measurements        # number of measurements
+     t[M]  = time                          # measured in seconds
+     Pt[M] = product                       # product produced at time t
+     ST    = substrate total concentration # specified for each experiment
+     ET    = enzyme total concentration    # specified for each experiment
 
-Observed data:
-M     = number of measurements        # number of measurements
-t\link{M}  = time                          # measured in seconds
-Pt\link{M} = product                       # product produced at time t
-ST    = substrate total concentration # specified for each experiment
-ET    = enzyme total concentration    # specified for each experiment
+  Model parameters:
+    kcat    # catalytic constant (min^-1)
+    kM      # Michaelis constant ()
 
-Model parameters:
-kcat    # catalytic constant (min^-1)
-kM      # Michaelis constant ()
+  ODE formulation:
+    dPdt = kcat * (
+             ET + kM + ST - Pt +
+             -sqrt((ET + kM + ST - Pt)^2 - 2 * ET * (ST - Pt))) / 2
 
-ODE formulation:
-dPdt = kcat * (
-ET + kM + ST - Pt +
--sqrt((ET + kM + ST - Pt)^2 - 2 * ET * (ST - Pt))) / 2
-
-initial condition:
-P := 0
+  initial condition:
+     P := 0}
 
 In (Choi, et al. 2017) they prove, that the tQ model is valid when
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{K/(2*ST) * (ET+kM+ST) / sqrt((ET+kM+ST+P)^2 - 4*ET(ST-P)) << 1,
-}\if{html}{\out{</div>}}
+\preformatted{
+    K/(2*ST) * (ET+kM+ST) / sqrt((ET+kM+ST+P)^2 - 4*ET(ST-P)) << 1,}
 
 where K = kb/kf is the dissociation constant.
+}
+\references{
+Choi, B., Rempala, G.A. & Kim, J.K. Beyond the Michaelis-Menten equation:
+Accurate and efficient estimation of enzyme kinetic parameters. Sci Rep 7,
+17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
+}
+\seealso{
+\link{tQ_model}
 }

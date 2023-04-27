@@ -1,8 +1,8 @@
 #' Define priors for the tQ enzyme kinetics model
 #'
-#' Default priors are gamma(4, 1) for both `kcat` and
+#' Default priors are `gamma(4, 1)` for both `kcat` and
 #' `kM`. We use the gamma distribution because it is naturally
-#' lower bounded by 0. The first parameter is the shape,
+#' lower bounded by `0`. The first parameter is the shape,
 #' `alpha=4`, and the second is the rate, `beta=1`. The mean
 #' of gamma distributions is `alpha/beta` and the variance is
 #' `alpha/beta^2`.
@@ -12,7 +12,6 @@
 #'     estimated.
 #' @param kM prior for `kM` parameter (Default: NULL). Given a
 #'     numeric value, it will be used as a constant and not estimated.
-#'
 #'
 #' @seealso [tQ_model], [tQ_formula], [tQ_init], or [tQ_stanvar]
 #'

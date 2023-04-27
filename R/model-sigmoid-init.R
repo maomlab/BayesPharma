@@ -3,13 +3,19 @@
 #' @description Creating initial values for an agonist sigmoid model
 #'  parameters that can be passed to the [sigmoid_agoninst_model()].
 #'
-#' @param ec50 `numeric` or `numeric` returning function units
-#'   log_dose (Default: -6, corresponding to 1 μM)
-#' @param hill numeric or numeric returning function with units
-#'   response/log_dose (default = 1)
-#' @param top numeric units of top (default = 1).
-#' @param bottom numeric units of bottom (default = 0).
-#' @returns input for `[brm][brms::brm](init = ...)`
+#' @param ic50 `numeric` or `numeric` returning `function` units of the
+#'   treatment. If the treatment is `log(dose)`, the default value of `-6`
+#'  corresponds 1e-6 molar = 1 μM
+#' @param hill `numeric` or `numeric` returning `function` with units
+#'   response/log_dose
+#' @param top `numeric` or `numeric` returning `function` with units of the
+#'   response
+#' @param bottom `numeric` or `numeric` returning `function` with units of the
+#'   response
+#' @returns input for `[brms::brm](init = ...)`
+#'
+#' @seealso [sigma_agonist_formula()], [sigma_agonist_prior()], and
+#'   [sigmoid_agonist_model()]
 #'
 #' @examples
 #'\dontrun{
@@ -40,18 +46,24 @@ sigmoid_agonist_init <- function(
 #' @description Creating initial values for the sigmoid model parameters that
 #'   can be passed to the [sigmoid_antagonist_model()]
 #'
-#' @param ic50 `numeric` or numeric returning function units log_dose
-#'   (default = -6, corresponding to 1e-6 = 1 μM)
-#' @param hill numeric or numeric returning function with units
-#'   response/log_dose (default = -1)
-#' @param top numeric units of top (default = 1).
-#' @param bottom numeric units of bottom (default = 0).
+#' @param ic50 `numeric` or `numeric` returning `function` units of the
+#'   treatment. If the treatment is `log(dose)`, the default value of `-6`
+#'  corresponds 1e-6 molar = 1 μM
+#' @param hill `numeric` or `numeric` returning `function` with units
+#'   response/log_dose
+#' @param top `numeric` or `numeric` returning `function` in units of the
+#'   response
+#' @param bottom `numeric` or `numeric` returning `funciton` in units of the
+#'   response
 #' @returns input for `[brm][brms::brm](init = ...)`
+#'
+#' @seealso [sigma_agonist_formula()], [sigma_agonist_prior()], and
+#'   [sigmoid_agonist_model()]
 #'
 #' @examples
 #'\dontrun{
 #' #Consider an inhibitor that has a min response around 50%, IC50 is estimated
-#' #to be around 1 nM, minimum response is known to be around 0,
+#' #to be around 1 nM, maximum response is known to be around 1,
 #' init <- BayesPharma::sigmoid_antagonist_init(
 #'   ec50 = -9,
 #'   bottom = 0.5)

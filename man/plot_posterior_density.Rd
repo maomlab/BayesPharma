@@ -8,7 +8,7 @@ from brmsfit model}
 plot_posterior_density(
   model,
   predictors_col_name = "_Intercept",
-  half_max_label = "ec50",
+  half_max_label = "ac50",
   l_ci = 0.025,
   u_ci = 0.975,
   title_label = "Posterior Density Plots w/ Mean & 95\% CI"
@@ -17,23 +17,19 @@ plot_posterior_density(
 \arguments{
 \item{model}{\code{bpfit} model.}
 
-\item{predictors_col_name}{\code{character} of the predictors column
-in the input data.frame (default = "_Intercept"). Predictors
-are the perturbations tested during the experiment (i.e. Drug,
-Temperature, etc.).}
+\item{predictors_col_name}{\code{character} of the predictors column in the input
+\code{data.frame}. Predictors are the perturbations tested during the experiment
+(i.e. Drug, Temperature, etc.).}
 
 \item{half_max_label}{\code{character} of the label for the half maximal that
-fits the type of experiment that was done (i.e. ec50, ic50,
-ed50, id50, ld50, etc.).}
+fits the type of experiment that was done (i.e. ec50, ic50, ed50, id50,
+ld50, etc.).}
 
-\item{l_ci}{\code{numeric} unit of the lower confidence interval (default
-= 0.025)}
+\item{l_ci}{\code{numeric} unit of the lower confidence interval}
 
-\item{u_ci}{\code{numeric} unit of the upper confidence interval (default
-= 0.975)}
+\item{u_ci}{\code{numeric} unit of the upper confidence interval}
 
-\item{title_label}{string of the plot title. (default = "Posterior Density
-Plots with Mean and 95\\% CI")}
+\item{title_label}{string of the plot title.}
 }
 \value{
 \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.

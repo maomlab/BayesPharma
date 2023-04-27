@@ -50,7 +50,7 @@ substrate concentration.}
 }
 \value{
 a \code{bpformula}, which is a subclass of
-\code{\link[brms:brmsformula]{brms::brmsformula()}} and can be passed to
+\link[brms:brmsformula]{brms::brmsformula} and can be passed to
 \code{\link[=tQ_model]{tQ_model()}}.
 }
 \description{
@@ -58,5 +58,5 @@ Define formula for the tQ enzyme kinetics model
 }
 \seealso{
 \link{tQ_model}, \link{tQ_prior}, \link{tQ_init}, \link{tQ_stanvar} and
-\code{\link[brms:brmsformula]{brms::brmsformula()}}, which this function wraps.
+\link[brms:brmsformula]{brms::brmsformula}, which this function wraps.
 }

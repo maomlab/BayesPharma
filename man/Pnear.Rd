@@ -25,7 +25,7 @@ temperature for ref2015 or any other scorefunction with units of kcal/mol.}
 \item{verbose}{give verbose output.}
 }
 \value{
-numeric value.
+\code{numeric} value.
 }
 \description{
 The Pnear metric defined in \href{https://www.nature.com/articles/nature19791}{(Bhardwaj, et al., Nature, 2016)}

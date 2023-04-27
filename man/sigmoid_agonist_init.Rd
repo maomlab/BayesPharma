@@ -7,18 +7,21 @@
 sigmoid_agonist_init(ec50 = -6, hill = 1, top = 1, bottom = 0)
 }
 \arguments{
-\item{ec50}{\code{numeric} or \code{numeric} returning function units
-log_dose (Default: -6, corresponding to 1 μM)}
+\item{hill}{\code{numeric} or \code{numeric} returning \code{function} with units
+response/log_dose}
 
-\item{hill}{numeric or numeric returning function with units
-response/log_dose (default = 1)}
+\item{top}{\code{numeric} or \code{numeric} returning \code{function} with units of the
+response}
 
-\item{top}{numeric units of top (default = 1).}
+\item{bottom}{\code{numeric} or \code{numeric} returning \code{function} with units of the
+response}
 
-\item{bottom}{numeric units of bottom (default = 0).}
+\item{ic50}{\code{numeric} or \code{numeric} returning \code{function} units of the
+treatment. If the treatment is \code{log(dose)}, the default value of \code{-6}
+corresponds 1e-6 molar = 1 μM}
 }
 \value{
-input for \verb{[brm][brms::brm](init = ...)}
+input for \verb{[brms::brm](init = ...)}
 }
 \description{
 Creating initial values for an agonist sigmoid model
@@ -32,4 +35,8 @@ init <- BayesPharma::sigmoid_agonist_init(
   ec50 = -9,
   top = 0.5)
 }
+}
+\seealso{
+\code{\link[=sigma_agonist_formula]{sigma_agonist_formula()}}, \code{\link[=sigma_agonist_prior]{sigma_agonist_prior()}}, and
+\code{\link[=sigmoid_agonist_model]{sigmoid_agonist_model()}}
 }
