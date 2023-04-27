@@ -1,5 +1,5 @@
 #' Formula for a curve with a constant response
-#' 
+#'
 #' @description set-up an equation for formula objects with a constant response.
 #'
 #' @param response_variable character variable representing the response to

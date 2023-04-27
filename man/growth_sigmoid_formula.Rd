@@ -55,7 +55,7 @@ rate   = the maximum growth rate The grofit package calls this μ, having
 lambda = the length of the lag-phase, defined by to be the time point at
          which the tangent through the growth curve crosses response =
          K0.
-See the vignettes(topic = "derive_growth_model", package = "BayesPharma")   
+See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
 }\if{html}{\out{</div>}}
 }
 \examples{

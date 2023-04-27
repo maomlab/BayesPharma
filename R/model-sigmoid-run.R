@@ -13,7 +13,7 @@
 #'      as a molar concentration}
 #'    \item{**<response>**: `response`, with unspecified units}
 #'  }
-#'      
+#'
 #'  and the modeled parameters are
 #'  \itemize{
 #'    \item{**ec50**: the dose where the response reaches half maximal

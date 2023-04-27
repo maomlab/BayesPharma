@@ -56,12 +56,12 @@ MuSyC_formula <- function(
     paste0(
       response_variable, " ~ ",
       "MuSyC(",
-        treatment_1_variable, " - logd1scale, ",
-        treatment_2_variable, " - logd2scale, ",
-        "logE0, ",
-        "logC1, logE1, h1, ",
-        "logC2, logE2, h2, ",
-        "logE3, logalpha)"))
+      treatment_1_variable, " - logd1scale, ",
+      treatment_2_variable, " - logd2scale, ",
+      "logE0, ",
+      "logC1, logE1, h1, ",
+      "logC2, logE2, h2, ",
+      "logE3, logalpha)"))
 
 
   predictor_eq <- rlang::new_formula(

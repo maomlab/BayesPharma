@@ -60,7 +60,7 @@ nu     = how asymmetric the growth is before and after the inflection
 lambda = the length of the lag-phase, defined by to be the time point at
          which the tangent through the growth curve crosses response =
          K0.
-See the vignettes(topic = "derive_growth_model", package = "BayesPharma")   
+See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
 }\if{html}{\out{</div>}}
 }
 \examples{

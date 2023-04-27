@@ -11,6 +11,8 @@
 #'   `ggplot2::[aes][ggplot2::aes](x = log_dose, y = response)`)
 #' @param title `character` giving the plot title
 #'
+#'
+#' @importFrom rlang .data
 #' @export
 plot_drc <- function(
     model,

@@ -46,7 +46,7 @@ sigmoid <- Vectorize(
 #'
 #' The `hill` parameter controls the slope at the ac50 (`slope`) but
 #' the `slope` also depends on the `top` and `bottom` parameters.
-#' This helper function facilitates computing the `slope` from the 
+#' This helper function facilitates computing the `slope` from the
 #' parameters.
 #'
 #' To prove the this function is correct, consider the derivative of the
@@ -67,22 +67,22 @@ sigmoid <- Vectorize(
 #'   function.
 #' @param bottom `numeric` the bottom parameter for the
 #'   [sigmoid()] function.
-#'   
+#'
 #' @returns `numeric` the slope of the [sigmoid()] function at
 #'   the ac50.
 #'
 #' @seealso [sigmoid()] [sigmoid_slope_to_hill()]
-#' 
+#'
 #' @export
-sigmoid_hill_to_slope <- function(hill, top, bottom){
+sigmoid_hill_to_slope <- function(hill, top, bottom) {
   hill * log(10) * (top - bottom) / 4
 }
-  
+
 #' For the sigmoid functional form, convert slope to the hill parameter
 #'
 #' The `hill` parameter controls the slope at the ac50 (`slope`) but
 #' the `slope` also depends on the `top` and `bottom` parameters.
-#' This helper function facilitates computing the `hill` from the 
+#' This helper function facilitates computing the `hill` from the
 #' parameters.
 #'
 #' To prove the this function is correct, we will re-arrange the equation
@@ -97,20 +97,20 @@ sigmoid_hill_to_slope <- function(hill, top, bottom){
 #'   function.
 #' @param bottom `numeric` the bottom parameter for the
 #'   [sigmoid()] function.
-#'   
+#'
 #' @returns `numeric` the hill coefficient of the [sigmoid()]
 #'   function at.
 #'
 #' @seealso [sigmoid()] [sigmoid_hill_to_slope()]
-#' 
+#'
 #' @export
-sigmoid_slope_to_hill <- function(slope, top, bottom){
+sigmoid_slope_to_hill <- function(slope, top, bottom) {
   slope * 4 / (log(10) * (top - bottom))
 }
 
 
 #' Plot the sigmoid functional form with labeled parameters
-#' 
+#'
 #' Generates a plot of the [sigmoid()] functional form with the values
 #' of the parameters `ac50`, `hill`, `top`, and `bottom`
 #' labeled.
@@ -118,13 +118,13 @@ sigmoid_slope_to_hill <- function(slope, top, bottom){
 #'   either the `ec50` for the [sigmoid_agonist_model()] or the
 #'   `ic50` for the [sigmoid_antagoinst_model()].
 #' @param hill `numeric` value for the `hill` parameter.
-#' @param top `numeric` value for the `top` parameter. 
+#' @param top `numeric` value for the `top` parameter.
 #' @param bottom `numeric` value for the `bottom` parameter.
-#' 
+#'
 #' @returns [ggplot2::ggplot()] object
-#' 
+#'
 #' @seealso [sigmoid()]
-#' 
+#'
 #' @examples
 #' \dontrun{
 #'   plot_sigmoid_functional_form(
@@ -134,50 +134,50 @@ sigmoid_slope_to_hill <- function(slope, top, bottom){
 #'     bottom = 0,
 #'     treatment_label = "Log[Molar]",
 #'     response_label = "% Baseline")}
-#' 
+#'
+#' @importFrom rlang .data
 #' @export
 plot_sigmoid_functional_form <- function(
-    ac50, 
+    ac50,
     hill,
     top,
     bottom,
     log_dose,
     treatment_units,
     response_units) {
-  
+
   data <- data.frame(
     log_dose = log_dose,
     response = sigmoid(ac50, hill, top, bottom, log_dose))
 
-  # midpoint of repsonse
-  y_m = (top-bottom) / 2 + bottom
-  
+  # midpoint of response
+  y_m <- (top - bottom) / 2 + bottom
+
   # slope at ac50
-  s = sigmoid_hill_to_slope(hill, top, bottom)
-  
+  s <- sigmoid_hill_to_slope(hill, top, bottom)
+
   # rearrange y = m*x + b form for line
-  b = y_m - s * ac50
-  
+  b <- y_m - s * ac50
+
   # get x- and y-intercept values for the orange and blue lines
-  xintercept = b
-  yintercept = b / hill
-  
+  xintercept <- b
+
   # nudge parameters to position labels
-  nudge_x = (max(log_dose) - min(log_dose)) / 20
-  nudge_y = (top - bottom) / 20
-  
+  nudge_x <- (max(log_dose) - min(log_dose)) / 20
+  nudge_y <- (top - bottom) / 20
+
   ggplot2::ggplot() +
     ggplot2::theme_bw() +
     ggplot2::geom_hline(
       yintercept = top,
       linetype = 2,
       size = 1.2,
-      color = "darkgrey")+
+      color = "darkgrey") +
     ggplot2::geom_hline(
       yintercept = bottom,
       linetype = 2,
       size = 1.2,
-      color = "darkgrey")+
+      color = "darkgrey") +
     ggplot2::geom_abline(
       intercept = xintercept,
       slope = s,
@@ -188,8 +188,8 @@ plot_sigmoid_functional_form <- function(
         x = c(ac50, ac50),
         y = c(top, bottom)),
       mapping = ggplot2::aes(
-        x = x,
-        y = y),
+        x = .data[["x"]],
+        y = .data[["y"]]),
       size = 1.2,
       color = "orange") +
     ggplot2::geom_point(
@@ -197,45 +197,45 @@ plot_sigmoid_functional_form <- function(
         x = ac50,
         y = y_m),
       mapping = ggplot2::aes(
-        x = x,
-        y = y),
+        x = .data[["x"]],
+        y = .data[["y"]]),
       color = "blue",
       size = 1.5) +
 
     ggplot2::geom_line(
       data = data,
       mapping = ggplot2::aes(
-        x = log_dose,
-        y = response),
+        x = .data[["log_dose"]],
+        y = .data[["response"]]),
       size = 1.2,
       color = "black") +
 
     ggplot2::geom_label(
       mapping = ggplot2::aes(
-        y = top,
-        x = max(log_dose),
-        label = paste0("top=", top)),
+        y = .data[["top"]],
+        x = max(.data[["log_dose"]]),
+        label = paste0("top=", .data[["top"]])),
       nudge_y = - nudge_y,
       nudge_x = - nudge_x) +
     ggplot2::geom_label(
       mapping = ggplot2::aes(
-        x = ac50,
-        y = bottom,
-        label = paste0("ac50=", ac50)),
+        x = .data[["ac50"]],
+        y = .data[["bottom"]],
+        label = paste0("ac50=", .data[["ac50"]])),
       nudge_y = nudge_y,
       nudge_x = nudge_x) +
     ggplot2::geom_label(
       mapping = ggplot2::aes(
-        y = bottom,
-        x = min(log_dose),
-        label = paste0("bottom=", bottom)),
+        y = .data[["bottom"]],
+        x = min(.data[["log_dose"]]),
+        label = paste0("bottom=", .data[["bottom"]])),
       nudge_y = nudge_y,
       nudge_x = nudge_x) +
     ggplot2::geom_label(
       mapping = ggplot2::aes(
-        x = ac50,
-        y = y_m,
-        label = paste0("hill=", hill)),
+        x = .data[["ac50"]],
+        y = .data[["y_m"]],
+        label = paste0("hill=", .data[["hill"]])),
       nudge_y = nudge_y,
       nudge_x = nudge_x) +
     ggplot2::scale_x_continuous(

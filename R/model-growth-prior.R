@@ -36,13 +36,12 @@ growth_richards_prior <- function(
     rate = brms::prior(prior = normal(2, 0.5), nlpar = "rate", lb = 0),
     lambda = brms::prior(prior = normal(0.5, 0.5), nlpar = "lambda"),
     ...) {
-  
+
   c(
     prepare_prior(prior = K, nlpar = "K"),
     prepare_prior(prior = K0, nlpar = "K0"),
     prepare_prior(prior = rate, nlpar = "rate"),
-    prepare_prior(prior = lambda, nlpar = "lambda"),
-    prepare_prior(prior = nu, nlpar = "nu"))
+    prepare_prior(prior = lambda, nlpar = "lambda"))
 }
 
 #' Create a prior for the Richards growth model

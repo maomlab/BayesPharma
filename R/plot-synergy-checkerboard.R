@@ -1,19 +1,23 @@
 #' Plot synergy checkerboard
 #'
-#' @param data data.frame with columns [dose1, dose2, response]
-#' @param treatment_1_label used to make default title and axis labels
-#' @param treatment_2_label used to make default title and axis labels
-#' @param treatment_1_units used to make default axis labels
-#' @param treatment_2_units used to make default axis labels
-#' @param plot_zero_dose plotted on the log scale, zero doses would be
-#'     at -Inf, so to show them on the plot, add them as with a slight
+#' @param data `data.frame` with columns [`dose1`, `dose2`, `response`]
+#' @param treatment_1_label `character` used to make default title and axis
+#'   labels
+#' @param treatment_2_label `character` used to make default title and axis
+#'   labels
+#' @param treatment_1_units `character` used to make default axis labels
+#' @param treatment_2_units `character` used to make default axis labels
+#' @param plot_zero_dose `logical` plotted on the log scale, zero doses would be
+#'     at `-Inf`, so to show them on the plot, add them as with a slight
 #'     separation on the axis.
-#' @param contour_color default 'gold'
+#' @param contour_color `character` the color of the contour lines
 #'
-#' @returns ggplot2 plot with light-blue to dark-blue tiles the dose
+#' @returns [ggplot2::ggplot] plot with light-blue to dark-blue tiles the dose
 #'     response. Individual plot elements can be over-written and the
-#'     plot can be saved with `ggplot2::ggsave()`
+#'     plot can be saved with [ggplot2::ggsave()]
 #'
+#'
+#' @importFrom rlang .data
 #' @export
 plot_synergy_checkerboard <- function(
     data,

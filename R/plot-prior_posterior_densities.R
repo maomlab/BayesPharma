@@ -1,5 +1,5 @@
 #' Plot Prior and Posterior Marginal Distributions
-#' 
+#'
 #' Generate a plot that shows for each model variable the distribution of the
 #' marginal posterior uncertainty overlaid on the distribution of the marginal
 #' prior uncertainty.
@@ -24,10 +24,13 @@
 #'     half_max_response = "ic50",
 #'     title_label = "Prior Posterior Density Plots")
 #'}
+#'
+#'
+#' @importFrom rlang .data
 #' @export
 plot_prior_posterior_densities <- function(
   model,
-  
+
   predictors_col_name = "_Intercept",
   half_max_label = "ec50",
   title_label = "Prior Posterior Density
@@ -38,10 +41,7 @@ plot_prior_posterior_densities <- function(
       "plot_prior_posterior_densities expects model to be of class 'bpfit',",
       " instead it is of class ", class(model)))
   }
-  
-  info <- model$bayes_pharma_info$formula_info
-  
-  
+
   model_prior <- model |>
     stats::update(
       sample_prior = "only",
@@ -76,9 +76,9 @@ plot_prior_posterior_densities <- function(
     ggplot2::theme(legend.position = "bottom") +
     ggplot2::geom_density(
       mapping = ggplot2::aes(
-         x = .data[[".value"]],
-         group = .data[["sample_type"]],
-         fill = .data[["sample_type"]]),
+        x = .data[[".value"]],
+        group = .data[["sample_type"]],
+        fill = .data[["sample_type"]]),
       color = "black",
       alpha = .7) +
     ggplot2::ggtitle(

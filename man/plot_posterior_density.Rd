@@ -36,7 +36,8 @@ ld50, etc.).}
 }
 \description{
 plots the \code{\link[=bpfit]{bpfit()}} model density distribution of each
-parameter and the mean, lower confidence interval, and upper confidence interval.
+parameter and the mean, lower confidence interval, and upper confidence
+interval.
 }
 \examples{
 \dontrun{

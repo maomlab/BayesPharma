@@ -26,7 +26,7 @@
 #'   MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei = 0)`, then (Default:
 #'   `normal(mu, 3)` lower bounded by `.1`).
 #' @param logE2 `numeric` or [brms::brmsprior()]. Prior for the
-#'   full log response for treatment 2 and the treatment 1 is zero. (Default: 
+#'   full log response for treatment 2 and the treatment 1 is zero. (Default:
 #'   `normal(log(0.25), 3)` lower bounded by `0`).
 #' @param logC2 `numeric` or [brms::brmsprior()]. Prior for the
 #'   log AC50 of treatment 2. (Default: to `normal(log(1), 3)`).
