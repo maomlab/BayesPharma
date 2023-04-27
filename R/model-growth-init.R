@@ -10,7 +10,7 @@
 #'   (Default: 0).
 #' @param rate `numeric` or `numeric` returning `function`
 #'   (Default: 1).
-#' @param lambda `numeric` or `numeric` returning `function` 
+#' @param lambda `numeric` or `numeric` returning `function`
 #'   units of `time` (Default: 0.5).
 #'
 #' @returns input for `[brm][brms::brm](init = ...)`
@@ -26,7 +26,7 @@ growth_sigmoid_init <- function(
     K0 = 0,
     rate = 1,
     lambda = 0.5) {
-  
+
   function() {
     list(
       b_K = prepare_init(K),
@@ -50,7 +50,7 @@ growth_sigmoid_init <- function(
 #'   (Default: 0).
 #' @param rate `numeric` or `numeric` returning `function`
 #'   (Default: 1).
-#' @param lambda `numeric` or `numeric` returning `function` 
+#' @param lambda `numeric` or `numeric` returning `function`
 #'   units of `time` (Default: 0.5).
 #' @param nu `numeric` or `numeric` returning `function`
 #'   values range between [0, Inf], with 1 being standard sigmoid (default = 1).

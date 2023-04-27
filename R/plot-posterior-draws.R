@@ -9,9 +9,9 @@
 #'   variable name will be looked up in the model. The treatment variable the
 #'   `model$data` or `newdata` if supplied must have a column corresponding to
 #'   the treatment variable.
-#' @param treatment_units `character` or `NULL`. If `NULL` the treatment units will
-#'   be looked up in the model. The treatment units will be used to label the
-#'   X-axis of the plot.
+#' @param treatment_units `character` or `NULL`. If `NULL` the treatment units
+#'   will be looked up in the model. The treatment units will be used to label
+#'   the X-axis of the plot.
 #' @param treatment_from `numeric` or `NULL`, for the lower bound on the
 #'   treatment range. If `NULL`, then use the (finite) lower bound of the
 #'   treatment variable in the model data.
@@ -55,6 +55,7 @@
 #'}
 #'
 #' @importFrom rlang :=
+#' @importFrom rlang .data
 #' @export
 plot_posterior_draws <- function(
     model,
@@ -121,10 +122,10 @@ plot_posterior_draws <- function(
         treatment_variable, response_variable))) |>
       as.list() |>
       purrr::map(unique)
-    
+
     # if the treatment range isn't given, then use the (finite) range of the
     # model data
-    if (is.null(treatment_from) | is.null(treatment_to)){
+    if (is.null(treatment_from) || is.null(treatment_to)) {
       treatment_range <- model$data[
         model$data[[treatment_variable]] |> is.finite() |> which(),
         treatment_variable] |>

@@ -15,26 +15,28 @@ plot_synergy_checkerboard(
 )
 }
 \arguments{
-\item{data}{data.frame with columns \link{dose1, dose2, response}}
+\item{data}{\code{data.frame} with columns}
 
-\item{treatment_1_label}{used to make default title and axis labels}
+\item{treatment_1_label}{\code{character} used to make default title and axis
+labels}
 
-\item{treatment_2_label}{used to make default title and axis labels}
+\item{treatment_2_label}{\code{character} used to make default title and axis
+labels}
 
-\item{treatment_1_units}{used to make default axis labels}
+\item{treatment_1_units}{\code{character} used to make default axis labels}
 
-\item{treatment_2_units}{used to make default axis labels}
+\item{treatment_2_units}{\code{character} used to make default axis labels}
 
-\item{plot_zero_dose}{plotted on the log scale, zero doses would be
-at -Inf, so to show them on the plot, add them as with a slight
+\item{plot_zero_dose}{\code{logical} plotted on the log scale, zero doses would be
+at \code{-Inf}, so to show them on the plot, add them as with a slight
 separation on the axis.}
 
-\item{contour_color}{default 'gold'}
+\item{contour_color}{\code{character} the color of the contour lines}
 }
 \value{
-ggplot2 plot with light-blue to dark-blue tiles the dose
+\link[ggplot2:ggplot]{ggplot2::ggplot} plot with light-blue to dark-blue tiles the dose
 response. Individual plot elements can be over-written and the
-plot can be saved with \code{ggplot2::ggsave()}
+plot can be saved with \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}
 }
 \description{
 Plot synergy checkerboard

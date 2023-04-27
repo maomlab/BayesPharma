@@ -44,11 +44,11 @@ tQ_formula <- function(
   response_eq <- as.formula(
     paste0(
       response_variable, " ~ tQ(",
-        series_index_variable, ", ",
-        treatment_variable, ", ",
-        "kcat, kM, ",
-        ET_variable, ", ",
-        ST_variable, ")"))
+      series_index_variable, ", ",
+      treatment_variable, ", ",
+      "kcat, kM, ",
+      ET_variable, ", ",
+      ST_variable, ")"))
 
   predictor_eq <- rlang::new_formula(
     lhs = quote(kcat + kM),

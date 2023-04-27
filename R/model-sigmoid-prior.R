@@ -16,16 +16,16 @@
 #' @param ec50 [brms::brmsprior] or `numeric`. Prior for the `ec50`
 #'  parameter.  Setting ec50 to a numeric value constrains it to a constant
 #'  value. Default: normal(-6, 2.5) where the mean -6 corresponds to a
-#'  concentration of 1e-6 or 1 μM. 
+#'  concentration of 1e-6 or 1 μM.
 #' @param hill [brms::brmsprior] or `numeric`. Prior for the `hill`
 #'  parameter. Default: `normal(1, 1)` with and a lower bound of
 #'  `-0.1`.
 #' @param top [brms::brmsprior] or `numeric` giving the prior for the `top`
 #'  parameter. Setting `top` to a `numeric` constrains it to a constant
 #'  value.
-#' @param bottom [brms::brmsprior] or `numeric` giving the prior for the `bottom`
-#'  parameter. Setting `bottom` to `numeric` constrains it to a constant
-#'  value.
+#' @param bottom [brms::brmsprior] or `numeric` giving the prior for the
+#'  `bottom` parameter. Setting `bottom` to `numeric` constrains it to a
+#'  constant value.
 #' @param ... additional [brms::brmsprior] objects.
 #' @returns [brms::brmsprior]
 #'

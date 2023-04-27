@@ -4,9 +4,9 @@
 #'   [growth_sigmoid_model()]. The functional form is
 #'   \preformatted{
 #'     response ~ sigmoid_growth(K, K0, rate, lambda, time)}
-#'   
+#'
 #'   The parameterization follows (Zwietering, 1990) and grofit:
-#'   
+#'
 #'     K      = carrying capacity, K = response(time = Inf). In the grofit
 #'              package this is parameter is called "A", having the same units
 #'              as the response
@@ -18,7 +18,7 @@
 #'     lambda = the length of the lag-phase, defined by to be the time point at
 #'              which the tangent through the growth curve crosses response =
 #'              K0.
-#'     See the vignettes(topic = "derive_growth_model", package = "BayesPharma")   
+#'     See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
 #'
 #' @param treatment_variable character variable representing time as a treatment
 #' @param treatment_units character the units of the time variable
@@ -65,18 +65,18 @@ growth_sigmoid_formula <- function(
     response_units = NULL,
     predictors = 1,
     ...) {
-  
+
   # The growth_sigmoid function is defined in
   # BayesPharma::growth_sigmoid_stanvar
   response_eq <- as.formula(
     paste0(
       response_variable, " ~ ",
       "growth_sigmoid(K, K0, rate, lambda, ", treatment_variable, ")"))
-  
+
   predictor_eq <- rlang::new_formula(
     lhs = quote(K + K0 + rate + lambda),
     rhs = rlang::enexpr(predictors))
-  
+
   # The growth_sigmoid function is defined in
   # BayesPharma::growth_sigmoid_stanvar
   model_formula <- brms::brmsformula(
@@ -84,14 +84,14 @@ growth_sigmoid_formula <- function(
     predictor_eq,
     nl = TRUE,
     ...)
-  
+
   model_formula$bayes_pharma_info <- list(
     formula_type = "growth_sigmoid",
     treatment_variable = treatment_variable,
     treatment_units = treatment_units,
     response_variable = response_variable,
     response_units = response_units)
-  
+
   class(model_formula) <- c("bpformula", class(model_formula))
   model_formula
 }
@@ -103,11 +103,11 @@ growth_sigmoid_formula <- function(
 #' @description set-up a Richards growth model formula to for use in
 #'   `growth_richards_model` and in the [BayesPharma] package. The functional
 #'   form is
-#'   
+#'
 #'     response ~ richards_growth(K, K0, rate, lambda, nu, time)
-#'   
+#'
 #'   The parameterization follows (Zwietering, 1990) and [grofit]:
-#'   
+#'
 #'     K      = carrying capacity, K = response(time = Inf). In the grofit
 #'              package this is parameter is called "A", having the same units
 #'              as the response
@@ -121,7 +121,7 @@ growth_sigmoid_formula <- function(
 #'     lambda = the length of the lag-phase, defined by to be the time point at
 #'              which the tangent through the growth curve crosses response =
 #'              K0.
-#'     See the vignettes(topic = "derive_growth_model", package = "BayesPharma")   
+#'     See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
 #'
 #' @param treatment_variable character variable representing time as a treatment
 #'   (Default: 'time')

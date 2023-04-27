@@ -26,9 +26,9 @@ parameter. Default: \code{normal(1, 1)} with and a lower bound of
 parameter. Setting \code{top} to a \code{numeric} constrains it to a constant
 value.}
 
-\item{bottom}{\link[brms:set_prior]{brms::brmsprior} or \code{numeric} giving the prior for the \code{bottom}
-parameter. Setting \code{bottom} to \code{numeric} constrains it to a constant
-value.}
+\item{bottom}{\link[brms:set_prior]{brms::brmsprior} or \code{numeric} giving the prior for the
+\code{bottom} parameter. Setting \code{bottom} to \code{numeric} constrains it to a
+constant value.}
 
 \item{...}{additional \link[brms:set_prior]{brms::brmsprior} objects.}
 }

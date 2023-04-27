@@ -3,14 +3,14 @@
 #' @description Given the dose as a column in a `data.frame` with a given
 #'   molar concentration add a new column of the log base-10 dose,
 #'   `log_dose`, in the `data.frame` and return it.
-#'   
+#'
 #' @param data `data.frame` containing a column representing a dose in
 #'   molar units.
 #' @param dose_col `expression` for dose column in the input
 #'   `data.frame` (Default: `"dose"`)
 #' @param molar_concentration `numeric` units of molar concentration of the
 #'   dose column (Default: 1).
-#' 
+#'
 #' @returns input `data.frame` with an additional `log_dose` column
 #'   which is the `log10(<dose_col>) * molar_concentration`.
 #'

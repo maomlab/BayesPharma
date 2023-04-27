@@ -25,6 +25,8 @@
 #'     l_ci = 0.025,
 #'     u_ci = 0.975)
 #'}
+#'
+#' @importFrom rlang .data
 #' @export
 basic_stats <- function(
     model,

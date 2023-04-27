@@ -3,7 +3,7 @@
 #' @description The MuSyC synergy model is a bivariate functional form with
 #'   Bliss and Loewe synergy models models as special cases described in
 #'   (Meyer, et al., 2019) and (Wooten, et al., 2021).
-#'   
+#'
 #'   The functional form is
 #'   \preformatted{
 #'     <response> ~ MuSyC(
@@ -27,7 +27,7 @@
 #'  and <treatment 2> to make fitting more numerically stable. If they are not
 #'  in the input `data`, then they are taken to be the mean of
 #'  <treatment 1> and <treatment 2> respectively.
-#'      
+#'
 #'  The modeled parameters are
 #'  \itemize{
 #'    \item{**logE0**: the `log(<response>)` when <treatment 1> = 0
@@ -58,7 +58,7 @@
 #'      versa. When alpha < `1` the treatments are antagonistic so that
 #'      <treatment 1> shifts the response to <treatment 2> to higher doses and
 #'      visa versa}}
-#'  
+#'
 #' @param data `data.frame` of observed data. It must contain columns
 #'   for the treatment, response and any additional predictors specified in the
 #'   formula. See [sigmoid_agonist_formula()] for more details.
@@ -82,13 +82,14 @@
 #'   Westover, D., Lovly, C.M., Harris, L.A., Tyson D.R., Quaranta, V.,
 #'   Quantifying Drug Combination Synergy along Potency and Efficacy Axes, Cell
 #'   Syst. 8, 2 (2019). https://doi.org/10.1016/j.cels.2019.01.003
-#' 
+#'
 #'   Wooten, D.J., Meyer, C.T., Lubbock, A.L.R. et al. MuSyC is a consensus
-#'   framework that unifies multi-drug synergy metrics for combinatorial drug 
+#'   framework that unifies multi-drug synergy metrics for combinatorial drug
 #'   discovery. Nat Commun 12, 4607 (2021).
 #'   https://doi.org/10.1038/s41467-021-24789-z
 #'
-#'@export
+#' @importFrom rlang .data
+#' @export
 MuSyC_model <- function(
     data,
     prior = MuSyC_prior(),
@@ -139,7 +140,7 @@ MuSyC_model <- function(
       dplyr::mutate(logd1scale = mean(
         .data[[
           formula$bayes_pharma_info[["treatment_1_variable"]]
-          ]]))
+        ]]))
   }
 
   if (!("logd2scale" %in% names(data))) {
@@ -147,7 +148,7 @@ MuSyC_model <- function(
       dplyr::mutate(logd2scale = mean(
         .data[[
           formula$bayes_pharma_info[["treatment_2_variable"]]
-          ]]))
+        ]]))
   }
 
   model <- brms::brm(

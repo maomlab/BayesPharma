@@ -2,7 +2,8 @@
 #' from brmsfit model
 #'
 #' @description plots the [bpfit()] model density distribution of each
-#'   parameter and the mean, lower confidence interval, and upper confidence interval.
+#'   parameter and the mean, lower confidence interval, and upper confidence
+#'   interval.
 #'
 #' @param model `bpfit` model.
 #' @param predictors_col_name `character` of the predictors column in the input

@@ -31,9 +31,9 @@ variable name will be looked up in the model. The treatment variable the
 \code{model$data} or \code{newdata} if supplied must have a column corresponding to
 the treatment variable.}
 
-\item{treatment_units}{\code{character} or \code{NULL}. If \code{NULL} the treatment units will
-be looked up in the model. The treatment units will be used to label the
-X-axis of the plot.}
+\item{treatment_units}{\code{character} or \code{NULL}. If \code{NULL} the treatment units
+will be looked up in the model. The treatment units will be used to label
+the X-axis of the plot.}
 
 \item{treatment_from}{\code{numeric} or \code{NULL}, for the lower bound on the
 treatment range. If \code{NULL}, then use the (finite) lower bound of the

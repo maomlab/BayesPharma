@@ -4,8 +4,8 @@
 #' @param init `function` returning an `numeric` `array` of length `1` or a
 #'   `numeric` value.
 #' @returns `function` returning a `numeric` `array` of length `1`.
-#' 
-#' 
+#'
+#'
 prepare_init <- function(init) {
   if (inherits(init, "function")) {
     # init is a function, check that it returns a numeric array of dimension 1
@@ -52,15 +52,15 @@ prepare_init <- function(init) {
 #'     prior = normal(1, 1),
 #'     nlpar = "hilll",           # misspells hill (!)
 #'     ub = 0)
-#'     
+#'
 #'   # in a script where we want to validate the user_hill_prior
 #'   hill_prior <- BayesPharma:::prepare_prior(
 #'     prior = user_hill_prior
 #'     nlpar = "hill)
-#'    
+#'
 #'   # gives an assert error that nlpar is not set correctly
 #' }
-#' 
+#'
 #'
 #'
 #' @returns [brms::brmsprior()]

@@ -14,7 +14,7 @@
 #'   To create a prior, use [growth_sigmoid_prior()].
 #' @param init initial values of the parameters being modeled. To create an
 #'   init, use [growth_sigmoid_init()]
-#' @param iter `numeric` value for the number of iterations the model runs. 
+#' @param iter `numeric` value for the number of iterations the model runs.
 #'   Increasing `iter` can help with model convergence
 #' @param control a named `list` of parameters to control the sampler's
 #'   behavior. Adding `max_treedepth` and giving a greater value than
@@ -25,7 +25,7 @@
 #' @param ... additional arguments passed to [brms::brm()]
 #'
 #' @returns `bpfit` a wrapper for [brms::brmsfit()]
-#' 
+#'
 #' @seealso Helper functions: [growth_sigmoid_formula], and
 #'   [growth_sigmoid_prior], [growth_sigmoid_init] and [brms::brmsfit]
 #'
@@ -46,13 +46,13 @@ growth_sigmoid_model <- function(
     stanvar_function = growth_richards_stanvar,
     expose_functions = TRUE,
     ...) {
-  
+
   if (!inherits(formula, "bpformula")) {
     warning(
       "formula must be a 'bpformula'. You can use the ",
       "'BayesPharma::growth_sigmoid_formula(...)' prior function")
   }
-  
+
   if (!(formula$bayes_pharma_info[["treatment_variable"]] %in% names(data))) {
     warning(
       paste0(
@@ -60,7 +60,7 @@ growth_sigmoid_model <- function(
         "'", formula$bayes_pharma_info[["treatment_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
   }
-  
+
   if (!(formula$bayes_pharma_info[["response_variable"]] %in% names(data))) {
     warning(
       paste0(
@@ -68,13 +68,13 @@ growth_sigmoid_model <- function(
         "'", formula$bayes_pharma_info[["response_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
   }
-  
+
   if (!inherits(prior, "brmsprior")) {
     warning(
       "prior must be a 'brmsprior'. Use either the ",
       "'BayesPharma::growth_sigmoid_prior(...)'")
   }
-  
+
   model <- brms::brm(
     formula = formula,
     data = data,
@@ -84,16 +84,16 @@ growth_sigmoid_model <- function(
     control = control,
     stanvars = stanvar_function,
     ...)
-  
+
   model$bayes_pharma <- list(model_type = "growth_sigmoid")
   model$bayes_pharma_info <- c(
     model$bayes_pharma_info,
     list(formula_info = formula$bayes_pharma_info))
-  
+
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)
   }
-  
+
   model
 }
 
@@ -115,7 +115,7 @@ growth_sigmoid_model <- function(
 #'   [growth_richards_prior()]
 #' @param init initial values of the parameters being modeled. To create an
 #'   init, use [growth_richards_init()]
-#' @param iter `numeric` value for the number of iterations the model runs. 
+#' @param iter `numeric` value for the number of iterations the model runs.
 #'   Increasing `iter` can help with model convergence
 #' @param control a named `list` of parameters to control the sampler's
 #'   behavior. Adding `max_treedepth` and giving a greater value than
@@ -126,10 +126,10 @@ growth_sigmoid_model <- function(
 #' @param ... additional arguments passed to [brms::brm()]
 #'
 #' @returns `bpfit` which wraps [brms::brmsfit()]
-#' 
+#'
 #' @seealso Helper functions: [growth_richards_formula],
 #'   [growth_richards_prior], and [growth_richards_init], and [brms::brmsfit]
-#'   
+#'
 #'
 #' @examples
 #'\dontrun{

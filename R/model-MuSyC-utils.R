@@ -15,7 +15,7 @@
 #'
 #' @details Claim: When d1=0 and d2=C2 then the gradient of the response with
 #'   respect to d2 is the s2, symbolically d(Ed)/d(d2) = s2
-#'  
+#'
 #'     where s2 = h2 * (E0 + E2) / (4 * C2)
 #'
 #'   d(Ed)/d(d2)
