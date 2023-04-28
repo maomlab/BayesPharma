@@ -7,24 +7,36 @@
 drc_model(
   data,
   formula = response ~ log_dose,
-  fct = drc::L.4(fixed = c(NA, NA, NA, NA), names = c("hill", "bottom", "top", "ic50")),
+  fct = drc::L.4(fixed = c(NA, NA, NA, NA), names = c("hill", "bottom", "top", "ec50")),
   ...
 )
 }
 \arguments{
 \item{data}{\code{data.frame}}
 
-\item{formula}{\code{formula}. Default: \code{response ~ log_dose}}
+\item{formula}{\code{formula} formulate relating the \code{response} to the \code{log_dose},
+if the \link[drc:logistic]{drc::L.4} or \code{dose} if the \link[drc:LL.4]{drc::LL.4} non-linear link functions
+are used with the \code{fct} argument.}
 
 \item{fct}{Non-linear link function. Default is the 4 parameter
-log-linear sigmoid equation, where all parameters are to be
+log-linear sigmoid equation, \link[drc:logistic]{drc::L.4}, where all parameters are to be
 estimated. To fix a subset them, set the parameters to constant
 values.}
 
-\item{...}{additional arguments passed to \code{drc::drm}}
+\item{...}{additional arguments passed to \link[drc:drm]{drc::drm}}
 }
 \value{
-An object of (S3) class 'drc'.
+An object of (S3) class \code{drc} from the \link{drc} package.
+
+\examples
+\dontrun{
+BayesPharma::drm_model(
+  data = tibble::tibble(
+    log_dose = seq(-7, -5, length.out = 20),
+    mean_response = BayesPharma::sigmoid(
+      ac50 = -6, hill = -1, top = 1, bottom = 0, log_dose = log_dose),
+    response = stats::rnorm(n = 20, mean = 0, sd = 0.2))
+}
 }
 \description{
 Wrapper for DRC dose response models
