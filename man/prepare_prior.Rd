@@ -31,3 +31,22 @@ This is used in building \link{BayesPharma} models to allow user specified prior
 but make sure they are for the right parameters to make sure the model is
 well specified.
 }
+\examples{
+\dontrun{
+  # user should specify a prior for hill, but they misspell it:
+  user_hill_prior <- brms::prior(
+    prior = normal(1, 1),
+    nlpar = "hilll",           
+    ub = 0)
+
+  # in a script where we want to validate the user_hill_prior
+  hill_prior <- BayesPharma:::prepare_prior(
+    prior = user_hill_prior,
+    nlpar = "hill")
+
+  # gives an assert error that nlpar is not set correctly
+}
+
+
+
+}

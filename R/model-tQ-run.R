@@ -14,6 +14,7 @@
 #' @param control a named `list` of parameters to control the sampler's
 #'   behavior. Adding `max_treedepth` and giving a greater value than `10` can
 #'   improve model convergence.
+#' @param stanvar_function stan code for the model
 #' @param expose_functions `logical`. Expose the BayesPharma functions for the
 #'   model
 #' @param ... additional arguments passed to [brms::brm()].
@@ -35,6 +36,7 @@ tQ_model <- function(
     init = tQ_init(),
     iter = 8000,
     control = list(adapt_delta = 0.99),
+    stanvar_function = BayesPharma::tQ_stanvar,
     expose_functions = TRUE,
     ...) {
 
@@ -48,7 +50,7 @@ tQ_model <- function(
         "needs to be a column of the input 'data' data.frame\n"))
   }
 
-  if (!(formula$bayes_pharma_info[["time_variable"]] %in% names(data))) {
+  if (!(formula$bayes_pharma_info[["treatment_variable"]] %in% names(data))) {
     warning(
       paste0(
         "The treatment (time) variable ",
@@ -87,7 +89,7 @@ tQ_model <- function(
     init = init,
     iter = iter,
     control = control,
-    stanvars = tQ_stanvar,
+    stanvars = stanvar_function,
     ...)
 
   model$bayes_pharma_info <- list(model_type = "tQ")

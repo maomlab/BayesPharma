@@ -47,16 +47,16 @@ prepare_init <- function(init) {
 #'
 #' @examples
 #' \dontrun{
-#'   user should specify a prior for hill
+#'   # user should specify a prior for hill, but they misspell it:
 #'   user_hill_prior <- brms::prior(
 #'     prior = normal(1, 1),
-#'     nlpar = "hilll",           # misspells hill (!)
+#'     nlpar = "hilll",           
 #'     ub = 0)
 #'
 #'   # in a script where we want to validate the user_hill_prior
 #'   hill_prior <- BayesPharma:::prepare_prior(
-#'     prior = user_hill_prior
-#'     nlpar = "hill)
+#'     prior = user_hill_prior,
+#'     nlpar = "hill")
 #'
 #'   # gives an assert error that nlpar is not set correctly
 #' }

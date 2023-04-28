@@ -114,9 +114,9 @@ sigmoid_slope_to_hill <- function(slope, top, bottom) {
 #' Generates a plot of the [sigmoid()] functional form with the values
 #' of the parameters `ac50`, `hill`, `top`, and `bottom`
 #' labeled.
-#' @param ac50 `numeric` value for the `ac50` parameter, which is
-#'   either the `ec50` for the [sigmoid_agonist_model()] or the
-#'   `ic50` for the [sigmoid_antagoinst_model()].
+#' @param ac50 `numeric` value for the `ac50` parameter, which is either `ec50`
+#'   with the [sigmoid_agonist_formula()] or `ic50` for the
+#'   [sigmoid_antagoinst_formula()].
 #' @param hill `numeric` value for the `hill` parameter.
 #' @param top `numeric` value for the `top` parameter.
 #' @param bottom `numeric` value for the `bottom` parameter.

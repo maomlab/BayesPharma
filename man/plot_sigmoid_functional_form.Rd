@@ -15,9 +15,9 @@ plot_sigmoid_functional_form(
 )
 }
 \arguments{
-\item{ac50}{\code{numeric} value for the \code{ac50} parameter, which is
-either the \code{ec50} for the \code{\link[=sigmoid_agonist_model]{sigmoid_agonist_model()}} or the
-\code{ic50} for the \code{\link[=sigmoid_antagoinst_model]{sigmoid_antagoinst_model()}}.}
+\item{ac50}{\code{numeric} value for the \code{ac50} parameter, which is either \code{ec50}
+with the \code{\link[=sigmoid_agonist_formula]{sigmoid_agonist_formula()}} or \code{ic50} for the
+\code{\link[=sigmoid_antagoinst_formula]{sigmoid_antagoinst_formula()}}.}
 
 \item{hill}{\code{numeric} value for the \code{hill} parameter.}
 

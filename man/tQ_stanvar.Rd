@@ -14,7 +14,7 @@ brms::brm(
     kcat + kM ~ 1,
     nl = TRUE,
     loop=FALSE),
-  stanvars = BayesPhrama::tQ_stanvar)
+  stanvars = BayesPharma::tQ_stanvar)
 }
 \description{
 The tQ is an ordinary differential equation model for the total

@@ -15,7 +15,10 @@ testthat::test_that("Agonist sigmoid model fit with zero doses", {
       data.frame(log_dose = -Inf, response = 0))
 
   model <- data |>
-    BayesPharma::sigmoid_agonist_model(
+    BayesPharma::sigmoid_model(
+      formula = BayesPharma::sigmoid_agonist_formula(),
+      prior = BayesPharma::sigmoid_agonist_prior(),
+      init = BayesPharma::sigmoid_agonist_init(),
       iter = 2000)
   testthat::expect_true(inherits(model, "brmsfit"))
 
@@ -45,7 +48,10 @@ testthat::test_that("Antagonist sigmoid model fit with zero doses", {
       data.frame(log_dose = -Inf, response = 0))
 
   model <- data |>
-    BayesPharma::sigmoid_antagonist_model(
+    BayesPharma::sigmoid_model(
+      formula = BayesPharma::sigmoid_antagonist_formula(),
+      prior = BayesPharma::sigmoid_antagonist_prior(),
+      init = BayesPharma::sigmoid_antagonist_init(),
       iter = 2000)
   testthat::expect_true(inherits(model, "brmsfit"))
 

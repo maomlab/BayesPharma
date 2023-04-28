@@ -1,4 +1,4 @@
-#' Default priors for the sigmoid agonist model
+#' Default priors for an agonist sigmoid model
 #'
 #' @description
 #' Creates a `data.frame` of priors for the sigmoid agonist model
@@ -12,6 +12,7 @@
 #' For other distribution options, reference [brms::prior] and [Prior Choice
 #' Recommendations
 #' ](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
+#'
 #'
 #' @param ec50 [brms::brmsprior] or `numeric`. Prior for the `ec50`
 #'  parameter.  Setting ec50 to a numeric value constrains it to a constant

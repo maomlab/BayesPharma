@@ -14,32 +14,30 @@ sigmoid_antagonist_formula(
 )
 }
 \arguments{
-\item{treatment_variable}{character variable representing the treatment.}
+\item{treatment_variable}{\code{character} variable representing the treatment.}
 
-\item{treatment_units}{character the units of the treatment. The default is
+\item{treatment_units}{\code{character} the units of the treatment. The default is
 log base 10 of the molar concentration.}
 
-\item{response_variable}{character variable representing the response to
+\item{response_variable}{\code{character} variable representing the response to
 treatment.}
 
-\item{response_units}{character the units of the response.}
+\item{response_units}{\code{character} the units of the response.}
 
-\item{predictors}{character or expression of predictors
-of non-linear parameters. i.e. what perturbations/experimental
-differences should be modeled separately?}
+\item{predictors}{\code{character} or expression of predictors of non-linear
+parameters. i.e. what perturbations/experimental differences should be
+modeled separately?}
 
 \item{...}{additional arguments to \code{\link[brms:brmsformula]{brms::brmsformula()}}}
 }
 \value{
-a \code{bpformula}, which is a subclass of
-\link[brms:brmsformula]{brms::brmsformula} and can be passed to
-\code{\link[=sigmoid_antagonist_model]{sigmoid_antagonist_model()}}.
+a \code{bpformula}, which is a subclass of \link[brms:brmsformula]{brms::brmsformula} and can
+be passed to \code{\link[=sigmoid_model]{sigmoid_model()}}.
 }
 \description{
 set-up an antagonist sigmoid dose response model formula to
-define a non-linear model or multilevel non-linear model for
-\code{ic50}, \code{hill}, \code{top}, and, \code{bottom} for
-use in the \code{sigmoid_antagonist_model()}
+define a non-linear model or multilevel non-linear model for \code{ic50},
+\code{hill}, \code{top}, and, \code{bottom} for use in the \code{\link[=sigmoid_model]{sigmoid_model()}}
 }
 \examples{
 \dontrun{
@@ -60,8 +58,6 @@ use in the \code{sigmoid_antagonist_model()}
 
 }
 \seealso{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{[brms::brmsformula], which this function wraps.
-[sigmoid_antagonist_model()] into which the result of this
-function can be passed.
-}\if{html}{\out{</div>}}
+\link[brms:brmsformula]{brms::brmsformula}, which this function wraps. \code{\link[=sigmoid_model]{sigmoid_model()}}
+into which the result of this function can be passed.
 }
