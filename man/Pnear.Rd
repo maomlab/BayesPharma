@@ -18,7 +18,7 @@ Typical values for peptides range from 1.5 to 2.0, and for proteins from
 2.0 to perhaps 4.0.}
 
 \item{kbt}{The value of k_B*T, in energy units, determines how large an
-energy gap must be in order for a sequence to be said to favour the
+energy gap must be in order for a sequence to be said to favor the
 native state. The default value, 0.62, should correspond to physiological
 temperature for ref2015 or any other scorefunction with units of kcal/mol.}
 

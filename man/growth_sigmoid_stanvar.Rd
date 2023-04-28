@@ -16,4 +16,20 @@ Stan code for the growth Richards function.
 \note{
 stanvar script of a sigmoid growth model response equation
 }
+\examples{
+\dontrun{
+brms::brm(
+  data = data.frame(
+    response = ...,
+    time = ...),
+  formula = brms::brmsformula(
+    response ~ growth_sigmoid(K, K0, rate, lambda, time),
+    K + K0 + rate + lambda ~ 1,
+    nl = TRUE),
+  prior = ...,
+  init =  ...,
+  stanvars = BayesPharma::growth_sigmoid_stanvar)
+}
+
+}
 \keyword{datasets}

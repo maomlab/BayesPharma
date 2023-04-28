@@ -47,6 +47,8 @@ test:
 	Rscript -e "covr::covr()"
 	Rscript -e "lintr::lint_package()"
 	Rscript -e "urlchecker::url_check()"
+	Rscript -e "docreview::package_review()"
+	Rscript -e "spelling::spell_check_package()"
 
 test_alt_builds:
   # this will email the package developer

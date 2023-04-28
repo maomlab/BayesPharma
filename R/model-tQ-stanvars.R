@@ -15,11 +15,14 @@
 #'
 #' @usage
 #' brms::brm(
+#'   data = ...,
 #'   formula = brms::brmsformula(
 #'     P ~ tQ_multiple(series_index, time, kcat, kM, ET, ST),
 #'     kcat + kM ~ 1,
 #'     nl = TRUE,
 #'     loop=FALSE),
+#'   prior = ...,
+#'   init =  ...,
 #'   stanvars = BayesPharma::tQ_stanvar)
 #'
 #' @seealso [tQ_model], [tQ_formula], [tQ_prior], or [tQ_init]

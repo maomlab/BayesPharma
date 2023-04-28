@@ -9,11 +9,14 @@ An object of class \code{stanvars} of length 1.
 }
 \usage{
 brms::brm(
+  data = ...,
   formula = brms::brmsformula(
     P ~ tQ_multiple(series_index, time, kcat, kM, ET, ST),
     kcat + kM ~ 1,
     nl = TRUE,
     loop=FALSE),
+  prior = ...,
+  init =  ...,
   stanvars = BayesPharma::tQ_stanvar)
 }
 \description{
