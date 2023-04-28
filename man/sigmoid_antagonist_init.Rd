@@ -2,14 +2,14 @@
 % Please edit documentation in R/model-sigmoid-init.R
 \name{sigmoid_antagonist_init}
 \alias{sigmoid_antagonist_init}
-\title{Create initialization for the antagonist sigmoid model}
+\title{Create initialization for an antagonist sigmoid model}
 \usage{
 sigmoid_antagonist_init(ic50 = -6, hill = -1, top = 1, bottom = 0)
 }
 \arguments{
 \item{ic50}{\code{numeric} or \code{numeric} returning \code{function} units of the
-treatment. If the treatment is \code{log(dose)}, the default value of \code{-6}
-corresponds 1e-6 molar = 1 μM}
+treatment. If the treatment is \code{log_dose}, the default value of \code{-6}
+corresponds \code{1e-6} molar = \code{1} μM}
 
 \item{hill}{\code{numeric} or \code{numeric} returning \code{function} with units
 response/log_dose}
@@ -24,8 +24,9 @@ response}
 input for \verb{[brm][brms::brm](init = ...)}
 }
 \description{
-Creating initial values for the sigmoid model parameters that
-can be passed to the \code{\link[=sigmoid_antagonist_model]{sigmoid_antagonist_model()}}
+Creating initial values for an agonist sigmoid model parameters
+that can be passed to the \code{\link[=sigmoid_model]{sigmoid_model()}} along with the
+\code{\link[=sigmoid_antagonist_formula]{sigmoid_antagonist_formula()}} and \code{\link[=sigmoid_antagonist_prior]{sigmoid_antagonist_prior()}}.
 }
 \examples{
 \dontrun{
@@ -37,6 +38,6 @@ init <- BayesPharma::sigmoid_antagonist_init(
 }
 }
 \seealso{
-\code{\link[=sigma_agonist_formula]{sigma_agonist_formula()}}, \code{\link[=sigma_agonist_prior]{sigma_agonist_prior()}}, and
-\code{\link[=sigmoid_agonist_model]{sigmoid_agonist_model()}}
+\code{\link[=sigma_antagonist_formula]{sigma_antagonist_formula()}}, \code{\link[=sigma_antagonist_prior]{sigma_antagonist_prior()}}, and
+\code{\link[=sigmoid_model]{sigmoid_model()}}
 }

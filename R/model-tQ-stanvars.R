@@ -20,7 +20,7 @@
 #'     kcat + kM ~ 1,
 #'     nl = TRUE,
 #'     loop=FALSE),
-#'   stanvars = BayesPhrama::tQ_stanvar)
+#'   stanvars = BayesPharma::tQ_stanvar)
 #'
 #' @seealso [tQ_model], [tQ_formula], [tQ_prior], or [tQ_init]
 #'

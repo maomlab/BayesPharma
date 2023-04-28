@@ -43,7 +43,7 @@ tQ_formula <- function(
   # The tQ function is defined in BayesPharma::tQ_stanvar
   response_eq <- as.formula(
     paste0(
-      response_variable, " ~ tQ(",
+      response_variable, " ~ tQ_multiple(",
       series_index_variable, ", ",
       treatment_variable, ", ",
       "kcat, kM, ",

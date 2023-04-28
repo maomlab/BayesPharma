@@ -11,6 +11,7 @@ tQ_model(
   init = tQ_init(),
   iter = 8000,
   control = list(adapt_delta = 0.99),
+  stanvar_function = BayesPharma::tQ_stanvar,
   expose_functions = TRUE,
   ...
 )
@@ -35,6 +36,8 @@ help with model convergence.}
 \item{control}{a named \code{list} of parameters to control the sampler's
 behavior. Adding \code{max_treedepth} and giving a greater value than \code{10} can
 improve model convergence.}
+
+\item{stanvar_function}{stan code for the model}
 
 \item{expose_functions}{\code{logical}. Expose the BayesPharma functions for the
 model}

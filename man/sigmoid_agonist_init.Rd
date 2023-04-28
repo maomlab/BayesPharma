@@ -2,30 +2,31 @@
 % Please edit documentation in R/model-sigmoid-init.R
 \name{sigmoid_agonist_init}
 \alias{sigmoid_agonist_init}
-\title{Create initialization for the agonist sigmoid model}
+\title{Create initialization for an agonist sigmoid model}
 \usage{
 sigmoid_agonist_init(ec50 = -6, hill = 1, top = 1, bottom = 0)
 }
 \arguments{
+\item{ec50}{\code{numeric} or \code{numeric} returning \code{function} units of the
+treatment. If the treatment is \code{log_dose}, the default value of \code{-6}
+corresponds \code{1e-6} molar = \code{1} μM}
+
 \item{hill}{\code{numeric} or \code{numeric} returning \code{function} with units
-response/log_dose}
+\code{response/log_dose}}
 
 \item{top}{\code{numeric} or \code{numeric} returning \code{function} with units of the
 response}
 
 \item{bottom}{\code{numeric} or \code{numeric} returning \code{function} with units of the
 response}
-
-\item{ic50}{\code{numeric} or \code{numeric} returning \code{function} units of the
-treatment. If the treatment is \code{log(dose)}, the default value of \code{-6}
-corresponds 1e-6 molar = 1 μM}
 }
 \value{
 input for \verb{[brms::brm](init = ...)}
 }
 \description{
-Creating initial values for an agonist sigmoid model
-parameters that can be passed to the \code{\link[=sigmoid_agoninst_model]{sigmoid_agoninst_model()}}.
+Creating initial values for an agonist sigmoid model parameters
+that can be passed to the \code{\link[=sigmoid_model]{sigmoid_model()}} along with the
+\code{\link[=sigmoid_agonist_formula]{sigmoid_agonist_formula()}} and \code{\link[=sigmoid_agonist_prior]{sigmoid_agonist_prior()}}.
 }
 \examples{
 \dontrun{
@@ -38,5 +39,5 @@ init <- BayesPharma::sigmoid_agonist_init(
 }
 \seealso{
 \code{\link[=sigma_agonist_formula]{sigma_agonist_formula()}}, \code{\link[=sigma_agonist_prior]{sigma_agonist_prior()}}, and
-\code{\link[=sigmoid_agonist_model]{sigmoid_agonist_model()}}
+\code{\link[=sigmoid_model]{sigmoid_model()}}
 }

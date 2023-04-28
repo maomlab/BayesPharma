@@ -1,28 +1,24 @@
 #' Create an agonist sigmoid formula for the sigmoid model
 #'
-#' @description set-up a sigmoid dose response model formula to define
-#'     a non-linear model or multilevel non-linear model for
-#'     `ec50`, `hill`, `top`, and, `bottom` for
-#'     use in `sigmoid_agonist_model` and in the [brms] package.
+#' @description set-up a sigmoid dose response model formula to define a
+#'   non-linear model or multilevel non-linear model for `ec50`, `hill`, `top`,
+#'   and, `bottom` for use in the [sigmoid_model] .
 #'
-#' @param treatment_variable character variable representing the treatment.
-#' @param treatment_units character the units of the treatment. The default is
-#'     log base 10 of the molar concentration.
-#' @param response_variable character variable representing the response to
-#'     treatment.
-#' @param response_units character the units of the response.
-#' @param predictors character or expression of predictors
-#'     of non-linear parameters. i.e. what perturbations/experimental
-#'     differences should be modeled separately?
+#' @param treatment_variable `character` variable representing the treatment.
+#' @param treatment_units `character` the units of the treatment. The default is
+#'   log base 10 of the molar concentration.
+#' @param response_variable `character` variable representing the response to
+#'   treatment.
+#' @param response_units `character` the units of the response.
+#' @param predictors `character` or expression of predictors
+#'   of non-linear parameters. i.e. what perturbations/experimental
+#'   differences should be modeled separately?
 #' @param ... additional arguments to [brms::brmsformula()]
 #'
-#' @returns a `bpformula`, which is a subclass of
-#'     [brms::brmsformula] and can be passed to
-#'     [sigmoid_agoinst_model()].
-#' @seealso
-#'     [brms::brmsformula], which this function wraps.
-#'     [sigmoid_agonist_model()] into which the result of this
-#'     function can be passed.
+#' @returns a `bpformula`, which is a subclass of [brms::brmsformula] and can be
+#'   passed to [sigmoid_model()].
+#' @seealso [brms::brmsformula], which this function wraps. [sigmoid_model()]
+#'   into which the result of this function can be passed.
 #'
 #' @examples
 #'\dontrun{
@@ -78,28 +74,25 @@ sigmoid_agonist_formula <- function(
 #' Create a formula for the sigmoid antagonist model
 #'
 #' @description set-up an antagonist sigmoid dose response model formula to
-#'     define a non-linear model or multilevel non-linear model for
-#'     `ic50`, `hill`, `top`, and, `bottom` for
-#'     use in the `sigmoid_antagonist_model()`
+#'   define a non-linear model or multilevel non-linear model for `ic50`,
+#'   `hill`, `top`, and, `bottom` for use in the [sigmoid_model()]
 #'
-#' @param treatment_variable character variable representing the treatment.
-#' @param treatment_units character the units of the treatment. The default is
-#'     log base 10 of the molar concentration.
-#' @param response_variable character variable representing the response to
-#'     treatment.
-#' @param response_units character the units of the response.
-#' @param predictors character or expression of predictors
-#'     of non-linear parameters. i.e. what perturbations/experimental
-#'     differences should be modeled separately?
+#' @param treatment_variable `character` variable representing the treatment.
+#' @param treatment_units `character` the units of the treatment. The default is
+#'   log base 10 of the molar concentration.
+#' @param response_variable `character` variable representing the response to
+#'   treatment.
+#' @param response_units `character` the units of the response.
+#' @param predictors `character` or expression of predictors of non-linear
+#'   parameters. i.e. what perturbations/experimental differences should be
+#'   modeled separately?
 #' @param ... additional arguments to [brms::brmsformula()]
 #'
-#' @returns a `bpformula`, which is a subclass of
-#'     [brms::brmsformula] and can be passed to
-#'     [sigmoid_antagonist_model()].
-#' @seealso
-#'     [brms::brmsformula], which this function wraps.
-#'     [sigmoid_antagonist_model()] into which the result of this
-#'     function can be passed.
+#' @returns a `bpformula`, which is a subclass of [brms::brmsformula] and can
+#'   be passed to [sigmoid_model()].
+#'
+#' @seealso [brms::brmsformula], which this function wraps. [sigmoid_model()]
+#'   into which the result of this function can be passed.
 #' @examples
 #'\dontrun{
 #'   # Data has a string column drug_id with drug identifiers
@@ -143,7 +136,7 @@ sigmoid_antagonist_formula <- function(
     ...)
 
   model_formula$bayes_pharma_info <- list(
-    formula_type = "sigmoid_agonist",
+    formula_type = "sigmoid_antagonist",
     treatment_variable = treatment_variable,
     treatment_units = treatment_units,
     response_variable = response_variable,

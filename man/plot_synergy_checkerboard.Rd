@@ -15,7 +15,7 @@ plot_synergy_checkerboard(
 )
 }
 \arguments{
-\item{data}{\code{data.frame} with columns}
+\item{data}{\code{data.frame} with columns \code{dose1}, \code{dose2}, and \code{response}}
 
 \item{treatment_1_label}{\code{character} used to make default title and axis
 labels}

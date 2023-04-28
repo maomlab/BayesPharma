@@ -1,13 +1,14 @@
-#' Create initialization for the agonist sigmoid model
+#' Create initialization for an agonist sigmoid model
 #'
-#' @description Creating initial values for an agonist sigmoid model
-#'  parameters that can be passed to the [sigmoid_agoninst_model()].
+#' @description Creating initial values for an agonist sigmoid model parameters
+#'   that can be passed to the [sigmoid_model()] along with the
+#'   [sigmoid_agonist_formula()] and [sigmoid_agonist_prior()].
 #'
-#' @param ic50 `numeric` or `numeric` returning `function` units of the
-#'   treatment. If the treatment is `log(dose)`, the default value of `-6`
-#'  corresponds 1e-6 molar = 1 μM
+#' @param ec50 `numeric` or `numeric` returning `function` units of the
+#'   treatment. If the treatment is `log_dose`, the default value of `-6`
+#'  corresponds `1e-6` molar = `1` μM
 #' @param hill `numeric` or `numeric` returning `function` with units
-#'   response/log_dose
+#'   `response/log_dose`
 #' @param top `numeric` or `numeric` returning `function` with units of the
 #'   response
 #' @param bottom `numeric` or `numeric` returning `function` with units of the
@@ -15,7 +16,7 @@
 #' @returns input for `[brms::brm](init = ...)`
 #'
 #' @seealso [sigma_agonist_formula()], [sigma_agonist_prior()], and
-#'   [sigmoid_agonist_model()]
+#'   [sigmoid_model()]
 #'
 #' @examples
 #'\dontrun{
@@ -41,14 +42,15 @@ sigmoid_agonist_init <- function(
   }
 }
 
-#' Create initialization for the antagonist sigmoid model
+#' Create initialization for an antagonist sigmoid model
 #'
-#' @description Creating initial values for the sigmoid model parameters that
-#'   can be passed to the [sigmoid_antagonist_model()]
+#' @description Creating initial values for an agonist sigmoid model parameters
+#'   that can be passed to the [sigmoid_model()] along with the
+#'   [sigmoid_antagonist_formula()] and [sigmoid_antagonist_prior()].
 #'
 #' @param ic50 `numeric` or `numeric` returning `function` units of the
-#'   treatment. If the treatment is `log(dose)`, the default value of `-6`
-#'  corresponds 1e-6 molar = 1 μM
+#'   treatment. If the treatment is `log_dose`, the default value of `-6`
+#'  corresponds `1e-6` molar = `1` μM
 #' @param hill `numeric` or `numeric` returning `function` with units
 #'   response/log_dose
 #' @param top `numeric` or `numeric` returning `function` in units of the
@@ -57,8 +59,8 @@ sigmoid_agonist_init <- function(
 #'   response
 #' @returns input for `[brm][brms::brm](init = ...)`
 #'
-#' @seealso [sigma_agonist_formula()], [sigma_agonist_prior()], and
-#'   [sigmoid_agonist_model()]
+#' @seealso [sigma_antagonist_formula()], [sigma_antagonist_prior()], and
+#'   [sigmoid_model()]
 #'
 #' @examples
 #'\dontrun{
