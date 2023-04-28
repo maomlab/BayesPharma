@@ -36,7 +36,7 @@ well specified.
   # user should specify a prior for hill, but they misspell it:
   user_hill_prior <- brms::prior(
     prior = normal(1, 1),
-    nlpar = "hilll",           
+    nlpar = "hilll",
     ub = 0)
 
   # in a script where we want to validate the user_hill_prior

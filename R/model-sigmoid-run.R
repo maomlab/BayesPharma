@@ -103,7 +103,7 @@ sigmoid_model <- function(
     warning(
       paste0(
         "The response variable ",
-        "'", formula$bayes_pharma_info[["response_variable"]], "' defined in ", 
+        "'", formula$bayes_pharma_info[["response_variable"]], "' defined in ",
         "the formula needs to be a column of the input 'data' data.frame\n"))
   }
 
