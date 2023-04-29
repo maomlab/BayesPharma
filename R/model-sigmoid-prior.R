@@ -1,4 +1,4 @@
-#' Default priors for an agonist sigmoid model
+#' Create a Prior an Agonist Sigmoid Model
 #'
 #' @description
 #' Creates a `data.frame` of priors for the sigmoid agonist model
@@ -57,7 +57,7 @@ sigmoid_agonist_prior <- function(
         prepare_prior(prior = bottom, nlpar = "bottom"))
 }
 
-#' Default priors for the sigmoid antagonist model
+#' Create a Prior an Antagonist Sigmoid Model
 #'
 #' @description Creates a `data.frame` of priors for the sigmoid antagonist
 #'     model

@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-sigmoid-init.R
 \name{sigmoid_agonist_init}
 \alias{sigmoid_agonist_init}
-\title{Create initialization for an agonist sigmoid model}
+\title{Initialize Parameter Values for an Agonist Sigmoid Model}
 \usage{
 sigmoid_agonist_init(ec50 = -6, hill = 1, top = 1, bottom = 0)
 }

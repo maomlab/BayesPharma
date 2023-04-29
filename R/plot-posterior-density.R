@@ -1,5 +1,4 @@
-#' Create a plot of the posterior density distributions of modeled parameters
-#' from brmsfit model
+#' Plot Posterior Density Distributions of modeled parameters
 #'
 #' @description plots the [bpfit()] model density distribution of each
 #'   parameter and the mean, lower confidence interval, and upper confidence

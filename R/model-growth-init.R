@@ -2,18 +2,18 @@
 #'
 #' @description Creating initial values for sigmoid growth model
 #'   parameters that can be passed to the
-#'.  `richards_growth_model`.
+#'.  [growth_sigmoid_model].
 #'
 #' @param K `numeric` or `numeric` returning `function`
-#'   (Default: 1).
 #' @param K0 `numeric` or `numeric` returning `function`
-#'   (Default: 0).
 #' @param rate `numeric` or `numeric` returning `function`
-#'   (Default: 1).
 #' @param lambda `numeric` or `numeric` returning `function`
-#'   units of `time` (Default: 0.5).
+#'   units of `time`
 #'
 #' @returns input for `[brm][brms::brm](init = ...)`
+#'
+#' @seealso [growth_sigmoid_formula], [growth_sigmoid_prior], and
+#'   [growth_sigmoid_model]
 #'
 #' @examples
 #'\dontrun{
@@ -36,26 +36,22 @@ growth_sigmoid_init <- function(
   }
 }
 
-
-
 #' Create initialization for the Richards growth model
 #'
-#' @description Creating initial values for Richards growth model
-#'   parameters that can be passed to the
-#'.  `richards_growth_model`.
+#' @description Creating initial values for Richards growth model parameters
+#'   that can be passed to the [growth_richards_model].
 #'
 #' @param K `numeric` or `numeric` returning `function`
-#'   (Default: 1).
 #' @param K0 `numeric` or `numeric` returning `function`
-#'   (Default: 0).
 #' @param rate `numeric` or `numeric` returning `function`
-#'   (Default: 1).
 #' @param lambda `numeric` or `numeric` returning `function`
-#'   units of `time` (Default: 0.5).
 #' @param nu `numeric` or `numeric` returning `function`
-#'   values range between [0, Inf], with 1 being standard sigmoid (default = 1).
+#'   values range between [0, Inf], with 1 being standard sigmoid
 #'
 #' @returns input for `[brm][brms::brm](init = ...)`
+#'
+#' @seealso [growth_richards_formula], [growth_richards_prior], and
+#'   [growth_richards_model]
 #'
 #' @examples
 #'\dontrun{

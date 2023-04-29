@@ -1,11 +1,18 @@
-#' Compute the Pnear quality metric for RMSD funnel
+#' Compute the Pnear Quality Metric for a RMSD Funnel
 #'
+#nolint start
+#' @description
+#' In protein structure prediction a key measure of accuracy is how well does
+#' the predicted energy or score correlate with the distance to a native
+#' conformation. A common distance measure is the all-atom root mean squared
+#' distance (RMSD). A challenge, however, is that we don't expect that far away
+#' from the native conformation, the energy should be discriminating, so we want
+#' to bias the assessment to those near the native conformation. We therefore
 #' The Pnear metric defined in [(Bhardwaj, et al., Nature,
 #' 2016)](https://www.nature.com/articles/nature19791)
 #' measures the how "funnel-like" a score-vs-rmsd plot is.
-#' `paste0("<https://github.com/RosettaCommons/",
-#' "main/blob/master/tests/benchmark/util/quality_measures.py#L268>")`
-#'
+#' [Pnear Rosetta Documentation](https://github.com/RosettaCommons/main/blob/master/tests/benchmark/util/quality_measures.py#L268")
+#nolint end
 #' @details
 #' ```
 #' # subtract off the min-score as is done in the Rosetta Code

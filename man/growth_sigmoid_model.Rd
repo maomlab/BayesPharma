@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-growth-run.R
 \name{growth_sigmoid_model}
 \alias{growth_sigmoid_model}
-\title{Run Bayesian Sigmoid Growth Model}
+\title{Run the Bayesian Sigmoid Growth Model}
 \usage{
 growth_sigmoid_model(
   data,

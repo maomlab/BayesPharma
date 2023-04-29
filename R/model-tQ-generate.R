@@ -1,6 +1,6 @@
-#' Generate data from the total QSSA model for enzyme kinetics
+#' Generate Data from the Total QSSA (tQ) Model for Enzyme Kinetics
 #'
-#' Simulate data from the total QSSA model a refinement of the
+#' Simulate data from the total QSSA (tQ) model a refinement of the
 #' classical Michaelis-Menten enzyme kinetics ordinary differential
 #' equation described in (Choi, et al., 2017, DOI:
 #' 10.1038/s41598-017-17072-z). Consider the kinetic rate equation

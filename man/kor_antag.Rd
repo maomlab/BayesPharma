@@ -9,13 +9,13 @@ Antagonists}
 A \code{data.frame} that includes the dose-response measurements
 }
 \source{
-\url{https://github.com/maomlab/BayesPharma}
+\link{https://github.com/maomlab/BayesPharma}
 }
 \usage{
 kor_antag
 }
 \description{
-A dataset containing the drugs used, cell id, the log dose that the response
+A data set containing the drugs used, cell id, the log dose that the response
 was measured at, and the reference, raw, and normalized measurement
 }
 \keyword{datasets}

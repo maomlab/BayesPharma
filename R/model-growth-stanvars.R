@@ -16,7 +16,7 @@
 #'   init =  ...,
 #'   stanvars = BayesPharma::growth_sigmoid_stanvar)
 #' }
-#' 
+#'
 #' @export
 growth_sigmoid_stanvar <- brms::stanvar(
   scode = paste(

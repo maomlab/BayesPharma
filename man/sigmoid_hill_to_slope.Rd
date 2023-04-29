@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-sigmoid-function.R
 \name{sigmoid_hill_to_slope}
 \alias{sigmoid_hill_to_slope}
-\title{For the sigmoid functional form, convert hill to slope parameter}
+\title{Convert Hill to Slope Parameters a the Sigmoid Functional Form}
 \usage{
 sigmoid_hill_to_slope(hill, top, bottom)
 }

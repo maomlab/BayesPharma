@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-Pnear-run.R
 \name{Pnear}
 \alias{Pnear}
-\title{Compute the Pnear quality metric for RMSD funnel}
+\title{Compute the Pnear Quality Metric for a RMSD Funnel}
 \usage{
 Pnear(score, rmsd, lambda = 1.5, kbt = 0.62, verbose = FALSE)
 }
@@ -28,9 +28,15 @@ temperature for ref2015 or any other scorefunction with units of kcal/mol.}
 \code{numeric} value.
 }
 \description{
+In protein structure prediction a key measure of accuracy is how well does
+the predicted energy or score correlate with the distance to a native
+conformation. A common distance measure is the all-atom root mean squared
+distance (RMSD). A challenge, however, is that we don't expect that far away
+from the native conformation, the energy should be discriminating, so we want
+to bias the assessment to those near the native conformation. We therefore
 The Pnear metric defined in \href{https://www.nature.com/articles/nature19791}{(Bhardwaj, et al., Nature, 2016)}
 measures the how "funnel-like" a score-vs-rmsd plot is.
-\code{paste0("<https://github.com/RosettaCommons/", "main/blob/master/tests/benchmark/util/quality_measures.py#L268>")}
+\href{https://github.com/RosettaCommons/main/blob/master/tests/benchmark/util/quality_measures.py#L268"}{Pnear Rosetta Documentation}
 }
 \details{
 \if{html}{\out{<div class="sourceCode">}}\preformatted{# subtract off the min-score as is done in the Rosetta Code

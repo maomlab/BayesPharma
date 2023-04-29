@@ -55,8 +55,7 @@ function arguments \code{K}, \code{K0}, \code{rate}, \code{lambda}, or
 If you would like to set a parameter as a constant, enter a numeric  value
 for the function argument.
 
-For other distribution options, reference
-\url{http://mc-stan.org/rstanarm/reference/priors.html#arguments}
+For other distribution options, reference \link[brms:set_prior]{brms::prior} and \href{https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations}{Prior Choice Recommendations }
 
 Creates a for the priors for the Richards growth model. If the
 function arguments \code{K}, \code{K0}, \code{rate}, \code{lambda}, or
@@ -65,8 +64,7 @@ function arguments \code{K}, \code{K0}, \code{rate}, \code{lambda}, or
 If you would like to set a parameter as a constant, enter a numeric
 value for the function argument.
 
-For other distribution options, reference
-\url{http://mc-stan.org/rstanarm/reference/priors.html#arguments}
+For other distribution options, reference \link[brms:set_prior]{brms::prior} and \href{https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations}{Prior Choice Recommendations }
 }
 \examples{
 \dontrun{

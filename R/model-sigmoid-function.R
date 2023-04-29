@@ -2,18 +2,19 @@
 #'
 #' Functional form for the sigmoid model.
 #'
-#' @param ac50 `numeric`, the log_dose of half maximal activity
-#' @param hill `numeric`, slope of curve at the ac50 units of
+#' @param ac50 `numeric`, the `log_dose` of half maximal activity
+#' @param hill `numeric`, slope of curve at the `ac50` units of
 #'     response/log_dose
 #' @param top `numeric`, value of maximal response for positive slope,
-#'     this occurs when log_dose = Inf, with negative slope when
-#'     log_dose = -Inf
+#'     this occurs when `log_dose = Inf`, with negative slope when
+#'     `log_dose = -Inf`
 #' @param bottom `numeric`, value of minimal response for positive
 #'     slope, this occurs when log_dose = -Inf, with negative slope
 #'     when log_dose = Inf
 #' @param log_dose `numeric`, where to evaluate the the response where
 #'     the log is base 10.
-#' @returns `numeric`, response given the log_dose and parameters
+#'
+#' @returns `numeric`, response given the `log_dose` and parameters
 #'
 #' @seealso [sigmoid_model]
 #'
@@ -42,7 +43,7 @@ sigmoid <- Vectorize(
 })
 
 
-#' For the sigmoid functional form, convert hill to slope parameter
+#' Convert Hill to Slope Parameters a the Sigmoid Functional Form
 #'
 #' The `hill` parameter controls the slope at the ac50 (`slope`) but
 #' the `slope` also depends on the `top` and `bottom` parameters.
@@ -78,7 +79,7 @@ sigmoid_hill_to_slope <- function(hill, top, bottom) {
   hill * log(10) * (top - bottom) / 4
 }
 
-#' For the sigmoid functional form, convert slope to the hill parameter
+#' Convert Slope to Hill Parameters a the Sigmoid Functional Form
 #'
 #' The `hill` parameter controls the slope at the ac50 (`slope`) but
 #' the `slope` also depends on the `top` and `bottom` parameters.
@@ -109,7 +110,7 @@ sigmoid_slope_to_hill <- function(slope, top, bottom) {
 }
 
 
-#' Plot the sigmoid functional form with labeled parameters
+#' Plot the Sigmoid Functional Form with Labeled Parameters
 #'
 #' Generates a plot of the [sigmoid()] functional form with the values
 #' of the parameters `ac50`, `hill`, `top`, and `bottom`

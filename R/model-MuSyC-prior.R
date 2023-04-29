@@ -1,14 +1,16 @@
-#' Default priors for the MuSyC model
+#' Create a prior for the MuSyC synergy model
 #'
 #' @description Creating a `data.frame` of priors of the dose response
-#'    parameters required for the MuSyC model.
+#' parameters required for the MuSyC model.
 #'
-#' If you would like to set a parameter as a constant, enter a numeric
-#' value for the function argument.  If you would like to set your own
+#' If you would like to set a parameter as a constant, enter a
+#' numeric value for the function argument.  If you would like to set your own
 #' distribution, for example, in the function arguments type
 #' `ec50 = brms::prior(prior = normal(<mu>, <sigma>), nlpar = 'ec50')`.
-#' For other distribution options, reference
-#' http://mc-stan.org/rstanarm/reference/priors.html#arguments.
+
+#' For other distribution options, reference [brms::prior] and [Prior Choice
+#' Recommendations
+#' ](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
 #'
 #' @param logE0 `numeric` or [brms::brmsprior()]. Prior for the
 #'   log response with no treatment. (Default: `normal(log(0.5), 3)` lower

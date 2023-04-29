@@ -1,4 +1,4 @@
-#' Run Bayesian Sigmoid Growth Model
+#' Run the Bayesian Sigmoid Growth Model
 #'
 #' @description
 #' For additional information on additional function arguments, reference:

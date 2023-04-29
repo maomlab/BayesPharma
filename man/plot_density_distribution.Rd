@@ -2,8 +2,7 @@
 % Please edit documentation in R/plot-density-distirbution.R
 \name{plot_density_distribution}
 \alias{plot_density_distribution}
-\title{Create a plot of the density distributions of modeled parameters from brmsfit
-model}
+\title{Plot Density Distribution of Model Parameters}
 \usage{
 plot_density_distribution(
   model,
@@ -13,7 +12,7 @@ plot_density_distribution(
 )
 }
 \arguments{
-\item{model}{brmsfit model.}
+\item{model}{`\link[brms:brmsfit-class]{brms::brmsfit} model.}
 
 \item{pars}{parameters to choose (Default b_\if{html}{\out{<parameter>}}_Intercept')}
 

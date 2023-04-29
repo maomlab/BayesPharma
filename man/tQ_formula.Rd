@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-tQ-formula.R
 \name{tQ_formula}
 \alias{tQ_formula}
-\title{Define formula for the tQ enzyme kinetics model}
+\title{Define a Formula for the Total QSSA (tQ) Enzyme Kinetics Model}
 \usage{
 tQ_formula(
   series_index_variable = "series_index",
@@ -20,41 +20,39 @@ tQ_formula(
 }
 \arguments{
 \item{series_index_variable}{\code{character} variable indexing which
-measurements are part of a common time series.}
+measurements are part of a common time series}
 
 \item{treatment_variable}{\code{character} variable representing time as the
-treatment.}
+treatment}
 
-\item{treatment_units}{\code{character} the units of the treatment variable.}
+\item{treatment_units}{\code{character} the units of the treatment variable}
 
 \item{ET_variable}{\code{character} variable representing the total enzyme
-concentration.}
+concentration}
 
 \item{ET_units}{\code{character} variable representing the units of the
-enzyme concentration.}
+enzyme concentration}
 
 \item{ST_variable}{\code{character} variable representing the total substrate
-concentration.}
+concentration}
 
 \item{ST_units}{\code{character} variable representing the units of the
-substrate concentration.}
+substrate concentration}
 
-\item{response_variable}{\code{character} variable representing the product.}
+\item{response_variable}{\code{character} variable representing the \code{product}}
 
-\item{response_units}{\code{character} the units of the product.}
+\item{response_units}{\code{character} the units of the \code{product}}
 
-\item{predictors}{\code{expression} of predictors for \code{kcat} and
-\code{kM} parameters}
+\item{predictors}{\code{expression} of predictors for \code{kcat} and \code{kM} parameters}
 
 \item{...}{additional arguments passed to \code{\link[brms:brmsformula]{brms::brmsformula()}}}
 }
 \value{
-a \code{bpformula}, which is a subclass of
-\link[brms:brmsformula]{brms::brmsformula} and can be passed to
-\code{\link[=tQ_model]{tQ_model()}}.
+a \code{bpformula}, which is a subclass of \link[brms:brmsformula]{brms::brmsformula} and can be
+passed to \code{\link[=tQ_model]{tQ_model()}}.
 }
 \description{
-Define formula for the tQ enzyme kinetics model
+Define a Formula for the Total QSSA (tQ) Enzyme Kinetics Model
 }
 \seealso{
 \link{tQ_model}, \link{tQ_prior}, \link{tQ_init}, \link{tQ_stanvar} and

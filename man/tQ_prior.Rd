@@ -2,26 +2,27 @@
 % Please edit documentation in R/model-tQ-prior.R
 \name{tQ_prior}
 \alias{tQ_prior}
-\title{Define priors for the tQ enzyme kinetics model}
+\title{Create a Prior for the tQ Enzyme Kinetics Model}
 \usage{
-tQ_prior(kcat = NULL, kM = NULL)
+tQ_prior(
+  kcat = brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kcat"),
+  kM = brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kM")
+)
 }
 \arguments{
-\item{kcat}{prior for \code{kcat} parameter (Default: NULL). Given
-a numeric value, it will be used as a constant and not
-estimated.}
+\item{kcat}{prior for \code{kcat} parameter. Given a numeric value, it will be
+used as a constant and not estimated.}
 
-\item{kM}{prior for \code{kM} parameter (Default: NULL). Given a
-numeric value, it will be used as a constant and not estimated.}
+\item{kM}{prior for \code{kM} parameter. Given a numeric value, it will be used as
+a constant and not estimated.}
 }
 \description{
-Default priors are \code{gamma(4, 1)} for both \code{kcat} and
-\code{kM}. We use the gamma distribution because it is naturally
-lower bounded by \code{0}. The first parameter is the shape,
-\code{alpha=4}, and the second is the rate, \code{beta=1}. The mean
-of gamma distributions is \code{alpha/beta} and the variance is
-\code{alpha/beta^2}.
+For both the \code{kcat} and \code{kM} parameters, the default priors are
+\code{gamma(4, 1)}. We use the gamma distribution because it is naturally lower
+bounded by \code{0}. The first parameter is the shape, \code{alpha=4}, and the second
+is the rate, \code{beta=1}. The mean of gamma distributions is \code{alpha/beta} and
+the variance is \code{alpha/beta^2}.
 }
 \seealso{
-\link{tQ_model}, \link{tQ_formula}, \link{tQ_init}, or \link{tQ_stanvar}
+\link{tQ_model}, \link{tQ_formula}, \link{tQ_init}, and \link{tQ_stanvar}
 }

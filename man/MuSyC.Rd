@@ -7,35 +7,35 @@
 MuSyC(logd1, logd2, logE0, logE1, logC1, h1, logE2, logC2, h2, logE3, logalpha)
 }
 \arguments{
-\item{logd1}{\code{numeric}. log dose for treatment 1}
+\item{logd1}{\code{numeric} log dose for treatment 1}
 
-\item{logd2}{\code{numeric}. log dose for treatment 2}
+\item{logd2}{\code{numeric} log dose for treatment 2}
 
-\item{logE0}{\code{numeric}. Full log response with no treatment.}
+\item{logE0}{\code{numeric} Full log response with no treatment.}
 
-\item{logE1}{\code{numeric}. Full log response for treatment 1 and the dose
+\item{logE1}{\code{numeric} Full log response for treatment 1 and the dose
 of treatment 2 is zero.}
 
-\item{logC1}{\code{numeric}. IC50 for treatment 1 and dose of treatment 2
+\item{logC1}{\code{numeric} AC50 for treatment 1 and dose of treatment 2
 is zero.}
 
-\item{h1}{\code{numeric}. Slope of treatment 1 at its IC50 and dose of
+\item{h1}{\code{numeric} Slope of treatment 1 at its AC50 and dose of
 treatment 2 is zero in exponential form. Use \code{MuSyC_si_to_hi} to
 convert from slope form.}
 
-\item{logE2}{\code{numeric}. Full log response for treatment 2 and the dose
+\item{logE2}{\code{numeric} Full log response for treatment 2 and the dose
 of treatment 1 is zero.}
 
-\item{logC2}{\code{numeric}. IC50 for treatment 2 and dose of treatment 1 is
+\item{logC2}{\code{numeric} AC50 for treatment 2 and dose of treatment 1 is
 zero.}
 
-\item{h2}{\code{numeric}. Slope of treatment 2 at its IC50 and dose of
+\item{h2}{\code{numeric} Slope of treatment 2 at its AC50 and dose of
 treatment 1 is zero in exponential form. Use \code{MuSyC_si_to_hi} to
 convert from slope form.}
 
-\item{logE3}{\code{numeric}. Full response for treatment 1 and treatment 2.}
+\item{logE3}{\code{numeric} Full response for treatment 1 and treatment 2.}
 
-\item{logalpha}{\code{numeric}. Log synergistic potency parameter with
+\item{logalpha}{\code{numeric} Log synergistic potency parameter with
 greater than 1 is synergistic, less than 1 is antagonistic.}
 }
 \value{
@@ -44,4 +44,18 @@ treatment 2 at doses \code{logd1} and \code{logd2} respectively.
 }
 \description{
 Generate MuSyC Ed scores using a robust functional form
+}
+\references{
+Meyer, D.J., Wooten, D.J., Paudel B.B., Bauer, J., Hardeman, K.N.,
+Westover, D., Lovly, C.M., Harris, L.A., Tyson D.R., Quaranta, V.,
+Quantifying Drug Combination Synergy along Potency and Efficacy Axes, Cell
+Syst. 8, 2 (2019). https://doi.org/10.1016/j.cels.2019.01.003
+
+Wooten, D.J., Meyer, C.T., Lubbock, A.L.R. et al. MuSyC is a consensus
+framework that unifies multi-drug synergy metrics for combinatorial drug
+discovery. Nat Commun 12, 4607 (2021).
+https://doi.org/10.1038/s41467-021-24789-z
+}
+\seealso{
+\link{MuSyC_model}
 }

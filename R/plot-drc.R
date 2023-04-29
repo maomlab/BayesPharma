@@ -1,14 +1,14 @@
-#' Create plot of drc model
+#' Create Plot of a DRC Model
 #'
-#' @param model `drc::drc` model object generated with [drc::drm()]
+#' @param model `drc::drm` model object generated with [drc::drm()]
 #' @param newdata `data.frame` where the predictions should be made.
 #'   Default: use the range of treatment values in the model object.
 #' @param predict_args `list` of arguments passed to
 #'   `predict(model, ...)` including interval will generate ribbon of the
 #'   given type, see [drc::predict.drc()] for more details.
-#' @param aes_mapping `[aes][ggplot2::aes](...)` mapping columns of the
+#' @param aes_mapping `[ggplot2::aes](...)` mapping columns of the
 #'   model data and new data to the plot. (Default:
-#'   `ggplot2::[aes][ggplot2::aes](x = log_dose, y = response)`)
+#'   `ggplot2::aes](x = log_dose, y = response)`)
 #' @param title `character` giving the plot title
 #'
 #'

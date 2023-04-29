@@ -3,7 +3,7 @@
 \docType{data}
 \name{tQ_stanvar}
 \alias{tQ_stanvar}
-\title{Stan code for the tQ enzyme kinetics model}
+\title{Stan Code for the tQ Enzyme Kinetics Model}
 \format{
 An object of class \code{stanvars} of length 1.
 }

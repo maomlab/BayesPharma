@@ -14,11 +14,11 @@ drc_model(
 \arguments{
 \item{data}{\code{data.frame}}
 
-\item{formula}{\code{formula} formulate relating the \code{response} to the \code{log_dose},
-if the \link[drc:logistic]{drc::L.4} or \code{dose} if the \link[drc:LL.4]{drc::LL.4} non-linear link functions
-are used with the \code{fct} argument.}
+\item{formula}{\code{formula} formula relating the \code{response} to the \code{log_dose},
+if the \link[drc:logistic]{drc::L.4} sigmoid link function is used or \code{dose} if the \link[drc:LL.4]{drc::LL.4}
+log-linear sigmoid link functions used with the \code{fct} argument.}
 
-\item{fct}{Non-linear link function. Default is the 4 parameter
+\item{fct}{\code{Boltzmann} non-linear link function. Default is the 4 parameter
 log-linear sigmoid equation, \link[drc:logistic]{drc::L.4}, where all parameters are to be
 estimated. To fix a subset them, set the parameters to constant
 values.}

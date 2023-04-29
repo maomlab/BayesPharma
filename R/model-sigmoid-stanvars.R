@@ -1,4 +1,4 @@
-#' Stan code for the sigmoid function.
+#' Stan Code for the Sigmoid Model.
 #'
 #' @note stanvar script of a sigmoid dose response equation.  For log dose
 #'   greater than negative infinity (dose greater than 0), the sigmoid dose

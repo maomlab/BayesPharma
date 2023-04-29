@@ -1,5 +1,4 @@
-#' Create a plot of the density distributions of modeled parameters from brmsfit
-#' model
+#' Plot Density Distribution of Model Parameters
 #'
 #' @description This function is useful to observe the distributions
 #'   of the priors set for the brmsfit model. By adding `sample_prior =
@@ -7,7 +6,7 @@
 #'   from the prior distributions and can be observed using this plot function
 #'   to verify that the values intended to be covered are being included.
 #'
-#' @param model brmsfit model.
+#' @param model `[brms::brmsfit] model.
 #' @param pars parameters to choose (Default b_<parameter>_Intercept')
 #' @param labeller strip off the 'b_' and '_Intercept' from the parameter labels
 #' @param title_label `character` of the plot title.

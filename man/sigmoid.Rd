@@ -7,14 +7,14 @@
 sigmoid(ac50, hill, top, bottom, log_dose)
 }
 \arguments{
-\item{ac50}{\code{numeric}, the log_dose of half maximal activity}
+\item{ac50}{\code{numeric}, the \code{log_dose} of half maximal activity}
 
-\item{hill}{\code{numeric}, slope of curve at the ac50 units of
+\item{hill}{\code{numeric}, slope of curve at the \code{ac50} units of
 response/log_dose}
 
 \item{top}{\code{numeric}, value of maximal response for positive slope,
-this occurs when log_dose = Inf, with negative slope when
-log_dose = -Inf}
+this occurs when \code{log_dose = Inf}, with negative slope when
+\code{log_dose = -Inf}}
 
 \item{bottom}{\code{numeric}, value of minimal response for positive
 slope, this occurs when log_dose = -Inf, with negative slope
@@ -24,7 +24,7 @@ when log_dose = Inf}
 the log is base 10.}
 }
 \value{
-\code{numeric}, response given the log_dose and parameters
+\code{numeric}, response given the \code{log_dose} and parameters
 }
 \description{
 Functional form for the sigmoid model.

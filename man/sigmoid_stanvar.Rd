@@ -3,7 +3,7 @@
 \docType{data}
 \name{sigmoid_stanvar}
 \alias{sigmoid_stanvar}
-\title{Stan code for the sigmoid function.}
+\title{Stan Code for the Sigmoid Model.}
 \format{
 An object of class \code{stanvars} of length 1.
 }
@@ -11,7 +11,7 @@ An object of class \code{stanvars} of length 1.
 sigmoid_stanvar
 }
 \description{
-Stan code for the sigmoid function.
+Stan Code for the Sigmoid Model.
 }
 \note{
 stanvar script of a sigmoid dose response equation.  For log dose

@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary-basic-stats.R
 \name{basic_stats}
 \alias{basic_stats}
-\title{Give basic statistical information about the model results}
+\title{Give Basic Statistical Information About the Model Results}
 \usage{
 basic_stats(
   model,

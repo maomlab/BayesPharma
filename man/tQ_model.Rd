@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-tQ-run.R
 \name{tQ_model}
 \alias{tQ_model}
-\title{Model for the tQ enzyme kinetics model}
+\title{Model for the tQ Enzyme Kinetics Model}
 \usage{
 tQ_model(
   data,
@@ -48,7 +48,7 @@ model}
 \code{bpfit} object, which is a wrapper around a \link[brms:brmsfit-class]{brms::brmsfit} object.
 }
 \description{
-Model for the tQ enzyme kinetics model
+Model for the tQ Enzyme Kinetics Model
 }
 \references{
 Choi, B., Rempala, G.A. & Kim, J.K. Beyond the Michaelis-Menten equation:

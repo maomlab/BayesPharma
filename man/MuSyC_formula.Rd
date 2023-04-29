@@ -16,25 +16,21 @@ MuSyC_formula(
 )
 }
 \arguments{
-\item{treatment_1_variable}{character variable representing the treatment.
-(Default: 'logd1')}
+\item{treatment_1_variable}{\code{character} variable representing the treatment.}
 
-\item{treatment_1_units}{character the units of the treatment. The default is
-log base 10 of the molar concentration. (Default: "Log\link{Molar}")}
+\item{treatment_1_units}{\code{character} the units of the treatment. The default
+is log base 10 of the molar concentration}
 
-\item{treatment_2_variable}{character variable representing the treatment.
-(Default: 'logd2')}
+\item{treatment_2_variable}{\code{character} variable representing the treatment.}
 
-\item{response_variable}{character variable representing the response to
-treatment. (Default: 'response')}
+\item{response_variable}{\code{character} variable representing the response to
+treatment}
 
-\item{response_units}{character the units of the response. (Default: NULL)}
+\item{response_units}{\code{character} the units of the response}
 
-\item{predictors}{Additional formula objects to specify predictors
-of non-linear parameters. i.e. what perturbations/experimental
-differences should be modeled separately? (Default: 1) should a
-random effect be taken into consideration? i.e. cell number,
-plate number, etc.}
+\item{predictors}{\code{formula} specify predictors of non-linear parameters.
+i.e. what perturbations/experimental differences should be modeled
+separately?}
 
 \item{...}{additional arguments passed to \code{\link[brms:brmsformula]{brms::brmsformula()}}}
 }
@@ -42,10 +38,9 @@ plate number, etc.}
 \code{\link[brms:brmsformula]{brms::brmsformula()}}
 }
 \description{
-setup a default \code{MuSyC} synergy model formula to
-predict the \code{E0}, \code{C1}, \code{E1}, \code{s1},
-\code{C2}, \code{E2}, \code{s2}, \code{log10alpha}, and
-\code{E3alpha} parameters.
+Setup a \code{MuSyC} synergy model formula to predict the
+\code{E0}, \code{C1}, \code{E1}, \code{s1}, \code{C2}, \code{E2}, \code{s2}, \code{log10alpha}, and \code{E3alpha}
+parameters.
 }
 \examples{
 \dontrun{

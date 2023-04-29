@@ -1,26 +1,21 @@
 #' Create a formula for the MuSyC synergy model
 #'
-#' @description setup a default `MuSyC` synergy model formula to
-#'     predict the `E0`, `C1`, `E1`, `s1`,
-#'     `C2`, `E2`, `s2`, `log10alpha`, and
-#'     `E3alpha` parameters.
+#' @description Setup a `MuSyC` synergy model formula to predict the
+#'   `E0`, `C1`, `E1`, `s1`, `C2`, `E2`, `s2`, `log10alpha`, and `E3alpha`
+#'   parameters.
 #'
-#' @param treatment_1_variable character variable representing the treatment.
-#'     (Default: 'logd1')
-#' @param treatment_1_units character the units of the treatment. The default is
-#'     log base 10 of the molar concentration. (Default: "Log[Molar]")
-#' @param treatment_2_variable character variable representing the treatment.
-#'     (Default: 'logd2')
-#' @param treatment_1_units character the units of the treatment. The default is
-#'     log base 10 of the molar concentration. (Default: "Log[Molar]")
-#' @param response_variable character variable representing the response to
-#'     treatment. (Default: 'response')
-#' @param response_units character the units of the response. (Default: NULL)
-#' @param predictors Additional formula objects to specify predictors
-#'     of non-linear parameters. i.e. what perturbations/experimental
-#'     differences should be modeled separately? (Default: 1) should a
-#'     random effect be taken into consideration? i.e. cell number,
-#'     plate number, etc.
+#' @param treatment_1_variable `character` variable representing the treatment.
+#' @param treatment_1_units `character` the units of the treatment. The default
+#'   is log base 10 of the molar concentration
+#' @param treatment_2_variable `character` variable representing the treatment.
+#' @param treatment_1_units `character` the units of the treatment. The default
+#'   is log base 10 of the molar concentration
+#' @param response_variable `character` variable representing the response to
+#'     treatment
+#' @param response_units `character` the units of the response
+#' @param predictors `formula` specify predictors of non-linear parameters.
+#'   i.e. what perturbations/experimental differences should be modeled
+#'   separately?
 #' @param ... additional arguments passed to [brms::brmsformula()]
 #'
 #' @returns [brms::brmsformula()]

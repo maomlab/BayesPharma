@@ -1,4 +1,4 @@
-#' Initialize parameter values for the tQ enzyme kinetic model
+#' Initialize Parameter Values for the tQ Enzyme Kinetic Model
 #'
 #' @param kcat `numeric` initial value for `kcat` parameter in the tQ model
 #' @param kM `numeric` initial value for the `kM` parameter in the tQ model

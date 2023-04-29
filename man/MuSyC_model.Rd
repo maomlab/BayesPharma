@@ -59,47 +59,41 @@ See \code{\link[=MuSyC]{MuSyC()}} for the full mathematical description of the
 \code{MuSyC} function. By default the observed data (and therefore should be
 columns in the input data data.frame) are
 \itemize{
-\item{\strong{<treatment 1>}: \code{logd1}, the \code{log10} of the dose
-as a molar concentration of treatment 1}
-\item{\strong{<treatment 2>}: \code{logd2}, the \code{log10} of the dose
-as a molar concentration of treatment 2}
-\item{\strong{\if{html}{\out{<response>}}}: \code{response}, with unspecified units}
+\item \strong{\verb{<treatment 1>}}: \code{logd1}, the \code{log10} of the dose
+as a molar concentration of treatment 1
+\item \strong{\verb{<response>}}: \code{response}, with unspecified units
+\item \strong{\verb{<treatment 2>}}: \code{logd2}, the \code{log10} of the dose
+as a molar concentration of treatment 2
 }
-The \code{logd1scale} and \code{logd2scale} are used to center <treatment 1>
-and <treatment 2> to make fitting more numerically stable. If they are not
+
+The \code{logd1scale} and \code{logd2scale} are used to center \verb{<treatment 1>}
+and \verb{<treatment 2>} to make fitting more numerically stable. If they are not
 in the input \code{data}, then they are taken to be the mean of
-<treatment 1> and <treatment 2> respectively.
+\verb{<treatment 1>} and \verb{<treatment 2>} respectively.
 
 The modeled parameters are
 \itemize{
-\item{\strong{logE0}: the \verb{log(<response>)} when <treatment 1> = 0
-and <treatment 2> = 0}
-\item{\strong{logC1}: the \verb{log(<treatment 1>} where when <treatment
-2> = 0, the \verb{<response>}} is halfway between \code{E0} and
-\code{E1}
-\item{\strong{logE1}: the \code{log(response)} when <treatment 1> =>
-\code{Inf} and <treatment 2> = 0}
-\item{\strong{h1}: the hill slope of the response with respect to
-<treatment 1> when <treatment 1> = C1 and <treatment 2> = 0}. See
+\item{\strong{\code{logE0}}: the \verb{log(<response>)} when \verb{<treatment 1> = 0} and
+\verb{<treatment 2> = 0}}
+\item{\strong{\code{logC1}}: the \verb{log(<treatment 1>)} where when \verb{<treatment 2> = 0}, the \verb{<response>} is halfway between \code{E0} and \code{E1}}
+\item{\strong{\code{logE1}}: the \code{log(response)} when \verb{<treatment 1> => Inf} and
+\verb{<treatment 2> = 0}}
+\item{\strong{\code{h1}}: the hill slope of the response with respect to
+\verb{<treatment 1>} when \verb{<treatment 1> = C1} and \verb{<treatment 2> = 0}. See
 \code{\link[=MuSyC_hi_to_si]{MuSyC_hi_to_si()}} and \code{\link[=MuSyC_si_hi]{MuSyC_si_hi()}} for
-converting between the slope (si) and hill slope (hi).
-\item{\strong{logC2}: the dose of <treatment 2> where when <treatment 1> =
-0, the \verb{<response>}} is halfway between \code{E0} and \code{E2}
-\item{\strong{logE2}: the \code{log(response)} when <treatment 2> =>
-\code{Inf} and <treatment 1> = 0}
-\item{\strong{h2}: the hill slope of the response with respect to
-<treatment 2> when <treatment 2> = C2 and <treatment 1> = 0}. See
-\code{\link[=MuSyC_hi_to_si]{MuSyC_hi_to_si()}} and \code{\link[=MuSyC_si_hi]{MuSyC_si_hi()}} for
-converting between the slope (si) and hill slope (hi).
-\item{\strong{logE3}: the \code{log(response)} when <treatment1 1> =>
-\code{Inf} and <treatment 2> => \code{Inf}, modeling the synergistic
-\emph{efficacy}}
-\item{\strong{logaalpha}: the log of the synergistic \emph{potency} alpha.
-When alpha > \code{1} the treatments are synergistic so that <treatment
-1> shifts the response due to <treatment 2> to lower doses and visa
-versa. When alpha < \code{1} the treatments are antagonistic so that
-<treatment 1> shifts the response to <treatment 2> to higher doses and
-visa versa}}
+converting between the slope (si) and hill slope (hi).}
+\item{\strong{\code{logC2}}: the \verb{log(<treatment 2>)} where when \verb{<treatment 1> = 0}, the \verb{<response>} is halfway between \code{E0} and \code{E2}}
+\item{\strong{\code{logE2}}: the \code{log(response)} when \verb{<treatment 2> => Inf} and
+\verb{<treatment 1> = 0}}
+\item{\strong{\code{h2}}: the hill slope of the response with respect to
+\verb{<treatment 2>} when \verb{<treatment 2> = C2} and \verb{<treatment 1> = 0}. See
+\code{\link[=MuSyC_hi_to_si]{MuSyC_hi_to_si()}} and \code{\link[=MuSyC_si_hi]{MuSyC_si_hi()}} for converting between the slope
+(si) and hill slope (hi).}
+\item{\strong{\code{logE3}}: the \code{log(response)} when \verb{<treatment1 1> => Inf} and
+\verb{<treatment 2> => Inf}, modeling the synergistic \emph{efficacy}}
+\item{\strong{\code{logalpha}}: the \code{log} of the synergistic \emph{potency} \code{alpha}.
+When \code{alpha > 1} the treatments are synergistic so that \verb{<treatment 1>`` shifts the response due to }<treatment 2>\verb{to lower doses and visa versa. When}alpha < 1\verb{the treatments are antagonistic so that}<treatment 1>\verb{shifts the response to}<treatment 2>` to higher doses
+and vise versa}}
 }
 \references{
 Meyer, D.J., Wooten, D.J., Paudel B.B., Bauer, J., Hardeman, K.N.,

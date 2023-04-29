@@ -1,4 +1,4 @@
-#' Model for the tQ enzyme kinetics model
+#' Model for the tQ Enzyme Kinetics Model
 #'
 #' @param data `data.frame` of experimental data.
 #'   must contain columns `response` and any predictors specified in
