@@ -1,4 +1,4 @@
-#' Create initialization for the MuSyC model
+#' Create Initial Parameter Values for the MuSyC Model
 #'
 #' @description Initial values for the MuSyC model
 #'

@@ -1,4 +1,4 @@
-#' Add a Log(dose) (in base 10) column to the input `data.frame`
+#' Add a Log(dose) (in base 10) Column to the Input `data.frame`
 #'
 #' @description Given the dose as a column in a `data.frame` with a given
 #'   molar concentration add a new column of the log base-10 dose,

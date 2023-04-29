@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-growth-formula.R
 \name{growth_sigmoid_formula}
 \alias{growth_sigmoid_formula}
-\title{Create a formula for the sigmoid growth model}
+\title{Create a Formula for the Sigmoid Growth Model}
 \usage{
 growth_sigmoid_formula(
   treatment_variable = "time",

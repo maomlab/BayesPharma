@@ -2,7 +2,7 @@
 % Please edit documentation in R/helpers-testthat.R
 \name{expect_gg}
 \alias{expect_gg}
-\title{Check if an object is a ggplot2 plot}
+\title{Check if an Object is a \link{ggplot2} Plot}
 \usage{
 expect_gg(x)
 }
@@ -10,5 +10,5 @@ expect_gg(x)
 Use in tests to check if an object is a \link[ggplot2:ggplot]{ggplot2::ggplot} object
 }
 \note{
-borrowed from bayesplot:::expect_gg
+borrowed from \code{bayesplot:::expect_gg}
 }

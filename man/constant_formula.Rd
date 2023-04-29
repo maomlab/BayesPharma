@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-constant-formula.R
 \name{constant_formula}
 \alias{constant_formula}
-\title{Formula for a curve with a constant response}
+\title{Formula for a Curve with a Constant Response}
 \usage{
 constant_formula(
   response_variable = "response",

@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-MuSyC-function.R
 \name{MuSyC}
 \alias{MuSyC}
-\title{Generate MuSyC Ed scores using a robust functional form}
+\title{Generate MuSyC Ed Scores Using a Robust Functional Form}
 \usage{
 MuSyC(logd1, logd2, logE0, logE1, logC1, h1, logE2, logC2, h2, logE3, logalpha)
 }
@@ -43,7 +43,7 @@ greater than 1 is synergistic, less than 1 is antagonistic.}
 treatment 2 at doses \code{logd1} and \code{logd2} respectively.
 }
 \description{
-Generate MuSyC Ed scores using a robust functional form
+Generate MuSyC Ed Scores Using a Robust Functional Form
 }
 \references{
 Meyer, D.J., Wooten, D.J., Paudel B.B., Bauer, J., Hardeman, K.N.,

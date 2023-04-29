@@ -1,4 +1,4 @@
-#' Stan code for the MuSyC function.
+#' Stan Code for the MuSyC Function.
 #'
 #' @note stanvar script of a MuSyC equation.
 #'
@@ -43,6 +43,10 @@ MuSyC_stanvar <- brms::stanvar(
     "  }", sep = "\n"),
   block = "functions")
 
+
+#' Stan Code for the MuSyC Generated Quantities
+#'
+#' @export
 MuSyC_genquant_stanvar <- brms::stanvar(
   scode = paste(
     "  real E0 = exp(b_logE0[1]);",

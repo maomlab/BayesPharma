@@ -1,4 +1,4 @@
-#' Create a prior for the MuSyC synergy model
+#' Create a Prior for the MuSyC Synergy Model
 #'
 #' @description Creating a `data.frame` of priors of the dose response
 #' parameters required for the MuSyC model.

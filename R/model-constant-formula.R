@@ -1,4 +1,4 @@
-#' Formula for a curve with a constant response
+#' Formula for a Curve with a Constant Response
 #'
 #' @description set-up an equation for formula objects with a constant response.
 #'

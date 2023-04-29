@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-growth-prior.R
 \name{growth_richards_prior}
 \alias{growth_richards_prior}
-\title{Create a prior for the sigmoid growth model}
+\title{Create a Prior for the Sigmoid Growth Model}
 \usage{
 growth_richards_prior(
   K = brms::prior(prior = normal(1, 0.5), nlpar = "K"),

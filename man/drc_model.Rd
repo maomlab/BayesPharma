@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-drc.R
 \name{drc_model}
 \alias{drc_model}
-\title{Wrapper for DRC dose response models}
+\title{Wrapper for DRC Dose Response Models}
 \usage{
 drc_model(
   data,
@@ -27,8 +27,11 @@ values.}
 }
 \value{
 An object of (S3) class \code{drc} from the \link{drc} package.
-
-\examples
+}
+\description{
+Wrapper for DRC Dose Response Models
+}
+\examples{
 \dontrun{
 BayesPharma::drm_model(
   data = tibble::tibble(
@@ -37,7 +40,5 @@ BayesPharma::drm_model(
       ac50 = -6, hill = -1, top = 1, bottom = 0, log_dose = log_dose),
     response = stats::rnorm(n = 20, mean = 0, sd = 0.2))
 }
-}
-\description{
-Wrapper for DRC dose response models
+
 }

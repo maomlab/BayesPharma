@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-MuSyC-init.R
 \name{MuSyC_init}
 \alias{MuSyC_init}
-\title{Create initialization for the MuSyC model}
+\title{Create Initial Parameter Values for the MuSyC Model}
 \usage{
 MuSyC_init(
   logE0 = log(0.5),

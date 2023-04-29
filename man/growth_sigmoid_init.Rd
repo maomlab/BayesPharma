@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-growth-init.R
 \name{growth_sigmoid_init}
 \alias{growth_sigmoid_init}
-\title{Create initialization for the sigmoid growth model}
+\title{Create Initialization for the Sigmoid Growth Model}
 \usage{
 growth_sigmoid_init(K = 1, K0 = 0, rate = 1, lambda = 0.5)
 }
