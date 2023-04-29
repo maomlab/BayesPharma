@@ -72,7 +72,7 @@ sigmoid_agonist_formula <- function(
   model_formula
 }
 
-#' Create a formula for the sigmoid antagonist model
+#' Create a Formula for the Sigmoid Antagonist Model
 #'
 #' @description set-up an antagonist sigmoid dose response model formula to
 #'   define a non-linear model or multilevel non-linear model for `ic50`,

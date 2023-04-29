@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-util.R
 \name{prepare_prior}
 \alias{prepare_prior}
-\title{Helper Function to Prepare a Prior for a brms Model}
+\title{Helper Function to Prepare a Prior for a \link{brms} Model}
 \usage{
 prepare_prior(prior, ...)
 }

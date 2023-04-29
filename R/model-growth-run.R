@@ -98,7 +98,7 @@ growth_sigmoid_model <- function(
 }
 
 
-#' Run Bayesian Richards growth model
+#' Run Bayesian Richards Growth Model
 #'
 #' @description
 #'   For additional information on additional function arguments, reference:

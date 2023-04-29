@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-MuSyC-formula.R
 \name{MuSyC_formula}
 \alias{MuSyC_formula}
-\title{Create a formula for the MuSyC synergy model}
+\title{Create a Formula for the MuSyC Synergy Model}
 \usage{
 MuSyC_formula(
   treatment_1_variable = "logd1",

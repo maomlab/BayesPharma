@@ -3,7 +3,7 @@
 \docType{data}
 \name{growth_sigmoid_stanvar}
 \alias{growth_sigmoid_stanvar}
-\title{Stan code for the growth Richards function.}
+\title{Stan Code for the Growth Richards Function.}
 \format{
 An object of class \code{stanvars} of length 1.
 }
@@ -11,7 +11,7 @@ An object of class \code{stanvars} of length 1.
 growth_sigmoid_stanvar
 }
 \description{
-Stan code for the growth Richards function.
+Stan Code for the Growth Richards Function.
 }
 \note{
 stanvar script of a sigmoid growth model response equation

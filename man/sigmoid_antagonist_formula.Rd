@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-sigmoid-formula.R
 \name{sigmoid_antagonist_formula}
 \alias{sigmoid_antagonist_formula}
-\title{Create a formula for the sigmoid antagonist model}
+\title{Create a Formula for the Sigmoid Antagonist Model}
 \usage{
 sigmoid_antagonist_formula(
   treatment_variable = "log_dose",

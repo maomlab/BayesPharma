@@ -1,4 +1,4 @@
-#' Create a formula for the sigmoid growth model
+#' Create a Formula for the Sigmoid Growth Model
 #'
 #' @description set-up a sigmoid growth model formula to for use in
 #'   [growth_sigmoid_model()]. The functional form is
@@ -109,7 +109,7 @@ growth_sigmoid_formula <- function(
 
 
 
-#' Create a formula for the Richards growth model
+#' Create a Formula for the Richards Growth Model
 #'
 #' @description set-up a Richards growth model formula to for use in
 #'   `growth_richards_model` and in the [BayesPharma] package. The functional

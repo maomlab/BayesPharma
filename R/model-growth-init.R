@@ -1,4 +1,4 @@
-#' Create initialization for the sigmoid growth model
+#' Create Initialization for the Sigmoid Growth Model
 #'
 #' @description Creating initial values for sigmoid growth model
 #'   parameters that can be passed to the
@@ -36,7 +36,7 @@ growth_sigmoid_init <- function(
   }
 }
 
-#' Create initialization for the Richards growth model
+#' Create Initialization for the Richards Growth Model
 #'
 #' @description Creating initial values for Richards growth model parameters
 #'   that can be passed to the [growth_richards_model].

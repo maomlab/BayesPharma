@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-MuSyC-prior.R
 \name{MuSyC_prior}
 \alias{MuSyC_prior}
-\title{Create a prior for the MuSyC synergy model}
+\title{Create a Prior for the MuSyC Synergy Model}
 \usage{
 MuSyC_prior(
   logE0 = brms::prior(prior = normal(-0.6931, 3), nlpar = "logE0", ub = 0),

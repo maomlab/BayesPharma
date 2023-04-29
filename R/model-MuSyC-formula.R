@@ -1,4 +1,4 @@
-#' Create a formula for the MuSyC synergy model
+#' Create a Formula for the MuSyC Synergy Model
 #'
 #' @description Setup a `MuSyC` synergy model formula to predict the
 #'   `E0`, `C1`, `E1`, `s1`, `C2`, `E2`, `s2`, `log10alpha`, and `E3alpha`

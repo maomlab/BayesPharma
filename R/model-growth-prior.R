@@ -1,4 +1,4 @@
-#' Create a prior for the sigmoid growth model
+#' Create a Prior for the Sigmoid Growth Model
 #'
 #' @description Creates a for the priors for the sigmoid growth model. If the
 #'   function arguments `K`, `K0`, `rate`, `lambda`, or
@@ -45,7 +45,7 @@ growth_richards_prior <- function(
     prepare_prior(prior = lambda, nlpar = "lambda"))
 }
 
-#' Create a prior for the Richards growth model
+#' Create a Prior for the Richards Growth Model
 #'
 #' @description Creates a for the priors for the Richards growth model. If the
 #'   function arguments `K`, `K0`, `rate`, `lambda`, or

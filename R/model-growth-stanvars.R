@@ -1,4 +1,4 @@
-#' Stan code for the growth Richards function.
+#' Stan Code for the Growth Richards Function.
 #'
 #' @note stanvar script of a sigmoid growth model response equation
 #'
@@ -33,7 +33,7 @@ growth_sigmoid_stanvar <- brms::stanvar(
   block = "functions")
 
 
-#' Stan code for the Richards growth function.
+#' Stan Code for the Richards Growth Function.
 #'
 #' @note stanvar script of a Richard growth model response equation.
 #'

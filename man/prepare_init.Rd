@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-util.R
 \name{prepare_init}
 \alias{prepare_init}
-\title{Helper Function to Prepare an Init for a brms model}
+\title{Helper Function to Prepare an Init for a \link{brms} Model}
 \usage{
 prepare_init(init)
 }
@@ -14,5 +14,5 @@ prepare_init(init)
 \code{function} returning a \code{numeric} \code{array} of length \code{1}.
 }
 \description{
-Helper Function to Prepare an Init for a brms model
+Helper Function to Prepare an Init for a \link{brms} Model
 }

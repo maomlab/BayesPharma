@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-growth-run.R
 \name{growth_richards_model}
 \alias{growth_richards_model}
-\title{Run Bayesian Richards growth model}
+\title{Run Bayesian Richards Growth Model}
 \usage{
 growth_richards_model(
   data,

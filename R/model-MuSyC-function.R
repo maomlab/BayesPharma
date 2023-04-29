@@ -1,4 +1,4 @@
-#' Generate MuSyC Ed scores using a robust functional form
+#' Generate MuSyC Ed Scores Using a Robust Functional Form
 #'
 #'
 #' @param logd1 `numeric` log dose for treatment 1

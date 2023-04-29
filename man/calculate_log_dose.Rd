@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate-log-dose.R
 \name{calculate_log_dose}
 \alias{calculate_log_dose}
-\title{Add a Log(dose) (in base 10) column to the input \code{data.frame}}
+\title{Add a Log(dose) (in base 10) Column to the Input \code{data.frame}}
 \usage{
 calculate_log_dose(data, dose_col = "dose", molar_concentration = 1)
 }

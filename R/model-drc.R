@@ -1,4 +1,4 @@
-#' Wrapper for DRC dose response models
+#' Wrapper for DRC Dose Response Models
 #'
 #' @param data `data.frame`
 #' @param formula `formula` formula relating the `response` to the `log_dose`,

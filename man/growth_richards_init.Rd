@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-growth-init.R
 \name{growth_richards_init}
 \alias{growth_richards_init}
-\title{Create initialization for the Richards growth model}
+\title{Create Initialization for the Richards Growth Model}
 \usage{
 growth_richards_init(K = 1, K0 = 0, rate = 1, lambda = 0.5, nu = 1)
 }

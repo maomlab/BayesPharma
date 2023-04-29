@@ -2,6 +2,7 @@
 
 export(MuSyC)
 export(MuSyC_formula)
+export(MuSyC_genquant_stanvar)
 export(MuSyC_hi_to_si)
 export(MuSyC_init)
 export(MuSyC_model)
