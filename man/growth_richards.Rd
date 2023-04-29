@@ -7,35 +7,51 @@
 growth_richards(K, K0, rate, lambda, nu, time)
 }
 \arguments{
-\item{K}{\code{numeric}, the carrying capacity}
+\item{K}{\code{numeric} the carrying capacity}
 
-\item{K0}{\code{numeric}, the baseline response}
+\item{K0}{\code{numeric} the baseline response}
 
-\item{rate}{\code{numeric}, maximum growth rate}
+\item{rate}{\code{numeric} the maximum growth rate}
 
-\item{lambda}{\code{numeric}, time line through the maximum growth rate
-crosses zero}
+\item{lambda}{\code{numeric} duration of the lag-phase}
 
-\item{nu}{\code{numeric}, asymmetry in growth before and after the inflection
-point}
+\item{nu}{\code{numeric} growth asymmetry before and after the inflection point}
 
-\item{time}{\code{numeric}, time point at which to evaluate the response.}
+\item{time}{\code{numeric} time point at which to evaluate the response}
 }
 \value{
-numeric, response given the time and parameters
-
-response(time) =
-K0 + (K - K0)/(
-1 + nu * exp(
-1 + nu + rate/(K - K0) * (1 + nu)^(1 + 1/nu) *
-(lambda - time))) ^ (1/nu)
+\code{numeric} response given the time and parameters
 }
 \description{
 Functional form for the Richards growth model.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{response(time) =
+  K0 + (K - K0)/(
+    1 + nu * exp(
+      1 + nu + rate/(K - K0) * (1 + nu)^(1 + 1/nu) *
+      (lambda - time))) ^ (1/nu)
+}\if{html}{\out{</div>}}
+
+The parameterization follows (Zwietering, 1990) and \link{grofit}:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{K      = **carrying capacity**, `K = response(time = Inf)`. The [grofit]
+         package calls this parameter `A`. `K` has the same units as the
+         `response`.
+K0     = **initial population size** `K0 = response(time = 0)`. The
+         [grofit] package assumes `K0=0`. `K0` has the same units as the
+         `response`.
+rate   = **maximum growth rate** `rate = max[d(response)/d(time)]`. The
+         [grofit] package calls this `mu`. `rate` has the units of
+         `response/time`
+lambda = **duration of the lag-phase** the time point at which the
+         tangent through the growth curve when it achieves the maximum
+         growth rate crosses the initial population size `K0`. (see
+         Figure 2 in (Kahm et al., 2010)).
+nu     = **growth asymmetry** before and after the inflection
+}\if{html}{\out{</div>}}
 }
 \examples{
 \dontrun{
-
  # Generate Richards growth curve
  data <- data.frame(
    time = seq(0, 2, length.out = 101)) |>
@@ -52,4 +68,14 @@ Functional form for the Richards growth model.
        sd = .2))
 }
 
+
+}
+\references{
+Zwietering M. H., Jongenburger I., Rombouts F. M., van 't Riet K., (1990)
+Modeling of the Bacterial Growth Curve. Appl. Environ. Microbiol., 56(6),
+1875-1881 https://doi.org/10.1128/aem.56.6.1875-1881.1990
+
+Kahm, M., Hasenbrink, G., Lichtenberg-Fraté, H., Ludwig, J., & Kschischo, M.
+(2010). grofit: Fitting Biological Growth Curves with R. J. Stat. Softw.,
+33(7), 1–21. https://doi.org/10.18637/jss.v033.i07
 }

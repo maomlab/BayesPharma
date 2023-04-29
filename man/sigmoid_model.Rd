@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-sigmoid-run.R
 \name{sigmoid_model}
 \alias{sigmoid_model}
-\title{Fit a Bayesian sigmoid model}
+\title{Fit a Bayesian Sigmoid Model}
 \usage{
 sigmoid_model(
   data,

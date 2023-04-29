@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-synergy-checkerboard.R
 \name{plot_synergy_checkerboard}
 \alias{plot_synergy_checkerboard}
-\title{Plot synergy checkerboard}
+\title{Plot Synergy Checkerboard}
 \usage{
 plot_synergy_checkerboard(
   data,
@@ -39,5 +39,5 @@ response. Individual plot elements can be over-written and the
 plot can be saved with \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}
 }
 \description{
-Plot synergy checkerboard
+Plot Synergy Checkerboard
 }

@@ -1,4 +1,4 @@
-#' Create an agonist sigmoid formula for the sigmoid model
+#' Create an Agonist Sigmoid Formula for the Sigmoid Model
 #'
 #' @description set-up a sigmoid dose response model formula to define a
 #'   non-linear model or multilevel non-linear model for `ec50`, `hill`, `top`,
@@ -17,6 +17,7 @@
 #'
 #' @returns a `bpformula`, which is a subclass of [brms::brmsformula] and can be
 #'   passed to [sigmoid_model()].
+#'
 #' @seealso [brms::brmsformula], which this function wraps. [sigmoid_model()]
 #'   into which the result of this function can be passed.
 #'

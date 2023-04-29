@@ -1,4 +1,4 @@
-#' Create initialization for an agonist sigmoid model
+#' Initialize Parameter Values for an Agonist Sigmoid Model
 #'
 #' @description Creating initial values for an agonist sigmoid model parameters
 #'   that can be passed to the [sigmoid_model()] along with the
@@ -42,7 +42,7 @@ sigmoid_agonist_init <- function(
   }
 }
 
-#' Create initialization for an antagonist sigmoid model
+#' Initialize Parameter Values for an Antagonist Sigmoid Model
 #'
 #' @description Creating initial values for an agonist sigmoid model parameters
 #'   that can be passed to the [sigmoid_model()] along with the

@@ -2,8 +2,7 @@
 % Please edit documentation in R/plot-posterior-density.R
 \name{plot_posterior_density}
 \alias{plot_posterior_density}
-\title{Create a plot of the posterior density distributions of modeled parameters
-from brmsfit model}
+\title{Plot Posterior Density Distributions of modeled parameters}
 \usage{
 plot_posterior_density(
   model,

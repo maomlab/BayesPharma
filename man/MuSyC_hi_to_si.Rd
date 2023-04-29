@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-MuSyC-utils.R
 \name{MuSyC_hi_to_si}
 \alias{MuSyC_hi_to_si}
-\title{Convert exponent to slope parameterization for drug i}
+\title{Convert Exponent to Slope Parameterization for Drug i in MuSyC Model}
 \usage{
 MuSyC_hi_to_si(hi, Ci, E0, Ei)
 }
@@ -23,5 +23,8 @@ zero
 }
 \description{
 This can be used for setting priors and interpreting parameter
-estimates see MuSyC_si_to_hi for details
+estimates see \code{\link[=MuSyC_si_to_hi]{MuSyC_si_to_hi()}} for details
+}
+\seealso{
+\link{MuSyC_si_to_hi}
 }

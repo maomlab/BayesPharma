@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-MuSyC-utils.R
 \name{MuSyC_si_to_hi}
 \alias{MuSyC_si_to_hi}
-\title{Convert from slope to exponent parameterization for drug i}
+\title{Convert From Slope to Exponent Parameterization for Drug i in the MuSyC Model}
 \usage{
 MuSyC_si_to_hi(si, Ci, E0, Ei)
 }
@@ -57,4 +57,7 @@ Evaluate at d2 = C2:
 =  h2 * (E0 + E2) / (4 * C2)
 
 [4\emph{C2^(2}h2))]: R:4\emph{C2\%5E(2}h2))
+}
+\seealso{
+\link{MuSyC_hi_to_si}
 }

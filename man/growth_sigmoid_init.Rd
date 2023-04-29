@@ -7,17 +7,14 @@
 growth_sigmoid_init(K = 1, K0 = 0, rate = 1, lambda = 0.5)
 }
 \arguments{
-\item{K}{\code{numeric} or \code{numeric} returning \code{function}
-(Default: 1).}
+\item{K}{\code{numeric} or \code{numeric} returning \code{function}}
 
-\item{K0}{\code{numeric} or \code{numeric} returning \code{function}
-(Default: 0).}
+\item{K0}{\code{numeric} or \code{numeric} returning \code{function}}
 
-\item{rate}{\code{numeric} or \code{numeric} returning \code{function}
-(Default: 1).}
+\item{rate}{\code{numeric} or \code{numeric} returning \code{function}}
 
 \item{lambda}{\code{numeric} or \code{numeric} returning \code{function}
-units of \code{time} (Default: 0.5).}
+units of \code{time}}
 }
 \value{
 input for \verb{[brm][brms::brm](init = ...)}
@@ -25,11 +22,15 @@ input for \verb{[brm][brms::brm](init = ...)}
 \description{
 Creating initial values for sigmoid growth model
 parameters that can be passed to the
-.  \code{richards_growth_model}.
+.  \link{growth_sigmoid_model}.
 }
 \examples{
 \dontrun{
 init <- BayesPharma::growth_sigmoid_init(
   A = 100)
 }
+}
+\seealso{
+\link{growth_sigmoid_formula}, \link{growth_sigmoid_prior}, and
+\link{growth_sigmoid_model}
 }

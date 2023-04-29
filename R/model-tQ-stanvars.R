@@ -1,4 +1,4 @@
-#' Stan code for the tQ enzyme kinetics model
+#' Stan Code for the tQ Enzyme Kinetics Model
 #'
 #' The tQ is an ordinary differential equation model for the total
 #' quasi-steady-state assumption kinetics defined in

@@ -1,4 +1,4 @@
-#' Give basic statistical information about the model results
+#' Give Basic Statistical Information About the Model Results
 #'
 #' @description Return a `data.frame` containing summary statistics of
 #'   `bpfit` model. The summary statistics included are mean, median,

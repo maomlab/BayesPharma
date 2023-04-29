@@ -14,14 +14,15 @@ growth_sigmoid_formula(
 )
 }
 \arguments{
-\item{treatment_variable}{character variable representing time as a treatment}
-
-\item{treatment_units}{character the units of the time variable}
-
-\item{response_variable}{character variable representing the response to
+\item{treatment_variable}{\code{character} variable representing time as a
 treatment}
 
-\item{response_units}{character the units of the response. (Default: NULL)}
+\item{treatment_units}{\code{character} the units of the time variable}
+
+\item{response_variable}{\code{character} variable representing the response to
+treatment}
+
+\item{response_units}{\code{character} the units of the response}
 
 \item{predictors}{Additional formula objects to specify predictors
 of non-linear parameters. i.e. what perturbations/experimental
@@ -39,24 +40,28 @@ a \code{bpformula}, which is a subclass of
 \description{
 set-up a sigmoid growth model formula to for use in
 \code{\link[=growth_sigmoid_model]{growth_sigmoid_model()}}. The functional form is
-\preformatted{
-    response ~ sigmoid_growth(K, K0, rate, lambda, time)}
 
-The parameterization follows (Zwietering, 1990) and grofit:
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{K      = carrying capacity, K = response(time = Inf). In the grofit
-         package this is parameter is called "A", having the same units
-         as the response
-K0     = initial population size K0 = response(time = 0). In the grofit
-         package K0 is assumed to be zero, having the same units as the
-         response.
-rate   = the maximum growth rate The grofit package calls this μ, having
-         with of response/time
-lambda = the length of the lag-phase, defined by to be the time point at
-         which the tangent through the growth curve crosses response =
-         K0.
-See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
+\if{html}{\out{<div class="sourceCode">}}\preformatted{response ~ growth_sigmoid(K, K0, rate, lambda, time)
 }\if{html}{\out{</div>}}
+
+The parameterization follows (Zwietering, 1990) and \link{grofit}:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{K      = **carrying capacity**, `K = response(time = Inf)`. The [grofit]
+         package calls this parameter `A`. `K` has the same units as the
+         `response`.
+K0     = **initial population size** `K0 = response(time = 0)`. The
+         [grofit] package assumes `K0=0`. `K0` has the same units as the
+         `response`.
+rate   = **maximum growth rate** `rate = max[d(response)/d(time)]`. The
+         [grofit] package calls this `mu`. `rate` has the units of
+         `response/time`
+lambda = **duration of the lag-phase** the time point at which the
+         tangent through the growth curve when it achieves the maximum
+         growth rate crosses the initial population size `K0`. (see
+         Figure 2 in (Kahm et al., 2010)).
+}\if{html}{\out{</div>}}
+
+See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
 }
 \examples{
 \dontrun{
@@ -75,9 +80,18 @@ See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
 }
 
 }
+\references{
+Zwietering M. H., Jongenburger I., Rombouts F. M., van 't Riet K., (1990)
+Modeling of the Bacterial Growth Curve. Appl. Environ. Microbiol., 56(6),
+1875-1881 https://doi.org/10.1128/aem.56.6.1875-1881.1990
+
+Kahm, M., Hasenbrink, G., Lichtenberg-Fraté, H., Ludwig, J., & Kschischo, M.
+(2010). grofit: Fitting Biological Growth Curves with R. J. Stat. Softw.,
+33(7), 1–21. https://doi.org/10.18637/jss.v033.i07
+}
 \seealso{
 \if{html}{\out{<div class="sourceCode">}}\preformatted{[brms::brmsformula()], which this function wraps.
 [growth_sigmoid_model]()] into which the result of this
-function can be passed.
+function can be passed. Related to [grofit::logistic]
 }\if{html}{\out{</div>}}
 }

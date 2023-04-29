@@ -1,4 +1,4 @@
-#' Plot synergy checkerboard
+#' Plot Synergy Checkerboard
 #'
 #' @param data `data.frame` with columns `dose1`, `dose2`, and `response`
 #' @param treatment_1_label `character` used to make default title and axis

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-drc.R
 \name{plot_drc}
 \alias{plot_drc}
-\title{Create plot of drc model}
+\title{Create Plot of a DRC Model}
 \usage{
 plot_drc(
   model,
@@ -13,7 +13,7 @@ plot_drc(
 )
 }
 \arguments{
-\item{model}{\code{drc::drc} model object generated with \code{\link[drc:drm]{drc::drm()}}}
+\item{model}{\code{drc::drm} model object generated with \code{\link[drc:drm]{drc::drm()}}}
 
 \item{newdata}{\code{data.frame} where the predictions should be made.
 Default: use the range of treatment values in the model object.}
@@ -22,12 +22,12 @@ Default: use the range of treatment values in the model object.}
 \code{predict(model, ...)} including interval will generate ribbon of the
 given type, see \code{\link[drc:predict.drc]{drc::predict.drc()}} for more details.}
 
-\item{aes_mapping}{\verb{[aes][ggplot2::aes](...)} mapping columns of the
+\item{aes_mapping}{\verb{[ggplot2::aes](...)} mapping columns of the
 model data and new data to the plot. (Default:
-\verb{ggplot2::[aes][ggplot2::aes](x = log_dose, y = response)})}
+\verb{ggplot2::aes](x = log_dose, y = response)})}
 
 \item{title}{\code{character} giving the plot title}
 }
 \description{
-Create plot of drc model
+Create Plot of a DRC Model
 }

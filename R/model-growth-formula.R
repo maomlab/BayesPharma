@@ -2,29 +2,33 @@
 #'
 #' @description set-up a sigmoid growth model formula to for use in
 #'   [growth_sigmoid_model()]. The functional form is
-#'   \preformatted{
-#'     response ~ sigmoid_growth(K, K0, rate, lambda, time)}
 #'
-#'   The parameterization follows (Zwietering, 1990) and grofit:
+#'     response ~ growth_sigmoid(K, K0, rate, lambda, time)
 #'
-#'     K      = carrying capacity, K = response(time = Inf). In the grofit
-#'              package this is parameter is called "A", having the same units
-#'              as the response
-#'     K0     = initial population size K0 = response(time = 0). In the grofit
-#'              package K0 is assumed to be zero, having the same units as the
-#'              response.
-#'     rate   = the maximum growth rate The grofit package calls this μ, having
-#'              with of response/time
-#'     lambda = the length of the lag-phase, defined by to be the time point at
-#'              which the tangent through the growth curve crosses response =
-#'              K0.
-#'     See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
+#'   The parameterization follows (Zwietering, 1990) and [grofit]:
 #'
-#' @param treatment_variable character variable representing time as a treatment
-#' @param treatment_units character the units of the time variable
-#' @param response_variable character variable representing the response to
+#'     K      = **carrying capacity**, `K = response(time = Inf)`. The [grofit]
+#'              package calls this parameter `A`. `K` has the same units as the
+#'              `response`.
+#'     K0     = **initial population size** `K0 = response(time = 0)`. The
+#'              [grofit] package assumes `K0=0`. `K0` has the same units as the
+#'              `response`.
+#'     rate   = **maximum growth rate** `rate = max[d(response)/d(time)]`. The
+#'              [grofit] package calls this `mu`. `rate` has the units of
+#'              `response/time`
+#'     lambda = **duration of the lag-phase** the time point at which the
+#'              tangent through the growth curve when it achieves the maximum
+#'              growth rate crosses the initial population size `K0`. (see
+#'              Figure 2 in (Kahm et al., 2010)).
+#'
+#' See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
+#'
+#' @param treatment_variable `character` variable representing time as a
 #'   treatment
-#' @param response_units character the units of the response. (Default: NULL)
+#' @param treatment_units `character` the units of the time variable
+#' @param response_variable `character` variable representing the response to
+#'   treatment
+#' @param response_units `character` the units of the response
 #' @param predictors Additional formula objects to specify predictors
 #'   of non-linear parameters. i.e. what perturbations/experimental
 #'   differences should be modeled separately? (Default: 1) should a
@@ -39,10 +43,10 @@
 #' @seealso
 #'     [brms::brmsformula()], which this function wraps.
 #'     [growth_sigmoid_model]()] into which the result of this
-#'     function can be passed.
+#'     function can be passed. Related to [grofit::logistic]
 #'
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #'   # Data has a string column drug_id with drug identifiers
 #'   # Fit a separate model for each drug
 #'   BayesPharma::growth_sigmoid_formula(predictors = 0 + drug_id)
@@ -55,7 +59,16 @@
 #'   # data has columns drug_id and plate_id
 #'   # fit a multilevel model where the drug effect depends on the plate
 #'   BayesPharma::growth_sigmoid_formula(predictors = 0 + (drug_id|plate_id))
-#'}
+#' }
+#'
+#' @references
+#' Zwietering M. H., Jongenburger I., Rombouts F. M., van 't Riet K., (1990)
+#' Modeling of the Bacterial Growth Curve. Appl. Environ. Microbiol., 56(6),
+#' 1875-1881 https://doi.org/10.1128/aem.56.6.1875-1881.1990
+#'
+#' Kahm, M., Hasenbrink, G., Lichtenberg-Fraté, H., Ludwig, J., & Kschischo, M.
+#' (2010). grofit: Fitting Biological Growth Curves with R. J. Stat. Softw.,
+#' 33(7), 1–21. https://doi.org/10.18637/jss.v033.i07
 #'
 #'@export
 growth_sigmoid_formula <- function(
@@ -77,8 +90,6 @@ growth_sigmoid_formula <- function(
     lhs = quote(K + K0 + rate + lambda),
     rhs = rlang::enexpr(predictors))
 
-  # The growth_sigmoid function is defined in
-  # BayesPharma::growth_sigmoid_stanvar
   model_formula <- brms::brmsformula(
     response_eq,
     predictor_eq,
@@ -108,28 +119,31 @@ growth_sigmoid_formula <- function(
 #'
 #'   The parameterization follows (Zwietering, 1990) and [grofit]:
 #'
-#'     K      = carrying capacity, K = response(time = Inf). In the grofit
-#'              package this is parameter is called "A", having the same units
-#'              as the response
-#'     K0     = initial population size K0 = response(time = 0). In the grofit
-#'              package K0 is assumed to be zero, having the same units as the
-#'              response.
-#'     rate   = the maximum growth rate The grofit package calls this μ, having
-#'              with of response/time
-#'     nu     = how asymmetric the growth is before and after the inflection
-#'              point
-#'     lambda = the length of the lag-phase, defined by to be the time point at
-#'              which the tangent through the growth curve crosses response =
-#'              K0.
-#'     See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
 #'
-#' @param treatment_variable character variable representing time as a treatment
-#'   (Default: 'time')
-#' @param treatment_units character the units of the time variable. (Default:
-#'   "seconds")
-#' @param response_variable character variable representing the response to
-#'   treatment. (Default: 'response')
-#' @param response_units character the units of the response. (Default: NULL)
+#'     K      = **carrying capacity**, `K = response(time = Inf)`. The [grofit]
+#'              package calls this parameter `A`. `K` has the same units as the
+#'              `response`.
+#'     K0     = **initial population size** `K0 = response(time = 0)`. The
+#'              [grofit] package assumes `K0=0`. `K0` has the same units as the
+#'              `response`.
+#'     rate   = **maximum growth rate** `rate = max[d(response)/d(time)]`. The
+#'              [grofit] package calls this `mu`. `rate` has the units of
+#'              `response/time`
+#'     lambda = **duration of the lag-phase** the time point at which the
+#'              tangent through the growth curve when it achieves the maximum
+#'              growth rate crosses the initial population size `K0`. (see
+#'              Figure 2 in (Kahm et al., 2010)).
+#'     nu     = **growth asymmetry** before and after the inflection
+#'              point.
+#'
+#' See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
+#'
+#' @param treatment_variable `character` variable representing time as a
+#'   treatment
+#' @param treatment_units `character` the units of the time variable
+#' @param response_variable `character` variable representing the response to
+#'   treatment
+#' @param response_units `character` the units of the response
 #' @param predictors Additional formula objects to specify predictors
 #'   of non-linear parameters. i.e. what perturbations/experimental differences
 #'   should be modeled separately? (Default: 1) should a random effect be taken
@@ -159,6 +173,15 @@ growth_sigmoid_formula <- function(
 #'   # fit a multilevel model where the drug effect depends on the plate
 #'   BayesPharma::growth_richards_formula(predictors = 0 + (drug_id|plate_id))
 #'}
+#'
+#' @references
+#' Zwietering M. H., Jongenburger I., Rombouts F. M., van 't Riet K., (1990)
+#' Modeling of the Bacterial Growth Curve. Appl. Environ. Microbiol., 56(6),
+#' 1875-1881 https://doi.org/10.1128/aem.56.6.1875-1881.1990
+#'
+#' Kahm, M., Hasenbrink, G., Lichtenberg-Fraté, H., Ludwig, J., & Kschischo, M.
+#' (2010). grofit: Fitting Biological Growth Curves with R. J. Stat. Softw.,
+#' 33(7), 1–21. https://doi.org/10.18637/jss.v033.i07
 #'
 #'@export
 growth_richards_formula <- function(

@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-tQ-generate.R
 \name{tQ_model_generate}
 \alias{tQ_model_generate}
-\title{Generate data from the total QSSA model for enzyme kinetics}
+\title{Generate Data from the Total QSSA (tQ) Model for Enzyme Kinetics}
 \usage{
 tQ_model_generate(time, kcat, kM, ET, ST, ...)
 }
@@ -25,7 +25,7 @@ with initial product concentration of \code{0} and specified \code{kcat} and
 \code{kM} parameters for the specified time steps.
 }
 \description{
-Simulate data from the total QSSA model a refinement of the
+Simulate data from the total QSSA (tQ) model a refinement of the
 classical Michaelis-Menten enzyme kinetics ordinary differential
 equation described in (Choi, et al., 2017, DOI:
 10.1038/s41598-017-17072-z). Consider the kinetic rate equation

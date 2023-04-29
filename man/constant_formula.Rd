@@ -12,11 +12,10 @@ constant_formula(
 )
 }
 \arguments{
-\item{response_variable}{character variable representing the response to
-treatment. (Default: \code{'response'})}
+\item{response_variable}{\code{character} variable representing the response to
+treatment}
 
-\item{response_units}{character the units of the response. (Default:
-\code{NULL})}
+\item{response_units}{character the units of the response}
 
 \item{predictors}{Additional formula objects to specify predictors of
 non-linear parameters. i.e. what perturbations/experimental differences

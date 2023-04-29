@@ -1,4 +1,4 @@
-#' Fit a Bayesian sigmoid model
+#' Fit a Bayesian Sigmoid Model
 #'
 #' @description Fits the sigmoid model. The functional form is
 #'  \preformatted{

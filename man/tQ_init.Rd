@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-tQ-init.R
 \name{tQ_init}
 \alias{tQ_init}
-\title{Initialize parameter values for the tQ enzyme kinetic model}
+\title{Initialize Parameter Values for the tQ Enzyme Kinetic Model}
 \usage{
 tQ_init(kcat = 4, kM = 4)
 }
@@ -15,7 +15,7 @@ tQ_init(kcat = 4, kM = 4)
 input for \verb{[model_tQ](init = ...)} parameter.
 }
 \description{
-Initialize parameter values for the tQ enzyme kinetic model
+Initialize Parameter Values for the tQ Enzyme Kinetic Model
 }
 \seealso{
 \link{tQ_model}, \link{tQ_formula}, and \link{tQ_prior}

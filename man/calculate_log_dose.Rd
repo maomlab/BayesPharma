@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate-log-dose.R
 \name{calculate_log_dose}
 \alias{calculate_log_dose}
-\title{Add a log dose (in base 10) column to the input data.frame}
+\title{Add a Log(dose) (in base 10) column to the input \code{data.frame}}
 \usage{
 calculate_log_dose(data, dose_col = "dose", molar_concentration = 1)
 }
@@ -17,7 +17,7 @@ molar units.}
 dose column (Default: 1).}
 }
 \value{
-input \code{data.frame} with an additional \code{log_dose} column
+input \code{data.frame} with an appended \code{log_dose} column
 which is the \verb{log10(<dose_col>) * molar_concentration}.
 }
 \description{
@@ -28,12 +28,12 @@ molar concentration add a new column of the log base-10 dose,
 \examples{
 \dontrun{
 # Consider observations at doses of 1 μM and 0.1 μM.
-# If the doses are given in molar units e.g. M then,
+# If the doses are given in molar units (M) then
 data <- data.frame(dose = c(1e-6, 1e-7)) |>
    BayesPharma::calculate_log_dose(dose_col = dose, molar_concentration = 1)
 data$log_dose == c(-6, -7)
 
-# If the doses are given with in units of nanomolar units e.g. nM then
+# If the doses are given with in units of nanomolar (nM) then
 data <- data.frame(dose_nM = c(1000, 100)) |>
   BayesPharma::calculate_log_dose(
     dose_col = dose_nM,

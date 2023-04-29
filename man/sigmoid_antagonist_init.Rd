@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-sigmoid-init.R
 \name{sigmoid_antagonist_init}
 \alias{sigmoid_antagonist_init}
-\title{Create initialization for an antagonist sigmoid model}
+\title{Initialize Parameter Values for an Antagonist Sigmoid Model}
 \usage{
 sigmoid_antagonist_init(ic50 = -6, hill = -1, top = 1, bottom = 0)
 }

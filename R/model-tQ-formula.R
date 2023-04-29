@@ -1,27 +1,25 @@
-#' Define formula for the tQ enzyme kinetics model
+#' Define a Formula for the Total QSSA (tQ) Enzyme Kinetics Model
 #'
 #' @param series_index_variable `character` variable indexing which
-#'   measurements are part of a common time series.
+#'   measurements are part of a common time series
 #' @param treatment_variable `character` variable representing time as the
-#'   treatment.
-#' @param treatment_units `character` the units of the treatment variable.
+#'   treatment
+#' @param treatment_units `character` the units of the treatment variable
 #' @param ET_variable `character` variable representing the total enzyme
-#'   concentration.
+#'   concentration
 #' @param ET_units `character` variable representing the units of the
-#'   enzyme concentration.
+#'   enzyme concentration
 #' @param ST_variable `character` variable representing the total substrate
-#'   concentration.
+#'   concentration
 #' @param ST_units `character` variable representing the units of the
-#'   substrate concentration.
-#' @param response_variable `character` variable representing the product.
-#' @param response_units `character` the units of the product.
-#' @param predictors `expression` of predictors for `kcat` and
-#'   `kM` parameters
+#'   substrate concentration
+#' @param response_variable `character` variable representing the `product`
+#' @param response_units `character` the units of the `product`
+#' @param predictors `expression` of predictors for `kcat` and `kM` parameters
 #' @param ... additional arguments passed to [brms::brmsformula()]
 #'
-#' @returns a `bpformula`, which is a subclass of
-#'   [brms::brmsformula] and can be passed to
-#'   [tQ_model()].
+#' @returns a `bpformula`, which is a subclass of [brms::brmsformula] and can be
+#'   passed to [tQ_model()].
 #'
 #' @seealso [tQ_model], [tQ_prior], [tQ_init], [tQ_stanvar] and
 #'   [brms::brmsformula], which this function wraps.

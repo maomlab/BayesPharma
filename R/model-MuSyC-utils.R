@@ -1,4 +1,4 @@
-#' Convert from slope to exponent parameterization for drug i
+#' Convert From Slope to Exponent Parameterization for Drug i in the MuSyC Model
 #'
 #' @description This can be used for setting priors and interpreting parameter
 #'   estimates
@@ -41,16 +41,17 @@
 #'     =  (E0 + E2) * h2 * C2^(2*h2-1) / [4*C2^(2*h2))]
 #'     =  h2 * (E0 + E2) / (4 * C2)
 #'
+#' @seealso [MuSyC_hi_to_si]
 #'
 #'@export
 MuSyC_si_to_hi <- function(si, Ci, E0, Ei) {
   si * 4 * Ci / (E0 + Ei)
 }
 
-#' Convert exponent to slope parameterization for drug i
+#' Convert Exponent to Slope Parameterization for Drug i in MuSyC Model
 #'
 #' @description This can be used for setting priors and interpreting parameter
-#'   estimates see MuSyC_si_to_hi for details
+#'   estimates see [MuSyC_si_to_hi()] for details
 #'
 #' @param hi `numeric` value of the exponent in the MuSyC equation for drug
 #'   i
@@ -60,6 +61,8 @@ MuSyC_si_to_hi <- function(si, Ci, E0, Ei) {
 #'   other treatments
 #' @returns si slope of drug i at it's AC50 and doses of all other drugs are
 #'   zero
+#'
+#' @seealso [MuSyC_si_to_hi]
 #'
 #'@export
 MuSyC_hi_to_si <- function(hi, Ci, E0, Ei) {

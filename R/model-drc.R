@@ -1,10 +1,10 @@
 #' Wrapper for DRC dose response models
 #'
 #' @param data `data.frame`
-#' @param formula `formula` formulate relating the `response` to the `log_dose`,
-#'   if the [drc::L.4] or `dose` if the [drc::LL.4] non-linear link functions
-#'   are used with the `fct` argument.
-#' @param fct Non-linear link function. Default is the 4 parameter
+#' @param formula `formula` formula relating the `response` to the `log_dose`,
+#'  if the [drc::L.4] sigmoid link function is used or `dose` if the [drc::LL.4]
+#'  log-linear sigmoid link functions used with the `fct` argument.
+#' @param fct `Boltzmann` non-linear link function. Default is the 4 parameter
 #'     log-linear sigmoid equation, [drc::L.4], where all parameters are to be
 #'     estimated. To fix a subset them, set the parameters to constant
 #'     values.
@@ -12,7 +12,7 @@
 #'
 #' @returns An object of (S3) class `drc` from the [drc] package.
 #'
-#' \examples
+#' @examples
 #' \dontrun{
 #' BayesPharma::drm_model(
 #'   data = tibble::tibble(

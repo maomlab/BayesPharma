@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-sigmoid-function.R
 \name{plot_sigmoid_functional_form}
 \alias{plot_sigmoid_functional_form}
-\title{Plot the sigmoid functional form with labeled parameters}
+\title{Plot the Sigmoid Functional Form with Labeled Parameters}
 \usage{
 plot_sigmoid_functional_form(
   ac50,

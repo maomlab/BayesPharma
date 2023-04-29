@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-MuSyC-prior.R
 \name{MuSyC_prior}
 \alias{MuSyC_prior}
-\title{Default priors for the MuSyC model}
+\title{Create a prior for the MuSyC synergy model}
 \usage{
 MuSyC_prior(
   logE0 = brms::prior(prior = normal(-0.6931, 3), nlpar = "logE0", ub = 0),
@@ -67,10 +67,9 @@ prior.}
 Creating a \code{data.frame} of priors of the dose response
 parameters required for the MuSyC model.
 
-If you would like to set a parameter as a constant, enter a numeric
-value for the function argument.  If you would like to set your own
+If you would like to set a parameter as a constant, enter a
+numeric value for the function argument.  If you would like to set your own
 distribution, for example, in the function arguments type
 \verb{ec50 = brms::prior(prior = normal(<mu>, <sigma>), nlpar = 'ec50')}.
-For other distribution options, reference
-http://mc-stan.org/rstanarm/reference/priors.html#arguments.
+For other distribution options, reference \link[brms:set_prior]{brms::prior} and \href{https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations}{Prior Choice Recommendations }
 }

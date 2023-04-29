@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-sigmoid-prior.R
 \name{sigmoid_antagonist_prior}
 \alias{sigmoid_antagonist_prior}
-\title{Default priors for the sigmoid antagonist model}
+\title{Create a Prior an Antagonist Sigmoid Model}
 \usage{
 sigmoid_antagonist_prior(
   ic50 = brms::prior(prior = normal(-6, 2.5), nlpar = "ic50"),

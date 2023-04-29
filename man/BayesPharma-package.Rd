@@ -8,11 +8,11 @@
 \description{
 The \pkg{BayesPharma} package builds on the \pkg{Stan} and \pkg{brms} to
 provide support for Bayesian regression modeling for foundational
-pharmacology models. For each type of model, the user provides
+pharmacology models. For each model type, the user provides
 \itemize{
 \item{\strong{formula}: }{Describing how the model parameters, treatment,
 and optional predictors lead to the measured response using functions
-provided by BayesPharma for each type of model.}
+provided by BayesPharma for each model type.}
 \item{\strong{observed data}: }{response, treatment, and optional
 predictors as a \code{data.frame}}
 \item{\strong{prior}: }{Initial distributions over the model parameters}

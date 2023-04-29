@@ -1,4 +1,4 @@
-#' Helper function to prepare an init for a brms model
+#' Helper Function to Prepare an Init for a brms model
 #'
 #'
 #' @param init `function` returning an `numeric` `array` of length `1` or a
@@ -26,7 +26,7 @@ prepare_init <- function(init) {
   init_fn
 }
 
-#' Prepare a brmsprior
+#' Helper Function to Prepare a Prior for a brms Model
 #'
 #' This extends [brms::prior()] by
 #'   1) allowing just taking a `numeric` value rather than `constant(<value>)`

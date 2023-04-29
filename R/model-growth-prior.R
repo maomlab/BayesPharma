@@ -7,8 +7,9 @@
 #'   If you would like to set a parameter as a constant, enter a numeric  value
 #'   for the function argument.
 #'
-#'   For other distribution options, reference
-#'   <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
+#' For other distribution options, reference [brms::prior] and [Prior Choice
+#' Recommendations
+#' ](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
 #'
 #' @param K [brms::brmsprior()] or `numeric`. Prior for the
 #'   `K` parameter. (Default: `normal(1, 0.5)`)
@@ -53,8 +54,9 @@ growth_richards_prior <- function(
 #' If you would like to set a parameter as a constant, enter a numeric
 #' value for the function argument.
 #'
-#' For other distribution options, reference
-#' <http://mc-stan.org/rstanarm/reference/priors.html#arguments>
+#' For other distribution options, reference [brms::prior] and [Prior Choice
+#' Recommendations
+#' ](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
 #'
 #' @param K [brms::brmsprior()] or `numeric`. Prior for the
 #'   `K` parameter. (Default: `normal(1, 0.5)`).
