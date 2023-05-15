@@ -4,7 +4,11 @@
 #################################################
 
 
-clean:	
+clean:
+	rm -rf vignettes_src/*_cache
+	rm -rf vignettes_src/manuscript_files
+	rm -rf vignettes_src/manuscript/manuscript_cache
+	rm -rf vignettes_src/manuscript/manuscript_files/figure-*
 	rm -rf vignettes/*.Rmd
 	rm -rf vignettes/*.R
 	rm -rf vignettes/*.html
