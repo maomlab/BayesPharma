@@ -14,7 +14,7 @@ brms::brm(
     P ~ tQ_multiple(series_index, time, kcat, kM, ET, ST),
     kcat + kM ~ 1,
     nl = TRUE,
-    loop=FALSE),
+    loop = FALSE),
   prior = ...,
   init =  ...,
   stanvars = BayesPharma::tQ_stanvar)
@@ -40,6 +40,6 @@ Accurate and efficient estimation of enzyme kinetic parameters. Sci Rep 7,
 17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
 }
 \seealso{
-\link{tQ_model}, \link{tQ_formula}, \link{tQ_prior}, or \link{tQ_init}
+\link{tQ_model},
 }
 \keyword{datasets}

@@ -8,7 +8,7 @@ plot_prior_posterior_densities(
   model,
   predictors_col_name = "_Intercept",
   half_max_label = "ec50",
-  title_label = "Prior Posterior Density\\n  Plots"
+  title_label = "Prior Posterior Density"
 )
 }
 \arguments{

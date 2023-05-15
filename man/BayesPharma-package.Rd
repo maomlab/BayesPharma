@@ -23,6 +23,8 @@ The models that BayesPharma support are
 \item{\strong{\link{sigmoid_model}}: }{4-parameter Hill equation}
 \item{\strong{\link{MuSyC_model}}: }{Bivariate synergy model with Bliss and
 Loewe interaction models as special cases}
+\item{\strong{\link{michaelis_menten_model}}: }{Michaelis Menten enzyme kinetics
+ordinary differential equation model}
 \item{\strong{\link{tQ_model}}: }{Generalization of enzyme progress curve
 kinetics ordinary differential equation}
 \item{\strong{\link{growth_sigmoid_model}}: }{Sigmoid model for growth

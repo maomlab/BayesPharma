@@ -12,7 +12,7 @@ tQ_init(kcat = 4, kM = 4)
 \item{kM}{\code{numeric} initial value for the \code{kM} parameter in the tQ model}
 }
 \value{
-input for \verb{[model_tQ](init = ...)} parameter.
+input for \verb{[tQ_model](init = ...)} parameter.
 }
 \description{
 Initialize Parameter Values for the tQ Enzyme Kinetic Model

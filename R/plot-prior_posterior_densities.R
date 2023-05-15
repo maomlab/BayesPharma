@@ -30,16 +30,14 @@
 #' @export
 plot_prior_posterior_densities <- function(
   model,
-
   predictors_col_name = "_Intercept",
   half_max_label = "ec50",
-  title_label = "Prior Posterior Density
-  Plots") {
+  title_label = "Prior Posterior Density") {
 
   if (!inherits(model, "bpfit")) {
     warning(paste0(
       "plot_prior_posterior_densities expects model to be of class 'bpfit',",
-      " instead it is of class ", class(model)))
+      " instead it is of class '", class(model), "'"))
   }
 
   model_prior <- model |>
