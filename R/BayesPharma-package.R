@@ -22,6 +22,8 @@
 #'   \item{**[sigmoid_model]**: }{4-parameter Hill equation}
 #'   \item{**[MuSyC_model]**: }{Bivariate synergy model with Bliss and
 #'     Loewe interaction models as special cases}
+#'   \item{**[michaelis_menten_model]**: }{Michaelis Menten enzyme kinetics
+#'     ordinary differential equation model}
 #'   \item{**[tQ_model]**: }{Generalization of enzyme progress curve
 #'     kinetics ordinary differential equation}
 #'   \item{**[growth_sigmoid_model]**: }{Sigmoid model for growth

@@ -1,8 +1,8 @@
-#' Define a Formula for the Total QSSA (tQ) Enzyme Kinetics Model
+#' Define a Formula for the Michaelis Menten Enzyme Kinetics Model
 #'
-#' @description set-up a tQ enzyme kinetics model formula to define a
-#'   an ordinary differential equation model that with `kcat`, `kM` model
-#'   parameters for use in the [tQ_model].
+#' @description set-up a Michaelis Menten enzyme kinetics model formula to
+#'   define a an ordinary differential equation model that with `kcat`, `kM`
+#'   model parameters for use in the [michaelis_menten_model].
 #'
 #' @param series_index_variable `character` variable indexing which
 #'   measurements are part of a common time series
@@ -23,9 +23,10 @@
 #' @param ... additional arguments passed to [brms::brmsformula()]
 #'
 #' @returns a `bpformula`, which is a subclass of [brms::brmsformula] and can be
-#'   passed to [tQ_model()].
+#'   passed to [michaelis_menten_model()].
 #'
-#' @seealso [tQ_model], [tQ_prior], [tQ_init], [tQ_stanvar] and
+#' @seealso [michaelis_menten_model], [michaelis_menten_prior],
+#'   [michaelis_menten_init], [michaelis_menten_stanvar] and
 #'   [brms::brmsformula], which this function wraps.
 #'
 #' @references
@@ -34,7 +35,7 @@
 #' 17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
 #'
 #' @export
-tQ_formula <- function(
+michaelis_menten_formula <- function(
     series_index_variable = "series_index",
     treatment_variable = "time",
     treatment_units = "seconds",
@@ -46,30 +47,31 @@ tQ_formula <- function(
     response_units = "mg/ml",
     predictors = 1,
     ...) {
-
-  # The tQ function is defined in BayesPharma::tQ_stanvar
+  
+  # The michaelis_menten function is defined in
+  # BayesPharma::michaelis_menten_stanvar
   response_eq <- as.formula(
     paste0(
-      response_variable, " ~ tQ_multiple(",
+      response_variable, " ~ michaelis_menten_multiple(",
       series_index_variable, ", ",
       treatment_variable, ", ",
       "kcat, kM, ",
       ET_variable, ", ",
       ST_variable, ")"))
-
+  
   predictor_eq <- rlang::new_formula(
     lhs = quote(kcat + kM),
     rhs = rlang::enexpr(predictors))
-
+  
   model_formula <- brms::brmsformula(
     response_eq,
     predictor_eq,
     nl = TRUE,
     loop = FALSE,
     ...)
-
+  
   model_formula$bayes_pharma_info <- list(
-    formula_type = "tQ",
+    formula_type = "michaelis_menten",
     series_index_variable = series_index_variable,
     treatment_variable = treatment_variable,
     treatment_units = treatment_units,
@@ -79,7 +81,7 @@ tQ_formula <- function(
     ST_units = ST_units,
     response_variable = response_variable,
     response_units = response_units)
-
+  
   class(model_formula) <- c("bpformula", class(model_formula))
   model_formula
 }

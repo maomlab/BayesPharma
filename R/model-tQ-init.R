@@ -2,7 +2,7 @@
 #'
 #' @param kcat `numeric` initial value for `kcat` parameter in the tQ model
 #' @param kM `numeric` initial value for the `kM` parameter in the tQ model
-#' @returns input for `[model_tQ](init = ...)` parameter.
+#' @returns input for `[tQ_model](init = ...)` parameter.
 #'
 #' @seealso [tQ_model], [tQ_formula], and [tQ_prior]
 #'
