@@ -5,8 +5,8 @@
 \title{Create a Prior for the tQ Enzyme Kinetics Model}
 \usage{
 tQ_prior(
-  kcat = brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kcat"),
-  kM = brms::prior(prior = gamma(4, 1), lb = 0, nlpar = "kM")
+  kcat = brms::prior_string(prior = "gamma(4, 1)", lb = 0, nlpar = "kcat"),
+  kM = brms::prior_string(prior = "gamma(4, 1)", lb = 0, nlpar = "kM")
 )
 }
 \arguments{

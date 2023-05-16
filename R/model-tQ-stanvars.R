@@ -141,7 +141,7 @@ vector tQ_multiple(
 #' 
 #' If only the substrate concentration is varied, it is not generally possible
 #' to fit both `kcat` and `kM`. However, it is possible to fit the ratio
-#' `kcat/kM`. Including this [stan] code will generate the samples for
+#' `kcat/kM`. Including this [rstan::stan] code will generate the samples for
 #' `kcat/kM`.
 #' 
 #' @seealso [tQ_model]
