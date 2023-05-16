@@ -1,7 +1,7 @@
 Package: BayesPharma
 Type: Package
 Title: Tools for Bayesian Analysis of Non-Linear Pharmacology Models
-Version: 0.0.2
+Version: 0.0.3
 Authors@R: c(
     person(
       given = "Madeline",
