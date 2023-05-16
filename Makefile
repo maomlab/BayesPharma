@@ -73,6 +73,7 @@ vignettes/manuscript.pdf: vignettes/references.bib
 manuscript: vignettes/manuscript.pdf
 
 site: vignettes manuscript
+	quarto render pkgdown/index.qmd
 	Rscript -e "pkgdown::build_site()"
 
 all: install vignettes build install
