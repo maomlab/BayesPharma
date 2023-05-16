@@ -47,7 +47,7 @@ michaelis_menten_formula <- function(
     response_units = "mg/ml",
     predictors = 1,
     ...) {
-  
+
   # The michaelis_menten function is defined in
   # BayesPharma::michaelis_menten_stanvar
   response_eq <- stats::as.formula(
@@ -58,18 +58,18 @@ michaelis_menten_formula <- function(
       "kcat, kM, ",
       ET_variable, ", ",
       ST_variable, ")"))
-  
+
   predictor_eq <- rlang::new_formula(
     lhs = quote(kcat + kM),
     rhs = rlang::enexpr(predictors))
-  
+
   model_formula <- brms::brmsformula(
     response_eq,
     predictor_eq,
     nl = TRUE,
     loop = FALSE,
     ...)
-  
+
   model_formula$bayes_pharma_info <- list(
     formula_type = "michaelis_menten",
     series_index_variable = series_index_variable,
@@ -81,7 +81,7 @@ michaelis_menten_formula <- function(
     ST_units = ST_units,
     response_variable = response_variable,
     response_units = response_units)
-  
+
   class(model_formula) <- c("bpformula", class(model_formula))
   model_formula
 }

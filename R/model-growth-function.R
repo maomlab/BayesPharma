@@ -114,8 +114,8 @@ growth_sigmoid <- Vectorize(
 #'              \pkg{grofit} package calls this parameter `A`. `K` has the same
 #'              units as the `response`.
 #'     K0     = **initial population size** `K0 = response(time = 0)`. The
-#'              \pkg{grofit} package assumes `K0=0`. `K0` has the same units as the
-#'              `response`.
+#'              \pkg{grofit} package assumes `K0=0`. `K0` has the same units as
+#'              the `response`.
 #'     rate   = **maximum growth rate** `rate = max[d(response)/d(time)]`. The
 #'              \pkg{grofit} package calls this `mu`. `rate` has the units of
 #'              `response/time`

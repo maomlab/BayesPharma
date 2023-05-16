@@ -23,13 +23,13 @@
 #'         (C1^h1 * C2^h2      + C1^h1 * d2^h2)
 #'
 #'   Cancel the `C1^h1` terms:
-#'   
+#'
 #'       =  d/d(d2)
 #'          (C2^h2 * E0 + d2^h2 * E2) /
 #'          (C2^h2      + d2^h2)
 #'
 #'   Distribute the derivative across the terms in the numerator
-#'   
+#'
 #'       =  E0 * C2^h2 * (d/d(d2) 1     / (C2^h2 + d2^h2)) +
 #'          E2         * (d/d(d2) d2^h2 / (C2^h2 + d2^h2))
 #'
@@ -39,7 +39,7 @@
 #'       =  (E0 + E2) * C2^h2 * h2 * d2^(h2-1)/(C2^h2 + d2^h2)^2
 #'
 #'   Evaluate at `d2 = C2`:
-#'   
+#'
 #'       =  (E0 + E2) * h2 * C2^(2*h2-1) / (4*C2^(2*h2)))
 #'       =  h2 * (E0 + E2) / (4 * C2)
 #'

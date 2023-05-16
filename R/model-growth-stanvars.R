@@ -54,7 +54,7 @@ growth_sigmoid_stanvar <- function() {
 #' }
 #'
 #' @export
-growth_richards_stanvar <- function(){
+growth_richards_stanvar <- function() {
   brms::stanvar(
     scode = paste(
       "  real growth_richards(",

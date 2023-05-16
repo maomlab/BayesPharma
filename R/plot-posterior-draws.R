@@ -78,45 +78,25 @@ plot_posterior_draws <- function(
       " instead it is of class ", class(model)))
   }
 
-  info <- model$bayes_pharma_info$formula_info
-
   if (is.null(treatment_variable)) {
-    treatment_variable <- info$treatment_variable
-    treatment_units <- info$treatment_units
-    if (is.null(treatment_variable)) {
-      stop(paste0(
-        "Expected either treatment_variable and treatment_units to be ",
-        "specified or both defined in the model$bayes_pharma_info"))
-    }
+    treatment_variable <- model |> get_treatment_variable()
   }
-
-  if (is.null(response_variable)) {
-    response_variable <- info$response_variable
-    response_units <- info$response_units
-    if (is.null(response_variable)) {
-      stop(paste0(
-        "Expected either response_variable and response_units to be ",
-        "specified or defined in the model$bayes_pharma_info"))
-    }
+  
+  if (is.null(treatment_units)) {
+    treatment_units <- model |> get_treatment_units()
+  }
+  
+  if (is.null(treatment_variable)) {
+    response_variable <- model |> get_response_variable()
+  }
+  
+  if (is.null(treatment_units)) {
+    response_units <- model |> get_response_units()
   }
 
   # expand out all combinations of the predictor
   # and add a sequence of values along the treatment dimension
   if (is.null(newdata)) {
-    if (!(treatment_variable %in% names(model$data))) {
-      stop(paste0(
-        "Expected the treatment variable '", treatment_variable, "' to be a ",
-        "column in the model$data, but instead it has columns ",
-        "[", paste0(names(model$data), collapse = ", "), "]"))
-    }
-
-    if (!(response_variable %in% names(model$data))) {
-      stop(paste0(
-        "Expected the response variable '", response_variable, "' to be a ",
-        "column in the model$data, but instead it has columns ",
-        "[", paste0(names(model$data), collapse = ", "), "]"))
-    }
-
     predictor_values <- model$data |>
       dplyr::select(-tidyselect::any_of(c(
         treatment_variable, response_variable))) |>
