@@ -23,7 +23,7 @@
 #'     loop = FALSE),
 #'   prior = ...,
 #'   init =  ...,
-#'   stanvars = BayesPharma::tQ_stanvar)
+#'   stanvars = BayesPharma::tQ_stanvar())
 #'
 #' @seealso [tQ_model],
 #'
@@ -33,8 +33,9 @@
 #' 17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
 #'
 #' @export
-tQ_stanvar <- brms::stanvar(
-  scode = paste("
+tQ_stanvar <- function() {
+  brms::stanvar(
+    scode = paste("
 vector tQ_ode(
    real time,
    vector state,
@@ -132,8 +133,8 @@ vector tQ_multiple(
   return(P);
 }
 ", sep = "\n"),
-  block = "functions")
-
+    block = "functions")
+}
 
 #' Stan Code for the tQ Model Generated Quantities
 #' 
@@ -150,10 +151,11 @@ vector tQ_multiple(
 #' 17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
 #' 
 #' @export
-tQ_genquant_stanvar <- brms::stanvar(
-  scode = paste(
-    "  real kcat_kM = pow(10, b_logkcat[1]) / pow(10, b_logkM[1]);",
-    sep = "\n"),
-  block = "genquant",
-  position = "end")
-
+tQ_genquant_stanvar <- function() {
+  brms::stanvar(
+    scode = paste(
+      "  real kcat_kM = pow(10, b_logkcat[1]) / pow(10, b_logkM[1]);",
+      sep = "\n"),
+    block = "genquant",
+    position = "end")
+}

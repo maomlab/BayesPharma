@@ -8,7 +8,7 @@
 #' @param treatment_1_units `character` the units of the treatment. The default
 #'   is log base 10 of the molar concentration
 #' @param treatment_2_variable `character` variable representing the treatment.
-#' @param treatment_1_units `character` the units of the treatment. The default
+#' @param treatment_2_units `character` the units of the treatment. The default
 #'   is log base 10 of the molar concentration
 #' @param response_variable `character` variable representing the response to
 #'     treatment
@@ -47,7 +47,7 @@ MuSyC_formula <- function(
     predictors = 1,
     ...) {
 
-  response_eq <- as.formula(
+  response_eq <- stats::as.formula(
     paste0(
       response_variable, " ~ ",
       "MuSyC(",

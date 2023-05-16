@@ -38,6 +38,6 @@ init <- BayesPharma::sigmoid_antagonist_init(
 }
 }
 \seealso{
-\code{\link[=sigma_antagonist_formula]{sigma_antagonist_formula()}}, \code{\link[=sigma_antagonist_prior]{sigma_antagonist_prior()}}, and
+\code{\link[=sigmoid_antagonist_formula]{sigmoid_antagonist_formula()}}, \code{\link[=sigmoid_antagonist_prior]{sigmoid_antagonist_prior()}}, and
 \code{\link[=sigmoid_model]{sigmoid_model()}}
 }

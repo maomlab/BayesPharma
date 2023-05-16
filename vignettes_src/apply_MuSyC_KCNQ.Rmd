@@ -249,7 +249,7 @@ model_MuSyC <- BayesPharma::MuSyC_model(
   control = list(
       adapt_delta = .99,
       max_treedepth = 12),
-  stanvars = BayesPharma::MuSyC_stanvar,
+  stanvars = BayesPharma::MuSyC_stanvar(),
   cores = 4)
 ```
 
@@ -345,7 +345,7 @@ model_bilevel <- brms::brm(
   control = list(
       adapt_delta = .99,
       max_treedepth = 12),
-  stanvars = BayesPharma::sigmoid_stanvar,
+  stanvars = BayesPharma::sigmoid_stanvar(),
   cores = 4)
 ```
 

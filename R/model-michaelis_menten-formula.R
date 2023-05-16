@@ -50,7 +50,7 @@ michaelis_menten_formula <- function(
   
   # The michaelis_menten function is defined in
   # BayesPharma::michaelis_menten_stanvar
-  response_eq <- as.formula(
+  response_eq <- stats::as.formula(
     paste0(
       response_variable, " ~ michaelis_menten_multiple(",
       series_index_variable, ", ",

@@ -80,7 +80,7 @@ sigmoid_model <- function(
   init = sigmoid_agonist_init(),
   iter = 8000,
   control = list(adapt_delta = 0.99),
-  stanvar_function = sigmoid_stanvar,
+  stanvar_function = sigmoid_stanvar(),
   expose_functions = TRUE,
   ...) {
 

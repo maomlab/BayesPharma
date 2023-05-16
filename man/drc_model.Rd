@@ -26,7 +26,7 @@ values.}
 \item{...}{additional arguments passed to \link[drc:drm]{drc::drm}}
 }
 \value{
-An object of (S3) class \code{drc} from the \link{drc} package.
+An object of (S3) class \code{drc} from the \pkg{drc} package.
 }
 \description{
 Wrapper for DRC Dose Response Models

@@ -26,12 +26,12 @@
 #'
 #' @examples
 #'\dontrun{
-#' priors <- growth_richards_prior(
+#' priors <- growth_sigmoid_prior(
 #'   K = brms::prior(prior = normal(100, 20), nlpar = "K"),
 #'   lambda = 1)
 #'}
 #' @export
-growth_richards_prior <- function(
+growth_sigmoid_prior <- function(
     K = brms::prior(prior = normal(1, 0.5), nlpar = "K"),
     K0 = brms::prior(prior = normal(0, 0.5), nlpar = "K0"),
     rate = brms::prior(prior = normal(2, 0.5), nlpar = "rate", lb = 0),

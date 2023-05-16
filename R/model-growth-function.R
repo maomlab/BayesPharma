@@ -4,16 +4,16 @@
 #' Richards growth model by setting `nu = 1`.
 #'
 #'
-#'   The parameterization follows (Zwietering, 1990) and [grofit]:
+#'   The parameterization follows (Zwietering, 1990) and \pkg{grofit}:
 #'
-#'     K      = **carrying capacity**, `K = response(time = Inf)`. The [grofit]
-#'              package calls this parameter `A`. `K` has the same units as the
-#'              `response`.
+#'     K      = **carrying capacity**, `K = response(time = Inf)`. The
+#'              \pkg{grofit} package calls this parameter `A`. `K` has the same
+#'              units as the `response`.
 #'     K0     = **initial population size** `K0 = response(time = 0)`. The
-#'              [grofit] package assumes `K0=0`. `K0` has the same units as the
-#'              `response`.
+#'              \pkg{grofit} package assumes `K0=0`. `K0` has the same units as
+#'              the `response`.
 #'     rate   = **maximum growth rate** `rate = max[d(response)/d(time)]`. The
-#'              [grofit] package calls this `mu`. `rate` has the units of
+#'              \pkg{grofit} package calls this `mu`. `rate` has the units of
 #'              `response/time`
 #'     lambda = **duration of the lag-phase** the time point at which the
 #'              tangent through the growth curve when it achieves the maximum
@@ -108,16 +108,16 @@ growth_sigmoid <- Vectorize(
 #'           1 + nu + rate/(K - K0) * (1 + nu)^(1 + 1/nu) *
 #'           (lambda - time))) ^ (1/nu)
 #'
-#'   The parameterization follows (Zwietering, 1990) and [grofit]:
+#'   The parameterization follows (Zwietering, 1990) and \pkg{grofit}:
 #'
-#'     K      = **carrying capacity**, `K = response(time = Inf)`. The [grofit]
-#'              package calls this parameter `A`. `K` has the same units as the
-#'              `response`.
+#'     K      = **carrying capacity**, `K = response(time = Inf)`. The
+#'              \pkg{grofit} package calls this parameter `A`. `K` has the same
+#'              units as the `response`.
 #'     K0     = **initial population size** `K0 = response(time = 0)`. The
-#'              [grofit] package assumes `K0=0`. `K0` has the same units as the
+#'              \pkg{grofit} package assumes `K0=0`. `K0` has the same units as the
 #'              `response`.
 #'     rate   = **maximum growth rate** `rate = max[d(response)/d(time)]`. The
-#'              [grofit] package calls this `mu`. `rate` has the units of
+#'              \pkg{grofit} package calls this `mu`. `rate` has the units of
 #'              `response/time`
 #'     lambda = **duration of the lag-phase** the time point at which the
 #'              tangent through the growth curve when it achieves the maximum

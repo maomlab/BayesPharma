@@ -37,7 +37,8 @@ tQ_model <- function(
     iter = 8000,
     control = list(adapt_delta = 0.99),
     stanvar_function = c(
-      BayesPharma::tQ_stanvar, BayesPharma::tQ_genquant_stanvar),
+      BayesPharma::tQ_stanvar(),
+      BayesPharma::tQ_genquant_stanvar()),
     expose_functions = TRUE,
     ...) {
 
@@ -58,7 +59,7 @@ tQ_model <- function(
         "needs to be a column of the input 'data' data.frame\n"))
   }
 
-  time_type <- data[[time_variable]] |> names() |> class()
+  time_type <- data[[time_variable]] |> class()
   if (time_type != "numeric") {
     stop(paste0(
       "The treatment (time) variable '", time_variable, "' ",

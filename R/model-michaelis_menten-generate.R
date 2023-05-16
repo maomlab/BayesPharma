@@ -62,7 +62,7 @@
 #'   starting with initial product concentration of `0` and specified `kcat` and
 #'   `kM` parameters for the specified time steps.
 #'
-#' @seealso [michaeli_menten_model]
+#' @seealso [michaelis_menten_model]
 #'
 #' @references
 #' Choi, B., Rempala, G.A. & Kim, J.K. Beyond the Michaelis-Menten equation:
@@ -70,7 +70,7 @@
 #' 17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
 #'
 #' @export
-michaeli_menten_model_generate <- function(time, kcat, kM, ET, ST, ...) {
+michaelis_menten_model_generate <- function(time, kcat, kM, ET, ST, ...) {
   
   assertthat::assert_that(
     all(time == cummax(time)),

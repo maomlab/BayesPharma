@@ -10,7 +10,7 @@
 #'     values.
 #' @param ... additional arguments passed to [drc::drm]
 #'
-#' @returns An object of (S3) class `drc` from the [drc] package.
+#' @returns An object of (S3) class `drc` from the \pkg{drc} package.
 #'
 #' @examples
 #' \dontrun{

@@ -9,23 +9,25 @@
 #'   is returned.
 #'
 #' @export
-sigmoid_stanvar <- brms::stanvar(
-  scode = paste(
-    "   real sigmoid(",
-    "      real ac50,",
-    "      real hill,",
-    "      real top,",
-    "      real bottom,",
-    "      real log_dose) {",
-    "        if( log_dose > negative_infinity() ) {",
-    "          return (bottom + (top - bottom) /",
-    "            (1 + 10 ^ ((ac50 - log_dose) * hill)));",
-    "        } else { ",
-    "           if( hill > 0) {",
-    "             return bottom;",
-    "           } else {",
-    "             return top;",
-    "           }",
-    "        }",
-    "   }", sep = "\n"),
-  block = "functions")
+sigmoid_stanvar <- function() {
+  brms::stanvar(
+    scode = paste(
+      "   real sigmoid(",
+      "      real ac50,",
+      "      real hill,",
+      "      real top,",
+      "      real bottom,",
+      "      real log_dose) {",
+      "        if( log_dose > negative_infinity() ) {",
+      "          return (bottom + (top - bottom) /",
+      "            (1 + 10 ^ ((ac50 - log_dose) * hill)));",
+      "        } else { ",
+      "           if( hill > 0) {",
+      "             return bottom;",
+      "           } else {",
+      "             return top;",
+      "           }",
+      "        }",
+      "   }", sep = "\n"),
+    block = "functions")
+}

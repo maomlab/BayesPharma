@@ -14,24 +14,25 @@
 #'     nl = TRUE),
 #'   prior = ...,
 #'   init =  ...,
-#'   stanvars = BayesPharma::growth_sigmoid_stanvar)
+#'   stanvars = BayesPharma::growth_sigmoid_stanvar())
 #' }
 #'
 #' @export
-growth_sigmoid_stanvar <- brms::stanvar(
-  scode = paste(
-    "  real growth_sigmoid(",
-    "      real K,",
-    "      real K0,",
-    "      real rate,",
-    "      real lambda,",
-    "      real time) {",
-    "      real term = ;",
-    "      return (K0 + (K - K0) / (1 + exp(",
-    "        4 * rate / (K - K0) * (lambda - time) + 2));",
-    "   }", sep = "\n"),
-  block = "functions")
-
+growth_sigmoid_stanvar <- function() {
+  brms::stanvar(
+    scode = paste(
+      "  real growth_sigmoid(",
+      "      real K,",
+      "      real K0,",
+      "      real rate,",
+      "      real lambda,",
+      "      real time) {",
+      "      real term = ;",
+      "      return (K0 + (K - K0) / (1 + exp(",
+      "        4 * rate / (K - K0) * (lambda - time) + 2));",
+      "   }", sep = "\n"),
+    block = "functions")
+}
 
 #' Stan Code for the Richards Growth Function.
 #'
@@ -49,21 +50,23 @@ growth_sigmoid_stanvar <- brms::stanvar(
 #'     nl = TRUE),
 #'   prior = ...,
 #'   init =  ...,
-#'   stanvars = BayesPharma::growth_sigmoid_stanvar)
+#'   stanvars = BayesPharma::growth_sigmoid_stanvar())
 #' }
 #'
 #' @export
-growth_richards_stanvar <- brms::stanvar(
-  scode = paste(
-    "  real growth_richards(",
-    "      real K,",
-    "      real K0,",
-    "      real rate,",
-    "      real lambda,",
-    "      real nu,",
-    "      real time) {",
-    "      real term = 1 + nu + ",
-    "         rate / (K - K0) * (1 + nu) ^ (1 + 1 / nu) * (lambda - time);",
-    "      return (K0 + (K - K0) / (1 + nu * exp(term) ^ (1 / nu)));",
-    "   }", sep = "\n"),
-  block = "functions")
+growth_richards_stanvar <- function(){
+  brms::stanvar(
+    scode = paste(
+      "  real growth_richards(",
+      "      real K,",
+      "      real K0,",
+      "      real rate,",
+      "      real lambda,",
+      "      real nu,",
+      "      real time) {",
+      "      real term = 1 + nu + ",
+      "         rate / (K - K0) * (1 + nu) ^ (1 + 1 / nu) * (lambda - time);",
+      "      return (K0 + (K - K0) / (1 + nu * exp(term) ^ (1 / nu)));",
+      "   }", sep = "\n"),
+    block = "functions")
+}

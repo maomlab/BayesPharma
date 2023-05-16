@@ -32,16 +32,16 @@ Functional form for the Richards growth model.
       (lambda - time))) ^ (1/nu)
 }\if{html}{\out{</div>}}
 
-The parameterization follows (Zwietering, 1990) and \link{grofit}:
+The parameterization follows (Zwietering, 1990) and \pkg{grofit}:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{K      = **carrying capacity**, `K = response(time = Inf)`. The [grofit]
-         package calls this parameter `A`. `K` has the same units as the
-         `response`.
+\if{html}{\out{<div class="sourceCode">}}\preformatted{K      = **carrying capacity**, `K = response(time = Inf)`. The
+         \pkg{grofit} package calls this parameter `A`. `K` has the same
+         units as the `response`.
 K0     = **initial population size** `K0 = response(time = 0)`. The
-         [grofit] package assumes `K0=0`. `K0` has the same units as the
+         \pkg{grofit} package assumes `K0=0`. `K0` has the same units as the
          `response`.
 rate   = **maximum growth rate** `rate = max[d(response)/d(time)]`. The
-         [grofit] package calls this `mu`. `rate` has the units of
+         \pkg{grofit} package calls this `mu`. `rate` has the units of
          `response/time`
 lambda = **duration of the lag-phase** the time point at which the
          tangent through the growth curve when it achieves the maximum

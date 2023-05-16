@@ -5,16 +5,16 @@
 #'
 #'     response ~ growth_sigmoid(K, K0, rate, lambda, time)
 #'
-#'   The parameterization follows (Zwietering, 1990) and [grofit]:
+#'   The parameterization follows (Zwietering, 1990) and \pkg{grofit}:
 #'
-#'     K      = **carrying capacity**, `K = response(time = Inf)`. The [grofit]
-#'              package calls this parameter `A`. `K` has the same units as the
-#'              `response`.
+#'     K      = **carrying capacity**, `K = response(time = Inf)`. The
+#'              \pkg{grofit} package calls this parameter `A`. `K` has the same
+#'              units as the `response`.
 #'     K0     = **initial population size** `K0 = response(time = 0)`. The
-#'              [grofit] package assumes `K0=0`. `K0` has the same units as the
-#'              `response`.
+#'              \pkg{grofit} package assumes `K0=0`. `K0` has the same units as
+#'              the `response`.
 #'     rate   = **maximum growth rate** `rate = max[d(response)/d(time)]`. The
-#'              [grofit] package calls this `mu`. `rate` has the units of
+#'              \pkg{grofit} package calls this `mu`. `rate` has the units of
 #'              `response/time`
 #'     lambda = **duration of the lag-phase** the time point at which the
 #'              tangent through the growth curve when it achieves the maximum
@@ -81,7 +81,7 @@ growth_sigmoid_formula <- function(
 
   # The growth_sigmoid function is defined in
   # BayesPharma::growth_sigmoid_stanvar
-  response_eq <- as.formula(
+  response_eq <- stats::as.formula(
     paste0(
       response_variable, " ~ ",
       "growth_sigmoid(K, K0, rate, lambda, ", treatment_variable, ")"))
@@ -117,17 +117,17 @@ growth_sigmoid_formula <- function(
 #'
 #'     response ~ richards_growth(K, K0, rate, lambda, nu, time)
 #'
-#'   The parameterization follows (Zwietering, 1990) and [grofit]:
+#'   The parameterization follows (Zwietering, 1990) and \pkg{grofit}:
 #'
 #'
-#'     K      = **carrying capacity**, `K = response(time = Inf)`. The [grofit]
-#'              package calls this parameter `A`. `K` has the same units as the
-#'              `response`.
+#'     K      = **carrying capacity**, `K = response(time = Inf)`. The
+#'              \pkg{grofit} package calls this parameter `A`. `K` has the same
+#'              units as the `response`.
 #'     K0     = **initial population size** `K0 = response(time = 0)`. The
-#'              [grofit] package assumes `K0=0`. `K0` has the same units as the
-#'              `response`.
+#'              \pkg{grofit} package assumes `K0=0`. `K0` has the same units as
+#'              the `response`.
 #'     rate   = **maximum growth rate** `rate = max[d(response)/d(time)]`. The
-#'              [grofit] package calls this `mu`. `rate` has the units of
+#'              \pkg{grofit} package calls this `mu`. `rate` has the units of
 #'              `response/time`
 #'     lambda = **duration of the lag-phase** the time point at which the
 #'              tangent through the growth curve when it achieves the maximum
@@ -194,7 +194,7 @@ growth_richards_formula <- function(
 
   # The growth_richards function is defined in
   # BayesPharma::growth_richards_stanvar
-  response_eq <- as.formula(
+  response_eq <- stats::as.formula(
     paste0(
       response_variable, " ~ ",
       "growth_richards(K, K0, rate, lambda, nu, ", treatment_variable, ")"))

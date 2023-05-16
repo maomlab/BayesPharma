@@ -10,7 +10,7 @@ MuSyC_model(
   init = MuSyC_init(),
   formula = MuSyC_formula(),
   control = list(adapt_delta = 0.99, max_treedepth = 12),
-  stanvars = c(MuSyC_stanvar, MuSyC_genquant_stanvar),
+  stanvars = c(MuSyC_stanvar(), MuSyC_genquant_stanvar()),
   expose_functions = TRUE,
   ...
 )
@@ -80,15 +80,15 @@ The modeled parameters are
 \verb{<treatment 2> = 0}}
 \item{\strong{\code{h1}}: the hill slope of the response with respect to
 \verb{<treatment 1>} when \verb{<treatment 1> = C1} and \verb{<treatment 2> = 0}. See
-\code{\link[=MuSyC_hi_to_si]{MuSyC_hi_to_si()}} and \code{\link[=MuSyC_si_hi]{MuSyC_si_hi()}} for
+\code{\link[=MuSyC_hi_to_si]{MuSyC_hi_to_si()}} and \code{\link[=MuSyC_si_to_hi]{MuSyC_si_to_hi()}} for
 converting between the slope (si) and hill slope (hi).}
 \item{\strong{\code{logC2}}: the \verb{log(<treatment 2>)} where when \verb{<treatment 1> = 0}, the \verb{<response>} is halfway between \code{E0} and \code{E2}}
 \item{\strong{\code{logE2}}: the \code{log(response)} when \verb{<treatment 2> => Inf} and
 \verb{<treatment 1> = 0}}
 \item{\strong{\code{h2}}: the hill slope of the response with respect to
 \verb{<treatment 2>} when \verb{<treatment 2> = C2} and \verb{<treatment 1> = 0}. See
-\code{\link[=MuSyC_hi_to_si]{MuSyC_hi_to_si()}} and \code{\link[=MuSyC_si_hi]{MuSyC_si_hi()}} for converting between the slope
-(si) and hill slope (hi).}
+\code{\link[=MuSyC_hi_to_si]{MuSyC_hi_to_si()}} and \code{\link[=MuSyC_si_to_hi]{MuSyC_si_to_hi()}} for converting between the
+slopec(si) and hill slope (hi).}
 \item{\strong{\code{logE3}}: the \code{log(response)} when \verb{<treatment1 1> => Inf} and
 \verb{<treatment 2> => Inf}, modeling the synergistic \emph{efficacy}}
 \item{\strong{\code{logalpha}}: the \code{log} of the synergistic \emph{potency} \code{alpha}.

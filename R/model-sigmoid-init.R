@@ -15,7 +15,7 @@
 #'   response
 #' @returns input for `[brms::brm](init = ...)`
 #'
-#' @seealso [sigma_agonist_formula()], [sigma_agonist_prior()], and
+#' @seealso [sigmoid_agonist_formula()], [sigmoid_agonist_prior()], and
 #'   [sigmoid_model()]
 #'
 #' @examples
@@ -59,7 +59,7 @@ sigmoid_agonist_init <- function(
 #'   response
 #' @returns input for `[brm][brms::brm](init = ...)`
 #'
-#' @seealso [sigma_antagonist_formula()], [sigma_antagonist_prior()], and
+#' @seealso [sigmoid_antagonist_formula()], [sigmoid_antagonist_prior()], and
 #'   [sigmoid_model()]
 #'
 #' @examples

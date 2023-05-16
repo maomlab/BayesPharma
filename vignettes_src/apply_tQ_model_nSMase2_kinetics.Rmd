@@ -208,7 +208,7 @@ runtime <- system.time({
         logkM ~ 1,
         nl = TRUE,
         loop = FALSE),
-      stanvars = BayesPharma::tQ_stanvar,
+      stanvars = BayesPharma::tQ_stanvar(),
       prior = c(
         brms::prior(prior = gamma(9, 100), lb = 0, nlpar = "kcat"),
         brms::prior(prior = normal(-3, 2), nlpar = "logkM")),
