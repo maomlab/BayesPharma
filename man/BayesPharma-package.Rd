@@ -37,9 +37,9 @@ The BayesPharma package also provides a range of case studies as templates
 and examples for getting started at applying Bayesian modeling to
 pharmacology data analysis.
 
-Building on \pkg{Stan} brings the performance and stability of No-U-Turn
-Sampling (NUTs) Hamiltonian Monte Carlo and a whole ecosystem of tools for
-model assessment, and visualization (see \url{https://mc-stan.org/}).
+Building on \pkg{rstan::stan} brings the performance and stability of
+No-U-Turn Sampling (NUTs) Hamiltonian Monte Carlo and a whole ecosystem of
+tools for model assessment, and visualization (see \url{https://mc-stan.org/}).
 
 Building on \pkg{brms} allows for compact formula based model specification
 adding complexity to the model incrementally, including handling missing

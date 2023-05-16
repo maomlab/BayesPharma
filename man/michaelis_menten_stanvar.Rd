@@ -9,15 +9,15 @@ michaelis_menten_stanvar()
 \description{
 The Michaelis Menten model is an ordinary differential equation model for the
 change in product as a function of the total enzyme concentration (ET), total
-substrate concentration (ST), the Michaelic constant (kM) and the catalytic
-constant (kcat). To implement the Michaelis Menten model in \pkg{Stan}, the
-function \code{michaelis_menten_ode} is defined and then passed to
+substrate concentration (ST), the Michaelis constant (kM) and the catalytic
+constant (kcat). To implement the Michaelis Menten model in \link[rstan:stan]{rstan::stan},
+the function \code{michaelis_menten_ode} is defined and then passed to
 \code{michaelis_menten_single} to integrate it using the \emph{stiff backward
 differentiation formula (BDF) method}. To fit multiple time series in one
-model, the \code{mm_multiple} can be used. Note that to handle fitting time-series
-with different numbers of observations, an additional \code{series_index} argument
-is used. Note that observations in the same time-series should be in
-sequential order in the supplied data.
+model, the \code{michaelis_menten_multiple} can be used. Note that to handle
+fitting time-series with different numbers of observations, an additional
+\code{series_index} argument is used. Note that observations in the same
+time-series should be in sequential order in the supplied data.
 }
 \examples{
 \dontrun{

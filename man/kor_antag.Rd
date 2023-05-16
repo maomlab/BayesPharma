@@ -9,7 +9,7 @@ Antagonists}
 A \code{data.frame} that includes the dose-response measurements
 }
 \source{
-\link{https://github.com/maomlab/BayesPharma}
+\url{https://github.com/maomlab/BayesPharma}
 }
 \usage{
 kor_antag

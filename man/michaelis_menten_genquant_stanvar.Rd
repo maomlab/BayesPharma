@@ -9,7 +9,7 @@ michaelis_menten_genquant_stanvar()
 \description{
 If only the substrate concentration is varied, it is not generally possible
 to fit both \code{kcat} and \code{kM}. However, it is possible to fit the ratio
-\code{kcat/kM}. Including this \link{stan} code will generate the samples for
+\code{kcat/kM}. Including this \link[rstan:stan]{rstan::stan} code will generate the samples for
 \code{kcat/kM}.
 }
 \references{

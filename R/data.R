@@ -5,5 +5,5 @@
 #' was measured at, and the reference, raw, and normalized measurement
 #'
 #' @format A `data.frame` that includes the dose-response measurements
-#' @source [https://github.com/maomlab/BayesPharma]
+#' @source <https://github.com/maomlab/BayesPharma>
 "kor_antag"

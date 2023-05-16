@@ -155,7 +155,7 @@ vector tQ_multiple(
 tQ_genquant_stanvar <- function() {
   brms::stanvar(
     scode = paste(
-      "  real kcat_kM = pow(10, b_logkcat[1]) / pow(10, b_logkM[1]);",
+      "  real kcat_kM = b_kcat[1] / b_kM[1];",
       sep = "\n"),
     block = "genquant",
     position = "end")
