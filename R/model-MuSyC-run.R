@@ -98,7 +98,7 @@ MuSyC_model <- function(
       max_treedepth = 12),
     stanvars = c(
       MuSyC_stanvar(),
-      MuSyC_genquant_stanvar()),
+      MuSyC_genquant()),
     expose_functions = TRUE,
     ...) {
 

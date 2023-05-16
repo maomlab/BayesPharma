@@ -53,12 +53,12 @@ plot_posterior_density <- function(
     dplyr::rename(variables = tidyselect::all_of(".variable")) |>
     dplyr::mutate(
       variables = .data[["variables"]] |>
-        stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") |>
-        stringr::str_remove("b_") |>
-        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
-        stringr::str_remove(predictors_col_name) |>
-        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
-        stringr::str_replace("ec50", half_max_label))
+      stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") |>
+      stringr::str_remove("b_") |>
+      stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
+      stringr::str_remove(predictors_col_name) |>
+      stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
+      stringr::str_replace("ec50", half_max_label))
 
   summary_stats <- basic_stats(
     model = model,

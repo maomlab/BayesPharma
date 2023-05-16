@@ -10,7 +10,7 @@ MuSyC_model(
   init = MuSyC_init(),
   formula = MuSyC_formula(),
   control = list(adapt_delta = 0.99, max_treedepth = 12),
-  stanvars = c(MuSyC_stanvar(), MuSyC_genquant_stanvar()),
+  stanvars = c(MuSyC_stanvar(), MuSyC_genquant()),
   expose_functions = TRUE,
   ...
 )

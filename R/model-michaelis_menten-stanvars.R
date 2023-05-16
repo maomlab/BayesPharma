@@ -152,7 +152,7 @@ vector michaelis_menten_multiple(
 #' 17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
 #'
 #' @export
-michaelis_menten_genquant_stanvar <- function() {
+michaelis_menten_genquant <- function() {
   brms::stanvar(
     scode = paste(
       "  real kcat_kM = pow(10, b_logkcat[1]) / pow(10, b_logkM[1]);",

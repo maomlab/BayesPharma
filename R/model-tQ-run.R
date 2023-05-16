@@ -38,7 +38,7 @@ tQ_model <- function(
     control = list(adapt_delta = 0.99),
     stanvar_function = c(
       BayesPharma::tQ_stanvar(),
-      BayesPharma::tQ_genquant_stanvar()),
+      BayesPharma::tQ_genquant()),
     expose_functions = TRUE,
     ...) {
 

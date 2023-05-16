@@ -81,15 +81,15 @@ plot_posterior_draws <- function(
   if (is.null(treatment_variable)) {
     treatment_variable <- model |> get_treatment_variable()
   }
-  
+
   if (is.null(treatment_units)) {
     treatment_units <- model |> get_treatment_units()
   }
-  
+
   if (is.null(treatment_variable)) {
     response_variable <- model |> get_response_variable()
   }
-  
+
   if (is.null(treatment_units)) {
     response_units <- model |> get_response_units()
   }
@@ -137,7 +137,7 @@ plot_posterior_draws <- function(
     facets_layer <- list(
       ggplot2::facet_wrap(
         facets = paste0("~", paste(predictor_names, collapse = "+")) |>
-          stats::as.formula()))
+        stats::as.formula()))
   } else {
     facets_layer <- NULL
   }

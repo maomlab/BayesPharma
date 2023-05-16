@@ -39,7 +39,7 @@ michaelis_menten_model <- function(
     control = list(adapt_delta = 0.99),
     stanvar_function = c(
       BayesPharma::michaelis_menten_stanvar(),
-      BayesPharma::michaelis_menten_genquant_stanvar()),
+      BayesPharma::michaelis_menten_genquant()),
     expose_functions = TRUE,
     ...) {
 

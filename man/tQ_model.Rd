@@ -11,7 +11,7 @@ tQ_model(
   init = tQ_init(),
   iter = 8000,
   control = list(adapt_delta = 0.99),
-  stanvar_function = c(BayesPharma::tQ_stanvar(), BayesPharma::tQ_genquant_stanvar()),
+  stanvar_function = c(BayesPharma::tQ_stanvar(), BayesPharma::tQ_genquant()),
   expose_functions = TRUE,
   ...
 )
