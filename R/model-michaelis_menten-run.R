@@ -42,7 +42,7 @@ michaelis_menten_model <- function(
       BayesPharma::michaelis_menten_genquant_stanvar()),
     expose_functions = TRUE,
     ...) {
-  
+
   if (!(
     formula$bayes_pharma_info[["series_index_variable"]] %in% names(data))) {
     stop(
@@ -51,7 +51,7 @@ michaelis_menten_model <- function(
         "'", formula$bayes_pharma_info[["series_index_variable"]], "' ",
         "needs to be a column of the input 'data' data.frame\n"))
   }
-  
+
   time_variable <- formula$bayes_pharma_info[["treatment_variable"]]
   if (!(time_variable %in% names(data))) {
     stop(
@@ -59,7 +59,7 @@ michaelis_menten_model <- function(
         "The treatment (time) variable '", time_variable, "' ",
         "needs to be a column of the input 'data' data.frame\n"))
   }
-  
+
   time_type <- data[[time_variable]] |> names() |> class()
   if (time_type != "numeric") {
     stop(paste0(
@@ -67,28 +67,28 @@ michaelis_menten_model <- function(
       "needs to be a 'numeric' type. ",
       "Instead it is of type '", time_type, "'"))
   }
-  
+
   if (!(formula$bayes_pharma_info[["ET_variable"]] %in% names(data))) {
     stop(paste0(
       "The enzyme concentration variable ",
       "'", formula$bayes_pharma_info[["ET_variable"]], "' ",
       "needs to be a column of the input 'data' data.frame\n"))
   }
-  
+
   if (!(formula$bayes_pharma_info[["ST_variable"]] %in% names(data))) {
     stop(paste0(
       "The substrate concentration variable ",
       "'", formula$bayes_pharma_info[["ST_variable"]], "' ",
       "needs to be a column of the input 'data' data.frame\n"))
   }
-  
+
   if (!(formula$bayes_pharma_info[["response_variable"]] %in% names(data))) {
     stop(paste0(
       "The response variable ",
       "'", formula$bayes_pharma_info[["response_variable"]], "' ",
       "needs to be a column of the input 'data' data.frame\n"))
   }
-  
+
   model <- brms::brm(
     formula = formula,
     data = data,
@@ -98,20 +98,20 @@ michaelis_menten_model <- function(
     control = control,
     stanvars = stanvar_function,
     ...)
-  
+
   model$bayes_pharma_info <- list(model_type = "michaelis_menten")
-  
+
   if ("bayes_pharma_info" %in% names(formula)) {
     model$bayes_pharma_info <- c(
       model$bayes_pharma_info,
       list(formula_info = formula$bayes_pharma_info))
   }
-  
+
   # this is needed e.g. for brms::loo_compare()
   if (expose_functions) {
     brms::expose_functions(model, vectorize = TRUE)
   }
-  
+
   class(model) <- c("bpfit", class(model))
   model
 }

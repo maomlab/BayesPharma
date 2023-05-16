@@ -70,12 +70,12 @@
 #' 17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
 #'
 #' @export
-michaelis_menten_model_generate <- function(time, kcat, kM, ET, ST, ...) {
-  
+michaelis_menten <- function(time, kcat, kM, ET, ST, ...) {
+
   assertthat::assert_that(
     all(time == cummax(time)),
     msg = "Time is monotonic increasing")
-  
+
   ode_michaelis_menten <- function(time, Pt, theta) {
     list(c(theta[1] * (ET * (ST - Pt) / (theta[2] + ST - Pt))))
   }

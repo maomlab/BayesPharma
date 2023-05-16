@@ -107,11 +107,11 @@ vector michaelis_menten_multiple(
   for (i in 1:N) {
     if(current_series != series_index[i]) {
       P[begin:i-1] = michaelis_menten_single(
-        time[begin:i-1],
-        vkcat[begin:i-1],
-        vkM[begin:i-1], 
-        vET[begin:i-1],
-        vST[begin:i-1]);
+	time[begin:i-1],
+	vkcat[begin:i-1],
+	vkM[begin:i-1],
+	vET[begin:i-1],
+	vST[begin:i-1]);
 
       //// for debugging
       // for(j in 1:3) {
@@ -138,21 +138,21 @@ vector michaelis_menten_multiple(
 }
 
 #' Stan Code for the Michaelis Menten Model Generated Quantities
-#' 
+#'
 #' If only the substrate concentration is varied, it is not generally possible
 #' to fit both `kcat` and `kM`. However, it is possible to fit the ratio
 #' `kcat/kM`. Including this [rstan::stan] code will generate the samples for
 #' `kcat/kM`.
-#' 
+#'
 #' @seealso [michaelis_menten_model]
 #'
 #' @references
 #' Choi, B., Rempala, G.A. & Kim, J.K. Beyond the Michaelis-Menten equation:
 #' Accurate and efficient estimation of enzyme kinetic parameters. Sci Rep 7,
 #' 17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
-#' 
+#'
 #' @export
-michaelis_menten_genquant_stanvar <- function(){
+michaelis_menten_genquant_stanvar <- function() {
   brms::stanvar(
     scode = paste(
       "  real kcat_kM = pow(10, b_logkcat[1]) / pow(10, b_logkM[1]);",

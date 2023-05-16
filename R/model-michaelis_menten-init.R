@@ -13,7 +13,7 @@
 michaelis_menten_init <- function(
     kcat = 4,
     kM = 4) {
-  
+
   function() {
     list(
       b_kcat = prepare_init(kcat),
