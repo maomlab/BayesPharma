@@ -46,7 +46,7 @@ growth_sigmoid_init <- function(
 #' @param rate `numeric` or `numeric` returning `function`
 #' @param lambda `numeric` or `numeric` returning `function`
 #' @param nu `numeric` or `numeric` returning `function`
-#'   values range between [0, Inf], with 1 being standard sigmoid
+#'   values range between \[0, Inf\], with 1 being standard sigmoid
 #'
 #' @returns input for `[brm][brms::brm](init = ...)`
 #'

@@ -13,7 +13,8 @@
 #' `series_index` argument is used. Note that observations in the same
 #' time-series should be in sequential order in the supplied data.
 #'
-#' @usage
+#' @examples
+#'\dontrun{
 #' brms::brm(
 #'   data = ...,
 #'   formula = brms::brmsformula(
@@ -24,7 +25,7 @@
 #'   prior = ...,
 #'   init =  ...,
 #'   stanvars = BayesPharma::tQ_stanvar())
-#'
+#'}
 #' @seealso [tQ_model],
 #'
 #' @references

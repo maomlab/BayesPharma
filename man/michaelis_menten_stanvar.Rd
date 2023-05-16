@@ -4,17 +4,7 @@
 \alias{michaelis_menten_stanvar}
 \title{Stan Code for the Michaelis Menten Kinetics Model}
 \usage{
-brms::brm(
-  data = ...,
-  formula = brms::brmsformula(
-    P ~ michaelis_menten_multiple(
-      series_index, time, kcat, kM, ET, ST),
-    kcat + kM ~ 1,
-    nl = TRUE,
-    loop = FALSE),
-  prior = ...,
-  init =  ...,
-  stanvars = BayesPharma::michaelis_menten_stanvar())
+michaelis_menten_stanvar()
 }
 \description{
 The Michaelis Menten model is an ordinary differential equation model for the
@@ -28,6 +18,22 @@ model, the \code{mm_multiple} can be used. Note that to handle fitting time-seri
 with different numbers of observations, an additional \code{series_index} argument
 is used. Note that observations in the same time-series should be in
 sequential order in the supplied data.
+}
+\examples{
+\dontrun{
+brms::brm(
+  data = ...,
+  formula = brms::brmsformula(
+    P ~ michaelis_menten_multiple(
+      series_index, time, kcat, kM, ET, ST),
+    kcat + kM ~ 1,
+    nl = TRUE,
+    loop = FALSE),
+  prior = ...,
+  init =  ...,
+  stanvars = BayesPharma::michaelis_menten_stanvar())
+}
+
 }
 \references{
 Choi, B., Rempala, G.A. & Kim, J.K. Beyond the Michaelis-Menten equation:

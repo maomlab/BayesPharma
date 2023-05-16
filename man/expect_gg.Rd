@@ -6,6 +6,9 @@
 \usage{
 expect_gg(x)
 }
+\arguments{
+\item{x}{\link[ggplot2:ggplot]{ggplot2::ggplot} object}
+}
 \description{
 Use in tests to check if an object is a \link[ggplot2:ggplot]{ggplot2::ggplot} object
 }

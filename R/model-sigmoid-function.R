@@ -118,7 +118,7 @@ sigmoid_slope_to_hill <- function(slope, top, bottom) {
 #' 
 #' @param ac50 `numeric` value for the `ac50` parameter, which is either `ec50`
 #'   with the [sigmoid_agonist_formula()] or `ic50` for the
-#'   [sigmoid_antagoninst_formula()]
+#'   [sigmoid_antagonist_formula()]
 #' @param hill `numeric` value for the `hill` parameter
 #' @param top `numeric` value for the `top` parameter
 #' @param bottom `numeric` value for the `bottom` parameter

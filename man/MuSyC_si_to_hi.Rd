@@ -26,37 +26,39 @@ This can be used for setting priors and interpreting parameter
 estimates
 }
 \details{
-Claim: When d1=0 and d2=C2 then the gradient of the response with
-respect to d2 is the s2, symbolically d(Ed)/d(d2) = s2
+Claim: When \code{d1=0} and \code{d2=C2} then the gradient of the response
+with respect to \code{d2} is the \code{s2}, symbolically \code{d(Ed)/d(d2) = s2} where
+\code{s2 = h2 * (E0 + E2) / (4 * C2)} then
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{where s2 = h2 * (E0 + E2) / (4 * C2)
+\if{html}{\out{<div class="sourceCode">}}\preformatted{d(Ed)/d(d2)
+  = d/d(d2)
+    (C1^h1 * C2^h2 * E0 + C1^h1 * d2^h2 * E2) /
+    (C1^h1 * C2^h2      + C1^h1 * d2^h2)
 }\if{html}{\out{</div>}}
 
-d(Ed)/d(d2)
-= d/d(d2)
-(C1^h1 * C2^h2 * E0 + C1^h1 * d2^h2 * E2) /
-(C1^h1 * C2^h2      + C1^h1 * d2^h2)
+Cancel the \code{C1^h1} terms:
 
-Cancel the C1^h1 terms:
-=  d/d(d2)
-(C2^h2 * E0 + d2^h2 * E2) /
-(C2^h2      + d2^h2)
+\if{html}{\out{<div class="sourceCode">}}\preformatted{  =  d/d(d2)
+     (C2^h2 * E0 + d2^h2 * E2) /
+     (C2^h2      + d2^h2)
+}\if{html}{\out{</div>}}
 
 Distribute the derivative across the terms in the numerator
-=  E0 * C2^h2 * \link{d/d(d2) 1     / (C2^h2 + d2^h2)} +
-E2         * \link{d/d(d2) d2^h2 / (C2^h2 + d2^h2)}
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{=  E0 * C2^h2 * [h2 * d2^(h2-1) / (C2^h2 + d2^h2)^2] +
-   E2 * [C2^h2 * h2 * d2^(h2-1) / (C2^h2 + d2^h2)^2]
+\if{html}{\out{<div class="sourceCode">}}\preformatted{  =  E0 * C2^h2 * (d/d(d2) 1     / (C2^h2 + d2^h2)) +
+     E2         * (d/d(d2) d2^h2 / (C2^h2 + d2^h2))
 
-=  (E0 + E2) * C2^h2 * h2 * d2^(h2-1)/(C2^h2 + d2^h2)^2
+  =  E0 * C2^h2 * (h2 * d2^(h2-1) / (C2^h2 + d2^h2)^2) +
+     E2 * (C2^h2 * h2 * d2^(h2-1) / (C2^h2 + d2^h2)^2)
+
+  =  (E0 + E2) * C2^h2 * h2 * d2^(h2-1)/(C2^h2 + d2^h2)^2
 }\if{html}{\out{</div>}}
 
-Evaluate at d2 = C2:
-=  (E0 + E2) * h2 * C2^(2\emph{h2-1) / [4}C2^(2*h2))]
-=  h2 * (E0 + E2) / (4 * C2)
+Evaluate at \code{d2 = C2}:
 
-[4\emph{C2^(2}h2))]: R:4\emph{C2\%5E(2}h2))
+\if{html}{\out{<div class="sourceCode">}}\preformatted{  =  (E0 + E2) * h2 * C2^(2*h2-1) / (4*C2^(2*h2)))
+  =  h2 * (E0 + E2) / (4 * C2)
+}\if{html}{\out{</div>}}
 }
 \seealso{
 \link{MuSyC_hi_to_si}

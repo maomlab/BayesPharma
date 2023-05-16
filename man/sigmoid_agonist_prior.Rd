@@ -58,5 +58,5 @@ priors <- sigmoid_agonist_prior(
 }
 \seealso{
 \link{sigmoid_agonist_formula}, \link{sigmoid_agonist_init}, and
-\link{sigmoid_agonist_model}
+\link{sigmoid_model}
 }
