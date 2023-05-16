@@ -236,7 +236,7 @@ z <- z |>
 #     cores = 4,
 #     seed = 52L,
 #     backend = 'cmdstanr',
-#     stanvars = BayesPharma::tQ_stanvar,
+#     stanvars = BayesPharma::tQ_stanvar(),
 #     algorithm = "meanfield")
 
 

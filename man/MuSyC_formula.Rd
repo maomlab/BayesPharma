@@ -23,6 +23,9 @@ is log base 10 of the molar concentration}
 
 \item{treatment_2_variable}{\code{character} variable representing the treatment.}
 
+\item{treatment_2_units}{\code{character} the units of the treatment. The default
+is log base 10 of the molar concentration}
+
 \item{response_variable}{\code{character} variable representing the response to
 treatment}
 

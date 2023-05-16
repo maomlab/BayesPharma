@@ -31,7 +31,7 @@
 #' @returns [brms::brmsprior]
 #'
 #' @seealso [sigmoid_agonist_formula], [sigmoid_agonist_init], and
-#'   [sigmoid_agonist_model]
+#'   [sigmoid_model]
 #'
 #' @examples
 #'\dontrun{

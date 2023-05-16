@@ -186,7 +186,7 @@ demo_model_alt <- brms::brm(
   init = demo_init,
   control = list(adapt_delta = 0.99),
   iter = 8000,
-  stanvars = BayesPharma::sigmoid_stanvar)
+  stanvars = BayesPharma::sigmoid_stanvar())
 brms::expose_functions(demo_model_alt, vectorize = TRUE)
 demo_model_alt$model_type <- "sigmoid"
 ```

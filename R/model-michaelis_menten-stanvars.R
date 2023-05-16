@@ -23,7 +23,7 @@
 #'     loop = FALSE),
 #'   prior = ...,
 #'   init =  ...,
-#'   stanvars = BayesPharma::michaelis_menten_stanvar)
+#'   stanvars = BayesPharma::michaelis_menten_stanvar())
 #'
 #' @seealso [michaelis_menten_model],
 #'
@@ -33,8 +33,9 @@
 #' 17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
 #'
 #' @export
-michaelis_menten_stanvar <- brms::stanvar(
-  scode = paste("
+michaelis_menten_stanvar <- function() {
+  brms::stanvar(
+    scode = paste("
 vector michaelis_menten_ode(
    real time,
    vector state,
@@ -131,8 +132,8 @@ vector michaelis_menten_multiple(
   return(P);
 }
 ", sep = "\n"),
-  block = "functions")
-
+    block = "functions")
+}
 
 #' Stan Code for the Michaelis Menten Model Generated Quantities
 #' 
@@ -149,10 +150,11 @@ vector michaelis_menten_multiple(
 #' 17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
 #' 
 #' @export
-michaelis_menten_genquant_stanvar <- brms::stanvar(
-  scode = paste(
-    "  real kcat_kM = pow(10, b_logkcat[1]) / pow(10, b_logkM[1]);",
-    sep = "\n"),
-  block = "genquant",
-  position = "end")
-
+michaelis_menten_genquant_stanvar <- function(){
+  brms::stanvar(
+    scode = paste(
+      "  real kcat_kM = pow(10, b_logkcat[1]) / pow(10, b_logkM[1]);",
+      sep = "\n"),
+    block = "genquant",
+    position = "end")
+}

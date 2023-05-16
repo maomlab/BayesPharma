@@ -4,9 +4,9 @@
 #'   must contain columns `time` and `P` and any predictors specified in
 #'   the formula.
 #' @param formula [brms::brmsformula] object. To create a dose-response
-#'   [brms::brmsformula], use the [michaeli_menten_formula] function.
+#'   [brms::brmsformula], use the [michaelis_menten_formula] function.
 #' @param prior [brms::brmsprior] for `kcat`, and `kM`. Use
-#'   [michaeli_menten_formula()] to create priors to use here.
+#'   [michaelis_menten_formula()] to create priors to use here.
 #' @param init `list` of `lists`, `numeric` value, or "random" for the initial
 #'   values of the parameters being modeled.
 #' @param iter `numeric` of iterations the model runs. Increasing `iter` can
@@ -21,8 +21,8 @@
 #'
 #' @returns `bpfit` object, which is a wrapper around a [brms::brmsfit] object.
 #'
-#' @seealso [michaeli_menten_formula], [michaeli_menten_prior],
-#'   [michaeli_menten_init], or [michaeli_menten_stanvar]
+#' @seealso [michaelis_menten_formula], [michaelis_menten_prior],
+#'   [michaelis_menten_init], or [michaelis_menten_stanvar]
 #'
 #' @references
 #' Choi, B., Rempala, G.A. & Kim, J.K. Beyond the Michaelis-Menten equation:
@@ -30,16 +30,16 @@
 #' 17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
 #'
 #' @export
-michaeli_menten_model <- function(
+michaelis_menten_model <- function(
     data,
-    formula = michaeli_menten_formula(),
-    prior = michaeli_menten_prior(),
-    init = michaeli_menten_init(),
+    formula = michaelis_menten_formula(),
+    prior = michaelis_menten_prior(),
+    init = michaelis_menten_init(),
     iter = 8000,
     control = list(adapt_delta = 0.99),
     stanvar_function = c(
-      BayesPharma::michaeli_menten_stanvar,
-      BayesPharma::michaeli_menten_genquant_stanvar),
+      BayesPharma::michaelis_menten_stanvar(),
+      BayesPharma::michaelis_menten_genquant_stanvar()),
     expose_functions = TRUE,
     ...) {
   
@@ -99,7 +99,7 @@ michaeli_menten_model <- function(
     stanvars = stanvar_function,
     ...)
   
-  model$bayes_pharma_info <- list(model_type = "michaeli_menten")
+  model$bayes_pharma_info <- list(model_type = "michaelis_menten")
   
   if ("bayes_pharma_info" %in% names(formula)) {
     model$bayes_pharma_info <- c(

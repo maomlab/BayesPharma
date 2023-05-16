@@ -11,7 +11,7 @@ growth_richards_model(
   init = growth_richards_init(),
   iter = 8000,
   control = list(adapt_delta = 0.99),
-  stanvar_function = growth_richards_stanvar,
+  stanvar_function = growth_richards_stanvar(),
   expose_functions = TRUE,
   ...
 )

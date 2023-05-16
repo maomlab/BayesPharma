@@ -46,7 +46,7 @@ sigmoid_agonist_formula <- function(
     predictors = 1,
     ...) {
   # The sigmoid function is defined in BayesPharma::sigmoid_stanvar
-  response_eq <- as.formula(
+  response_eq <- stats::as.formula(
     paste0(
       response_variable, " ~ ",
       "sigmoid(ec50, hill, top, bottom, ", treatment_variable, ")"))
@@ -121,7 +121,7 @@ sigmoid_antagonist_formula <- function(
     ...) {
 
   # The sigmoid function is defined in BayesPharma::sigmoid_stanvar
-  response_eq <- as.formula(
+  response_eq <- stats::as.formula(
     paste0(
       response_variable, " ~ ",
       "sigmoid(ic50, hill, top, bottom, ", treatment_variable, ")"))

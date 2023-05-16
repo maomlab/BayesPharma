@@ -38,7 +38,7 @@
 #'      `<treatment 2> = 0`}
 #'    \item{**`h1`**: the hill slope of the response with respect to
 #'      `<treatment 1>` when `<treatment 1> = C1` and `<treatment 2> = 0`. See
-#'      [MuSyC_hi_to_si()] and [MuSyC_si_hi()] for
+#'      [MuSyC_hi_to_si()] and [MuSyC_si_to_hi()] for
 #'      converting between the slope (si) and hill slope (hi).}
 #'    \item{**`logC2`**: the `log(<treatment 2>)` where when `<treatment 1> =
 #'      0`, the `<response>` is halfway between `E0` and `E2`}
@@ -46,8 +46,8 @@
 #'      `<treatment 1> = 0`}
 #'    \item{**`h2`**: the hill slope of the response with respect to
 #'      `<treatment 2>` when `<treatment 2> = C2` and `<treatment 1> = 0`. See
-#'      [MuSyC_hi_to_si()] and [MuSyC_si_hi()] for converting between the slope
-#'      (si) and hill slope (hi).}
+#'      [MuSyC_hi_to_si()] and [MuSyC_si_to_hi()] for converting between the
+#'      slopec(si) and hill slope (hi).}
 #'    \item{**`logE3`**: the `log(response)` when `<treatment1 1> => Inf` and
 #'      `<treatment 2> => Inf`, modeling the synergistic *efficacy*}
 #'    \item{**`logalpha`**: the `log` of the synergistic *potency* `alpha`.
@@ -97,8 +97,8 @@ MuSyC_model <- function(
       adapt_delta = .99,
       max_treedepth = 12),
     stanvars = c(
-      MuSyC_stanvar,
-      MuSyC_genquant_stanvar),
+      MuSyC_stanvar(),
+      MuSyC_genquant_stanvar()),
     expose_functions = TRUE,
     ...) {
 

@@ -17,13 +17,19 @@ plot_sigmoid_functional_form(
 \arguments{
 \item{ac50}{\code{numeric} value for the \code{ac50} parameter, which is either \code{ec50}
 with the \code{\link[=sigmoid_agonist_formula]{sigmoid_agonist_formula()}} or \code{ic50} for the
-\code{\link[=sigmoid_antagoinst_formula]{sigmoid_antagoinst_formula()}}.}
+\code{\link[=sigmoid_antagoinst_formula]{sigmoid_antagoinst_formula()}}}
 
-\item{hill}{\code{numeric} value for the \code{hill} parameter.}
+\item{hill}{\code{numeric} value for the \code{hill} parameter}
 
-\item{top}{\code{numeric} value for the \code{top} parameter.}
+\item{top}{\code{numeric} value for the \code{top} parameter}
 
-\item{bottom}{\code{numeric} value for the \code{bottom} parameter.}
+\item{bottom}{\code{numeric} value for the \code{bottom} parameter}
+
+\item{log_dose}{\code{numeric} vector of treatment values}
+
+\item{treatment_units}{\code{character} units for the log dose}
+
+\item{response_units}{\code{character} units for the response}
 }
 \value{
 \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object
