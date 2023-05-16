@@ -38,7 +38,7 @@ suppressWarnings(suppressMessages(library(tidybayes)))
 ## Enzyme Kinetic Modeling
 Enzymes are proteins that catalyze chemical reactions. Not only do they
 facilitate producing virtual all biological matter, but they are crucial for
-regulating biological processes. In the early 20th century Michaels and Menten
+regulating biological processes. In the early 20th century Michaelis and Menten
 described a foundational kinematic model for enzymes, where the substrate and
 enzyme reversibly bind, the substrate is converted to the product and then
 released.
@@ -78,7 +78,7 @@ estimated. Since it is common to vary the enzyme and substrate concentrations in
 order to better estimate the kinematic parameters, we will show how we can
 improve the Stan/BRMS model to allow multiple observations, each with an
 arbitrary number of measurements. Then finally, we will consider a real enzyme
-kinetics dataset and use the Stan/BRMS model to estimate the kinematic
+kinetics data set and use the Stan/BRMS model to estimate the kinematic
 parameters. We will compare estimated parameters with those fit using
 standard approaches.
 

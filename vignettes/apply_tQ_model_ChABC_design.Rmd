@@ -1,6 +1,6 @@
 ---
 title: "Apply: tQ Model -- ChABC Design"
-description: Demonstate the robust tQ model for enzyme kinetics of re-design
+description: Demonstrate the robust tQ model for enzyme kinetics of re-design
   of ChABC, an enzyme used to degrade extra cellular matrix.
 output: rmarkdown::html_vignette
 vignette: >
@@ -34,18 +34,7 @@ vignette: >
 
 
 ```
-## Compiling Stan program...
-```
-
-```
-## Error in stanc(file = file, model_code = model_code, model_name = model_name, : 0
-## 
-## Semantic error in 'string', line 128, column 9 to column 71:
-## 
-## Ill-typed arguments supplied to function 'tQ_multiple'. Available signatures:
-## (data vector, data vector, vector, vector, data vector, data vector) => vector
-## 
-## Instead supplied arguments of incompatible type: int[], vector, vector, vector, vector, vector.
+## Error in if (!(formula$bayes_pharma_info[["series_index_variable"]] %in% : argument is of length zero
 ```
 
 

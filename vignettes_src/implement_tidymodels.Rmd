@@ -69,7 +69,7 @@ kor_recipe <- kor_antag |>
   recipes::update_role(substance_id, new_role = "predictor")
 ```
 
-Define the model using the \code{bayesian} wrapper package for TidyModels.
+Define the model using the \code{bayesian} wrapper package for Tidymodels.
 ```{r build-model}
 #| echo=TRUE
 kor_model <- bayesian::bayesian(

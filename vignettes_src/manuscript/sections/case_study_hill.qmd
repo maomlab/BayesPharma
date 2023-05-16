@@ -1,4 +1,4 @@
-## Hill Equation {#hill}
+## Hill Equation {#sec-hill}
 
 In this case study we are going to reanalyze the dose response of 4
 Kappa Opioid receptor (KOR) antagonists using the \texttt{BayesPharma}
@@ -48,7 +48,7 @@ the prior predictive distributions to see if they are compatible with the domain
 expertise. So, before running the model, we will verify that the prior
 distributions cover a plausible range of values for each parameter. To do this,
 we want to  sample only from the prior distributions by adding
-\code{sample_prior = "only"} as  an argument to the \code{sigmoid_antagonist_model}
+\code{sample_prior = "only"} as  an argument to the \code{sigmoid_model}
 function. We will use the default response distribution of the model
 (\code{family = gaussian()}).
 
@@ -68,9 +68,11 @@ kor_antag <- kor_antag |> dplyr::transmute(
 #| message=FALSE,
 #| dependson=c("kor-prior")
 
-kor_sample_prior <- BayesPharma::sigmoid_antagonist_model(
+kor_sample_prior <- BayesPharma::sigmoid_model(
   data = kor_antag |> dplyr::select(substance_id, log_dose, response),
+  formula = BayesPharma::sigmoid_antagonist_formula(),
   prior = kor_prior,
+  init = BayesPharma::sigmoid_antagonist_init(),
   sample_prior = "only")
 ```
 \normalsize
@@ -104,11 +106,12 @@ model convergence, using the default values of \code{ec50 = -9}, \code{hill = -1
 #| dependson = c("kor-data"),
 #| results='hide',
 #| message=FALSE
-kor_model <- BayesPharma::sigmoid_antagonist_model(
+kor_model <- BayesPharma::sigmoid_model(
   data = kor_antag |> dplyr::select(substance_id, log_dose, response),
   formula = BayesPharma::sigmoid_antagonist_formula(
     predictors = 0 + substance_id), 
-  prior = kor_prior)
+  prior = kor_prior,
+  init = BayesPharma::sigmoid_antagonist_init())
 ```
 \normalsize
 
@@ -229,7 +232,7 @@ with more informative prior:
 \scriptsize
 ```{r kor-model-prior2}
 kor_prior2 <- BayesPharma::sigmoid_antagonist_prior(
-  ec50 = brms::prior(prior = normal(-8.5, 0.5), nlpar = "ec50"),
+  ic50 = brms::prior(prior = normal(-8.5, 0.5), nlpar = "ic50"),
   hill = brms::prior(prior = normal(-1, 0.5), ub = 0.01, nlpar = "hill"),
   top = 100,
   bottom = brms::prior(prior = normal(10, 15), nlpar = "bottom"))
@@ -245,10 +248,12 @@ Re-fitting the model
 #| message=FALSE,
 #| dependson=c("kor-model-prior2")
 
-kor_model2 <- BayesPharma::sigmoid_antagonist_model(
+kor_model2 <- BayesPharma::sigmoid_model(
   data = kor_antag |> dplyr::select(substance_id, log_dose, response),
-  formula = BayesPharma::sigmoid_antagonist_formula(0 + substance_id), 
-  prior = kor_prior2)
+  formula = BayesPharma::sigmoid_antagonist_formula(
+    predictors = 0 + substance_id), 
+  prior = kor_prior2,
+  init = BayesPharma::sigmoid_antagonist_init())
 
 kor_model2
 ```
