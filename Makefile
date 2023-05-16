@@ -48,7 +48,7 @@ install:
 
 test:
 	Rscript -e "devtools::check()"
-	Rscript -e "covr::covr()"
+	Rscript -e "covr::package_coverage()"
 	Rscript -e "lintr::lint_package()"
 	Rscript -e "urlchecker::url_check()"
 	Rscript -e "docreview::package_review()"
