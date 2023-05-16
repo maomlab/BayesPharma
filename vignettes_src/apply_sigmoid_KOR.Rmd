@@ -22,7 +22,7 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 knitr::opts_chunk$set(
   cache = TRUE,
   echo = FALSE,
-  fig.path = "apply_sigmoid_model_KOR_antagonists_files/",
+  fig.path = "apply_sigmoid_KOR_files/",
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images
   fig.height = 5, # generated images

@@ -101,7 +101,7 @@ kor_sample_prior |>
   BayesPharma::plot_density_distribution()
 ```
 
-<img src="apply_sigmoid_model_KOR_antagonists_files/kor-prior-density-plot-1.png" alt="KOR antagonists prior distribution" width="100%" style="display: block; margin: auto;" />
+<img src="apply_sigmoid_KOR_files/kor-prior-density-plot-1.png" alt="KOR antagonists prior distribution" width="100%" style="display: block; margin: auto;" />
 \normalsize
 
 To sample from the model we will the \texttt{Stan} NUTs Hamiltonian Monte
@@ -193,7 +193,7 @@ kor_model |>
   bayesplot::mcmc_trace()
 ```
 
-<img src="apply_sigmoid_model_KOR_antagonists_files/kor-model-traceplot-1.png" alt="plot of chunk kor-model-traceplot" width="100%" style="display: block; margin: auto;" />
+<img src="apply_sigmoid_KOR_files/kor-model-traceplot-1.png" alt="plot of chunk kor-model-traceplot" width="100%" style="display: block; margin: auto;" />
 \normalsize
 
 #### Compare prior and posterior marginal distributions
@@ -213,7 +213,7 @@ BayesPharma::plot_prior_posterior_densities(
   title_label="")
 ```
 
-<img src="apply_sigmoid_model_KOR_antagonists_files/kor-model-prior-posterior-densities-1.png" alt="KOR antagonists model, compare prior and posterior distributions for each substance" width="100%" style="display: block; margin: auto;" />
+<img src="apply_sigmoid_KOR_files/kor-model-prior-posterior-densities-1.png" alt="KOR antagonists model, compare prior and posterior distributions for each substance" width="100%" style="display: block; margin: auto;" />
 \normalsize
 
 Displayed below is a plot of the posterior distributions for each
@@ -231,7 +231,7 @@ BayesPharma::plot_posterior_density(
   title_label = "")
 ```
 
-<img src="apply_sigmoid_model_KOR_antagonists_files/kor-model-posterior-densities-1.png" alt="KOR Antagonists, posterior distribution for each substance" width="100%" style="display: block; margin: auto;" />
+<img src="apply_sigmoid_KOR_files/kor-model-posterior-densities-1.png" alt="KOR Antagonists, posterior distribution for each substance" width="100%" style="display: block; margin: auto;" />
 \normalsize
 
 Displayed below is a plot of a sample of 100 sigmoid dose-response
@@ -246,7 +246,7 @@ BayesPharma::plot_posterior_draws(
   title = "")
 ```
 
-<img src="apply_sigmoid_model_KOR_antagonists_files/kor-model-posterior-draws-1.png" alt="KOR antagonists, posterior draws" width="100%" style="display: block; margin: auto;" />
+<img src="apply_sigmoid_KOR_files/kor-model-posterior-draws-1.png" alt="KOR antagonists, posterior draws" width="100%" style="display: block; margin: auto;" />
 \normalsize
 
 ### Comparing alternative models
@@ -371,5 +371,5 @@ provided by the \texttt{drc} method.
 ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
 ```
 
-<img src="apply_sigmoid_model_KOR_antagonists_files/kor-model-plot-vs-drc-1.png" alt="KOR antagonists conditional effects. The blue lines are samples from the 	exttt{BayesPharma} kor_model posterior distribution, the orange line is the conditional mean, and the purple line is the conditional mean for the 	exttt{drc} model fit." width="100%" style="display: block; margin: auto;" />
+<img src="apply_sigmoid_KOR_files/kor-model-plot-vs-drc-1.png" alt="KOR antagonists conditional effects. The blue lines are samples from the 	exttt{BayesPharma} kor_model posterior distribution, the orange line is the conditional mean, and the purple line is the conditional mean for the 	exttt{drc} model fit." width="100%" style="display: block; margin: auto;" />
 
