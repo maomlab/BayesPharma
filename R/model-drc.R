@@ -14,12 +14,12 @@
 #'
 #' @examples
 #' \dontrun{
-#' BayesPharma::drm_model(
+#' BayesPharma::drc_model(
 #'   data = tibble::tibble(
 #'     log_dose = seq(-7, -5, length.out = 20),
 #'     mean_response = BayesPharma::sigmoid(
 #'       ac50 = -6, hill = -1, top = 1, bottom = 0, log_dose = log_dose),
-#'     response = stats::rnorm(n = 20, mean = 0, sd = 0.2))
+#'     response = stats::rnorm(n = 20, mean = 0, sd = 0.2)))
 #' }
 #'
 #' @export
