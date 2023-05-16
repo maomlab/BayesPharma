@@ -49,7 +49,7 @@
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/MuSyC_formula.html</loc>
   </url>
   <url>
-    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/MuSyC_genquant_stanvar.html</loc>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/MuSyC_genquant.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/MuSyC_hi_to_si.html</loc>
@@ -89,6 +89,18 @@
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/expect_gg.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/get_response_units.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/get_response_variable.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/get_treatment_units.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/get_treatment_variable.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/growth_richards.html</loc>
@@ -133,19 +145,19 @@
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/kor_antag.html</loc>
   </url>
   <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/michaelis_menten.html</loc>
+  </url>
+  <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/michaelis_menten_formula.html</loc>
   </url>
   <url>
-    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/michaelis_menten_genquant_stanvar.html</loc>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/michaelis_menten_genquant.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/michaelis_menten_init.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/michaelis_menten_model.html</loc>
-  </url>
-  <url>
-    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/michaelis_menten_model_generate.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/michaelis_menten_prior.html</loc>
@@ -220,7 +232,7 @@
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/tQ_formula.html</loc>
   </url>
   <url>
-    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/tQ_genquant_stanvar.html</loc>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/tQ_genquant.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/tQ_init.html</loc>
