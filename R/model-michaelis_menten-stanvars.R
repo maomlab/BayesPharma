@@ -2,17 +2,18 @@
 #'
 #' The Michaelis Menten model is an ordinary differential equation model for the
 #' change in product as a function of the total enzyme concentration (ET), total
-#' substrate concentration (ST), the Michaelic constant (kM) and the catalytic
-#' constant (kcat). To implement the Michaelis Menten model in \pkg{Stan}, the
-#' function `michaelis_menten_ode` is defined and then passed to
+#' substrate concentration (ST), the Michaelis constant (kM) and the catalytic
+#' constant (kcat). To implement the Michaelis Menten model in [rstan::stan],
+#' the function `michaelis_menten_ode` is defined and then passed to
 #' `michaelis_menten_single` to integrate it using the _stiff backward
 #' differentiation formula (BDF) method_. To fit multiple time series in one
-#' model, the `mm_multiple` can be used. Note that to handle fitting time-series
-#' with different numbers of observations, an additional `series_index` argument
-#' is used. Note that observations in the same time-series should be in
-#' sequential order in the supplied data.
+#' model, the `michaelis_menten_multiple` can be used. Note that to handle
+#' fitting time-series with different numbers of observations, an additional
+#' `series_index` argument is used. Note that observations in the same
+#' time-series should be in sequential order in the supplied data.
 #'
-#' @usage
+#' @examples
+#' \dontrun{
 #' brms::brm(
 #'   data = ...,
 #'   formula = brms::brmsformula(
@@ -24,6 +25,7 @@
 #'   prior = ...,
 #'   init =  ...,
 #'   stanvars = BayesPharma::michaelis_menten_stanvar())
+#' }
 #'
 #' @seealso [michaelis_menten_model],
 #'

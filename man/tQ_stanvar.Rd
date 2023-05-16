@@ -4,16 +4,7 @@
 \alias{tQ_stanvar}
 \title{Stan Code for the tQ Enzyme Kinetics Model}
 \usage{
-brms::brm(
-  data = ...,
-  formula = brms::brmsformula(
-    P ~ tQ_multiple(series_index, time, kcat, kM, ET, ST),
-    kcat + kM ~ 1,
-    nl = TRUE,
-    loop = FALSE),
-  prior = ...,
-  init =  ...,
-  stanvars = BayesPharma::tQ_stanvar())
+tQ_stanvar()
 }
 \description{
 The tQ is an ordinary differential equation model for the total
@@ -29,6 +20,20 @@ in one model, the \code{tQ_multiple} can be used. Note that to handle fitting
 time-series with different numbers of observations, an additional
 \code{series_index} argument is used. Note that observations in the same
 time-series should be in sequential order in the supplied data.
+}
+\examples{
+\dontrun{
+brms::brm(
+  data = ...,
+  formula = brms::brmsformula(
+    P ~ tQ_multiple(series_index, time, kcat, kM, ET, ST),
+    kcat + kM ~ 1,
+    nl = TRUE,
+    loop = FALSE),
+  prior = ...,
+  init =  ...,
+  stanvars = BayesPharma::tQ_stanvar())
+}
 }
 \references{
 Choi, B., Rempala, G.A. & Kim, J.K. Beyond the Michaelis-Menten equation:

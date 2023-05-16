@@ -14,9 +14,6 @@ vignette: >
 
 
 
-```
-## here() starts at /Users/maom/opt/bayespharma
-```
 # Using BayesPharma models with Tidymodels
 
 Tidymodels is a platform for running and analyzing models in R. This vignette

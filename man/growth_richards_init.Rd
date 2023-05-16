@@ -16,7 +16,7 @@ growth_richards_init(K = 1, K0 = 0, rate = 1, lambda = 0.5, nu = 1)
 \item{lambda}{\code{numeric} or \code{numeric} returning \code{function}}
 
 \item{nu}{\code{numeric} or \code{numeric} returning \code{function}
-values range between \link{0, Inf}, with 1 being standard sigmoid}
+values range between [0, Inf], with 1 being standard sigmoid}
 }
 \value{
 input for \verb{[brm][brms::brm](init = ...)}
