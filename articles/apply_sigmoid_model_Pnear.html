@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="Demonsrate the the sigmoid model to model two-state folding dynamics in molecular simulation of antibodies and compare with the Pnear folding funnel score.">
+<meta name="description" content="Demonstrate the the sigmoid model to model two-state folding dynamics in molecular simulation of antibodies and compare with the Pnear folding funnel score.">
 <title>Apply: Sigmoid Model -- Pnear Folding Funnel • BayesPharma</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Apply: Sigmoid Model -- Pnear Folding Funnel">
-<meta property="og:description" content="Demonsrate the the sigmoid model to model two-state folding dynamics in molecular simulation of antibodies and compare with the Pnear folding funnel score.">
+<meta property="og:description" content="Demonstrate the the sigmoid model to model two-state folding dynamics in molecular simulation of antibodies and compare with the Pnear folding funnel score.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">BayesPharma</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,8 +41,8 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/apply_MuSyC_model_KCNQ_conductance.html">Apply: MuSyC Model -- KCNQ Conductance</a>
-    <a class="dropdown-item" href="../articles/apply_sigmoid_model_KOR_antagonists.html">Apply: Sigmoid Model -- KOR Antagonists</a>
+    <a class="dropdown-item" href="../articles/apply_MuSyC_KCNQ.html">Apply: MuSyC Model -- KCNQ Conductance</a>
+    <a class="dropdown-item" href="../articles/apply_sigmoid_KOR.html">Apply: Sigmoid Model -- KOR Antagonists</a>
     <a class="dropdown-item" href="../articles/apply_sigmoid_model_Pnear.html">Apply: Sigmoid Model -- Pnear Folding Funnel</a>
     <a class="dropdown-item" href="../articles/apply_tQ_model_ChABC_design.html">Apply: tQ Model -- ChABC Design</a>
     <a class="dropdown-item" href="../articles/apply_tQ_model_nSMase2_kinetics.html">Apply: tQ Model -- nSMase2 Kinetics</a>
@@ -109,7 +109,7 @@ calculation is to structures that deviate from native. Typical values
 for peptides range from 1.5 to 2.0, and for proteins from 2.0 to perhaps
 4.0. And finally the parameter <em>k_BT</em> is measured in in energy
 units, determines how large an energy gap must be in order for a
-sequence to be said to favour the native state. The default value, 0.62,
+sequence to be said to favor the native state. The default value, 0.62,
 should correspond to physiological temperature for ref2015 or any other
 scorefunction with units of kcal/mol.</p>
 </div>
@@ -123,9 +123,11 @@ gap can be modeled by a sigmoidal Boltzmann distribution.</p>
 <span><span class="co">## vignette("xkcd-intro")</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in theme_xkcd(): Not xkcd fonts installed! See vignette("xkcd-intro")</span></span></code></pre>
 <pre><code><span><span class="co">## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
-<span><span class="co">## ℹ Please use `linewidth` instead.</span></span></code></pre>
+<span><span class="co">## ℹ Please use `linewidth` instead.</span></span>
+<span><span class="co">## This warning is displayed once every 8 hours.</span></span>
+<span><span class="co">## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</span></span></code></pre>
 <p><img src="apply_sigmoid_model_Pnear_files/sigmoidal-cartoon-1.png" alt="plot of chunk sigmoidal-cartoon" width="100%" style="display: block; margin: auto;"></p>
-<p>For a principled molecular dynamics or monte carlo simulation that
+<p>For a principled molecular dynamics or Monte Carlo simulation that
 maintains detailed balance, it is in theory possible to use
 thermodynamic integration to quantify the energy gap between the two
 states. However, this is often not computationally feasible for proteins
@@ -171,34 +173,34 @@ using the <code>BayesPharma</code> package, which relies on
 <span><span class="co">## </span></span>
 <span><span class="co">## Population-Level Effects: </span></span>
 <span><span class="co">##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
-<span><span class="co">## ec50_target1ahw       1.70      0.11     1.42     1.86 1.00     3472     1962</span></span>
-<span><span class="co">## ec50_target1jps       1.37      0.13     1.07     1.59 1.00     4629     3286</span></span>
-<span><span class="co">## ec50_target1mlc       2.40      0.51     1.00     3.18 1.00     3100     2322</span></span>
-<span><span class="co">## ec50_target1ztx       0.75      0.08     0.59     0.89 1.00     5240     4310</span></span>
-<span><span class="co">## ec50_target2aep       1.12      0.31     0.57     1.53 1.00     3245     2341</span></span>
-<span><span class="co">## ec50_target2jel       1.65      0.06     1.53     1.76 1.00     6582     5112</span></span>
-<span><span class="co">## hill_target1ahw       1.68      0.43     0.88     2.59 1.00     3064     1812</span></span>
-<span><span class="co">## hill_target1jps       1.50      0.36     0.90     2.32 1.00     4140     3416</span></span>
-<span><span class="co">## hill_target1mlc       1.04      0.56     0.26     2.31 1.00     3123     3169</span></span>
-<span><span class="co">## hill_target1ztx       2.72      0.54     1.80     3.88 1.00     6608     5476</span></span>
-<span><span class="co">## hill_target2aep       1.98      0.67     0.67     3.34 1.00     2857     1277</span></span>
-<span><span class="co">## hill_target2jel       3.20      0.59     2.16     4.43 1.00     7445     5200</span></span>
-<span><span class="co">## top_target1ahw      -10.55      0.73   -11.58    -8.88 1.00     4136     2386</span></span>
-<span><span class="co">## top_target1jps       -9.69      0.59   -10.61    -8.28 1.00     5360     3607</span></span>
-<span><span class="co">## top_target1mlc       -1.27      5.95    -9.82    12.73 1.00     5988     4461</span></span>
-<span><span class="co">## top_target1ztx      -17.44      0.27   -17.98   -16.91 1.00     9444     5853</span></span>
-<span><span class="co">## top_target2aep      -16.28      0.91   -16.94   -15.37 1.00     3358     1485</span></span>
-<span><span class="co">## top_target2jel      -11.09      0.33   -11.73   -10.43 1.00     9962     5536</span></span>
-<span><span class="co">## bottom_target1ahw   -26.02      2.23   -31.83   -23.12 1.00     3219     1743</span></span>
-<span><span class="co">## bottom_target1jps   -30.54      3.80   -39.69   -24.91 1.00     4367     3267</span></span>
-<span><span class="co">## bottom_target1mlc   -18.39      4.36   -31.57   -14.76 1.00     2812     2358</span></span>
-<span><span class="co">## bottom_target1ztx   -38.82      3.46   -46.58   -33.00 1.00     5237     3824</span></span>
-<span><span class="co">## bottom_target2aep   -30.32      5.95   -44.49   -21.26 1.00     6378     4849</span></span>
-<span><span class="co">## bottom_target2jel   -19.46      0.97   -21.52   -17.71 1.00     7238     5129</span></span>
+<span><span class="co">## ec50_target1ahw       1.69      0.12     1.41     1.87 1.00     2877     1687</span></span>
+<span><span class="co">## ec50_target1jps       1.38      0.12     1.09     1.59 1.00     5373     4239</span></span>
+<span><span class="co">## ec50_target1mlc       2.40      0.52     0.99     3.20 1.00     3675     2475</span></span>
+<span><span class="co">## ec50_target1ztx       0.75      0.08     0.58     0.89 1.00     5291     3796</span></span>
+<span><span class="co">## ec50_target2aep       1.12      0.25     0.63     1.52 1.00     4585     2016</span></span>
+<span><span class="co">## ec50_target2jel       1.65      0.06     1.53     1.76 1.00     6534     5151</span></span>
+<span><span class="co">## hill_target1ahw       1.68      0.44     0.86     2.62 1.00     2528     1354</span></span>
+<span><span class="co">## hill_target1jps       1.51      0.36     0.91     2.33 1.00     4332     3997</span></span>
+<span><span class="co">## hill_target1mlc       1.03      0.56     0.25     2.30 1.00     3224     2761</span></span>
+<span><span class="co">## hill_target1ztx       2.71      0.55     1.74     3.89 1.00     6396     5073</span></span>
+<span><span class="co">## hill_target2aep       2.00      0.65     0.78     3.36 1.00     2210      725</span></span>
+<span><span class="co">## hill_target2jel       3.20      0.59     2.11     4.44 1.00     7223     4963</span></span>
+<span><span class="co">## top_target1ahw      -10.55      0.71   -11.57    -8.76 1.00     3500     2136</span></span>
+<span><span class="co">## top_target1jps       -9.70      0.57   -10.62    -8.36 1.00     5663     4538</span></span>
+<span><span class="co">## top_target1mlc       -1.19      5.99    -9.92    12.37 1.00     6721     4782</span></span>
+<span><span class="co">## top_target1ztx      -17.44      0.28   -17.99   -16.88 1.00     9559     5237</span></span>
+<span><span class="co">## top_target2aep      -16.32      0.57   -16.96   -15.49 1.00     2266      813</span></span>
+<span><span class="co">## top_target2jel      -11.10      0.34   -11.76   -10.41 1.00    10085     5363</span></span>
+<span><span class="co">## bottom_target1ahw   -26.09      2.40   -32.02   -23.13 1.00     2482     1411</span></span>
+<span><span class="co">## bottom_target1jps   -30.32      3.60   -39.13   -24.93 1.00     4782     3868</span></span>
+<span><span class="co">## bottom_target1mlc   -18.50      4.45   -32.03   -14.78 1.00     3071     2067</span></span>
+<span><span class="co">## bottom_target1ztx   -38.86      3.51   -46.78   -32.98 1.00     5433     4085</span></span>
+<span><span class="co">## bottom_target2aep   -30.29      5.95   -44.48   -21.19 1.00     5739     4435</span></span>
+<span><span class="co">## bottom_target2jel   -19.48      0.99   -21.59   -17.75 1.00     6529     4573</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Family Specific Parameters: </span></span>
 <span><span class="co">##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
-<span><span class="co">## sigma     5.74      0.07     5.60     5.89 1.00    10830     6172</span></span>
+<span><span class="co">## sigma     5.74      0.08     5.60     5.90 1.00    11394     5840</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
 <span><span class="co">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
@@ -210,8 +212,8 @@ fits the data very well</p>
 <span><span class="co">## </span></span>
 <span><span class="co">##          Estimate   SE</span></span>
 <span><span class="co">## elpd_loo  -9521.2 39.0</span></span>
-<span><span class="co">## p_loo        21.3  1.2</span></span>
-<span><span class="co">## looic     19042.4 78.0</span></span>
+<span><span class="co">## p_loo        21.4  1.1</span></span>
+<span><span class="co">## looic     19042.5 77.9</span></span>
 <span><span class="co">## ------</span></span>
 <span><span class="co">## Monte Carlo SE of elpd_loo is 0.1.</span></span>
 <span><span class="co">## </span></span>

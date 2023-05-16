@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">BayesPharma</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,8 +24,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/apply_MuSyC_model_KCNQ_conductance.html">Apply: MuSyC Model -- KCNQ Conductance</a>
-    <a class="dropdown-item" href="../articles/apply_sigmoid_model_KOR_antagonists.html">Apply: Sigmoid Model -- KOR Antagonists</a>
+    <a class="dropdown-item" href="../articles/apply_MuSyC_KCNQ.html">Apply: MuSyC Model -- KCNQ Conductance</a>
+    <a class="dropdown-item" href="../articles/apply_sigmoid_KOR.html">Apply: Sigmoid Model -- KOR Antagonists</a>
     <a class="dropdown-item" href="../articles/apply_sigmoid_model_Pnear.html">Apply: Sigmoid Model -- Pnear Folding Funnel</a>
     <a class="dropdown-item" href="../articles/apply_tQ_model_ChABC_design.html">Apply: tQ Model -- ChABC Design</a>
     <a class="dropdown-item" href="../articles/apply_tQ_model_nSMase2_kinetics.html">Apply: tQ Model -- nSMase2 Kinetics</a>
@@ -61,28 +61,28 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>ac50</dt>
-<dd><p>numeric, the log_dose of half maximal activity</p></dd>
+<dd><p><code>numeric</code>, the <code>log_dose</code> of half maximal activity</p></dd>
 
 
 <dt>hill</dt>
-<dd><p>numeric, slope of curve at the ac50 units of
+<dd><p><code>numeric</code>, slope of curve at the <code>ac50</code> units of
 response/log_dose</p></dd>
 
 
 <dt>top</dt>
-<dd><p>numeric, value of maximal response for positive slope,
-this occurs when log_dose = Inf, with negative slope when
-log_dose = -Inf</p></dd>
+<dd><p><code>numeric</code>, value of maximal response for positive slope,
+this occurs when <code>log_dose = Inf</code>, with negative slope when
+<code>log_dose = -Inf</code></p></dd>
 
 
 <dt>bottom</dt>
-<dd><p>numeric, value of minimal response for positive
+<dd><p><code>numeric</code>, value of minimal response for positive
 slope, this occurs when log_dose = -Inf, with negative slope
 when log_dose = Inf</p></dd>
 
 
 <dt>log_dose</dt>
-<dd><p>numeric, where to evaluate the the response where
+<dd><p><code>numeric</code>, where to evaluate the the response where
 the log is base 10.</p></dd>
 
 </dl></div>
@@ -90,7 +90,11 @@ the log is base 10.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>numeric, response given the log_dose and parameters</p>
+<p><code>numeric</code>, response given the <code>log_dose</code> and parameters</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><a href="sigmoid_model.html">sigmoid_model</a></p></div>
     </div>
 
     <div class="section level2">

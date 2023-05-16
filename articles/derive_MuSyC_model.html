@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">BayesPharma</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,8 +41,8 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/apply_MuSyC_model_KCNQ_conductance.html">Apply: MuSyC Model -- KCNQ Conductance</a>
-    <a class="dropdown-item" href="../articles/apply_sigmoid_model_KOR_antagonists.html">Apply: Sigmoid Model -- KOR Antagonists</a>
+    <a class="dropdown-item" href="../articles/apply_MuSyC_KCNQ.html">Apply: MuSyC Model -- KCNQ Conductance</a>
+    <a class="dropdown-item" href="../articles/apply_sigmoid_KOR.html">Apply: Sigmoid Model -- KOR Antagonists</a>
     <a class="dropdown-item" href="../articles/apply_sigmoid_model_Pnear.html">Apply: Sigmoid Model -- Pnear Folding Funnel</a>
     <a class="dropdown-item" href="../articles/apply_tQ_model_ChABC_design.html">Apply: tQ Model -- ChABC Design</a>
     <a class="dropdown-item" href="../articles/apply_tQ_model_nSMase2_kinetics.html">Apply: tQ Model -- nSMase2 Kinetics</a>
@@ -78,7 +78,7 @@
     
     
 <div class="section level2">
-<h2 id="MuSyC">MuSyC synergy model<a class="anchor" aria-label="anchor" href="#MuSyC"></a>
+<h2 id="sec-MuSyC">MuSyC synergy model<a class="anchor" aria-label="anchor" href="#sec-MuSyC"></a>
 </h2>
 <p>When two different treatments are combined they may interact to cause
 a response. For end-point assays, if the response is stronger or weaker
@@ -96,14 +96,14 @@ significant.</p>
 <p>Recently Meyer et al. derived an integrated functional synergistic
 sigmoidal dose-response, which has the Loewe and Bliss models as special
 cases. They implemented a Bayesian model-fitting strategy in Matlab, and
-a maximum likelihood model-ftting into the synergy python package. To
+a maximum likelihood model-fitting into the synergy python package. To
 make the model more accessible to the pharmacology community, in this
 section, we briefly review the MuSyC functional form, describe a
 Bayesian implementation in Stan/BRMS, and illustrate using the model to
 re-analyze how drugs and voltage may interact to modulate the current
 through a potassium channel.</p>
 <div class="section level3">
-<h3 id="musyc-functional-form">MuSyc Functional Form<a class="anchor" aria-label="anchor" href="#musyc-functional-form"></a>
+<h3 id="musyc-functional-form">MuSyC Functional Form<a class="anchor" aria-label="anchor" href="#musyc-functional-form"></a>
 </h3>
 <p>The functional form for the MuSyC model gives an equation for the
 response <span class="math inline">\(\color{brown}{E_d}\)</span> at
@@ -293,8 +293,8 @@ distribution for Ed scaled by alpha when d1=Inf, #’ d2=Inf #’ <span class="c
 sampling distribution for the C1 parameter #’ <span class="citation">(<strong>param?</strong>)</span> C2_init initial
 sampling distribution for the C2 parameter #’ <span class="citation">(<strong>param?</strong>)</span> s1_init initial
 sampling distribution for the s1 parameter #’ <span class="citation">(<strong>param?</strong>)</span> s2_init initial
-sampling distribution for the s2 parameter #’ <span class="citation">(<strong>param?</strong>)</span> log10alpha_init intial
-sampling distribution for the alpha parameter #’ <span class="citation">(<strong>param?</strong>)</span> E0_init initial
+sampling distribution for the s2 parameter #’ <span class="citation">(<strong>param?</strong>)</span> log10alpha_init
+initial sampling distribution for the alpha parameter #’ <span class="citation">(<strong>param?</strong>)</span> E0_init initial
 sampling distribution for the E0 parameter #’ <span class="citation">(<strong>param?</strong>)</span> E1_init initial
 sampling distribution for the E1 parameter #’ <span class="citation">(<strong>param?</strong>)</span> E2_init initial
 sampling distribution for the E2 parameter #’ <span class="citation">(<strong>param?</strong>)</span> E3_alpha_init initial
@@ -343,8 +343,8 @@ brms::stanvar( # scode = ” real drug2_IC50 = b_C2 * d2_scale_factor;“, #
 block =”genquant”, # position = “end”)), combine = FALSE, data2 = NULL,
 iter = iter, cores = cores, stan_model_args = stan_model_args, control =
 control, …)</p>
-<p>if (!is.null(model_evaluation_criteria)) { # evalate fits model &lt;-
-model |&gt; purrr::imap(function(model, i) { group_index &lt;-
+<p>if (!is.null(model_evaluation_criteria)) { # evaluate fits model
+&lt;- model |&gt; purrr::imap(function(model, i) { group_index &lt;-
 grouped_data[i, ] |&gt; dplyr::select(-data) group_index_label &lt;-
 paste0( names(group_index), “:”, group_index, collapse = “,”)
 cat(“Evaluating model fit for”, group_index_label, “…”, sep = ““) model

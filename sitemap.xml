@@ -7,10 +7,10 @@
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/articles/apply_MuSyC_model_KCNQ_conductance.html</loc>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/articles/apply_MuSyC_KCNQ.html</loc>
   </url>
   <url>
-    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/articles/apply_sigmoid_model_KOR_antagonists.html</loc>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/articles/apply_sigmoid_KOR.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/articles/apply_sigmoid_model_Pnear.html</loc>
@@ -40,10 +40,16 @@
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/index.html</loc>
   </url>
   <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/BayesPharma-package.html</loc>
+  </url>
+  <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/MuSyC.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/MuSyC_formula.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/MuSyC_genquant_stanvar.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/MuSyC_hi_to_si.html</loc>
@@ -61,10 +67,16 @@
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/MuSyC_si_to_hi.html</loc>
   </url>
   <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/MuSyC_stanvar.html</loc>
+  </url>
+  <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/Pnear.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/basic_stats.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/bpfit-class.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/calculate_log_dose.html</loc>
@@ -73,10 +85,46 @@
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/constant_formula.html</loc>
   </url>
   <url>
-    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/density_distributions_plot.html</loc>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/drc_model.html</loc>
   </url>
   <url>
-    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/drc_model.html</loc>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/expect_gg.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/growth_richards.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/growth_richards_formula.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/growth_richards_init.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/growth_richards_model.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/growth_richards_prior.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/growth_richards_stanvar.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/growth_sigmoid.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/growth_sigmoid_formula.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/growth_sigmoid_init.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/growth_sigmoid_model.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/growth_sigmoid_prior.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/growth_sigmoid_stanvar.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/index.html</loc>
@@ -85,28 +133,55 @@
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/kor_antag.html</loc>
   </url>
   <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/michaelis_menten_formula.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/michaelis_menten_genquant_stanvar.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/michaelis_menten_init.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/michaelis_menten_model.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/michaelis_menten_model_generate.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/michaelis_menten_prior.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/michaelis_menten_stanvar.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/plot_density_distribution.html</loc>
+  </url>
+  <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/plot_drc.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/plot_posterior_density.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/plot_posterior_draws.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/plot_pp_check.html</loc>
   </url>
   <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/plot_prior_posterior_densities.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/plot_sigmoid_functional_form.html</loc>
+  </url>
+  <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/plot_synergy_checkerboard.html</loc>
-  </url>
-  <url>
-    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/posterior_densities_plot.html</loc>
-  </url>
-  <url>
-    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/posterior_draws_plot.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/prepare_init.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/prepare_prior.html</loc>
-  </url>
-  <url>
-    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/prior_posterior_densities_plot.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/sigmoid.html</loc>
@@ -118,9 +193,6 @@
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/sigmoid_agonist_init.html</loc>
   </url>
   <url>
-    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/sigmoid_agonist_model.html</loc>
-  </url>
-  <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/sigmoid_agonist_prior.html</loc>
   </url>
   <url>
@@ -130,16 +202,25 @@
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/sigmoid_antagonist_init.html</loc>
   </url>
   <url>
-    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/sigmoid_antagonist_model.html</loc>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/sigmoid_antagonist_prior.html</loc>
   </url>
   <url>
-    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/sigmoid_antagonist_prior.html</loc>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/sigmoid_hill_to_slope.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/sigmoid_model.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/sigmoid_slope_to_hill.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/sigmoid_stanvar.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/tQ_formula.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/tQ_genquant_stanvar.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/tQ_init.html</loc>

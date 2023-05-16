@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">BayesPharma</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,8 +24,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/apply_MuSyC_model_KCNQ_conductance.html">Apply: MuSyC Model -- KCNQ Conductance</a>
-    <a class="dropdown-item" href="../articles/apply_sigmoid_model_KOR_antagonists.html">Apply: Sigmoid Model -- KOR Antagonists</a>
+    <a class="dropdown-item" href="../articles/apply_MuSyC_KCNQ.html">Apply: MuSyC Model -- KCNQ Conductance</a>
+    <a class="dropdown-item" href="../articles/apply_sigmoid_KOR.html">Apply: Sigmoid Model -- KOR Antagonists</a>
     <a class="dropdown-item" href="../articles/apply_sigmoid_model_Pnear.html">Apply: Sigmoid Model -- Pnear Folding Funnel</a>
     <a class="dropdown-item" href="../articles/apply_tQ_model_ChABC_design.html">Apply: tQ Model -- ChABC Design</a>
     <a class="dropdown-item" href="../articles/apply_tQ_model_nSMase2_kinetics.html">Apply: tQ Model -- nSMase2 Kinetics</a>
@@ -60,70 +60,149 @@
 
       <dl><dt>
           
+          <code><a href="BayesPharma-package.html">BayesPharma-package</a></code> <code><a href="BayesPharma-package.html">BayesPharma</a></code> 
+        </dt>
+        <dd>BayesPharma: Tools for Bayesian Analysis of Non-Linear Pharmacology Models</dd>
+      </dl><dl><dt>
+          
           <code><a href="MuSyC.html">MuSyC()</a></code> 
         </dt>
-        <dd>Generate MuSyC Ed scores using a robust functional form</dd>
+        <dd>Generate MuSyC Ed Scores Using a Robust Functional Form</dd>
       </dl><dl><dt>
           
           <code><a href="MuSyC_formula.html">MuSyC_formula()</a></code> 
         </dt>
-        <dd>Create a formula for the MuSyC synergy model</dd>
+        <dd>Create a Formula for the MuSyC Synergy Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="MuSyC_genquant_stanvar.html">MuSyC_genquant_stanvar()</a></code> 
+        </dt>
+        <dd>Stan Code for the MuSyC Generated Quantities</dd>
       </dl><dl><dt>
           
           <code><a href="MuSyC_hi_to_si.html">MuSyC_hi_to_si()</a></code> 
         </dt>
-        <dd>Convert slope parametrization to exponent parametrization for drug i</dd>
+        <dd>Convert Exponent to Slope Parameterization for Drug i in MuSyC Model</dd>
       </dl><dl><dt>
           
           <code><a href="MuSyC_init.html">MuSyC_init()</a></code> 
         </dt>
-        <dd>Create initialization for the MuSyC model</dd>
+        <dd>Create Initial Parameter Values for the MuSyC Model</dd>
       </dl><dl><dt>
           
           <code><a href="MuSyC_model.html">MuSyC_model()</a></code> 
         </dt>
-        <dd>MuSyC Synergy Model</dd>
+        <dd>Fit a MuSyC Synergy Model</dd>
       </dl><dl><dt>
           
           <code><a href="MuSyC_prior.html">MuSyC_prior()</a></code> 
         </dt>
-        <dd>Default priors for the MuSyC model</dd>
+        <dd>Create a Prior for the MuSyC Synergy Model</dd>
       </dl><dl><dt>
           
           <code><a href="MuSyC_si_to_hi.html">MuSyC_si_to_hi()</a></code> 
         </dt>
-        <dd>Convert from slope parametrization to the exponent parametrization for drug i</dd>
+        <dd>Convert From Slope to Exponent Parameterization for Drug i in the MuSyC Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="MuSyC_stanvar.html">MuSyC_stanvar()</a></code> 
+        </dt>
+        <dd>Stan Code for the MuSyC Function.</dd>
       </dl><dl><dt>
           
           <code><a href="Pnear.html">Pnear()</a></code> 
         </dt>
-        <dd>Compute the Pnear quality metric for RMSD funnel</dd>
+        <dd>Compute the Pnear Quality Metric for a RMSD Funnel</dd>
       </dl><dl><dt>
           
           <code><a href="basic_stats.html">basic_stats()</a></code> 
         </dt>
-        <dd>Give Basic statistical information about the model results</dd>
+        <dd>Give Basic Statistical Information About the Model Results</dd>
+      </dl><dl><dt>
+          
+          <code><a href="bpfit-class.html">bpfit-class</a></code> <code><a href="bpfit-class.html">bpfit</a></code> 
+        </dt>
+        <dd>Class <code>bpfit</code> of Models Fit with the BayesPharma Package</dd>
       </dl><dl><dt>
           
           <code><a href="calculate_log_dose.html">calculate_log_dose()</a></code> 
         </dt>
-        <dd>Add a log dose (in base 10) column to the input data.frame</dd>
+        <dd>Add a Log(dose) (in base 10) Column to the Input <code>data.frame</code></dd>
       </dl><dl><dt>
           
           <code><a href="constant_formula.html">constant_formula()</a></code> 
         </dt>
-        <dd>Formula for a curve with a constant response</dd>
-      </dl><dl><dt>
-          
-          <code><a href="density_distributions_plot.html">density_distributions_plot()</a></code> 
-        </dt>
-        <dd>Create a plot of the density distributions of modeled parameters from brmsfit
-model</dd>
+        <dd>Formula for a Curve with a Constant Response</dd>
       </dl><dl><dt>
           
           <code><a href="drc_model.html">drc_model()</a></code> 
         </dt>
-        <dd>Wrapper for DRC dose response models</dd>
+        <dd>Wrapper for DRC Dose Response Models</dd>
+      </dl><dl><dt>
+          
+          <code><a href="expect_gg.html">expect_gg()</a></code> 
+        </dt>
+        <dd>Check if an Object is a ggplot2 Plot</dd>
+      </dl><dl><dt>
+          
+          <code><a href="growth_richards.html">growth_richards()</a></code> 
+        </dt>
+        <dd>Richards growth function</dd>
+      </dl><dl><dt>
+          
+          <code><a href="growth_richards_formula.html">growth_richards_formula()</a></code> 
+        </dt>
+        <dd>Create a Formula for the Richards Growth Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="growth_richards_init.html">growth_richards_init()</a></code> 
+        </dt>
+        <dd>Create Initialization for the Richards Growth Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="growth_richards_model.html">growth_richards_model()</a></code> 
+        </dt>
+        <dd>Run Bayesian Richards Growth Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="growth_richards_prior.html">growth_richards_prior()</a></code> 
+        </dt>
+        <dd>Create a Prior for the Richards Growth Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="growth_richards_stanvar.html">growth_richards_stanvar()</a></code> 
+        </dt>
+        <dd>Stan Code for the Richards Growth Function.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="growth_sigmoid.html">growth_sigmoid()</a></code> 
+        </dt>
+        <dd>Sigmoid growth function</dd>
+      </dl><dl><dt>
+          
+          <code><a href="growth_sigmoid_formula.html">growth_sigmoid_formula()</a></code> 
+        </dt>
+        <dd>Create a Formula for the Sigmoid Growth Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="growth_sigmoid_init.html">growth_sigmoid_init()</a></code> 
+        </dt>
+        <dd>Create Initialization for the Sigmoid Growth Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="growth_sigmoid_model.html">growth_sigmoid_model()</a></code> 
+        </dt>
+        <dd>Run the Bayesian Sigmoid Growth Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="growth_sigmoid_prior.html">growth_sigmoid_prior()</a></code> 
+        </dt>
+        <dd>Create a Prior for the Sigmoid Growth Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="growth_sigmoid_stanvar.html">growth_sigmoid_stanvar()</a></code> 
+        </dt>
+        <dd>Stan Code for the Growth Richards Function.</dd>
       </dl><dl><dt>
           
           <code><a href="kor_antag.html">kor_antag</a></code> 
@@ -132,9 +211,59 @@ model</dd>
 Antagonists</dd>
       </dl><dl><dt>
           
+          <code><a href="michaelis_menten_formula.html">michaelis_menten_formula()</a></code> 
+        </dt>
+        <dd>Define a Formula for the Michaelis Menten Enzyme Kinetics Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="michaelis_menten_genquant_stanvar.html">michaelis_menten_genquant_stanvar()</a></code> 
+        </dt>
+        <dd>Stan Code for the Michaelis Menten Model Generated Quantities</dd>
+      </dl><dl><dt>
+          
+          <code><a href="michaelis_menten_init.html">michaelis_menten_init()</a></code> 
+        </dt>
+        <dd>Initialize Parameter Values for the Michaeli Menten Enzyme Kinetic Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="michaelis_menten_model.html">michaelis_menten_model()</a></code> 
+        </dt>
+        <dd>Model for the Michaeli Menten Enzyme Kinetics Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="michaelis_menten_model_generate.html">michaelis_menten_model_generate()</a></code> 
+        </dt>
+        <dd>Generate Data from the Michaelis Menten Enzyme Kinetics</dd>
+      </dl><dl><dt>
+          
+          <code><a href="michaelis_menten_prior.html">michaelis_menten_prior()</a></code> 
+        </dt>
+        <dd>Create a Prior for the Michaeli Menten Enzyme Kinetics Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="michaelis_menten_stanvar.html">michaelis_menten_stanvar()</a></code> 
+        </dt>
+        <dd>Stan Code for the Michaelis Menten Kinetics Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="plot_density_distribution.html">plot_density_distribution()</a></code> 
+        </dt>
+        <dd>Plot Density Distribution of Model Parameters</dd>
+      </dl><dl><dt>
+          
           <code><a href="plot_drc.html">plot_drc()</a></code> 
         </dt>
-        <dd>Create plot of drc model</dd>
+        <dd>Create Plot of a DRC Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="plot_posterior_density.html">plot_posterior_density()</a></code> 
+        </dt>
+        <dd>Plot Posterior Density Distributions of modeled parameters</dd>
+      </dl><dl><dt>
+          
+          <code><a href="plot_posterior_draws.html">plot_posterior_draws()</a></code> 
+        </dt>
+        <dd>Plot of Posterior Model Fit Draws</dd>
       </dl><dl><dt>
           
           <code><a href="plot_pp_check.html">plot_pp_check()</a></code> 
@@ -142,36 +271,29 @@ Antagonists</dd>
         <dd>Perform Posterior Predictive Check</dd>
       </dl><dl><dt>
           
+          <code><a href="plot_prior_posterior_densities.html">plot_prior_posterior_densities()</a></code> 
+        </dt>
+        <dd>Plot Prior and Posterior Marginal Distributions</dd>
+      </dl><dl><dt>
+          
+          <code><a href="plot_sigmoid_functional_form.html">plot_sigmoid_functional_form()</a></code> 
+        </dt>
+        <dd>Plot the Sigmoid Functional Form with Labeled Parameters</dd>
+      </dl><dl><dt>
+          
           <code><a href="plot_synergy_checkerboard.html">plot_synergy_checkerboard()</a></code> 
         </dt>
-        <dd>Plot synergy checkerboard</dd>
-      </dl><dl><dt>
-          
-          <code><a href="posterior_densities_plot.html">posterior_densities_plot()</a></code> 
-        </dt>
-        <dd>Create a plot of the posterior density distributions of modeled parameters
-from brmsfit model</dd>
-      </dl><dl><dt>
-          
-          <code><a href="posterior_draws_plot.html">posterior_draws_plot()</a></code> 
-        </dt>
-        <dd>Plot of Posterior Model Fit Draws</dd>
+        <dd>Plot Synergy Checkerboard</dd>
       </dl><dl><dt>
           
           <code><a href="prepare_init.html">prepare_init()</a></code> 
         </dt>
-        <dd>Prepare an init for a brms model</dd>
+        <dd>Helper Function to Prepare an Init for a brms Model</dd>
       </dl><dl><dt>
           
           <code><a href="prepare_prior.html">prepare_prior()</a></code> 
         </dt>
-        <dd>Prepare a brmsprior</dd>
-      </dl><dl><dt>
-          
-          <code><a href="prior_posterior_densities_plot.html">prior_posterior_densities_plot()</a></code> 
-        </dt>
-        <dd>Create a plot of the prior &amp; posterior density distributions of
-modeled parameters from brmsfit model</dd>
+        <dd>Helper Function to Prepare a Prior for a brms Model</dd>
       </dl><dl><dt>
           
           <code><a href="sigmoid.html">sigmoid()</a></code> 
@@ -181,77 +303,87 @@ modeled parameters from brmsfit model</dd>
           
           <code><a href="sigmoid_agonist_formula.html">sigmoid_agonist_formula()</a></code> 
         </dt>
-        <dd>Create an agonist sigmoid formula for the brms model</dd>
+        <dd>Create an Agonist Sigmoid Formula for the Sigmoid Model</dd>
       </dl><dl><dt>
           
           <code><a href="sigmoid_agonist_init.html">sigmoid_agonist_init()</a></code> 
         </dt>
-        <dd>Create initialization for the agonist sigmoid model</dd>
-      </dl><dl><dt>
-          
-          <code><a href="sigmoid_agonist_model.html">sigmoid_agonist_model()</a></code> <code><a href="sigmoid_agonist_model.html">sigmoid_agonist_model()</a></code> 
-        </dt>
-        <dd>Run Bayesian Growth Model</dd>
+        <dd>Initialize Parameter Values for an Agonist Sigmoid Model</dd>
       </dl><dl><dt>
           
           <code><a href="sigmoid_agonist_prior.html">sigmoid_agonist_prior()</a></code> 
         </dt>
-        <dd>Default priors for the sigmoid agonist model</dd>
+        <dd>Create a Prior an Agonist Sigmoid Model</dd>
       </dl><dl><dt>
           
           <code><a href="sigmoid_antagonist_formula.html">sigmoid_antagonist_formula()</a></code> 
         </dt>
-        <dd>Create an antagonist sigmoid formula for the brms model</dd>
+        <dd>Create a Formula for the Sigmoid Antagonist Model</dd>
       </dl><dl><dt>
           
           <code><a href="sigmoid_antagonist_init.html">sigmoid_antagonist_init()</a></code> 
         </dt>
-        <dd>Create initialization for the antagonist sigmoid model</dd>
-      </dl><dl><dt>
-          
-          <code><a href="sigmoid_antagonist_model.html">sigmoid_antagonist_model()</a></code> <code><a href="sigmoid_antagonist_model.html">sigmoid_antagonist_model()</a></code> 
-        </dt>
-        <dd>Run Bayesian Sigmoid Antagonist Model</dd>
+        <dd>Initialize Parameter Values for an Antagonist Sigmoid Model</dd>
       </dl><dl><dt>
           
           <code><a href="sigmoid_antagonist_prior.html">sigmoid_antagonist_prior()</a></code> 
         </dt>
-        <dd>Default priors for the sigmoid antagonist model</dd>
+        <dd>Create a Prior an Antagonist Sigmoid Model</dd>
       </dl><dl><dt>
           
-          <code><a href="sigmoid_stanvar.html">sigmoid_stanvar</a></code> 
+          <code><a href="sigmoid_hill_to_slope.html">sigmoid_hill_to_slope()</a></code> 
         </dt>
-        <dd>Stan code for the sigmoid function.</dd>
+        <dd>Convert Hill to Slope Parameters a the Sigmoid Functional Form</dd>
+      </dl><dl><dt>
+          
+          <code><a href="sigmoid_model.html">sigmoid_model()</a></code> 
+        </dt>
+        <dd>Fit a Bayesian Sigmoid Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="sigmoid_slope_to_hill.html">sigmoid_slope_to_hill()</a></code> 
+        </dt>
+        <dd>Convert Slope to Hill Parameters a the Sigmoid Functional Form</dd>
+      </dl><dl><dt>
+          
+          <code><a href="sigmoid_stanvar.html">sigmoid_stanvar()</a></code> 
+        </dt>
+        <dd>Stan Code for the Sigmoid Model.</dd>
       </dl><dl><dt>
           
           <code><a href="tQ_formula.html">tQ_formula()</a></code> 
         </dt>
-        <dd>Define formula for the tQ enzyme kinetics model</dd>
+        <dd>Define a Formula for the Total QSSA (tQ) Enzyme Kinetics Model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="tQ_genquant_stanvar.html">tQ_genquant_stanvar()</a></code> 
+        </dt>
+        <dd>Stan Code for the tQ Model Generated Quantities</dd>
       </dl><dl><dt>
           
           <code><a href="tQ_init.html">tQ_init()</a></code> 
         </dt>
-        <dd>Initialize parameter values for the tQ enyzme kinetic model</dd>
+        <dd>Initialize Parameter Values for the tQ Enzyme Kinetic Model</dd>
       </dl><dl><dt>
           
           <code><a href="tQ_model.html">tQ_model()</a></code> 
         </dt>
-        <dd>Model for the tQ enzyme kinetics model</dd>
+        <dd>Model for the tQ Enzyme Kinetics Model</dd>
       </dl><dl><dt>
           
           <code><a href="tQ_model_generate.html">tQ_model_generate()</a></code> 
         </dt>
-        <dd>Generate data from the total QSSA model for enzyme kinetics</dd>
+        <dd>Generate Data from the Total QSSA (tQ) Model for Enzyme Kinetics</dd>
       </dl><dl><dt>
           
           <code><a href="tQ_prior.html">tQ_prior()</a></code> 
         </dt>
-        <dd>Define priors for the tQ enzyme kinetics model</dd>
+        <dd>Create a Prior for the tQ Enzyme Kinetics Model</dd>
       </dl><dl><dt>
           
-          <code><a href="tQ_stanvar.html">tQ_stanvar</a></code> 
+          <code><a href="tQ_stanvar.html">tQ_stanvar()</a></code> 
         </dt>
-        <dd>stanvar for the tQ enzyme kinetics model</dd>
+        <dd>Stan Code for the tQ Enzyme Kinetics Model</dd>
       </dl></div>
   </main></div>
 
