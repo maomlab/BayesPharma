@@ -6,8 +6,6 @@ execute:
 ---
 
 
-
-
 # Bayesian Pharmacology Modeling
 
 Introduction
@@ -31,22 +29,14 @@ Follow the instructions to install [rstan](https://github.com/stan-dev/rstan/wik
 
 ### Install `BayesPharma`
 In R do
-
-::: {.cell}
-
-```{.r .cell-code}
+```{r install-BayesPharma}
 install.packages("remotes")
 remotes::install_github("maomlab/BayesPharma", build_vignettes = FALSE)
 ```
-:::
-
 
 Usage
 -----
-
-::: {.cell}
-
-```{.r .cell-code}
+```{r load-data}
 library(tidyverse)
 library(BayesPharma)
 
@@ -55,82 +45,50 @@ data <- data.frame(
   treatment = ...,
   <predictor columns>)
 ```
-:::
-
 The predictor columns are typically treatment variables like `drug` or batch
 variable like `well_id`.
 
 To use the model to, for example fit a sigmoid agonist model:
-
-::: {.cell}
-
-```{.r .cell-code}
+```{r basic-sigmoid-model}
 model <- BayesPharma::sigmoid_model(
    data = data,
    formula = BayesPharma::sigmoid_agoinst_formula(),
    prior = BayesPharma::sigmoid_agonsit_prior(),
    init = BayesPharma::sigmoid_agonist_init())
 ```
-:::
-
 ### Evaluate model fit
 
 Once the model has been fit, to evaluate it 
 
 #### Traceplot
-
-::: {.cell}
-
-```{.r .cell-code}
+```{r plot-traceplot}
 model |> BayesPharma::traceplot()
 ```
-:::
-
 #### Basic statistics
-
-::: {.cell}
-
-```{.r .cell-code}
+```{r print-basic-statistics}
 model |> posterior::summarize_draws()
 ```
-:::
-
 #### Regression plot
-
-::: {.cell}
-
-```{.r .cell-code}
+```{r plot-posterior-draws}
 model |> BayesPharma::plot_posterior_draws()
 ```
-:::
-
 #### Prior densities
-
-::: {.cell}
-
-```{.r .cell-code}
+```{r plot-prior-posterior-densities}
 model |> BayesPharma::density_distributions()
 model |> BayesPharma::posterior_densities()
 model |> BayesPharma::prior_posterior_densities()
 ```
-:::
-
 #### posterior predictive check
-
-::: {.cell}
-
-```{.r .cell-code}
+```{r plot-poterior-predictive-check}
+#| eval: false
 model |> brms::pp_check(type = "dens_overlay", ndraws = 50)
 ```
-:::
-
 
 ### compare model fits
-
-::: {.cell}
-
-```{.r .cell-code}
+```{r compare-models-with-loo}
+#| eval: false
 model <- model |> brms::add_loo_criterion()
 model_fit_comparison <- brms::compare_models(model, model_alt)
 ```
-:::
+
+
