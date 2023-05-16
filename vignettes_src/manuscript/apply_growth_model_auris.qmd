@@ -1,0 +1,109 @@
+---
+# For vignette -----------------------------------------------------------------
+title: "Apply: Growth Richards Model -- Candida Auris"
+subtitle: Analysis of growth of Candida auris a fungal pathogen
+description: Demonstrate applying a Richards growth model to cell growth data
+# Document ---------------------------------------------------------------------
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Apply: Growth Richards Model -- Candida Auris}
+  %\VignetteKeyword{BayesPharma}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{grofit}
+
+---
+
+
+```{r load-data}
+data <- readr::read_tsv(
+  "/tmp/example_growth_curves.tsv",
+  show_col_types = FALSE) |>
+  dplyr::transmute(
+    replica = as.factor(replica),
+    time = Time,
+    response = value)
+```
+
+```{r plot-data}
+
+art_fit <- data |>
+  dplyr::mutate(
+    pred_art = BayesPharma::growth_richards(
+      K = ifelse(replica == 1, 0.4, 0.5),
+      K0 = ifelse(replica == 1, 0.135, 0.15),
+      rate = .02,
+      lambda = ifelse(replica == 1, 20, 5),
+      nu = 1,
+      time = time))
+
+
+plot <- ggplot2::ggplot() +
+  ggplot2::theme_bw() +
+  ggplot2::geom_line(
+    data = data,
+    mapping = ggplot2::aes(
+      x = time,
+      y = response,
+      color = replica,
+      group = replica),
+    linewidth = 1,  
+    alpha = 1) +
+  ggplot2::geom_line(
+    data = art_fit,
+    mapping = ggplot2::aes(
+      x = time,
+      y = pred_art,
+      color = replica,
+      group = replica),
+      alpha = .4) +
+  ggplot2::theme(legend.position = "bottom")
+plot
+```
+
+
+```{r fit-bayespharma-model}
+devtools::document(); devtools::load_all()
+model <- BayesPharma::growth_richards_model(
+  data = data,
+  formula = BayesPharma::growth_richards_formula(
+    predictors = 0 + replica),
+  prior = BayesPharma::growth_richards_prior(
+    K = brms::prior(prior = normal(0.3, 0.08), nlpar = "K"),
+    K0 = brms::prior(prior = normal(0.05, 0.08), nlpar = "K0"),
+    rate = brms::prior(prior = normal(0.01, 0.1), nlpar = "rate", lb = 0),
+    lambda = brms::prior(prior = normal(10, 20), nlpar = "lambda"),
+    nu = brms::prior(prior = normal(1.2, .4), nlpar = "nu", lb = 0)),
+  init = BayesPharma::growth_richards_init(
+    K = 0.5,
+    K0 = 0.1,
+    rate = 0.01,
+    lambda = 10,
+    nu = 1),
+  cores = 4,
+  control = list(
+    adapt_delta = 0.99,
+    max_treedepth = 15))
+  
+
+
+model <- BayesPharma::growth_richards_model(
+  data = data,
+  formula = brms::brmsformula(
+    response ~ A * nu * mu0 * lambda * time,
+    A ~ 1,
+    nu ~ 1 + replica,
+    mu0 ~ 1 + replica,
+    lambda ~ 1 + replica,
+    nl = TRUE),
+  prior = BayesPharma::growth_richards_prior(),
+  init = BayesPharma::growth_richards_init())
+    
+    BayesPharma::growth_richards_formula(
+    predictors = 1 + replica))
+
+```
+
+
+
+

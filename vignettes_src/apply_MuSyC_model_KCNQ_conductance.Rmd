@@ -17,7 +17,7 @@ vignette: >
 knitr::opts_chunk$set(
   cache = TRUE,
   echo = FALSE,
-  fig.path = "vignettes/apply_MuSyC_model_KCNQ_conductance_files/",
+  fig.path = "apply_MuSyC_model_KCNQ_conductance_files/",
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images
   fig.height = 5, # generated images
@@ -26,18 +26,21 @@ knitr::opts_chunk$set(
   dpi = if (knitr::is_latex_output()) 72 else 300, 
   out.width = "100%")
 
-algorithm <- "meanfield"
-
 ```
 
 
 ```{r load-packages}
+#| echo=FALSE
 suppressWarnings(suppressMessages(library(tidyverse)))
 library(BayesPharma)
 ```
 
 
 ```{r load-data}
+#| echo=TRUE,
+#| results='hide',
+#| message=FALSE,
+
 read_range <- function(
     sheet,
     range,
@@ -135,32 +138,22 @@ data <- dplyr::bind_rows(
 ```
 
 
-```{r prepare example data}
+```{r prepare-model-data}
 #| echo=FALSE
 model_data <- data |>
   dplyr::filter(
-    treatment == "ztz240",
     is_control == FALSE) |>
   dplyr::transmute(
-    response = conductance,
-    logd1 = log10(dose_uM) - 6,
-    logd2 = voltage/100)
-
-```
-
-```
-model_meanfield <- BayesPharma::MuSyC_model(
-  data = model_data,
-  algorithm = "meanfield")
-
-model <- BayesPharma::MuSyC_model(
-  data = model_data)
+    conductance,
+    voltage = voltage/100,
+    treatment = treatment,
+    doselabel = paste(dose_uM, "uM") |> as.factor(),
+    logdose = log10(dose_uM) - 6)
 
 ```
 
 
-```{plot-checkerboard}
-
+```{r plot-checkerboard}
 plot_data <- data |>
   dplyr::filter(
     treatment == "ztz240",
@@ -168,7 +161,7 @@ plot_data <- data |>
   dplyr::transmute(
     response = conductance,
     dose1 = dose_uM,
-    dose2 = 10^(voltage),
+    dose2 = 10^(voltage))
 
 BayesPharma::plot_synergy_checkerboard(
   data = plot_data,
@@ -184,13 +177,193 @@ BayesPharma::plot_synergy_checkerboard(
       expand = c(0, 0))
 ```
 
-```{r overlay-model-fit}
 
-model_predict <- predict(
-  model,
-  newdata = tidyr::expand_grid(
-    logd1 = seq(-1, 1, length.out = 100),
-    logd2 = unique(data$voltage) / 100,
-    logd1scale = model$data$logd1scale[1],
-    logd2scale = model$data$logd2scale[2]))
+
+```{r fit-model-conductance}
+#| echo=TRUE,
+#| results='hide',
+#| message=FALSE,
+#| dependson=c("prepare-model-data")
+
+model_conductance <- BayesPharma::sigmoid_model(
+  data = model_data,
+  formula = BayesPharma::sigmoid_agonist_formula(
+    treatment_variable = "voltage",
+    treatment_units = "mV",
+    response_variable = "conductance",
+    response_units = "% Gmax",
+    predictors = 0 + treatment:doselabel),
+  prior = BayesPharma::sigmoid_agonist_prior(
+    ec50 = brms::prior(normal(-0.2, 1), nlpar = "ec50"),
+    hill = brms::prior(normal(3, 2), nlpar = "hill", lb = 1)),
+  cores = 4)
 ```
+
+```{r model-conductance-prior-posterior}
+#| echo=TRUE,
+#| message=FALSE,
+#| dependson=c("model-conductance-by-voltage")
+
+model_conductance |>
+  BayesPharma::plot_prior_posterior_densities()
+```
+
+```{r model-conductance-predictive}
+#| echo=TRUE,
+#| message=FALSE,
+#| dependson=c("model-conductance-by-voltage")
+
+model_conductance |>
+  BayesPharma::plot_posterior_draws()
+```
+Fit MuSyC Model
+
+```{r fit-MuSyC-model}
+#| echo=FALSE,
+#| message=FALSE,
+#| dependson=c("prepare-model-data")
+model_MuSyC_meanfield <- BayesPharma::MuSyC_model(
+  data = model_data,
+  formula = BayesPharma::MuSyC_formula(
+    treatment_1_variable = "voltage",
+    treatment_2_variable = "log_dose",
+    response_variable = "conductance"),
+  algorithm = "meanfield")
+
+model_MuSyC <- BayesPharma::MuSyC_model(
+  data = model_data,
+  formula = BayesPharma::MuSyC_formula(
+    treatment_1_variable = "voltage",
+    treatment_2_variable = "logdose",
+    response_variable = "conductance"),
+  prior = BayesPharma::MuSyC_prior(
+    logE0 = log(0),
+    logE1 = log(1),
+    logC1 = brms::prior(normal(-0.2, 1), nlpar = "logC1"),
+    h1 = brms::prior(normal(1, 1), nlpar = "h1"),
+    logE2 = log(0),
+    logC2 = brms::prior(normal(-6, 2), nlpar = "logC2"),
+    h2 = brms::prior(normal(-1, 1), nlpar = "h2"),    
+    logE3 = log(1),
+    logalpha = brms::prior(normal(0, 1), nlpar = "logalpha")),
+  control = list(
+      adapt_delta = .99,
+      max_treedepth = 12),
+  stanvars = BayesPharma::MuSyC_stanvar,
+  cores = 4)
+```
+
+Join the conductance model with the dose information to model how the voltage
+dependence depends on the drug dose
+```{r extract-voltage-by-dose}
+#| echo=FALSE,
+#| message=FALSE,
+#| dependson=c("prepare-model-data", "model-conductance-by-voltage")
+
+data_conductance_by_voltage <- model_conductance |>
+  posterior::summarize_draws() |>
+  tidyr::separate_wider_delim(
+    cols = variable,
+    delim = "_",
+    names = c("variable_type", "variable", "predictors_label"),
+    too_few = "align_start") |>
+  dplyr::filter(variable_type == "b") |>
+  dplyr::inner_join(
+    model_data |>
+      dplyr::distinct(treatment, logdose, doselabel) |>
+      dplyr::mutate(
+        predictors_label = paste0(
+          "treatment", treatment, ":",
+          "doselabel", doselabel |> stringr::str_replace(" ", ""))),
+    by = "predictors_label")
+data_conductance_by_voltage
+
+```
+
+
+```{r plot-voltage-by-dose}
+#| echo=FALSE,
+#| message=FALSE,
+#| dependson=c("extract-voltage-by-dose")
+plot <- ggplot2::ggplot(
+  data = data_conductance_by_voltage) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_ribbon(
+    mapping = ggplot2::aes(
+      x = logdose,
+      ymin = q5,
+      ymax = q95,
+      fill = treatment),
+    alpha = .2) +
+  ggplot2::geom_line(
+    mapping = ggplot2::aes(
+      x = logdose,
+      y = mean,
+      color = treatment),
+    linewidth = 1.8) +
+  ggplot2::facet_wrap(
+    facets = dplyr::vars(variable),
+    scales = "free_y") +
+  ggplot2::theme(legend.position = "bottom") +
+  ggplot2::scale_color_viridis_d("Treatment", begin=.2, end=0.8) +
+  ggplot2::scale_fill_viridis_d("Treatment", begin=0.2, end=0.8) +
+  ggplot2::scale_x_continuous("Log[Molar]") +
+  ggplot2::scale_y_continuous("Parameter Value")
+plot
+```
+
+```{r fit-bilevel-model}
+#| echo=FALSE,
+#| message=FALSE,
+#| dependson=c("extract-voltage-by-dose")
+model_bilevel <- brms::brm(
+  data = model_data,
+  formula = brms::brmsformula(
+    conductance ~ sigmoid(
+      sigmoid(Eec50, Ehill, Etop, Ebottom, logdose),
+      sigmoid(Hec50, Hhill, Htop, Hbottom, logdose),
+      vtop,
+      vbottom,
+      voltage),
+    vtop + vbottom ~ 1,
+    Eec50 + Ehill + Etop + Ebottom ~ 0 + treatment,
+    Hec50 + Hhill + Htop + Hbottom ~ 0 + treatment,
+    nl = TRUE),
+  prior = c(
+    brms::prior(prior = normal(-6, 2.5), nlpar = "Eec50"),
+    brms::prior(prior = normal(-1.5, 1), nlpar = "Ehill", ub = 0.01),
+    brms::prior(prior = normal(-.1, 0.05), nlpar = "Etop"),
+    brms::prior(prior = normal(-.4, 0.05), nlpar = "Ebottom"),
+    
+    brms::prior(prior = normal(-6, 2.5), nlpar = "Hec50"),
+    brms::prior(prior = normal(1, 1), nlpar = "Hhill", lb = 0.01),
+    brms::prior(prior = normal(5, 2), nlpar = "Htop"),
+    brms::prior(prior = normal(3, 0.1), nlpar = "Hbottom"),    
+    
+    brms::prior(prior = normal(1, 0.3), nlpar = "vtop"),
+    brms::prior(prior = normal(0, 0.3), nlpar = "vbottom")),
+  control = list(
+      adapt_delta = .99,
+      max_treedepth = 12),
+  stanvars = BayesPharma::sigmoid_stanvar,
+  cores = 4)
+```
+
+
+```{r summarize-bilevel-model}
+#| echo=FALSE,
+#| message=FALSE,
+#| dependson=c("fit-bilevel-model")
+model_bilevel
+```
+
+
+
+
+```{r compare-model-fits}
+#| echo=FALSE,
+#| message=FALSE,
+#| dependson=c("fit-MuSyC-model", "fit-bilevel-model")
+brms::loo_compare(model_MuSyC, model_bilevel)
+```
+

@@ -42,7 +42,7 @@ kor_recipe <- kor_antag |>
   recipes::update_role(substance_id, new_role = "predictor")
 ```
 
-Define the model using the \code{bayesian} wrapper package for TidyModels.
+Define the model using the \code{bayesian} wrapper package for Tidymodels.
 
 ```r
 kor_model <- bayesian::bayesian(
@@ -84,14 +84,14 @@ kor_workflow
 ```
 
 ```
-## ══ Workflow [trained] ═══════════════════════════════════════════════════════════════════════════════════════════
+## ══ Workflow [trained] ════════════════════════════════════════════════════════════════════════════════════════════════════
 ## Preprocessor: Recipe
 ## Model: bayesian()
 ## 
-## ── Preprocessor ─────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Preprocessor ──────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## 0 Recipe Steps
 ## 
-## ── Model ────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Model ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ##  Family: gaussian 
 ##   Links: mu = identity; sigma = identity 
 ## Formula: ..y ~ sigmoid(ic50, hill, top, bottom, log_dose) 
@@ -105,35 +105,35 @@ kor_workflow
 ## 
 ## Population-Level Effects: 
 ##                                Estimate Est.Error l-95% CI u-95% CI Rhat
-## ic50_substance_idBTRX_335140      -8.85      0.20    -9.21    -8.42 1.00
-## ic50_substance_idBTRX_395750      -8.24      0.42    -8.92    -7.37 1.00
+## ic50_substance_idBTRX_335140      -8.85      0.20    -9.22    -8.42 1.00
+## ic50_substance_idBTRX_395750      -8.25      0.39    -8.92    -7.46 1.00
 ## ic50_substance_idJNJ              -9.15      0.31    -9.76    -8.51 1.00
-## ic50_substance_idPF               -6.11      1.12    -7.58    -3.13 1.00
-## hill_substance_idBTRX_335140      -1.48      0.60    -2.90    -0.59 1.00
-## hill_substance_idBTRX_395750      -0.90      0.52    -2.28    -0.25 1.00
-## hill_substance_idJNJ              -1.00      0.50    -2.38    -0.41 1.00
-## hill_substance_idPF               -0.32      0.25    -0.99    -0.03 1.00
-## bottom_substance_idBTRX_335140     0.00      0.51    -1.00     1.01 1.00
-## bottom_substance_idBTRX_395750     0.03      0.51    -0.98     1.01 1.00
-## bottom_substance_idJNJ             0.00      0.51    -1.04     0.97 1.00
-## bottom_substance_idPF             -0.00      0.48    -0.94     0.93 1.00
+## ic50_substance_idPF               -6.13      1.10    -7.65    -3.14 1.00
+## hill_substance_idBTRX_335140      -1.46      0.59    -2.83    -0.58 1.00
+## hill_substance_idBTRX_395750      -0.90      0.51    -2.27    -0.28 1.00
+## hill_substance_idJNJ              -1.01      0.52    -2.48    -0.41 1.00
+## hill_substance_idPF               -0.31      0.25    -0.91    -0.03 1.00
+## bottom_substance_idBTRX_335140     0.00      0.51    -1.02     1.00 1.00
+## bottom_substance_idBTRX_395750     0.01      0.50    -0.97     0.98 1.00
+## bottom_substance_idJNJ             0.00      0.51    -1.03     0.98 1.00
+## bottom_substance_idPF              0.01      0.50    -0.94     0.99 1.00
 ## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA
 ## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA
 ## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA
 ## top_substance_idPF               100.00      0.00   100.00   100.00   NA
 ##                                Bulk_ESS Tail_ESS
-## ic50_substance_idBTRX_335140       4728     2529
-## ic50_substance_idBTRX_395750       3034     1184
-## ic50_substance_idJNJ               4781     2832
-## ic50_substance_idPF                1589     1019
-## hill_substance_idBTRX_335140       4259     3228
-## hill_substance_idBTRX_395750       3124     1575
-## hill_substance_idJNJ               4086     2719
-## hill_substance_idPF                1905     1580
-## bottom_substance_idBTRX_335140     5194     2843
-## bottom_substance_idBTRX_395750     4830     2744
-## bottom_substance_idJNJ             4357     2645
-## bottom_substance_idPF              4872     2879
+## ic50_substance_idBTRX_335140       3453     2241
+## ic50_substance_idBTRX_395750       2970     1707
+## ic50_substance_idJNJ               3764     2646
+## ic50_substance_idPF                2124     1222
+## hill_substance_idBTRX_335140       2996     2651
+## hill_substance_idBTRX_395750       2949     1852
+## hill_substance_idJNJ               3926     3141
+## hill_substance_idPF                1784     1342
+## bottom_substance_idBTRX_335140     4155     2948
+## bottom_substance_idBTRX_395750     4618     2963
+## bottom_substance_idJNJ             4014     3065
+## bottom_substance_idPF              4128     2920
 ## top_substance_idBTRX_335140          NA       NA
 ## top_substance_idBTRX_395750          NA       NA
 ## top_substance_idJNJ                  NA       NA
@@ -141,7 +141,7 @@ kor_workflow
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma    32.11      2.86    27.04    38.22 1.00     3774     2785
+## sigma    32.15      2.84    27.30    38.27 1.00     3616     2674
 ## 
 ## ...
 ## and 4 more lines.

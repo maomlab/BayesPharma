@@ -1,7 +1,7 @@
-## Michaelis-Menten enzyme progress model {#michaelis_menten}
+## Michaelis-Menten enzyme progress model {#sec-michaelis_menten}
 
 ## Enzyme Kinetic Modeling
-Enzymes are proteins that catalyze chemical reactions. Not only do they facilitate producing virtual all biological matter, but they are crucial for regulating biological processes. In the early 20th century Michaels and Menten described a foundational kinematic model for enzymes, where the substrate and enzyme reversibly bind, the substrate is converted to the product and then
+Enzymes are proteins that catalyze chemical reactions. Not only do they facilitate producing virtual all biological matter, but they are crucial for regulating biological processes. In the early 20th century Michaelis and Menten described a foundational kinematic model for enzymes, where the substrate and enzyme reversibly bind, the substrate is converted to the product and then
 released.
 
 $$

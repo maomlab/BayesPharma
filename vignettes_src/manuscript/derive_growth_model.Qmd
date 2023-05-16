@@ -11,8 +11,8 @@ vignette: >
 
 
 ```{r load-packages}
-load(tidyverse)
-library(plotly)
+#load(tidyverse)
+#library(plotly)
 ```
 
 (Zwietering, 1990) Table 2
@@ -76,7 +76,7 @@ data <- dplyr::bind_rows(
 plot <- ggplot2::ggplot(data = data) +
   ggplot2::theme_bw() +
   ggplot2::geom_line(
-    mapping = aes(
+    mapping = ggplot2::aes(
       x = time,
       y = y,
       color = curve_index,
@@ -148,7 +148,7 @@ data <- dplyr::bind_rows(
 plot <- ggplot2::ggplot(data = data) +
   ggplot2::theme_bw() +
   ggplot2::geom_line(
-    mapping = aes(
+    mapping = ggplot2::aes(
       x = time,
       y = y,
       color = curve_index,
