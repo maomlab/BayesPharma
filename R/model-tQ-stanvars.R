@@ -152,7 +152,7 @@ vector tQ_multiple(
 #' 17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
 #'
 #' @export
-tQ_genquant_stanvar <- function() {
+tQ_genquant <- function() {
   brms::stanvar(
     scode = paste(
       "  real kcat_kM = b_kcat[1] / b_kM[1];",

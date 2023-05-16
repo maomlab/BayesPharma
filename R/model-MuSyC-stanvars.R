@@ -48,7 +48,7 @@ MuSyC_stanvar <- function() {
 #' Stan Code for the MuSyC Generated Quantities
 #'
 #' @export
-MuSyC_genquant_stanvar <- function() {
+MuSyC_genquant <- function() {
   brms::stanvar(
     scode = paste(
       "  real E0 = exp(b_logE0[1]);",
