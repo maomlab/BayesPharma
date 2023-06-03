@@ -4,12 +4,16 @@
 \alias{tQ_init}
 \title{Initialize Parameter Values for the tQ Enzyme Kinetic Model}
 \usage{
-tQ_init(kcat = 4, kM = 4)
+tQ_init(kcat = 4, kM = 4, ...)
 }
 \arguments{
 \item{kcat}{\code{numeric} initial value for \code{kcat} parameter in the tQ model}
 
 \item{kM}{\code{numeric} initial value for the \code{kM} parameter in the tQ model}
+
+\item{...}{additional parameter initialization. Each named argument should be
+a function that returns an \code{numeric} \code{array} of length \code{1}, see
+\code{\link[=rstan_default_scalar_init]{rstan_default_scalar_init()}} to use the rstan default init.}
 }
 \value{
 input for \verb{[tQ_model](init = ...)} parameter.

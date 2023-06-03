@@ -102,6 +102,8 @@ MuSyC_model <- function(
     expose_functions = TRUE,
     ...) {
 
+  args <- list(...)
+
   if (!inherits(formula, "bpformula")) {
     warning(
       "formula must be a 'bpformula'. You can use the ",
@@ -153,7 +155,7 @@ MuSyC_model <- function(
     formula = formula,
     data = data,
     prior = prior,
-    init = init,
+    init = eval_init(init, chains = args$chains),
     control = control,
     stanvars = stanvars,
     ...)

@@ -84,6 +84,8 @@ sigmoid_model <- function(
   expose_functions = TRUE,
   ...) {
 
+  args <- list(...)
+
   if (!inherits(formula, "bpformula")) {
     warning(
       "formula must be a 'bpformula'. You can use the ",
@@ -118,7 +120,7 @@ sigmoid_model <- function(
     formula = formula,
     data = data,
     prior = prior,
-    init = init,
+    init = eval_init(init, args$chains),
     iter = iter,
     control = control,
     stanvars = stanvar_function,

@@ -13,7 +13,8 @@ MuSyC_init(
   logE2 = log(0.5),
   h2 = 4,
   logE3 = log(0.5),
-  logalpha = 0
+  logalpha = 0,
+  ...
 )
 }
 \arguments{
@@ -54,6 +55,10 @@ exponent for treatment \code{1} corresponding to a slope of
 \item{logalpha}{\code{numeric} or function returning array of
 length 1. Initial value for the \code{logalpha}
 parameter. Default: \code{0 = log(1)}}
+
+\item{...}{additional parameter initialization. Each named argument should be
+a function that returns an \code{numeric} \code{array} of length \code{1}, see
+\code{\link[=rstan_default_scalar_init]{rstan_default_scalar_init()}} to use the rstan default init.}
 }
 \value{
 input for \code{BayesPharma::model_MuSyC(init = ...)}

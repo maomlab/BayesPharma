@@ -4,7 +4,7 @@
 \alias{michaelis_menten_init}
 \title{Initialize Parameter Values for the Michaeli Menten Enzyme Kinetic Model}
 \usage{
-michaelis_menten_init(kcat = 4, kM = 4)
+michaelis_menten_init(kcat = 4, kM = 4, ...)
 }
 \arguments{
 \item{kcat}{\code{numeric} initial value for \code{kcat} parameter in the
@@ -12,6 +12,10 @@ Michaelis Menten model}
 
 \item{kM}{\code{numeric} initial value for the \code{kM} parameter in the
 Michaelis Menten model}
+
+\item{...}{additional parameter initialization. Each named argument should be
+a function that returns an \code{numeric} \code{array} of length \code{1}, see
+\code{\link[=rstan_default_scalar_init]{rstan_default_scalar_init()}} to use the rstan default init.}
 }
 \value{
 input for \verb{[michaelis_menten_model](init = ...)} parameter.
