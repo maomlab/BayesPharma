@@ -42,6 +42,8 @@ tQ_model <- function(
     expose_functions = TRUE,
     ...) {
 
+  args <- list(...)
+
   if (!(
     formula$bayes_pharma_info[["series_index_variable"]] %in% names(data))) {
     stop(
@@ -92,7 +94,7 @@ tQ_model <- function(
     formula = formula,
     data = data,
     prior = prior,
-    init = init,
+    init = eval_init(init, chains = args$chains),
     iter = iter,
     control = control,
     stanvars = stanvar_function,

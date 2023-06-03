@@ -4,7 +4,7 @@
 \alias{growth_sigmoid_init}
 \title{Create Initialization for the Sigmoid Growth Model}
 \usage{
-growth_sigmoid_init(K = 1, K0 = 0, rate = 1, lambda = 0.5)
+growth_sigmoid_init(K = 1, K0 = 0, rate = 1, lambda = 0.5, ...)
 }
 \arguments{
 \item{K}{\code{numeric} or \code{numeric} returning \code{function}}
@@ -15,6 +15,10 @@ growth_sigmoid_init(K = 1, K0 = 0, rate = 1, lambda = 0.5)
 
 \item{lambda}{\code{numeric} or \code{numeric} returning \code{function}
 units of \code{time}}
+
+\item{...}{additional parameter initialization. Each named argument should be
+a function that returns an \code{numeric} \code{array} of length \code{1}, see
+\code{\link[=rstan_default_scalar_init]{rstan_default_scalar_init()}} to use the rstan default init.}
 }
 \value{
 input for \verb{[brm][brms::brm](init = ...)}

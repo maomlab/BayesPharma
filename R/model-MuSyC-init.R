@@ -32,6 +32,11 @@
 #' @param logalpha `numeric` or function returning array of
 #'     length 1. Initial value for the `logalpha`
 #'     parameter. Default: `0 = log(1)`
+#' @param ... additional parameter initialization. Each named argument should be
+#'   a function that returns a `numeric` or `array` depending on the dimension
+#'   of the parameter, see [rstan_default_init()] to use the \pkg{rstan} default
+#'   init.
+#'
 #' @returns input for `BayesPharma::model_MuSyC(init = ...)`
 #'     parameter.
 #'
@@ -56,7 +61,8 @@ MuSyC_init <- function(
     logE2 = log(0.5),
     h2 = 4,
     logE3 = log(0.5),
-    logalpha = 0) {
+    logalpha = 0,
+    ...) {
 
   function() {
     list(
@@ -68,6 +74,7 @@ MuSyC_init <- function(
       b_logE2 = prepare_init(logE1),
       b_h2 = prepare_init(h1),
       b_logE3 = prepare_init(logE3),
-      b_logalpha = prepare_init(logalpha))
+      b_logalpha = prepare_init(logalpha),
+      ...)
   }
 }

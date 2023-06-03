@@ -9,6 +9,10 @@
 #' @param rate `numeric` or `numeric` returning `function`
 #' @param lambda `numeric` or `numeric` returning `function`
 #'   units of `time`
+#' @param ... additional parameter initialization. Each named argument should be
+#'   a function that returns a `numeric` or `array` depending on the dimension
+#'   of the parameter, see [rstan_default_init()] to use the \pkg{rstan} default
+#'   init.
 #'
 #' @returns input for `[brm][brms::brm](init = ...)`
 #'
@@ -25,14 +29,16 @@ growth_sigmoid_init <- function(
     K = 1,
     K0 = 0,
     rate = 1,
-    lambda = 0.5) {
+    lambda = 0.5,
+    ...) {
 
   function() {
     list(
       b_K = prepare_init(K),
       b_K0 = prepare_init(K0),
       b_rate = prepare_init(rate),
-      b_lambda = prepare_init(lambda))
+      b_lambda = prepare_init(lambda),
+      ...)
   }
 }
 
@@ -47,6 +53,9 @@ growth_sigmoid_init <- function(
 #' @param lambda `numeric` or `numeric` returning `function`
 #' @param nu `numeric` or `numeric` returning `function`
 #'   values range between \[0, Inf\], with 1 being standard sigmoid
+#' @param ... additional parameter initialization. Each named argument should be
+#'   a function that returns an `numeric` `array` of length `1`, see
+#'   [rstan_default_scalar_init()] to use the rstan default init.
 #'
 #' @returns input for `[brm][brms::brm](init = ...)`
 #'
@@ -65,7 +74,8 @@ growth_richards_init <- function(
     K0 = 0,
     rate = 1,
     lambda = 0.5,
-    nu = 1) {
+    nu = 1,
+    ...) {
 
   function() {
     list(
@@ -73,6 +83,7 @@ growth_richards_init <- function(
       b_K0 = prepare_init(K0),
       b_rate = prepare_init(rate),
       b_lambda = prepare_init(lambda),
-      b_nu = prepare_init(nu))
+      b_nu = prepare_init(nu),
+      ...)
   }
 }

@@ -5,7 +5,7 @@
 #'   `numeric` value.
 #' @returns `function` returning a `numeric` `array` of length `1`.
 #'
-#'
+#' @export
 prepare_init <- function(init) {
   if (inherits(init, "function")) {
     # init is a function, check that it returns a numeric array of dimension 1
@@ -25,6 +25,125 @@ prepare_init <- function(init) {
   }
   init_fn
 }
+
+#' Helper Function to Create the Default `rstan` scalar init
+#'
+#' @description By default, \pkg{rstan} will initialize parameters uniformly at
+#' random in the range (-2, 2), on the unconstrained scale. Description of how
+#' stan transforms parameters to satisfy constraints is described in the stan
+#' documentation
+#' [https://mc-stan.org/docs/reference-manual/variable-transforms.html]
+#'
+#' This helper is especially useful for running models using the \pkg{cmdstanr}
+#' backend, which requires all parameters (including distributional) parameters
+#' to be initialized.
+#'
+#' @param lb `numeric` lower bound for parameter
+#' @param ub `numeric` upper bound for parameter
+#' @param dim `numeric` dimension of parameter.
+#' @returns function that return the default brms initial value for a parameter.
+#'   If `dim=0`, then it will be a numeric scalar, if `dim=1` or greater, than
+#'   return an array with the given dimension.
+#'
+#' @seealso [rstan::stan]
+#'
+#' @examples
+#' \dontrun{
+#'
+#' # Explicitly set the default initialization for the distributional parameter
+#' # 'sigma' when family=gaussian().
+#' init <- BayesPharma::sigmoid_antagonist_init(
+#'   sigma = BayesPharma::rstan_default_scalar_init(lb = 0))
+#'
+#' }
+#'
+#' @export
+rstan_default_init <- function(lb = NULL, ub = NULL, dim = 0) {
+  if (dim == 0) {
+    if (!is.null(lb) && !is.null(ub)) {
+      # https://mc-stan.org/docs/reference-manual/logit-transform-jacobian.html
+      return(\() brms::inv_logit_scaled(
+        x = stats::runif(1, min = -2, max = 2),
+        lb = lb,
+        ub = ub))
+    } else if (!is.null(lb)) {
+      # https://mc-stan.org/docs/reference-manual/lower-bound-transform.html
+      return(
+        \() exp(stats::runif(1, min = -2, max = 2)) + lb)
+    } else if (!is.null(ub)) {
+      # https://mc-stan.org/docs/reference-manual/upper-bounded-scalar.html
+      return(
+        \() ub - exp(stats::runif(1, min = -2, max = 2)))
+    } else {
+      return(
+        \() stats::runif(1, min = -2, max = 2))
+    }
+  } else {
+    if (!is.null(lb) && !is.null(ub)) {
+      # https://mc-stan.org/docs/reference-manual/logit-transform-jacobian.html
+      return(\() array(
+        brms::inv_logit_scaled(
+          x = stats::runif(1, min = -2, max = 2),
+          lb = lb,
+          ub = ub),
+        dim = dim))
+    } else if (!is.null(lb)) {
+      # https://mc-stan.org/docs/reference-manual/lower-bound-transform.html
+      return(
+        \() array(exp(stats::runif(1, min = -2, max = 2)) + lb, dim = dim))
+    } else if (!is.null(ub)) {
+      # https://mc-stan.org/docs/reference-manual/upper-bounded-scalar.html
+      return(
+        \() array(ub - exp(stats::runif(1, min = -2, max = 2)), dim = dim))
+    } else {
+      return(
+        \() array(stats::runif(1, min = -2, max = 2), dim = dim))
+    }
+  }
+}
+
+#' Evaluate an init
+#'
+#' @description How brms models can be initialized depends on the backend. The
+#' method that all backends supports is as a list (one for each chain) of lists
+#' (one for each variable) with numeric values. Since this requires knowing
+#' how many chains are being run, which may not be available when the model is
+#' being defined, and to support random initialization, the rstan backend
+#' also supports initialization as a function returning a list of functions
+#' (one for each parameter) returning a numeric array of length 1. Also, to
+#' suppor the common use-case of initializing everything to zero or randomly in
+#' the range (-2, 2) on the unconstrained scale, rstan also supports
+#' initializing with `0` and `"random"`.
+#' 
+#' To make BayesPharma more backend agnostic, this helper function takes the
+#' an init and the number of chains and reduces it to the list of list format.
+#'
+#' @param init A valid init argument for [rstan::rstan].
+#' @param chains `numeric` number of chains to generate initializations for
+#' @returns `list` of `lists` form of model initialization.
+#'
+#' @export
+eval_init <- function(init, chains = NULL) {
+  if (is.null(chains)) {
+    chains <- 4
+  }
+  if (is.null(init) || is.numeric(init) || is.character(init)) {
+    # not sure if cmdstanr can support this type of initialization or not...
+    return(init)
+  } else if (isa(init, "list")) {
+    if (length(init) != chains) {
+      stop(paste0(
+        "Init is given with '", length(init), "' elements, but the ",
+        "number of chains requested is '", chains, "'", sep = ""))
+    }
+    return(init)
+  } else if (isa(init, "function")) {
+    # Assume evaluating the function returns a list of functions, one for each
+    # parameter and evaluating each function returns a numeric array of length 1
+    return(1:chains |> purrr::map(~init() |> purrr::map(~.x())))
+  }
+}
+
 
 #' Helper Function to Prepare a Prior for a [brms] Model
 #'

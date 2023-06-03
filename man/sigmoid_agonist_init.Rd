@@ -4,7 +4,7 @@
 \alias{sigmoid_agonist_init}
 \title{Initialize Parameter Values for an Agonist Sigmoid Model}
 \usage{
-sigmoid_agonist_init(ec50 = -6, hill = 1, top = 1, bottom = 0)
+sigmoid_agonist_init(ec50 = -6, hill = 1, top = 1, bottom = 0, ...)
 }
 \arguments{
 \item{ec50}{\code{numeric} or \code{numeric} returning \code{function} units of the
@@ -19,6 +19,10 @@ response}
 
 \item{bottom}{\code{numeric} or \code{numeric} returning \code{function} with units of the
 response}
+
+\item{...}{additional parameter initialization. Each named argument should be
+a function that returns an \code{numeric} \code{array} of length \code{1}, see
+\code{\link[=rstan_default_scalar_init]{rstan_default_scalar_init()}} to use the rstan default init.}
 }
 \value{
 input for \verb{[brms::brm](init = ...)}

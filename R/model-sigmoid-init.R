@@ -13,6 +13,10 @@
 #'   response
 #' @param bottom `numeric` or `numeric` returning `function` with units of the
 #'   response
+#' @param ... additional parameter initialization. Each named argument should be
+#'   a function that returns an `numeric` `array` of length `1`, see
+#'   [rstan_default_scalar_init()] to use the rstan default init.
+#'
 #' @returns input for `[brms::brm](init = ...)`
 #'
 #' @seealso [sigmoid_agonist_formula()], [sigmoid_agonist_prior()], and
@@ -31,14 +35,16 @@ sigmoid_agonist_init <- function(
     ec50 = -6,
     hill = 1,
     top = 1,
-    bottom = 0) {
+    bottom = 0,
+    ...) {
 
   function() {
     list(
       b_ec50 = prepare_init(ec50),
       b_hill = prepare_init(hill),
       b_top = prepare_init(top),
-      b_bottom = prepare_init(bottom))
+      b_bottom = prepare_init(bottom),
+      ...)
   }
 }
 
@@ -55,8 +61,11 @@ sigmoid_agonist_init <- function(
 #'   response/log_dose
 #' @param top `numeric` or `numeric` returning `function` in units of the
 #'   response
-#' @param bottom `numeric` or `numeric` returning `funciton` in units of the
+#' @param bottom `numeric` or `numeric` returning `function` in units of the
 #'   response
+#' @param ... additional parameter initialization. Each named argument should be
+#'   a function that returns an `numeric` `array` of length `1`, see
+#'   [rstan_default_scalar_init()] to use the rstan default init.
 #' @returns input for `[brm][brms::brm](init = ...)`
 #'
 #' @seealso [sigmoid_antagonist_formula()], [sigmoid_antagonist_prior()], and
@@ -64,24 +73,34 @@ sigmoid_agonist_init <- function(
 #'
 #' @examples
 #'\dontrun{
-#' #Consider an inhibitor that has a min response around 50%, IC50 is estimated
-#' #to be around 1 nM, maximum response is known to be around 1,
+#' # Consider an inhibitor that has a min response around 50%, IC50 is estimated
+#' # to be around 1 nM, maximum response is known to be around 1,
 #' init <- BayesPharma::sigmoid_antagonist_init(
 #'   ec50 = -9,
 #'   bottom = 0.5)
+#'
+#' # By default rstan initializes unspecified initial values to be uniformly at
+#' # random in the range (-2, 2) on the unconstrained scale. For the default
+#' # distributional response, family=gaussian(), the shape parameter sigma' is
+#' # bounded below by zero through this transformation Y = log(X - 0). So, to
+#' # explicitly give the default initialization for 'sigma', we can use
+#' init <- BayesPharma::sigmoid_antagonist_init(
+#'   sigma = BayesPharma::rstan_default_init(lb = 0))
 #'}
 #'@export
 sigmoid_antagonist_init <- function(
     ic50 = -6,
     hill = -1,
     top = 1,
-    bottom = 0) {
+    bottom = 0,
+    ...) {
 
   function() {
     list(
       b_ic50 = prepare_init(ic50),
       b_hill = prepare_init(hill),
       b_top = prepare_init(top),
-      b_bottom = prepare_init(bottom))
+      b_bottom = prepare_init(bottom),
+      ...)
   }
 }

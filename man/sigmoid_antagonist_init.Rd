@@ -4,7 +4,7 @@
 \alias{sigmoid_antagonist_init}
 \title{Initialize Parameter Values for an Antagonist Sigmoid Model}
 \usage{
-sigmoid_antagonist_init(ic50 = -6, hill = -1, top = 1, bottom = 0)
+sigmoid_antagonist_init(ic50 = -6, hill = -1, top = 1, bottom = 0, ...)
 }
 \arguments{
 \item{ic50}{\code{numeric} or \code{numeric} returning \code{function} units of the
@@ -17,8 +17,12 @@ response/log_dose}
 \item{top}{\code{numeric} or \code{numeric} returning \code{function} in units of the
 response}
 
-\item{bottom}{\code{numeric} or \code{numeric} returning \code{funciton} in units of the
+\item{bottom}{\code{numeric} or \code{numeric} returning \code{function} in units of the
 response}
+
+\item{...}{additional parameter initialization. Each named argument should be
+a function that returns an \code{numeric} \code{array} of length \code{1}, see
+\code{\link[=rstan_default_scalar_init]{rstan_default_scalar_init()}} to use the rstan default init.}
 }
 \value{
 input for \verb{[brm][brms::brm](init = ...)}
@@ -30,11 +34,20 @@ that can be passed to the \code{\link[=sigmoid_model]{sigmoid_model()}} along wi
 }
 \examples{
 \dontrun{
-#Consider an inhibitor that has a min response around 50\%, IC50 is estimated
-#to be around 1 nM, maximum response is known to be around 1,
+# Consider an inhibitor that has a min response around 50\%, IC50 is estimated
+# to be around 1 nM, maximum response is known to be around 1,
 init <- BayesPharma::sigmoid_antagonist_init(
   ec50 = -9,
   bottom = 0.5)
+
+# By default rstan initializes unspecified initial values to be uniformly at
+# random in the range (-2, 2) on the unconstrained scale. For the default
+# distributional response, family=gaussian(), the shape parameter sigma' is
+# bounded below by zero through this transformation Y = log(X - 0). So, to
+# explicitly give the default initialization for 'sigma', we can use
+init <- BayesPharma::sigmoid_antagonist_init(
+  sigma = \() array(exp(runif(n = 1, min = -2, max = 2)))
+)
 }
 }
 \seealso{
