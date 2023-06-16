@@ -14,8 +14,9 @@
 #' @param bottom `numeric` or `numeric` returning `function` with units of the
 #'   response
 #' @param ... additional parameter initialization. Each named argument should be
-#'   a function that returns an `numeric` `array` of length `1`, see
-#'   [rstan_default_scalar_init()] to use the rstan default init.
+#'   a function that returns a `numeric` or `array` depending on the dimension
+#'   of the parameter, see [rstan_default_init()] to use the \pkg{rstan} default
+#'   init.
 #'
 #' @returns input for `[brms::brm](init = ...)`
 #'
@@ -56,7 +57,7 @@ sigmoid_agonist_init <- function(
 #'
 #' @param ic50 `numeric` or `numeric` returning `function` units of the
 #'   treatment. If the treatment is `log_dose`, the default value of `-6`
-#'  corresponds `1e-6` molar = `1` μM
+#'   corresponds `1e-6` molar = `1` μM
 #' @param hill `numeric` or `numeric` returning `function` with units
 #'   response/log_dose
 #' @param top `numeric` or `numeric` returning `function` in units of the

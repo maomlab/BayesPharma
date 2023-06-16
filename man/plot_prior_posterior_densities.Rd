@@ -30,9 +30,9 @@ ed50, id50, ld50, etc.).}
 \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.
 }
 \description{
-Generate a plot that shows for each model variable the distribution of the
-marginal posterior uncertainty overlaid on the distribution of the marginal
-prior uncertainty.
+Generate a plot that shows for each model variable the
+distribution of the marginal posterior uncertainty overlaid on the
+distribution of the marginal prior uncertainty.
 }
 \examples{
 \dontrun{

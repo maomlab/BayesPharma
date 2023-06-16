@@ -60,7 +60,7 @@ sigmoid_agonist_prior <- function(
 #' Create a Prior an Antagonist Sigmoid Model
 #'
 #' @description Creates a `data.frame` of priors for the sigmoid antagonist
-#'     model
+#' model
 #'
 #' If the function arguments ic50, hill, top, bottom = NULL, default
 #' normal distribution priors will be set.

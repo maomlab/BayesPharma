@@ -25,16 +25,15 @@ starting with initial product concentration of \code{0} and specified \code{kcat
 \code{kM} parameters for the specified time steps.
 }
 \description{
-Generate data from the Michaelis Menten enzyme kinetics ordinary differential
-equation described in (Choi, et al., 2017, DOI: 10.1038/s41598-017-17072-z).
-Consider the kinetic rate equation
+Generate data from the Michaelis Menten enzyme kinetics ordinary
+differential equation described in (Choi, et al., 2017, DOI:
+10.1038/s41598-017-17072-z). Consider the kinetic rate equation
 \preformatted{
                   kf
                  --->    kcat
           E + S  <---  C --->  E + P
                   kb}
-}
-\details{
+
 where the free enzyme (E) reversibly binds to the substrate (S) to
 form a complex (C) with forward and backward rate constants of kf
 and kb, which is irreversibly catalyzed into the product (P), with

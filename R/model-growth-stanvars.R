@@ -27,9 +27,8 @@ growth_sigmoid_stanvar <- function() {
       "      real rate,",
       "      real lambda,",
       "      real time) {",
-      "      real term = ;",
-      "      return (K0 + (K - K0) / (1 + exp(",
-      "        4 * rate / (K - K0) * (lambda - time) + 2));",
+      "      return (K0 + K / (1 + exp(",
+      "        4 * rate / K * (lambda - time) + 2)));",
       "   }", sep = "\n"),
     block = "functions")
 }

@@ -86,11 +86,11 @@ plot_posterior_draws <- function(
     treatment_units <- model |> get_treatment_units()
   }
 
-  if (is.null(treatment_variable)) {
+  if (is.null(response_variable)) {
     response_variable <- model |> get_response_variable()
   }
 
-  if (is.null(treatment_units)) {
+  if (is.null(response_units)) {
     response_units <- model |> get_response_units()
   }
 

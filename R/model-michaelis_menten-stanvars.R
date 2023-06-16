@@ -1,16 +1,16 @@
 #' Stan Code for the Michaelis Menten Kinetics Model
 #'
-#' The Michaelis Menten model is an ordinary differential equation model for the
-#' change in product as a function of the total enzyme concentration (ET), total
-#' substrate concentration (ST), the Michaelis constant (kM) and the catalytic
-#' constant (kcat). To implement the Michaelis Menten model in [rstan::stan],
-#' the function `michaelis_menten_ode` is defined and then passed to
-#' `michaelis_menten_single` to integrate it using the _stiff backward
-#' differentiation formula (BDF) method_. To fit multiple time series in one
-#' model, the `michaelis_menten_multiple` can be used. Note that to handle
-#' fitting time-series with different numbers of observations, an additional
-#' `series_index` argument is used. Note that observations in the same
-#' time-series should be in sequential order in the supplied data.
+#' @description The Michaelis Menten model is an ordinary differential equation
+#' model for the change in product as a function of the total enzyme
+#' concentration (ET), total substrate concentration (ST), the Michaelis
+#' constant (kM) and the catalytic constant (kcat). To implement the Michaelis
+#' Menten model in [rstan::stan], the function `michaelis_menten_ode` is defined
+#' and then passed to `michaelis_menten_single` to integrate it using the _stiff
+#' backward differentiation formula (BDF) method_. To fit multiple time series
+#' in one model, the `michaelis_menten_multiple` can be used. Note that to
+#' handle fitting time-series with different numbers of observations, an
+#' additional `series_index` argument is used. Note that observations in the
+#' same time-series should be in sequential order in the supplied data.
 #'
 #' @examples
 #' \dontrun{
@@ -139,10 +139,10 @@ vector michaelis_menten_multiple(
 
 #' Stan Code for the Michaelis Menten Model Generated Quantities
 #'
-#' If only the substrate concentration is varied, it is not generally possible
-#' to fit both `kcat` and `kM`. However, it is possible to fit the ratio
-#' `kcat/kM`. Including this [rstan::stan] code will generate the samples for
-#' `kcat/kM`.
+#' @description If only the substrate concentration is varied, it is not
+#' generally possible to fit both `kcat` and `kM`. However, it is possible to
+#' fit the ratio `kcat/kM`. Including this [rstan::stan] code will generate the
+#' samples for `kcat/kM`.
 #'
 #' @seealso [michaelis_menten_model]
 #'

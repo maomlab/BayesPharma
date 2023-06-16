@@ -1,6 +1,6 @@
 #' Sigmoid Function
 #'
-#' Functional form for the sigmoid model.
+#' @description Functional form for the sigmoid model.
 #'
 #' @param ac50 `numeric`, the `log_dose` of half maximal activity
 #' @param hill `numeric`, slope of curve at the `ac50` units of
@@ -45,10 +45,9 @@ sigmoid <- Vectorize(
 
 #' Convert Hill to Slope Parameters a the Sigmoid Functional Form
 #'
-#' The `hill` parameter controls the slope at the ac50 (`slope`) but
-#' the `slope` also depends on the `top` and `bottom` parameters.
-#' This helper function facilitates computing the `slope` from the
-#' parameters.
+#' @description The `hill` parameter controls the slope at the ac50 (`slope`)
+#' but the `slope` also depends on the `top` and `bottom` parameters. This
+#' helper function facilitates computing the `slope` from the parameters.
 #'
 #' To prove the this function is correct, consider the derivative of the
 #' response of the [sigmoid()] function with respect to the
@@ -81,10 +80,9 @@ sigmoid_hill_to_slope <- function(hill, top, bottom) {
 
 #' Convert Slope to Hill Parameters a the Sigmoid Functional Form
 #'
-#' The `hill` parameter controls the slope at the ac50 (`slope`) but
-#' the `slope` also depends on the `top` and `bottom` parameters.
-#' This helper function facilitates computing the `hill` from the
-#' parameters.
+#' @description The `hill` parameter controls the slope at the ac50 (`slope`)
+#' but the `slope` also depends on the `top` and `bottom` parameters. This
+#' helper function facilitates computing the `hill` from the parameters.
 #'
 #' To prove the this function is correct, we will re-arrange the equation
 #' relating the `slope` to the `hill` parameters

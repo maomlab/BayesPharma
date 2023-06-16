@@ -33,8 +33,8 @@ of \code{0}).}
 }
 \description{
 Creates a for the priors for the sigmoid growth model. If the
-function arguments \code{K}, \code{K0}, \code{rate}, \code{lambda}, or
-\code{NULL}, normal distribution priors will be set.
+function arguments \code{K}, \code{K0}, \code{rate}, \code{lambda}, or \code{NULL}, normal
+distribution priors will be set.
 
 If you would like to set a parameter as a constant, enter a numeric  value
 for the function argument.

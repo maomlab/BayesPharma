@@ -17,8 +17,9 @@ growth_sigmoid_init(K = 1, K0 = 0, rate = 1, lambda = 0.5, ...)
 units of \code{time}}
 
 \item{...}{additional parameter initialization. Each named argument should be
-a function that returns an \code{numeric} \code{array} of length \code{1}, see
-\code{\link[=rstan_default_scalar_init]{rstan_default_scalar_init()}} to use the rstan default init.}
+a function that returns a \code{numeric} or \code{array} depending on the dimension
+of the parameter, see \code{\link[=rstan_default_init]{rstan_default_init()}} to use the \pkg{rstan} default
+init.}
 }
 \value{
 input for \verb{[brm][brms::brm](init = ...)}

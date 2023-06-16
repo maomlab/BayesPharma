@@ -21,12 +21,10 @@ function.}
 the ac50.
 }
 \description{
-The \code{hill} parameter controls the slope at the ac50 (\code{slope}) but
-the \code{slope} also depends on the \code{top} and \code{bottom} parameters.
-This helper function facilitates computing the \code{slope} from the
-parameters.
-}
-\details{
+The \code{hill} parameter controls the slope at the ac50 (\code{slope})
+but the \code{slope} also depends on the \code{top} and \code{bottom} parameters. This
+helper function facilitates computing the \code{slope} from the parameters.
+
 To prove the this function is correct, consider the derivative of the
 response of the \code{\link[=sigmoid]{sigmoid()}} function with respect to the
 \code{log_dose}:

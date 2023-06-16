@@ -8,6 +8,8 @@ eval_init(init, chains = NULL)
 }
 \arguments{
 \item{init}{A valid init argument for \link[rstan:rstan]{rstan::rstan}.}
+
+\item{chains}{\code{numeric} number of chains to generate initializations for}
 }
 \value{
 \code{list} of \code{lists} form of model initialization.
@@ -20,7 +22,7 @@ how many chains are being run, which may not be available when the model is
 being defined, and to support random initialization, the rstan backend
 also supports initialization as a function returning a list of functions
 (one for each parameter) returning a numeric array of length 1. Also, to
-suppor the common use-case of initializing everything to zer or randomly in
+suppor the common use-case of initializing everything to zero or randomly in
 the range (-2, 2) on the unconstrained scale, rstan also supports
 initializing with \code{0} and \code{"random"}.
 
