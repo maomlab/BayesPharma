@@ -7,10 +7,10 @@
 tQ_genquant()
 }
 \description{
-If only the substrate concentration is varied, it is not generally possible
-to fit both \code{kcat} and \code{kM}. However, it is possible to fit the ratio
-\code{kcat/kM}. Including this \link[rstan:stan]{rstan::stan} code will generate the samples for
-\code{kcat/kM}.
+If only the substrate concentration is varied, it is not
+generally possible to fit both \code{kcat} and \code{kM}. However, it is possible to
+fit the ratio \code{kcat/kM}. Including this \link[rstan:stan]{rstan::stan} code will generate the
+samples for \code{kcat/kM}.
 }
 \references{
 Choi, B., Rempala, G.A. & Kim, J.K. Beyond the Michaelis-Menten equation:

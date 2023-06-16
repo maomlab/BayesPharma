@@ -21,12 +21,10 @@ function.}
 function at.
 }
 \description{
-The \code{hill} parameter controls the slope at the ac50 (\code{slope}) but
-the \code{slope} also depends on the \code{top} and \code{bottom} parameters.
-This helper function facilitates computing the \code{hill} from the
-parameters.
-}
-\details{
+The \code{hill} parameter controls the slope at the ac50 (\code{slope})
+but the \code{slope} also depends on the \code{top} and \code{bottom} parameters. This
+helper function facilitates computing the \code{hill} from the parameters.
+
 To prove the this function is correct, we will re-arrange the equation
 relating the \code{slope} to the \code{hill} parameters
 \preformatted{

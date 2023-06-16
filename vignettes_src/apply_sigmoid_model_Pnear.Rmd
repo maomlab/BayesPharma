@@ -88,7 +88,7 @@ simulate_score_vs_rmsd <- function(
   n_samples = 300) {
   
   tibble::tibble(
-    rmsd = runif(n_samples, min=rmsd_min, max=rmsd_max),
+    rmsd = stats::runif(n_samples, min=rmsd_min, max=rmsd_max),
     log_rmsd = log10(rmsd),
     score_mean = 
       energy_near + 

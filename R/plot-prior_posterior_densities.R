@@ -1,8 +1,8 @@
 #' Plot Prior and Posterior Marginal Distributions
 #'
-#' Generate a plot that shows for each model variable the distribution of the
-#' marginal posterior uncertainty overlaid on the distribution of the marginal
-#' prior uncertainty.
+#' @description Generate a plot that shows for each model variable the
+#' distribution of the marginal posterior uncertainty overlaid on the
+#' distribution of the marginal prior uncertainty.
 #'
 #' @param model `bpfit` object resulting from fitting a BayesPharma model
 #' @param predictors_col_name string expression for predictors column

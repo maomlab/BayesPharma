@@ -1,9 +1,9 @@
 #' Stan Code for the tQ Enzyme Kinetics Model
 #'
-#' The tQ is an ordinary differential equation model for the total
-#' quasi-steady-state assumption kinetics defined in
-#' (Choi et al., 2017), which is related to the Michaelis-Menten kinetics model,
-#' but doesn't assume the enzyme concentration is negligibly small.
+#' @description The tQ is an ordinary differential equation model for the total
+#' quasi-steady-state assumption kinetics defined in (Choi et al., 2017), which
+#' is related to the Michaelis-Menten kinetics model, but doesn't assume the
+#' enzyme concentration is negligibly small.
 #'
 #' To implement the tQ model in \pkg{Stan}, the function `tQ_ode` is defined
 #' and then passed to `tQ_single` to integrate it using the _stiff backward
@@ -139,10 +139,10 @@ vector tQ_multiple(
 
 #' Stan Code for the tQ Model Generated Quantities
 #'
-#' If only the substrate concentration is varied, it is not generally possible
-#' to fit both `kcat` and `kM`. However, it is possible to fit the ratio
-#' `kcat/kM`. Including this [rstan::stan] code will generate the samples for
-#' `kcat/kM`.
+#' @description If only the substrate concentration is varied, it is not
+#' generally possible to fit both `kcat` and `kM`. However, it is possible to
+#' fit the ratio `kcat/kM`. Including this [rstan::stan] code will generate the
+#' samples for `kcat/kM`.
 #'
 #' @seealso [tQ_model]
 #'

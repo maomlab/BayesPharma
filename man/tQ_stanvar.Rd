@@ -8,11 +8,10 @@ tQ_stanvar()
 }
 \description{
 The tQ is an ordinary differential equation model for the total
-quasi-steady-state assumption kinetics defined in
-(Choi et al., 2017), which is related to the Michaelis-Menten kinetics model,
-but doesn't assume the enzyme concentration is negligibly small.
-}
-\details{
+quasi-steady-state assumption kinetics defined in (Choi et al., 2017), which
+is related to the Michaelis-Menten kinetics model, but doesn't assume the
+enzyme concentration is negligibly small.
+
 To implement the tQ model in \pkg{Stan}, the function \code{tQ_ode} is defined
 and then passed to \code{tQ_single} to integrate it using the \emph{stiff backward
 differentiation formula (BDF) method}. To fit multiple time series

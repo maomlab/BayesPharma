@@ -1,11 +1,11 @@
 #' Create a Prior for the Sigmoid Growth Model
 #'
 #' @description Creates a for the priors for the sigmoid growth model. If the
-#'   function arguments `K`, `K0`, `rate`, `lambda`, or
-#'   `NULL`, normal distribution priors will be set.
+#' function arguments `K`, `K0`, `rate`, `lambda`, or `NULL`, normal
+#' distribution priors will be set.
 #'
-#'   If you would like to set a parameter as a constant, enter a numeric  value
-#'   for the function argument.
+#' If you would like to set a parameter as a constant, enter a numeric  value
+#' for the function argument.
 #'
 #' For other distribution options, reference [brms::prior] and [Prior Choice
 #' Recommendations
@@ -48,8 +48,8 @@ growth_sigmoid_prior <- function(
 #' Create a Prior for the Richards Growth Model
 #'
 #' @description Creates a for the priors for the Richards growth model. If the
-#'   function arguments `K`, `K0`, `rate`, `lambda`, or
-#'   `nu` are `NULL`, normal distribution priors will be set.
+#' function arguments `K`, `K0`, `rate`, `lambda`, or `nu` are `NULL`, normal
+#' distribution priors will be set.
 #'
 #' If you would like to set a parameter as a constant, enter a numeric
 #' value for the function argument.

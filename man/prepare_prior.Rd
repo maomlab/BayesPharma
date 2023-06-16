@@ -25,8 +25,7 @@ to specify a constant prior
 \item if \link[brms:set_prior]{brms::brmsprior} is given, it checks that it has the specified
 arguments
 }
-}
-\details{
+
 This is used in building \link{BayesPharma} models to allow user specified priors
 but make sure they are for the right parameters to make sure the model is
 well specified.

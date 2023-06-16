@@ -1,8 +1,8 @@
 #' Generate Data from the Michaelis Menten Enzyme Kinetics
 #'
-#' Generate data from the Michaelis Menten enzyme kinetics ordinary differential
-#' equation described in (Choi, et al., 2017, DOI: 10.1038/s41598-017-17072-z).
-#' Consider the kinetic rate equation
+#' @description Generate data from the Michaelis Menten enzyme kinetics ordinary
+#' differential equation described in (Choi, et al., 2017, DOI:
+#' 10.1038/s41598-017-17072-z). Consider the kinetic rate equation
 #' \preformatted{
 #'                   kf
 #'                  --->    kcat

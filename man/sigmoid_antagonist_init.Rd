@@ -46,8 +46,7 @@ init <- BayesPharma::sigmoid_antagonist_init(
 # bounded below by zero through this transformation Y = log(X - 0). So, to
 # explicitly give the default initialization for 'sigma', we can use
 init <- BayesPharma::sigmoid_antagonist_init(
-  sigma = \() array(exp(runif(n = 1, min = -2, max = 2)))
-)
+  sigma = BayesPharma::rstan_default_init(lb = 0))
 }
 }
 \seealso{
