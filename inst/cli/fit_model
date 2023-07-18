@@ -1,0 +1,3 @@
+#!/usr/bin/env Rscript
+
+BayesPharma::fit_model_cli()
