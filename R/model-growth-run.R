@@ -46,8 +46,6 @@ growth_sigmoid_model <- function(
     stanvar_function = growth_sigmoid_stanvar(),
     expose_functions = TRUE,
     ...) {
-  
-  args <- list(...)
 
   if (!inherits(formula, "bpformula")) {
     warning(
@@ -81,7 +79,7 @@ growth_sigmoid_model <- function(
     formula = formula,
     data = data,
     prior = prior,
-    init = init, #eval_init(init, chains = args$chains),
+    init = init,
     iter = iter,
     control = control,
     stanvars = stanvar_function,

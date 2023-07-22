@@ -113,7 +113,7 @@ rstan_default_init <- function(lb = NULL, ub = NULL, dim = 0) {
 #' suppor the common use-case of initializing everything to zero or randomly in
 #' the range (-2, 2) on the unconstrained scale, rstan also supports
 #' initializing with `0` and `"random"`.
-#' 
+#'
 #' To make BayesPharma more backend agnostic, this helper function takes the
 #' an init and the number of chains and reduces it to the list of list format.
 #'
