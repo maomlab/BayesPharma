@@ -1,4 +1,4 @@
-#' Create a Prior for the Michaeli Menten Enzyme Kinetics Model
+#' Create a Prior for the Michaelis Menten Enzyme Kinetics Model
 #'
 #' @description For both the `kcat` and `kM` parameters, the default priors are
 #' `gamma(4, 1)`. We use the gamma distribution because it is naturally lower

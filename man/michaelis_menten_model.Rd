@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-michaelis_menten-run.R
 \name{michaelis_menten_model}
 \alias{michaelis_menten_model}
-\title{Model for the Michaeli Menten Enzyme Kinetics Model}
+\title{Model for the Michaelis Menten Enzyme Kinetics Model}
 \usage{
 michaelis_menten_model(
   data,
@@ -49,7 +49,7 @@ model}
 \code{bpfit} object, which is a wrapper around a \link[brms:brmsfit-class]{brms::brmsfit} object.
 }
 \description{
-Model for the Michaeli Menten Enzyme Kinetics Model
+Model for the Michaelis Menten Enzyme Kinetics Model
 }
 \references{
 Choi, B., Rempala, G.A. & Kim, J.K. Beyond the Michaelis-Menten equation:

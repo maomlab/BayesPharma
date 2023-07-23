@@ -1,4 +1,4 @@
-#' Model for the Michaeli Menten Enzyme Kinetics Model
+#' Model for the Michaelis Menten Enzyme Kinetics Model
 #'
 #' @param data `data.frame` of experimental data.
 #'   must contain columns `time` and `P` and any predictors specified in
