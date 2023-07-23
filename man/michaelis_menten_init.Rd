@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-michaelis_menten-init.R
 \name{michaelis_menten_init}
 \alias{michaelis_menten_init}
-\title{Initialize Parameter Values for the Michaeli Menten Enzyme Kinetic Model}
+\title{Initialize Parameter Values for the Michaelis Menten Enzyme Kinetic Model}
 \usage{
 michaelis_menten_init(kcat = 4, kM = 4, ...)
 }
@@ -22,7 +22,7 @@ init.}
 input for \verb{[michaelis_menten_model](init = ...)} parameter.
 }
 \description{
-Initialize Parameter Values for the Michaeli Menten Enzyme Kinetic Model
+Initialize Parameter Values for the Michaelis Menten Enzyme Kinetic Model
 }
 \seealso{
 \link{michaelis_menten_model}, \link{michaelis_menten_formula}, and

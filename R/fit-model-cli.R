@@ -264,19 +264,114 @@ cli_load_model_fn <- function(options) {
   model_fn
 }
 
-
-#' Helper function to load formula the BayesPharma CLI
+#' Helper function to load sigmoid formula the BayesPharma CLI
 #'
-#' @description Initialize formula based on the command line arguments. For the
-#'   some models support multiple formulas, otherwise use the default one for
-#'   the model.
+#' @description Initialize a bivaraite formula based on the command line
+#'   arguments. For the some models support multiple formulas, otherwise use the
+#'   default one for the model.
 #'
 #' @param options `list` of command line arguments as parsed by
 #'   [cli_parse_options()].
 #' @returns `BayesPharma::bpformula`
 #'
-cli_load_formula <- function(options) {
-  ### Make formula ###
+# nolint start: cyclocomp_linter
+cli_load_bivariate_formula <- function(options) {
+
+  if (options$verbose) {
+    cat(
+      "Initializing the bivariate formula for model ",
+      "'", options$model, "' ...\n",
+      sep = "")
+  }
+
+  if (options$model == "MuSyC") {
+    if (!is.null(options$formula) && options$formula != "MuSyC") {
+      stop("For the MuSyC model, if you set --formula please set it to 'MuSyC'")
+    }
+    formula_fn <- BayesPharma::model_MuSyC_formula
+  } else {
+    stop("Only call cli_load_bivariate_formula for bivariate models")
+  }
+
+  if (is.null(options$treatment_variable)) {
+    treatment_1_variable <- "logd1"
+    treatment_2_variable <- "logd2"
+  } else {
+    if (options$treatment_variable |> stringr::str_count(",") != 1) {
+      stop(paste0(
+        "Unable to parse specified treatment variables '",
+        options$treatment_variable, "' for the ", options$model, " model. ",
+        "It should have two column names in the input dataframe separated by ",
+        "','."))
+    }
+    treatment_variables <- options$treatment_variable |>
+      stringr::str_split(sep = ",")
+    treatment_1_variable <- treatment_variables[1]
+    treatment_2_variable <- treatment_variables[2]
+  }
+
+  if (is.null(options$treatment_units)) {
+    treatment_1_units <- "Log[Molar]"
+    treatment_2_units <- "Log[Molar]"
+  } else {
+    if (options$treatment_units |> stringr::str_count(",") != 1) {
+      stop(paste0(
+        "Unable to parse specified treatment units '",
+        options$treatment_units, "' for the ", options$model, " model. ",
+        "It should have two values separated by ','."))
+    }
+    treatment_units <- options$treatment_units |>
+      stringr::str_split(sep = ",")
+    treatment_1_units <- treatment_units[1]
+    treatment_2_units <- treatment_units[2]
+  }
+
+  if (options$verbose) {
+    if (
+      !is.null(options$treatment_variable) ||
+      !is.null(options$treatment_units)) {
+      cat(
+        " -treatment_1_variable: '", options$treatment_1_variable, "' ",
+        "with units '", options$tratment_1_units, "'\n", sep = "")
+      cat(
+        " -treatment_2_variable: '", options$treatment_2_variable, "' ",
+        "with units '", options$treatment_2_units, "'\n", sep = "")
+    }
+    if (
+      !is.null(options$response_variable) ||
+      !is.null(options$response_units)) {
+      cat(
+        " -response_variable: '", options$response_variable, "' ",
+        "with units '", options$response_units, "'\n", sep = "")
+    }
+    if (options$predictors != "1") {
+      cat(" -predictors: '", options$predictors, "'\n", sep = "")
+    }
+  }
+
+  formula_fn(
+    treatment_1_variable = treatment_1_variable,
+    treatment_1_units = treatment_1_units,
+    treatment_2_variable = treatment_2_variable,
+    treatment_2_units = treatment_2_units,
+    response_variable = options$response_variable,
+    response_units = options$response_units,
+    predictors = rland::parse_expr(options$predictors))
+}
+# nolint end
+
+#' Helper function to load a univariate formula for the BayesPharma CLI
+#'
+#' @description Initialize a univariate formula based on the command line
+#'   arguments. For the some models support multiple formulas, otherwise use the
+#'   default one for the model.
+#'
+#' @param options `list` of command line arguments as parsed by
+#'   [cli_parse_options()].
+#' @returns `BayesPharma::bpformula`
+#'
+# nolint start: cyclocomp_linter
+cli_load_univariate_formula <- function(options) {
   if (options$model == "sigmoid") {
     if (options$verbose) {
       cat(
@@ -314,110 +409,63 @@ cli_load_formula <- function(options) {
   if (options$verbose) {
     cat("Setting the treatment and response variables ...\n")
   }
-  if (options$model == "MuSyC") {
-    # the MuSyC formula takes two different treatments
-    if (is.null(options$treatment_variable)) {
-      treatment_1_variable <- "logd1"
-      treatment_2_variable <- "logd2"
-    } else {
-      if (options$treatment_variable |> stringr::str_count(",") != 1) {
-        stop(paste0(
-          "Unable to parse specified treatment variables '",
-          options$treatment_variable, "' for the MuSyC model. It should have ",
-          "two column names in the input dataframe separated by ','."))
-      }
-      treatment_variables <- options$treatment_variable |>
-        stringr::str_split(sep = ",")
-      treatment_1_variable <- treatment_variables[1]
-      treatment_2_variable <- treatment_variables[2]
+  if (options$verbose) {
+    if (
+      !is.null(options$treatment_variable) ||
+      !is.null(options$treatment_units)) {
+      cat(
+        " -treatment_variable: '", options$treatment_variable, "' ",
+        "with units '", options$tratment_units, "'\n", sep = "")
     }
-
-    if (is.null(options$treatment_units)) {
-      treatment_1_units <- "Log[Molar]"
-      treatment_2_units <- "Log[Molar]"
-    } else {
-      if (options$treatment_units |> stringr::str_count(",") != 1) {
-        stop(paste0(
-          "Unable to parse specified treatment units '",
-          options$treatment_units, "' for the MuSyC model. It should have ",
-          "two values separated by ','."))
-      }
-      treatment_units <- options$treatment_units |>
-        stringr::str_split(sep = ",")
-      treatment_1_units <- treatment_units[1]
-      treatment_2_units <- treatment_units[2]
+    if (
+      !is.null(options$response_variable) ||
+      !is.null(options$response_units)) {
+      cat(
+       " -response_variable: '", options$response_variable, "' ",
+       "with units '", options$response_units, "'\n", sep = "")
     }
-
-    if (options$verbose) {
-      cat(
-        " -treatment_1_variable: '", options$treatment_1_variable, "' ",
-        "with units '", options$tratment_1_units, "'\n", sep = "")
-      cat(
-        " -treatment_2_variable: '", options$treatment_2_variable, "' ",
-        "with units '", options$treatment_2_units, "'\n", sep = "")
-      cat(
-        " -response_variable: '", options$response_variable, "' ",
-        "with units '", options$response_units, "'\n", sep = "")
+    if (options$predictors != "1") {
       cat(" -predictors: '", options$predictors, "'\n", sep = "")
     }
-
-    formula <- formula_fn(
-      treatment_1_variable = treatment_1_variable,
-      treatment_1_units = treatment_1_units,
-      treatment_2_variable = treatment_2_variable,
-      treatment_2_units = treatment_2_units,
-      response_variable = options$response_variable,
-      response_units = options$response_units,
-      predictors = rland::parse_expr(options$predictors))
-  } else {
-
-    if (options$verbose) {
-      if (
-        is.null(options$treatment_variable) ||
-        is.null(options$treatment_units)) {
-        cat(
-          " -treatment_variable: '", options$treatment_variable, "' ",
-          "with units '", options$tratment_units, "'\n", sep = "")
-      }
-      if (
-        is.null(options$response_variable) ||
-        is.null(options$response_units)) {
-        cat(
-         " -response_variable: '", options$response_variable, "' ",
-         "with units '", options$response_units, "'\n", sep = "")
-      }
-      if (options$predictors != '1') {
-        cat(" -predictors: '", options$predictors, "'\n", sep = "")
-      }
-    }
-
-    formula <- do.call(
-      what = formula_fn,
-      args = c(
-        ifelse(
-          is.null(options$treatment_variable), NULL,
-          list(treatment_variable = options$treatment_variable)),
-        ifelse(
-          is.null(options$treatment_units), NULL,
-          list(treatment_units = options$treatment_units)),
-        ifelse(
-          is.null(options$response_variable), NULL,
-          list(response_variable = options$response_variable)),
-        ifelse(
-          is.null(options$response_units), NULL,
-          list(response_units = options$response_units)),
-        ifelse(
-          is.null(options$predictors), NULL,
-          list(predictors = rlang::parse_expr(options$predictors)))))
   }
-  formula
-}
 
+  # we have use do.call to pick up the default argument values
+  # from the formula_fn if the arguments from the options are null
+  do.call(
+    what = formula_fn,
+    args = c(
+      if (is.null(options$treatment_variable)) {
+        NULL
+      } else {
+        list(treatment_variable = options$treatment_variable)
+      },
+      if (is.null(options$treatment_units)) {
+        NULL
+      } else {
+        list(treatment_units = options$treatment_units)
+      },
+      if (is.null(options$response_variable)) {
+        NULL
+      } else {
+        list(response_variable = options$response_variable)
+      },
+      if (is.null(options$response_units)) {
+        NULL
+      } else {
+        list(response_units = options$response_units)
+      },
+      if (is.null(options$predictors)) {
+        NULL
+      } else {
+        list(predictors = rlang::parse_expr(options$predictors))
+      }))
+}
+# nolint end
 
 #' Helper function to load prior the BayesPharma CLI
 #'
 #' @description Initialize prior based on the command line arguments.
-#' 
+#'
 #' @param options `list` of command line arguments as parsed by
 #'   [cli_parse_options()].
 #' @returns `brms::brmsprior`
@@ -451,7 +499,7 @@ cli_load_prior <- function(options) {
 #' Helper function to load init the BayesPharma CLI
 #'
 #' @description Initialize init based on the command line arguments.
-#' 
+#'
 #' @param options `list` of command line arguments as parsed by
 #'   [cli_parse_options()].
 #' @returns `function`
@@ -496,9 +544,12 @@ fit_model_cli <- function(
 
   data <- cli_load_data(options)
 
-
   model_fn <- cli_load_model_fn(options)
-  formula <- cli_load_formula(options)
+  if (options$model == "MuSyC") {
+    formula <- cli_load_bivariate_formula(options)
+  } else {
+    formula <- cli_load_univariate_formula(options)
+  }
   prior <- cli_load_prior(options)
   init <- cli_load_init(options)
 

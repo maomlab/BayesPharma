@@ -47,7 +47,7 @@ physiological temperature for ref2015 or any other scorefunction with units of
 kcal/mol.
 
 ## Two state model
-Thinking of the folded and unfolded states as a two-state model and RSMD as
+Thinking of the folded and unfolded states as a two-state model and RMSD as
 a reaction coordinate or "collective variable", then the energy gap can be
 modeled by a sigmoidal Boltzmann distribution.
 

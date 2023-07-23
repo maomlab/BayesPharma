@@ -2,7 +2,7 @@
 % Please edit documentation in R/model-michaelis_menten-prior.R
 \name{michaelis_menten_prior}
 \alias{michaelis_menten_prior}
-\title{Create a Prior for the Michaeli Menten Enzyme Kinetics Model}
+\title{Create a Prior for the Michaelis Menten Enzyme Kinetics Model}
 \usage{
 michaelis_menten_prior(
   kcat = brms::prior_string(prior = "gamma(4, 1)", lb = 0, nlpar = "kcat"),

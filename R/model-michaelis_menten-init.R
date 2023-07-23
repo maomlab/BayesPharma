@@ -1,4 +1,4 @@
-#' Initialize Parameter Values for the Michaeli Menten Enzyme Kinetic Model
+#' Initialize Parameter Values for the Michaelis Menten Enzyme Kinetic Model
 #'
 #' @param kcat `numeric` initial value for `kcat` parameter in the
 #'   Michaelis Menten model

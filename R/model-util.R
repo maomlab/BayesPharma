@@ -110,7 +110,7 @@ rstan_default_init <- function(lb = NULL, ub = NULL, dim = 0) {
 #' being defined, and to support random initialization, the rstan backend
 #' also supports initialization as a function returning a list of functions
 #' (one for each parameter) returning a numeric array of length 1. Also, to
-#' suppor the common use-case of initializing everything to zero or randomly in
+#' support the common use-case of initializing everything to zero or randomly in
 #' the range (-2, 2) on the unconstrained scale, rstan also supports
 #' initializing with `0` and `"random"`.
 #'
