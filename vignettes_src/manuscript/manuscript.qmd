@@ -64,8 +64,8 @@ abstract: |
   In pharmacology, many experiments seek to measure how a reductive biological
   system responds to one or more treatments. Here we present BayesPharma, a
   collection of Bayesian methods to help analyze these experiments. BayesPharma
-  is an \texttt{R} package to analyzing pharmacology data using Bayesian
-  methods. It is built around the \texttt{Stan} ecosystem and facilitates a
+  is an `R` package to analyzing pharmacology data using Bayesian
+  methods. It is built around the `Stan` ecosystem and facilitates a
   principled Bayesian workflow. BayesPharma can be used to fit and analyze
   foundational pharmacology models; serve as a pedagogical framework for
   learning Bayesian methods; and help build and analyze sophisticated
@@ -115,10 +115,10 @@ if(Sys.info()["machine"] == "arm64"){
 
 ```{r load-packages}
 #suppressWarnings(suppressMessages(library(tidyverse)))
-library(BayesPharma)
+suppressWarnings(suppressMessages(library(BayesPharma)))
 suppressWarnings(suppressMessages(library(drc)))
-library(brms)
-library(broom)
+suppressWarnings(suppressMessages(library(brms)))
+suppressWarnings(suppressMessages(library(broom)))
 set.seed(0)
 ```
 
