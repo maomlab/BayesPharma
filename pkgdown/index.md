@@ -36,7 +36,7 @@ In R do
 
 ```{.r .cell-code}
 install.packages("remotes")
-remotes::install_github("maomlab/BayesPharma", build_vignettes = FALSE)
+remotes::install_github("maomlab/BayesPharma")
 ```
 :::
 

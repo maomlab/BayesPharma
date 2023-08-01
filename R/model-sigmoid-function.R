@@ -39,8 +39,7 @@
 #' @export
 sigmoid <- Vectorize(
   function(ac50, hill, top, bottom, log_dose) {
-    bottom + (top - bottom) / (1 + 10 ^ ((ac50 - log_dose) * hill))
-})
+    bottom + (top - bottom) / (1 + 10 ^ ((ac50 - log_dose) * hill))})
 
 
 #' Convert Hill to Slope Parameters a the Sigmoid Functional Form
@@ -141,13 +140,13 @@ sigmoid_slope_to_hill <- function(slope, top, bottom) {
 #' @importFrom rlang .data
 #' @export
 plot_sigmoid_functional_form <- function(
-    ac50,
-    hill,
-    top,
-    bottom,
-    log_dose,
-    treatment_units,
-    response_units) {
+  ac50,
+  hill,
+  top,
+  bottom,
+  log_dose,
+  treatment_units,
+  response_units) {
 
   data <- data.frame(
     log_dose = log_dose,

@@ -57,17 +57,21 @@ testthat::test_that("sigmoid_agonist_formula with a grouped predictor", {
     quote(sigmoid(ec50, hill, top, bottom, log_dose)))
 
   testthat::expect_equal(rlang::f_lhs(formula$pforms[[1]]), quote(ec50))
-  testthat::expect_equal(rlang::f_rhs(formula$pforms[[1]]),
-                         quote(substance + (1 | batch)))
+  testthat::expect_equal(
+    rlang::f_rhs(formula$pforms[[1]]),
+    quote(substance + (1 | batch)))
   testthat::expect_equal(rlang::f_lhs(formula$pforms[[2]]), quote(hill))
-  testthat::expect_equal(rlang::f_rhs(formula$pforms[[2]]),
-                         quote(substance + (1 | batch)))
+  testthat::expect_equal(
+    rlang::f_rhs(formula$pforms[[2]]),
+    quote(substance + (1 | batch)))
   testthat::expect_equal(rlang::f_lhs(formula$pforms[[3]]), quote(top))
-  testthat::expect_equal(rlang::f_rhs(formula$pforms[[3]]),
-                         quote(substance + (1 | batch)))
+  testthat::expect_equal(
+    rlang::f_rhs(formula$pforms[[3]]),
+    quote(substance + (1 | batch)))
   testthat::expect_equal(rlang::f_lhs(formula$pforms[[4]]), quote(bottom))
-  testthat::expect_equal(rlang::f_rhs(formula$pforms[[4]]),
-                         quote(substance + (1 | batch)))
+  testthat::expect_equal(
+    rlang::f_rhs(formula$pforms[[4]]),
+    quote(substance + (1 | batch)))
 })
 
 ##########

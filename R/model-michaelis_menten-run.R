@@ -31,17 +31,17 @@
 #'
 #' @export
 michaelis_menten_model <- function(
-    data,
-    formula = michaelis_menten_formula(),
-    prior = michaelis_menten_prior(),
-    init = michaelis_menten_init(),
-    iter = 8000,
-    control = list(adapt_delta = 0.99),
-    stanvar_function = c(
-      BayesPharma::michaelis_menten_stanvar(),
-      BayesPharma::michaelis_menten_genquant()),
-    expose_functions = TRUE,
-    ...) {
+  data,
+  formula = michaelis_menten_formula(),
+  prior = michaelis_menten_prior(),
+  init = michaelis_menten_init(),
+  iter = 8000,
+  control = list(adapt_delta = 0.99),
+  stanvar_function = c(
+    BayesPharma::michaelis_menten_stanvar(),
+    BayesPharma::michaelis_menten_genquant()),
+  expose_functions = TRUE,
+  ...) {
 
   args <- list(...)
 

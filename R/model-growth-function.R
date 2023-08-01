@@ -169,5 +169,5 @@ growth_richards <- Vectorize(
     K0 + (K - K0) / (
       1 + nu * exp(
         1 + nu + rate / (K - K0) * (1 + nu) ^ (1 + 1 / nu) *
-        (lambda - time))) ^ (1 / nu)
+          (lambda - time))) ^ (1 / nu)
   })

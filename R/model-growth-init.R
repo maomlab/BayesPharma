@@ -26,11 +26,11 @@
 #'}
 #'@export
 growth_sigmoid_init <- function(
-    K = 1,
-    K0 = 0,
-    rate = 1,
-    lambda = 0.5,
-    ...) {
+  K = 1,
+  K0 = 0,
+  rate = 1,
+  lambda = 0.5,
+  ...) {
 
   function() {
     list(
@@ -70,12 +70,12 @@ growth_sigmoid_init <- function(
 #'}
 #'@export
 growth_richards_init <- function(
-    K = 1,
-    K0 = 0,
-    rate = 1,
-    lambda = 0.5,
-    nu = 1,
-    ...) {
+  K = 1,
+  K0 = 0,
+  rate = 1,
+  lambda = 0.5,
+  nu = 1,
+  ...) {
 
   function() {
     list(

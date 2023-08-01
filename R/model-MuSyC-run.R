@@ -89,18 +89,18 @@
 #' @importFrom rlang .data
 #' @export
 MuSyC_model <- function(
-    data,
-    prior = MuSyC_prior(),
-    init = MuSyC_init(),
-    formula = MuSyC_formula(),
-    control = list(
-      adapt_delta = .99,
-      max_treedepth = 12),
-    stanvars = c(
-      MuSyC_stanvar(),
-      MuSyC_genquant()),
-    expose_functions = TRUE,
-    ...) {
+  data,
+  prior = MuSyC_prior(),
+  init = MuSyC_init(),
+  formula = MuSyC_formula(),
+  control = list(
+    adapt_delta = .99,
+    max_treedepth = 12),
+  stanvars = c(
+    MuSyC_stanvar(),
+    MuSyC_genquant()),
+  expose_functions = TRUE,
+  ...) {
 
   args <- list(...)
 

@@ -29,8 +29,14 @@ vignette: >
 ## Warning: Removed 150 rows containing missing values (`geom_line()`).
 ```
 
-<img src="apply_model_tQ_ChABC_design_files/plot-data-1.png" alt="plot of chunk plot-data" width="100%" style="display: block; margin: auto;" />
-<img src="apply_model_tQ_ChABC_design_files/simulate-tQ-1.png" alt="plot of chunk simulate-tQ" width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="apply_model_tQ_ChABC_design_files/plot-data-1.png" alt="plot of chunk plot-data" width="100%" />
+<p class="caption">plot of chunk plot-data</p>
+</div>
+<div class="figure" style="text-align: center">
+<img src="apply_model_tQ_ChABC_design_files/simulate-tQ-1.png" alt="plot of chunk simulate-tQ" width="100%" />
+<p class="caption">plot of chunk simulate-tQ</p>
+</div>
 
 
 ```

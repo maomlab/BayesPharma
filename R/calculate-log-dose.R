@@ -31,9 +31,9 @@
 #'}
 #'@export
 calculate_log_dose <- function(
-    data,
-    dose_col = "dose",
-    molar_concentration = 1) {
+  data,
+  dose_col = "dose",
+  molar_concentration = 1) {
 
   if ("log_dose" %in% names(data)) {
     warning(

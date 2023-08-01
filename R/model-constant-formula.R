@@ -19,10 +19,10 @@
 #'}
 #' @export
 constant_formula <- function(
-    response_variable = "response",
-    response_units = NULL,
-    predictors = 1,
-    ...) {
+  response_variable = "response",
+  response_units = NULL,
+  predictors = 1,
+  ...) {
 
   constant_eq <- rlang::new_formula(
     lhs = rlang::ensym(response_variable),

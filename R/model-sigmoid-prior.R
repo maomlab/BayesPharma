@@ -50,11 +50,11 @@ sigmoid_agonist_prior <- function(
   bottom = brms::prior(prior = normal(0, 0.5), nlpar = "bottom"),
   ...) {
 
-    c(
-        prepare_prior(prior = ec50, nlpar = "ec50"),
-        prepare_prior(prior = hill, nlpar = "hill"),
-        prepare_prior(prior = top, nlpar = "top"),
-        prepare_prior(prior = bottom, nlpar = "bottom"))
+  c(
+    prepare_prior(prior = ec50, nlpar = "ec50"),
+    prepare_prior(prior = hill, nlpar = "hill"),
+    prepare_prior(prior = top, nlpar = "top"),
+    prepare_prior(prior = bottom, nlpar = "bottom"))
 }
 
 #' Create a Prior an Antagonist Sigmoid Model
@@ -99,11 +99,11 @@ sigmoid_agonist_prior <- function(
 #'}
 #' @export
 sigmoid_antagonist_prior <- function(
-    ic50 = brms::prior(prior = normal(-6, 2.5), nlpar = "ic50"),
-    hill = brms::prior(prior = normal(-1, 1), nlpar = "hill", ub = 0.01),
-    top = brms::prior(prior = normal(1, 0.5), nlpar = "top"),
-    bottom = brms::prior(prior = normal(0, 0.5), nlpar = "bottom"),
-    ...) {
+  ic50 = brms::prior(prior = normal(-6, 2.5), nlpar = "ic50"),
+  hill = brms::prior(prior = normal(-1, 1), nlpar = "hill", ub = 0.01),
+  top = brms::prior(prior = normal(1, 0.5), nlpar = "top"),
+  bottom = brms::prior(prior = normal(0, 0.5), nlpar = "bottom"),
+  ...) {
 
   c(
     prepare_prior(prior = ic50, nlpar = "ic50"),

@@ -30,12 +30,12 @@
 #' @importFrom rlang .data
 #'@export
 plot_posterior_density <- function(
-    model,
-    predictors_col_name = "_Intercept",
-    half_max_label = "ac50",
-    l_ci = 0.025,
-    u_ci = 0.975,
-    title_label = "Posterior Density Plots w/ Mean & 95% CI") {
+  model,
+  predictors_col_name = "_Intercept",
+  half_max_label = "ac50",
+  l_ci = 0.025,
+  u_ci = 0.975,
+  title_label = "Posterior Density Plots w/ Mean & 95% CI") {
 
   assertthat::assert_that(
     inherits(model, "bpfit"),
@@ -53,12 +53,12 @@ plot_posterior_density <- function(
     dplyr::rename(variables = tidyselect::all_of(".variable")) |>
     dplyr::mutate(
       variables = .data[["variables"]] |>
-      stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") |>
-      stringr::str_remove("b_") |>
-      stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
-      stringr::str_remove(predictors_col_name) |>
-      stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
-      stringr::str_replace("ec50", half_max_label))
+        stringr::str_extract("b_[a-zA-Z0-9]+.{1,100}") |>
+        stringr::str_remove("b_") |>
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
+        stringr::str_remove(predictors_col_name) |>
+        stringr::str_extract("[a-zA-Z0-9]+.{1,100}") |>
+        stringr::str_replace("ec50", half_max_label))
 
   summary_stats <- basic_stats(
     model = model,

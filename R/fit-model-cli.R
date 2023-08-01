@@ -156,7 +156,7 @@ cli_parse_options <- function(args) {
       default = 8000,
       type = "numeric",
       help = paste0("Number of sampling iterations.")) |>
-      #### Output options ####
+    #### Output options ####
     optparse::add_option(
       opt_str = "--output_path",
       action = "store",
@@ -253,9 +253,12 @@ cli_load_model_fn <- function(options) {
       eval()
   }, error = function(e) {
     available_models <-  data.frame(name = ls("package:BayesPharma")) |>
-      dplyr::filter(.data[["name"]] |> stringr::str_detect("_model$")) |>
+      dplyr::filter(
+        .data[["name"]] |>
+          stringr::str_detect("_model$")) |>
       dplyr::mutate(
-        name = .data[["name"]] |> stringr::str_replace("_model$", "")) |>
+        name = .data[["name"]] |>
+          stringr::str_replace("_model$", "")) |>
       purrr::pluck("name")
     stop(paste0(
       "Unrecognized model '", options$model, "'. The --model option must be ",
@@ -535,7 +538,7 @@ cli_load_init <- function(options) {
 #'
 #' @export
 fit_model_cli <- function(
-    args = commandArgs(trailingOnly = TRUE)) {
+  args = commandArgs(trailingOnly = TRUE)) {
 
   options <- cli_parse_options(args)
 

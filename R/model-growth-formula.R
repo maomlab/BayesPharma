@@ -72,12 +72,12 @@
 #'
 #'@export
 growth_sigmoid_formula <- function(
-    treatment_variable = "time",
-    treatment_units = "hours",
-    response_variable = "response",
-    response_units = NULL,
-    predictors = 1,
-    ...) {
+  treatment_variable = "time",
+  treatment_units = "hours",
+  response_variable = "response",
+  response_units = NULL,
+  predictors = 1,
+  ...) {
 
   # The growth_sigmoid function is defined in
   # BayesPharma::growth_sigmoid_stanvar
@@ -185,12 +185,12 @@ growth_sigmoid_formula <- function(
 #'
 #'@export
 growth_richards_formula <- function(
-    treatment_variable = "time",
-    treatment_units = "hours",
-    response_variable = "response",
-    response_units = NULL,
-    predictors = 1,
-    ...) {
+  treatment_variable = "time",
+  treatment_units = "hours",
+  response_variable = "response",
+  response_units = NULL,
+  predictors = 1,
+  ...) {
 
   # The growth_richards function is defined in
   # BayesPharma::growth_richards_stanvar

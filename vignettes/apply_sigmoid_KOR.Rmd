@@ -21,16 +21,16 @@ vignette: >
 
 ## Hill Equation {#sec-hill}
 
-In this case study we are going to reanalyze the dose response of 4
-Kappa Opioid receptor (KOR) antagonists using the \texttt{BayesPharma}
-package from from a study done by Margolis et
+In this case study, we are going to reanalyze the dose response of 4
+Kappa Opioid receptor (KOR) antagonists using the `BayesPharma`
+package from a study performed by Margolis et
 al. (-@Margolis2020-bm). Whole cell electrophysiology in acute rat
-midbrain slices was used to evaluate pharmacological properties of
+midbrain slices was used to evaluate the pharmacological properties of
 four novel KOR antagonists: BTRX-335140, BTRX-395750, PF-04455242, and
 JNJ-67953964
 
-Originally in the paper the dose-response data analysis was done by using
-the \texttt{drc} package in R which implements the minimization of negative
+Originally, the dose-response data analysis was performed by using
+the `drc` package in R, which implements the minimization of negative
 log likelihood function and reduces to least square estimation for a
 continuous response. The data was normalized to % baseline then fit to
 a 4-parameter log-logistic dose response model, setting the top (max
@@ -39,15 +39,15 @@ bottom (min response).
 
 ### Fitting the sigmoid model
 
-Using the \texttt{BayesPharma} package, we can re-fit the sigmoid model with a
-negative slope, and fixing the top parameter to \code{100} as the response is
+Using the `BayesPharma` package, we can re-fit the sigmoid model with a
+negative slope, and fix the top parameter to `100` as the response is
 normalized to a no-drug baseline.
 
 For the prior, we are going to use a normal distribution because the
-response values are continuous. First, we will run the analysis with
-top (max response) parameter prior set to a constant value of 100
-because top is normalized to \code{100} and the default broad prior for the \code{ic50},
-\code{hill} and \code{bottom} parameters. Broad priors represent unbiased uncertainty and
+response values are continuous. First, we will run the analysis with the
+`top` (max response) parameter prior set to a constant value of `100`
+because `top` is normalized to `100` and is the default broad prior for the `ic50`,
+`hill`, and `bottom` parameters. Broad priors represent unbiased uncertainty and
 provide an opportunity for extreme responses.
 
 The level of informativeness of the prior will affect how much
@@ -74,9 +74,9 @@ the prior predictive distributions to see if they are compatible with the domain
 expertise. So, before running the model, we will verify that the prior
 distributions cover a plausible range of values for each parameter. To do this,
 we want to  sample only from the prior distributions by adding
-\code{sample_prior = "only"} as  an argument to the \code{sigmoid_model}
+`sample_prior = "only"` as  an argument to the `sigmoid_model`
 function. We will use the default response distribution of the model
-(\code{family = gaussian()}).
+(`family = gaussian()`).
 
 
 
@@ -101,13 +101,16 @@ kor_sample_prior |>
   BayesPharma::plot_density_distribution()
 ```
 
-<img src="apply_sigmoid_KOR_files/kor-prior-density-plot-1.png" alt="KOR antagonists prior distribution" width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_KOR_files/kor-prior-density-plot-1.png" alt="KOR antagonists prior distribution" width="100%" />
+<p class="caption">KOR antagonists prior distribution</p>
+</div>
 \normalsize
 
-To sample from the model we will the \texttt{Stan} NUTs Hamiltonian Monte
+To sample from the model, we will use the `Stan` NUTs Hamiltonian Monte
 Carlo, and initialize the parameters to the prior means to help with
-model convergence, using the default values of \code{ec50 = -9}, \code{hill = -1},
-\code{top = 100}, \code{bottom = 0}.
+model convergence, using the default values of `ec50 = -9`, `hill = -1`,
+`top = 100`, `bottom = 0`.
 
 \scriptsize
 
@@ -123,16 +126,16 @@ kor_model <- BayesPharma::sigmoid_model(
 
 ### Analyzing model fit
 
-The \texttt{brms} generated model summary shows the formula that the expected
-response is sigmoid function of the log_dose with four parameters, and
+The `brms` generated model summary shows the formula that the expected
+response a is sigmoid function of the `log_dose` with four parameters, and
 a shared Gaussian distribution. Each parameter is dependent on the
-substance_id. Since want to fit a separate model for each substance we
-include a \code{0 +} to indicate that there is no common intercept.  The
-consists of \code{73} data points and the posterior sampling was done in \code{4}
-chains each with \code{8000} steps with \code{4000} steps of warm-up. The population
-effects for each parameter summarize marginal posterior distributions,
+`substance_id`. Since we want to fit a separate model for each substance, we
+include a `0 +` to indicate that there is no common intercept.  The data
+consists of `73` data points and the posterior sampling was done in `4`
+chains each with `8000` steps with `4000` steps of warm-up. The population
+effects for each parameter summarize the marginal posterior distributions,
 as well as the effective sample size in the bulk and tail. This gives
-an indication of the sampling quality, with an ESS of > \code{500} samples
+an indication of the sampling quality, with an ESS of > `500` samples
 being good for this type of model.
 
 \scriptsize
@@ -151,18 +154,18 @@ being good for this type of model.
 ## 
 ## Population-Level Effects: 
 ##                                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## ic50_substance_idBTRX_335140      -8.84      0.20    -9.20    -8.40 1.00    14883     8873
-## ic50_substance_idBTRX_395750      -8.24      0.41    -8.92    -7.39 1.00    12333     5863
-## ic50_substance_idJNJ              -9.15      0.32    -9.78    -8.50 1.00    17511    10242
-## ic50_substance_idPF               -6.15      1.05    -7.64    -3.41 1.00     8649     6213
-## hill_substance_idBTRX_335140      -1.47      0.60    -2.89    -0.59 1.00    15340    10545
-## hill_substance_idBTRX_395750      -0.89      0.51    -2.24    -0.26 1.00    12763     6273
-## hill_substance_idJNJ              -1.01      0.51    -2.38    -0.41 1.00    15285    11508
-## hill_substance_idPF               -0.31      0.24    -0.88    -0.03 1.00     7904     4559
-## bottom_substance_idBTRX_335140    -0.00      0.50    -0.99     0.97 1.00    19984    11491
-## bottom_substance_idBTRX_395750     0.01      0.50    -0.97     1.00 1.00    19123    11247
-## bottom_substance_idJNJ            -0.01      0.50    -0.98     0.98 1.00    18940    11984
-## bottom_substance_idPF              0.00      0.50    -0.98     0.98 1.00    21351    12102
+## ic50_substance_idBTRX_335140      -8.85      0.20    -9.21    -8.40 1.00    14899     9316
+## ic50_substance_idBTRX_395750      -8.24      0.46    -8.93    -7.36 1.00    12120     5841
+## ic50_substance_idJNJ              -9.15      0.32    -9.79    -8.50 1.00    15256    10460
+## ic50_substance_idPF               -6.18      1.02    -7.67    -3.58 1.00     8272     5238
+## hill_substance_idBTRX_335140      -1.47      0.60    -2.88    -0.58 1.00    14995    11321
+## hill_substance_idBTRX_395750      -0.90      0.51    -2.26    -0.26 1.00    10375     5911
+## hill_substance_idJNJ              -1.01      0.52    -2.41    -0.41 1.00    14910    10490
+## hill_substance_idPF               -0.31      0.24    -0.90    -0.03 1.00     8047     4787
+## bottom_substance_idBTRX_335140    -0.01      0.50    -0.98     0.96 1.00    17281    11401
+## bottom_substance_idBTRX_395750     0.01      0.50    -0.97     0.99 1.00    17587    11876
+## bottom_substance_idJNJ            -0.01      0.50    -0.99     0.96 1.00    16805    10580
+## bottom_substance_idPF              0.01      0.50    -0.97     0.99 1.00    19948    11245
 ## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA       NA       NA
 ## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA       NA       NA
 ## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA       NA       NA
@@ -170,7 +173,7 @@ being good for this type of model.
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma    32.17      2.84    27.19    38.32 1.00    14690    10539
+## sigma    32.16      2.86    27.17    38.31 1.00    14530    10557
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -180,10 +183,10 @@ being good for this type of model.
 
 #### Traceplot
 
-The model ran without warning messages meaning there were no parameter
+The model ran without warning messages, meaning there were no parameter
 value problems or MCMC conflicts. The bulk and tail ESS indicate high
-resolution and stability. The R-hat for each parameter equals \code{1.00} and
-the \code{traceplot} shows the chains mixed well indicating the chains
+resolution and stability. The R-hat for each parameter equals `1.00` and
+the `traceplot` shows the chains mixed well, indicating the chains
 converged.
 
 \scriptsize
@@ -193,13 +196,16 @@ kor_model |>
   bayesplot::mcmc_trace()
 ```
 
-<img src="apply_sigmoid_KOR_files/kor-model-traceplot-1.png" alt="plot of chunk kor-model-traceplot" width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_KOR_files/kor-model-traceplot-1.png" alt="plot of chunk kor-model-traceplot" width="100%" />
+<p class="caption">plot of chunk kor-model-traceplot</p>
+</div>
 \normalsize
 
 #### Compare prior and posterior marginal distributions
 
 Displayed below is a plot for the prior and posterior distributions of
-the parameters (prior is pink and posterior is teal). this can be
+the parameters (prior is pink and posterior is teal). This can be
 useful for comparing the density distribution of the prior and
 posterior produced by the model:
 
@@ -213,12 +219,15 @@ BayesPharma::plot_prior_posterior_densities(
   title_label="")
 ```
 
-<img src="apply_sigmoid_KOR_files/kor-model-prior-posterior-densities-1.png" alt="KOR antagonists model, compare prior and posterior distributions for each substance" width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_KOR_files/kor-model-prior-posterior-densities-1.png" alt="KOR antagonists model, compare prior and posterior distributions for each substance" width="100%" />
+<p class="caption">KOR antagonists model, compare prior and posterior distributions for each substance</p>
+</div>
 \normalsize
 
 Displayed below is a plot of the posterior distributions for each
 parameter with the confidence intervals and mean. This is a useful
-visual of the model results and to highlight the mode and high density
+visual of the model results and can highlight the mode and high-density
 intervals:
   
 \scriptsize
@@ -231,7 +240,10 @@ BayesPharma::plot_posterior_density(
   title_label = "")
 ```
 
-<img src="apply_sigmoid_KOR_files/kor-model-posterior-densities-1.png" alt="KOR Antagonists, posterior distribution for each substance" width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_KOR_files/kor-model-posterior-densities-1.png" alt="KOR Antagonists, posterior distribution for each substance" width="100%" />
+<p class="caption">KOR Antagonists, posterior distribution for each substance</p>
+</div>
 \normalsize
 
 Displayed below is a plot of a sample of 100 sigmoid dose-response
@@ -246,13 +258,16 @@ BayesPharma::plot_posterior_draws(
   title = "")
 ```
 
-<img src="apply_sigmoid_KOR_files/kor-model-posterior-draws-1.png" alt="KOR antagonists, posterior draws" width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_KOR_files/kor-model-posterior-draws-1.png" alt="KOR antagonists, posterior draws" width="100%" />
+<p class="caption">KOR antagonists, posterior draws</p>
+</div>
 \normalsize
 
 ### Comparing alternative models
 
 To test the sensitivity of the analysis to the prior, we can re-fit the model
-with more informative prior:
+with a more informative prior:
 
 \scriptsize
 
@@ -265,10 +280,166 @@ with more informative prior:
 ```
 \normalsize
 
-Re-fitting the model
+Re-fitting the model with the `kor_prior2` gives:
 
 \scriptsize
 
+```
+## 
+## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 8.5e-05 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.85 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 8000 [  0%]  (Warmup)
+## Chain 1: Iteration:  800 / 8000 [ 10%]  (Warmup)
+## Chain 1: Iteration: 1600 / 8000 [ 20%]  (Warmup)
+## Chain 1: Iteration: 2400 / 8000 [ 30%]  (Warmup)
+## Chain 1: Iteration: 3200 / 8000 [ 40%]  (Warmup)
+## Chain 1: Iteration: 4000 / 8000 [ 50%]  (Warmup)
+## Chain 1: Iteration: 4001 / 8000 [ 50%]  (Sampling)
+## Chain 1: Iteration: 4800 / 8000 [ 60%]  (Sampling)
+## Chain 1: Iteration: 5600 / 8000 [ 70%]  (Sampling)
+## Chain 1: Iteration: 6400 / 8000 [ 80%]  (Sampling)
+## Chain 1: Iteration: 7200 / 8000 [ 90%]  (Sampling)
+## Chain 1: Iteration: 8000 / 8000 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 2.759 seconds (Warm-up)
+## Chain 1:                2.503 seconds (Sampling)
+## Chain 1:                5.262 seconds (Total)
+## Chain 1: 
+## 
+## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
+## Chain 2: 
+## Chain 2: Gradient evaluation took 2.8e-05 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.28 seconds.
+## Chain 2: Adjust your expectations accordingly!
+## Chain 2: 
+## Chain 2: 
+## Chain 2: Iteration:    1 / 8000 [  0%]  (Warmup)
+## Chain 2: Iteration:  800 / 8000 [ 10%]  (Warmup)
+## Chain 2: Iteration: 1600 / 8000 [ 20%]  (Warmup)
+## Chain 2: Iteration: 2400 / 8000 [ 30%]  (Warmup)
+## Chain 2: Iteration: 3200 / 8000 [ 40%]  (Warmup)
+## Chain 2: Iteration: 4000 / 8000 [ 50%]  (Warmup)
+## Chain 2: Iteration: 4001 / 8000 [ 50%]  (Sampling)
+## Chain 2: Iteration: 4800 / 8000 [ 60%]  (Sampling)
+## Chain 2: Iteration: 5600 / 8000 [ 70%]  (Sampling)
+## Chain 2: Iteration: 6400 / 8000 [ 80%]  (Sampling)
+## Chain 2: Iteration: 7200 / 8000 [ 90%]  (Sampling)
+## Chain 2: Iteration: 8000 / 8000 [100%]  (Sampling)
+## Chain 2: 
+## Chain 2:  Elapsed Time: 2.828 seconds (Warm-up)
+## Chain 2:                2.751 seconds (Sampling)
+## Chain 2:                5.579 seconds (Total)
+## Chain 2: 
+## 
+## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
+## Chain 3: 
+## Chain 3: Gradient evaluation took 3e-05 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.3 seconds.
+## Chain 3: Adjust your expectations accordingly!
+## Chain 3: 
+## Chain 3: 
+## Chain 3: Iteration:    1 / 8000 [  0%]  (Warmup)
+## Chain 3: Iteration:  800 / 8000 [ 10%]  (Warmup)
+## Chain 3: Iteration: 1600 / 8000 [ 20%]  (Warmup)
+## Chain 3: Iteration: 2400 / 8000 [ 30%]  (Warmup)
+## Chain 3: Iteration: 3200 / 8000 [ 40%]  (Warmup)
+## Chain 3: Iteration: 4000 / 8000 [ 50%]  (Warmup)
+## Chain 3: Iteration: 4001 / 8000 [ 50%]  (Sampling)
+## Chain 3: Iteration: 4800 / 8000 [ 60%]  (Sampling)
+## Chain 3: Iteration: 5600 / 8000 [ 70%]  (Sampling)
+## Chain 3: Iteration: 6400 / 8000 [ 80%]  (Sampling)
+## Chain 3: Iteration: 7200 / 8000 [ 90%]  (Sampling)
+## Chain 3: Iteration: 8000 / 8000 [100%]  (Sampling)
+## Chain 3: 
+## Chain 3:  Elapsed Time: 2.923 seconds (Warm-up)
+## Chain 3:                2.084 seconds (Sampling)
+## Chain 3:                5.007 seconds (Total)
+## Chain 3: 
+## 
+## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
+## Chain 4: 
+## Chain 4: Gradient evaluation took 3.3e-05 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.33 seconds.
+## Chain 4: Adjust your expectations accordingly!
+## Chain 4: 
+## Chain 4: 
+## Chain 4: Iteration:    1 / 8000 [  0%]  (Warmup)
+## Chain 4: Iteration:  800 / 8000 [ 10%]  (Warmup)
+## Chain 4: Iteration: 1600 / 8000 [ 20%]  (Warmup)
+## Chain 4: Iteration: 2400 / 8000 [ 30%]  (Warmup)
+## Chain 4: Iteration: 3200 / 8000 [ 40%]  (Warmup)
+## Chain 4: Iteration: 4000 / 8000 [ 50%]  (Warmup)
+## Chain 4: Iteration: 4001 / 8000 [ 50%]  (Sampling)
+## Chain 4: Iteration: 4800 / 8000 [ 60%]  (Sampling)
+## Chain 4: Iteration: 5600 / 8000 [ 70%]  (Sampling)
+## Chain 4: Iteration: 6400 / 8000 [ 80%]  (Sampling)
+## Chain 4: Iteration: 7200 / 8000 [ 90%]  (Sampling)
+## Chain 4: Iteration: 8000 / 8000 [100%]  (Sampling)
+## Chain 4: 
+## Chain 4:  Elapsed Time: 3.161 seconds (Warm-up)
+## Chain 4:                2.391 seconds (Sampling)
+## Chain 4:                5.552 seconds (Total)
+## Chain 4:
+##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: response ~ sigmoid(ic50, hill, top, bottom, log_dose) 
+##          ic50 ~ 0 + substance_id
+##          hill ~ 0 + substance_id
+##          top ~ 0 + substance_id
+##          bottom ~ 0 + substance_id
+##    Data: data (Number of observations: 73) 
+##   Draws: 4 chains, each with iter = 8000; warmup = 4000; thin = 1;
+##          total post-warmup draws = 16000
+## 
+## Population-Level Effects: 
+##                                Estimate Est.Error l-95% CI u-95% CI Rhat
+## ic50_substance_idBTRX_335140      -8.81      0.22    -9.22    -8.36 1.00
+## ic50_substance_idBTRX_395750      -8.58      0.31    -9.16    -7.95 1.00
+## ic50_substance_idJNJ              -8.95      0.31    -9.53    -8.32 1.00
+## ic50_substance_idPF               -8.18      0.45    -9.08    -7.32 1.00
+## hill_substance_idBTRX_335140      -1.19      0.36    -1.96    -0.57 1.00
+## hill_substance_idBTRX_395750      -1.06      0.39    -1.91    -0.42 1.00
+## hill_substance_idJNJ              -0.85      0.33    -1.68    -0.39 1.00
+## hill_substance_idPF               -0.72      0.45    -1.73    -0.08 1.00
+## bottom_substance_idBTRX_335140     1.73     10.55   -19.25    21.97 1.00
+## bottom_substance_idBTRX_395750    15.46     11.14    -7.33    36.36 1.00
+## bottom_substance_idJNJ            -2.88      9.77   -22.88    15.44 1.00
+## bottom_substance_idPF             31.36     11.53     7.09    52.03 1.00
+## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA
+## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA
+## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA
+## top_substance_idPF               100.00      0.00   100.00   100.00   NA
+##                                Bulk_ESS Tail_ESS
+## ic50_substance_idBTRX_335140      14132    11090
+## ic50_substance_idBTRX_395750      14373    11993
+## ic50_substance_idJNJ              13025    11727
+## ic50_substance_idPF               14181    11917
+## hill_substance_idBTRX_335140      14765     9899
+## hill_substance_idBTRX_395750      14675    10859
+## hill_substance_idJNJ              13702    12566
+## hill_substance_idPF                9466     6053
+## bottom_substance_idBTRX_335140    14230    11874
+## bottom_substance_idBTRX_395750    14682    10484
+## bottom_substance_idJNJ            12495    11162
+## bottom_substance_idPF             11181    10516
+## top_substance_idBTRX_335140          NA       NA
+## top_substance_idBTRX_395750          NA       NA
+## top_substance_idJNJ                  NA       NA
+## top_substance_idPF                   NA       NA
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma    31.87      2.84    26.87    37.98 1.00    15342    10954
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).
+```
 \normalsize
 
 ## Comparing the Two Models Using LOO-Comparison:
@@ -281,8 +452,8 @@ predictive Density (ELPD). Since this is computationally challenging
 to re-fit the model for each point, if the model fits the data
 reasonably well, then the ELPD can be approximated using the Pareto
 smoothed importance sampling (PSIS). Using the LOO, the package,
-Pareto k value for each data point is computed, where k less than \code{0.5}
-is good, between \code{0.5} and \code{0.7} is OK, and higher than \code{0.7}
+Pareto k value for each data point is computed, where k less than `0.5`
+is good, between `0.5` and `0.7` is OK, and higher than `0.7`
 indicates the data point is not fit by the model well. Evaluating the model for
 the KOR antagonists, shows that the model fits the data well.
 
@@ -295,9 +466,9 @@ the KOR antagonists, shows that the model fits the data well.
 \normalsize
 
 Since ELPD is a global measure of model fit, it can be used to compare
-models.  Using \code{loo_compare} from the LOO package, returns the
-\code{elpd_diff} and \code{se_diff} for each model relative the model with the
-lowest ELPD. The \code{kor_model2}, the model with more informative prior,
+models.  Using `loo_compare` from the LOO package, returns the
+`elpd_diff` and `se_diff` for each model relative the model with the
+lowest ELPD. The `kor_model2`, the model with more informative prior,
 is the preferred model, but not significantly.
 
 \scriptsize
@@ -306,17 +477,17 @@ is the preferred model, but not significantly.
 ## No problematic observations found. Returning the original 'loo' object.
 ##            elpd_diff se_diff
 ## kor_model2  0.0       0.0   
-## kor_model  -0.8       1.2
+## kor_model  -0.9       1.2
 ```
 \normalsize
 
-##Analysis Using the drc Package
+##Analysis Using the `drc` Package
 
 Here we will analyze the KOR antagonist data using the drc package and
-compare it to the results from the \texttt{BayesPharma} analysis.
+compare it to the results from the `BayesPharma` analysis.
 
-We will fix the top to \code{100} and fit the \code{ic50}, \code{hill}, and
-\code{bottom}.
+We will fix the top to `100` and fit the `ic50`, `hill`, and
+`bottom`.
 
 \scriptsize
 
@@ -355,11 +526,11 @@ drc_models |>
 ```
 \normalsize
 
-Displayed below is the comparison of results from \texttt{drc} and
-\texttt{BayesPharma} for each parameter of the dose-response curve. Here we
+Displayed below is the comparison of results from `drc` and
+`BayesPharma` for each parameter of the dose-response curve. Here we
 see that the Bayesian method provides a distribution curve as evidence
 and has smaller confidence intervals than most of the standard errors
-provided by the \texttt{drc} method.
+provided by the `drc` method.
 
 
 
@@ -371,5 +542,8 @@ provided by the \texttt{drc} method.
 ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
 ```
 
-<img src="apply_sigmoid_KOR_files/kor-model-plot-vs-drc-1.png" alt="KOR antagonists conditional effects. The blue lines are samples from the 	exttt{BayesPharma} kor_model posterior distribution, the orange line is the conditional mean, and the purple line is the conditional mean for the 	exttt{drc} model fit." width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_KOR_files/kor-model-plot-vs-drc-1.png" alt="KOR antagonists conditional effects. The blue lines are samples from the `BayesPharma` kor_model posterior distribution, the orange line is the conditional mean, and the purple line is the conditional mean for the `drc` model fit." width="100%" />
+<p class="caption">KOR antagonists conditional effects. The blue lines are samples from the `BayesPharma` kor_model posterior distribution, the orange line is the conditional mean, and the purple line is the conditional mean for the `drc` model fit.</p>
+</div>
 

@@ -53,16 +53,16 @@
 #'}
 #'@export
 MuSyC_init <- function(
-    logE0 = log(0.5),
-    logC1 = 0,
-    logE1 = log(0.5),
-    h1 = 4,
-    logC2 = 0,
-    logE2 = log(0.5),
-    h2 = 4,
-    logE3 = log(0.5),
-    logalpha = 0,
-    ...) {
+  logE0 = log(0.5),
+  logC1 = 0,
+  logE1 = log(0.5),
+  h1 = 4,
+  logC2 = 0,
+  logE2 = log(0.5),
+  h2 = 4,
+  logE3 = log(0.5),
+  logalpha = 0,
+  ...) {
 
   function() {
     list(

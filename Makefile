@@ -19,6 +19,9 @@ clean:
 
 deps:
 	Rscript -e "devtools::install_dev_deps()"
+	
+install_cmdstan:
+	Rscript -e "cmdstanr::install_cmdstan()"
 
 
 build: deps vignettes/references.bib vignettes
