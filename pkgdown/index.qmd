@@ -31,7 +31,7 @@ Follow the instructions to install [rstan](https://github.com/stan-dev/rstan/wik
 In R do
 ```{r install-BayesPharma}
 install.packages("remotes")
-remotes::install_github("maomlab/BayesPharma", build_vignettes = FALSE)
+remotes::install_github("maomlab/BayesPharma")
 ```
 
 Usage
