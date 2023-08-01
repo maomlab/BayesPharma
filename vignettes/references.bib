@@ -412,6 +412,15 @@
   arxivid       = "1509.07164"
 }
 
+@TECHREPORT{Spiegelhalter1996-zm,
+  title       = "{BUGS} 0.5: Bayesian inference Using Gibbs {Sampling--Manual}",
+  author      = "Spiegelhalter, D and Thomas, A and Best, N and Gilks, W",
+  number      = "version ii",
+  institution = "Medical Research Council Biostatistics Unit, Cambridge",
+  year        =  1996,
+  keywords    = "BayesPharma\_2022"
+}
+
 @MISC{Clerx_undated-nh,
   title    = "Four ways to fit an ion channel model",
   author   = "Clerx, M and Beattie, K A and Gavaghan, D J and Mirams, G R",
@@ -2018,4 +2027,141 @@
   pmid     = "33301246",
   doi      = "10.1056/NEJMoa2034577",
   pmc      = "PMC7745181"
+}
+
+@ARTICLE{Geman1984-mn,
+  title    = "Stochastic relaxation, gibbs distributions, and the bayesian
+              restoration of images",
+  author   = "Geman, S and Geman, D",
+  abstract = "We make an analogy between images and statistical mechanics
+              systems. Pixel gray levels and the presence and orientation of
+              edges are viewed as states of atoms or molecules in a
+              lattice-like physical system. The assignment of an energy
+              function in the physical system determines its Gibbs
+              distribution. Because of the Gibbs distribution, Markov random
+              field (MRF) equivalence, this assignment also determines an MRF
+              image model. The energy function is a more convenient and natural
+              mechanism for embodying picture attributes than are the local
+              characteristics of the MRF. For a range of degradation
+              mechanisms, including blurring, nonlinear deformations, and
+              multiplicative or additive noise, the posterior distribution is
+              an MRF with a structure akin to the image model. By the analogy,
+              the posterior distribution defines another (imaginary) physical
+              system. Gradual temperature reduction in the physical system
+              isolates low energy states (``annealing''), or what is the same
+              thing, the most probable states under the Gibbs distribution. The
+              analogous operation under the posterior distribution yields the
+              maximum a posteriori (MAP) estimate of the image given the
+              degraded observations. The result is a highly parallel
+              ``relaxation'' algorithm for MAP estimation. We establish
+              convergence properties of the algorithm and we experiment with
+              some simple pictures, for which good restorations are obtained at
+              low signal-to-noise ratios.",
+  journal  = "IEEE Trans. Pattern Anal. Mach. Intell.",
+  volume   =  6,
+  number   =  6,
+  pages    = "721--741",
+  month    =  jun,
+  year     =  1984,
+  keywords = "BayesPharma\_2022",
+  language = "en",
+  issn     = "0162-8828, 0098-5589",
+  pmid     = "22499653",
+  doi      = "10.1109/tpami.1984.4767596"
+}
+
+@ARTICLE{Hastings1970-yj,
+  title     = "Monte Carlo sampling methods using Markov chains and their
+               applications",
+  author    = "Hastings, W K",
+  abstract  = "Summary. A generalization of the sampling method introduced by
+               Metropolis et al. (1953) is presented along with an exposition
+               of the relevant theory, techniques",
+  journal   = "Biometrika",
+  publisher = "Oxford Academic",
+  volume    =  57,
+  number    =  1,
+  pages     = "97--109",
+  month     =  apr,
+  year      =  1970,
+  keywords  = "BayesPharma\_2022",
+  language  = "en",
+  issn      = "0006-3444",
+  doi       = "10.1093/biomet/57.1.97"
+}
+
+@ARTICLE{Metropolis1953-td,
+  title     = "Equation of state calculations by fast computing machines",
+  author    = "Metropolis, Nicholas and Rosenbluth, Arianna W and Rosenbluth,
+               Marshall N and Teller, Augusta H and Teller, Edward",
+  abstract  = "A general method, suitable for fast computing machines, for
+               investigating such properties as equations of state for
+               substances consisting of interacting individual molecules is
+               described. The method consists of a modified Monte Carlo
+               integration over configuration space. Results for the
+               two-dimensional rigid-sphere system have been obtained on the
+               Los Alamos MANIAC and are presented here. These results are
+               compared to the free volume equation of state and to a four-term
+               virial coefficient expansion.",
+  journal   = "J. Chem. Phys.",
+  publisher = "AIP Publishing",
+  volume    =  21,
+  number    =  6,
+  pages     = "1087--1092",
+  month     =  jun,
+  year      =  1953,
+  keywords  = "BayesPharma\_2022",
+  language  = "en",
+  issn      = "0021-9606, 1089-7690",
+  doi       = "10.1063/1.1699114"
+}
+
+@ARTICLE{Duane1987-ff,
+  title    = "Hybrid Monte Carlo",
+  author   = "Duane, Simon and Kennedy, A D and Pendleton, Brian J and Roweth,
+              Duncan",
+  abstract = "We present a new method for the numerical simulation of lattice
+              field theory. A hybrid (molecular dynamics/Langevin) algorithm is
+              used to guide a Monte Carlo simulation. There are no
+              discretization errors even for large step sizes. The method is
+              especially efficient for systems such as quantum chromodynamics
+              which contain fermionic degrees of freedom. Detailed results are
+              presented for four-dimensional compact quantum electrodynamics
+              including the dynamical effects of electrons.",
+  journal  = "Phys. Lett. B",
+  volume   =  195,
+  number   =  2,
+  pages    = "216--222",
+  month    =  sep,
+  year     =  1987,
+  keywords = "BayesPharma\_2022",
+  issn     = "0370-2693",
+  doi      = "10.1016/0370-2693(87)91197-X"
+}
+
+@INCOLLECTION{Neal1996-kd,
+  title     = "Monte Carlo Implementation",
+  booktitle = "Bayesian Learning for Neural Networks",
+  author    = "Neal, Radford M",
+  editor    = "Neal, Radford M",
+  abstract  = "This chapter presents a Markov chain Monte Carlo implementation
+               of Bayesian learning for neural networks in which network
+               parameters are updated using the hybrid Monte Carlo algorithm, a
+               form of the Metropolis algorithm in which candidate states are
+               found by means of dynamical simulation. Hyperparameters are
+               updated separately using Gibbs sampling, allowing their values
+               to be used in chosing good stepsizes for the discretized
+               dynamics. I show that hybrid Monte Carlo performs better than
+               simple Metropolis,due to its avoidance of random walk behaviour.
+               I also discuss variants of hybrid Monte Carlo in which dynamical
+               computations are done using ``partial gradients'', in which
+               acceptance is based on a ``window'' of states,and in which
+               momentum updates incorporate ``persistence''.",
+  publisher = "Springer New York",
+  pages     = "55--98",
+  year      =  1996,
+  address   = "New York, NY",
+  keywords  = "BayesPharma\_2022",
+  isbn      = "9781461207450",
+  doi       = "10.1007/978-1-4612-0745-0\_3"
 }
