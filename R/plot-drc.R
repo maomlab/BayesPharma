@@ -15,17 +15,19 @@
 #' @importFrom rlang .data
 #' @export
 plot_drc <- function(
-    model,
-    newdata = NULL,
-    predict_args = list(interval = "prediction"),
-    aes_mapping = ggplot2::aes(
-      x = .data[["log_dose"]],
-      y = .data[["response"]]),
-    title =  NULL) {
+  model,
+  newdata = NULL,
+  predict_args = list(interval = "prediction"),
+  aes_mapping = ggplot2::aes(
+    x = .data[["log_dose"]],
+    y = .data[["response"]]),
+  title =  NULL) {
 
   if (is.null(newdata)) {
     log_dose_range <- model$data$log_dose[
-      model$data$log_dose |> is.finite() |> which()] |>
+      model$data$log_dose |>
+        is.finite() |>
+        which()] |>
       range()
     newdata <- data.frame(
       log_dose = seq(
@@ -49,9 +51,10 @@ plot_drc <- function(
     dplyr::bind_cols(
       do.call(
         what = stats::predict,
-        args = c(list(
-          object = model,
-          newdata = newdata),
+        args = c(
+          list(
+            object = model,
+            newdata = newdata),
           predict_args))) |>
     dplyr::rename(
       response = .data[["Prediction"]],

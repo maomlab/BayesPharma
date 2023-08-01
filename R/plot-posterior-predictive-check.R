@@ -31,10 +31,10 @@
 #'}
 #' @export
 plot_pp_check <- function(
-    model,
-    plot_type = "dens_overlay",
-    n = 50,
-    ...) {
+  model,
+  plot_type = "dens_overlay",
+  n = 50,
+  ...) {
 
   brms::pp_check(model, type = plot_type, ndraws = n, ...)
 }

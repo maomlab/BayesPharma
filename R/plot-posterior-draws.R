@@ -58,19 +58,19 @@
 #' @importFrom rlang .data
 #' @export
 plot_posterior_draws <- function(
-    model,
-    newdata = NULL,
-    treatment_variable = NULL,
-    treatment_units = NULL,
-    treatment_from = NULL,
-    treatment_to = NULL,
-    response_variable = NULL,
-    response_units = NULL,
-    title = "Dose-Response Posterior Draws",
-    n = 50,
-    point_size = 0.75,
-    jitter_height = 0,
-    jitter_width = 0) {
+  model,
+  newdata = NULL,
+  treatment_variable = NULL,
+  treatment_units = NULL,
+  treatment_from = NULL,
+  treatment_to = NULL,
+  response_variable = NULL,
+  response_units = NULL,
+  title = "Dose-Response Posterior Draws",
+  n = 50,
+  point_size = 0.75,
+  jitter_height = 0,
+  jitter_width = 0) {
 
   if (!inherits(model, "bpfit")) {
     warning(paste0(
@@ -137,7 +137,7 @@ plot_posterior_draws <- function(
     facets_layer <- list(
       ggplot2::facet_wrap(
         facets = paste0("~", paste(predictor_names, collapse = "+")) |>
-        stats::as.formula()))
+          stats::as.formula()))
   } else {
     facets_layer <- NULL
   }

@@ -16,8 +16,8 @@
 #'
 #' @export
 michaelis_menten_prior <- function(
-    kcat = brms::prior_string(prior = "gamma(4, 1)", lb = 0, nlpar = "kcat"),
-    kM = brms::prior_string(prior = "gamma(4, 1)", lb = 0, nlpar = "kM")) {
+  kcat = brms::prior_string(prior = "gamma(4, 1)", lb = 0, nlpar = "kcat"),
+  kM = brms::prior_string(prior = "gamma(4, 1)", lb = 0, nlpar = "kM")) {
 
   c(
     prepare_prior(kcat, nlpar = "kcat"),

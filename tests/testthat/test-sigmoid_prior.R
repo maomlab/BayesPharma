@@ -7,22 +7,22 @@ testthat::test_that("sigmoid_agonist_prior with default prior", {
   #"prior" "class" "coef" "group" "resp"  "dpar"  "nlpar" "lb" "ub" "source"
   testthat::expect_true(all(
     as.list(prior[1, ]) ==
-    c("normal(-6, 2.5)", "b", "", "", "", "", "ec50", NA, NA, "user"),
+      c("normal(-6, 2.5)", "b", "", "", "", "", "ec50", NA, NA, "user"),
     na.rm = TRUE))
 
   testthat::expect_true(all(
     as.list(prior[2, ]) ==
-    c("normal(1, 1)", "b", "", "", "", "", "hill", NA, "-0.01", "user"),
+      c("normal(1, 1)", "b", "", "", "", "", "hill", NA, "-0.01", "user"),
     na.rm = TRUE))
 
   testthat::expect_true(all(
     as.list(prior[3, ]) ==
-    c("normal(1, 0.5)", "b", "", "", "", "", "top", NA, NA, "user"),
+      c("normal(1, 0.5)", "b", "", "", "", "", "top", NA, NA, "user"),
     na.rm = TRUE))
 
   testthat::expect_true(all(
     as.list(prior[4, ]) ==
-    c("normal(0, 0.5)", "b", "", "", "", "", "bottom", NA, NA, "user"),
+      c("normal(0, 0.5)", "b", "", "", "", "", "bottom", NA, NA, "user"),
     na.rm = TRUE))
 })
 

@@ -80,7 +80,7 @@ tQ_model_generate <- function(time, kcat, kM, ET, ST, ...) {
   ode_tQ <- function(time, Pt, theta) {
     list(c(theta[1] * (
       ET + theta[2] + ST - Pt +
-      - sqrt((ET + theta[2] + ST - Pt)^2 - 4 * ET * (ST - Pt))) / 2))
+        - sqrt((ET + theta[2] + ST - Pt)^2 - 4 * ET * (ST - Pt))) / 2))
   }
   deSolve::ode(
     y = c(P = 0),

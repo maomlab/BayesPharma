@@ -41,13 +41,13 @@
 #'
 #' @export
 MuSyC <- function(
-    logd1,
-    logd2,
-    logE0,
-    logE1, logC1, h1,
-    logE2, logC2, h2,
-    logE3,
-    logalpha) {
+  logd1,
+  logd2,
+  logE0,
+  logE1, logC1, h1,
+  logE2, logC2, h2,
+  logE3,
+  logalpha) {
   numerator_parts <- c(
     h1 * logC1 + h2 * logC2 + logE0,
     h1 * logd1 + h2 * logC2 + logE1,

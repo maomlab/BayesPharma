@@ -33,11 +33,11 @@
 #'}
 #'@export
 sigmoid_agonist_init <- function(
-    ec50 = -6,
-    hill = 1,
-    top = 1,
-    bottom = 0,
-    ...) {
+  ec50 = -6,
+  hill = 1,
+  top = 1,
+  bottom = 0,
+  ...) {
 
   function() {
     list(
@@ -90,11 +90,11 @@ sigmoid_agonist_init <- function(
 #'}
 #'@export
 sigmoid_antagonist_init <- function(
-    ic50 = -6,
-    hill = -1,
-    top = 1,
-    bottom = 0,
-    ...) {
+  ic50 = -6,
+  hill = -1,
+  top = 1,
+  bottom = 0,
+  ...) {
 
   function() {
     list(

@@ -47,7 +47,7 @@ physiological temperature for ref2015 or any other scorefunction with units of
 kcal/mol.
 
 ## Two state model
-Thinking of the folded and unfolded states as a two-state model and RMSD as
+Thinking of the folded and unfolded states as a two-state model and RSMD as
 a reaction coordinate or "collective variable", then the energy gap can be
 modeled by a sigmoidal Boltzmann distribution.
 
@@ -63,14 +63,10 @@ modeled by a sigmoidal Boltzmann distribution.
 ## Warning in theme_xkcd(): Not xkcd fonts installed! See vignette("xkcd-intro")
 ```
 
-```
-## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-## ℹ Please use `linewidth` instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
-```
-
-<img src="apply_sigmoid_model_Pnear_files/sigmoidal-cartoon-1.png" alt="plot of chunk sigmoidal-cartoon" width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_model_Pnear_files/sigmoidal-cartoon-1.png" alt="plot of chunk sigmoidal-cartoon" width="100%" />
+<p class="caption">plot of chunk sigmoidal-cartoon</p>
+</div>
 
 For a principled molecular dynamics or Monte Carlo simulation that maintains
 detailed balance, it is in theory possible to use thermodynamic integration to
@@ -84,17 +80,26 @@ so that the log of the RMSD defines a linear reaction coordinate.
 If we simulate, trajectory points from the sigmoid on the log(RMSD) scale,
 with a Normally distributed error we can generate synthetic score-vs-rmsd plots
 
-<img src="apply_sigmoid_model_Pnear_files/simulate-score-vs-rmsd-data-1.png" alt="plot of chunk simulate-score-vs-rmsd-data" width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_model_Pnear_files/simulate-score-vs-rmsd-data-1.png" alt="plot of chunk simulate-score-vs-rmsd-data" width="100%" />
+<p class="caption">plot of chunk simulate-score-vs-rmsd-data</p>
+</div>
 
 A nice thing about having the parametric model to generate score-vs-rmsd plots,
 is that it allows us to measure measure the sensitivity of the Pnear to differently
 shaped score-vs-rmsd plots. For example we can scan both the radius of 
 
-<img src="apply_sigmoid_model_Pnear_files/simulate-data-scan-1.png" alt="plot of chunk simulate-data-scan" width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_model_Pnear_files/simulate-data-scan-1.png" alt="plot of chunk simulate-data-scan" width="100%" />
+<p class="caption">plot of chunk simulate-data-scan</p>
+</div>
 
 Another question we can use this model to investigate is how reproducible is the Pnear score?
 
-<img src="apply_sigmoid_model_Pnear_files/simulated-replicates-1.png" alt="plot of chunk simulated-replicates" width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_model_Pnear_files/simulated-replicates-1.png" alt="plot of chunk simulated-replicates" width="100%" />
+<p class="caption">plot of chunk simulated-replicates</p>
+</div>
 
 # Antibody SnugDock Case study
 As a case study, we can look at the real score-vs-rmsd plots from the Antibody
@@ -124,34 +129,34 @@ Check the model parameter fit and estimated parameters:
 ## 
 ## Population-Level Effects: 
 ##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## ec50_target1ahw       1.69      0.12     1.41     1.87 1.00     2877     1687
-## ec50_target1jps       1.38      0.12     1.09     1.59 1.00     5373     4239
-## ec50_target1mlc       2.40      0.52     0.99     3.20 1.00     3675     2475
-## ec50_target1ztx       0.75      0.08     0.58     0.89 1.00     5291     3796
-## ec50_target2aep       1.12      0.25     0.63     1.52 1.00     4585     2016
-## ec50_target2jel       1.65      0.06     1.53     1.76 1.00     6534     5151
-## hill_target1ahw       1.68      0.44     0.86     2.62 1.00     2528     1354
-## hill_target1jps       1.51      0.36     0.91     2.33 1.00     4332     3997
-## hill_target1mlc       1.03      0.56     0.25     2.30 1.00     3224     2761
-## hill_target1ztx       2.71      0.55     1.74     3.89 1.00     6396     5073
-## hill_target2aep       2.00      0.65     0.78     3.36 1.00     2210      725
-## hill_target2jel       3.20      0.59     2.11     4.44 1.00     7223     4963
-## top_target1ahw      -10.55      0.71   -11.57    -8.76 1.00     3500     2136
-## top_target1jps       -9.70      0.57   -10.62    -8.36 1.00     5663     4538
-## top_target1mlc       -1.19      5.99    -9.92    12.37 1.00     6721     4782
-## top_target1ztx      -17.44      0.28   -17.99   -16.88 1.00     9559     5237
-## top_target2aep      -16.32      0.57   -16.96   -15.49 1.00     2266      813
-## top_target2jel      -11.10      0.34   -11.76   -10.41 1.00    10085     5363
-## bottom_target1ahw   -26.09      2.40   -32.02   -23.13 1.00     2482     1411
-## bottom_target1jps   -30.32      3.60   -39.13   -24.93 1.00     4782     3868
-## bottom_target1mlc   -18.50      4.45   -32.03   -14.78 1.00     3071     2067
-## bottom_target1ztx   -38.86      3.51   -46.78   -32.98 1.00     5433     4085
-## bottom_target2aep   -30.29      5.95   -44.48   -21.19 1.00     5739     4435
-## bottom_target2jel   -19.48      0.99   -21.59   -17.75 1.00     6529     4573
+## ec50_target1ahw       1.70      0.11     1.44     1.86 1.00     4480     2619
+## ec50_target1jps       1.37      0.13     1.08     1.59 1.00     3326     3002
+## ec50_target1mlc       2.40      0.50     1.10     3.18 1.00     3209     2260
+## ec50_target1ztx       0.75      0.08     0.59     0.89 1.00     3795     3796
+## ec50_target2aep       1.13      0.39     0.60     1.60 1.01     1434      413
+## ec50_target2jel       1.65      0.06     1.53     1.76 1.00     5303     4378
+## hill_target1ahw       1.69      0.44     0.90     2.62 1.00     3395     2143
+## hill_target1jps       1.50      0.36     0.89     2.32 1.00     3134     3214
+## hill_target1mlc       1.04      0.56     0.26     2.34 1.00     3608     3501
+## hill_target1ztx       2.74      0.55     1.79     3.95 1.00     5279     4769
+## hill_target2aep       1.97      0.68     0.61     3.33 1.00     1030      365
+## hill_target2jel       3.19      0.59     2.09     4.39 1.00     6304     5194
+## top_target1ahw      -10.56      0.69   -11.57    -8.89 1.00     4469     2908
+## top_target1jps       -9.69      0.59   -10.61    -8.28 1.00     4565     3218
+## top_target1mlc       -1.28      5.95    -9.87    12.57 1.00     5597     4983
+## top_target1ztx      -17.45      0.27   -17.96   -16.93 1.00     9519     6062
+## top_target2aep      -16.14      1.61   -16.96   -14.96 1.01     1095      316
+## top_target2jel      -11.09      0.33   -11.74   -10.44 1.00     9532     5667
+## bottom_target1ahw   -25.98      2.10   -31.41   -23.07 1.00     3767     2052
+## bottom_target1jps   -30.51      3.69   -39.47   -25.05 1.00     2992     2724
+## bottom_target1mlc   -18.34      4.07   -30.38   -14.74 1.00     3115     2455
+## bottom_target1ztx   -38.73      3.43   -46.49   -33.05 1.00     4061     3747
+## bottom_target2aep   -30.20      5.82   -43.09   -21.02 1.00     4166     3031
+## bottom_target2jel   -19.48      0.98   -21.59   -17.75 1.00     5535     4735
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     5.74      0.08     5.60     5.90 1.00    11394     5840
+## sigma     5.74      0.07     5.60     5.89 1.00    10800     6007
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -166,9 +171,9 @@ data very well
 ## Computed from 8000 by 3003 log-likelihood matrix
 ## 
 ##          Estimate   SE
-## elpd_loo  -9521.2 39.0
-## p_loo        21.4  1.1
-## looic     19042.5 77.9
+## elpd_loo  -9521.4 39.0
+## p_loo        21.4  1.2
+## looic     19042.7 78.0
 ## ------
 ## Monte Carlo SE of elpd_loo is 0.1.
 ## 
@@ -183,11 +188,17 @@ data very well
 Visualize the fit as draws from the expected mean and median quantile intvervals on the
 log(RMSD) scale:
 
-<img src="apply_sigmoid_model_Pnear_files/plot-data-model-1.png" alt="plot of chunk plot-data-model" width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_model_Pnear_files/plot-data-model-1.png" alt="plot of chunk plot-data-model" width="100%" />
+<p class="caption">plot of chunk plot-data-model</p>
+</div>
 And on the original RMSD scale:
 
 
-<img src="apply_sigmoid_model_Pnear_files/plot-data-model-rmsd-1.png" alt="plot of chunk plot-data-model-rmsd" width="100%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_model_Pnear_files/plot-data-model-rmsd-1.png" alt="plot of chunk plot-data-model-rmsd" width="100%" />
+<p class="caption">plot of chunk plot-data-model-rmsd</p>
+</div>
 
 
 ## Quantify Pnear uncertainty

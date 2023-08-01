@@ -32,11 +32,11 @@
 #'}
 #' @export
 growth_sigmoid_prior <- function(
-    K = brms::prior(prior = normal(1, 0.5), nlpar = "K"),
-    K0 = brms::prior(prior = normal(0, 0.5), nlpar = "K0"),
-    rate = brms::prior(prior = normal(2, 0.5), nlpar = "rate", lb = 0),
-    lambda = brms::prior(prior = normal(0.5, 0.5), nlpar = "lambda"),
-    ...) {
+  K = brms::prior(prior = normal(1, 0.5), nlpar = "K"),
+  K0 = brms::prior(prior = normal(0, 0.5), nlpar = "K0"),
+  rate = brms::prior(prior = normal(2, 0.5), nlpar = "rate", lb = 0),
+  lambda = brms::prior(prior = normal(0.5, 0.5), nlpar = "lambda"),
+  ...) {
 
   c(
     prepare_prior(prior = K, nlpar = "K"),
@@ -83,12 +83,12 @@ growth_sigmoid_prior <- function(
 #'}
 #' @export
 growth_richards_prior <- function(
-    K = brms::prior(prior = normal(1, 0.5), nlpar = "K"),
-    K0 = brms::prior(prior = normal(0, 0.5), nlpar = "K0"),
-    rate = brms::prior(prior = normal(2, 0.5), nlpar = "rate", lb = 0),
-    lambda = brms::prior(prior = normal(0.5, 0.5), nlpar = "lambda"),
-    nu = brms::prior(prior = normal(1, 1), nlpar = "nu", lb = 0),
-    ...) {
+  K = brms::prior(prior = normal(1, 0.5), nlpar = "K"),
+  K0 = brms::prior(prior = normal(0, 0.5), nlpar = "K0"),
+  rate = brms::prior(prior = normal(2, 0.5), nlpar = "rate", lb = 0),
+  lambda = brms::prior(prior = normal(0.5, 0.5), nlpar = "lambda"),
+  nu = brms::prior(prior = normal(1, 1), nlpar = "nu", lb = 0),
+  ...) {
 
   c(
     prepare_prior(prior = K, nlpar = "K"),

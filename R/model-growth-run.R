@@ -37,15 +37,15 @@
 #'}
 #' @export
 growth_sigmoid_model <- function(
-    data,
-    formula = growth_richards_formula(),
-    prior = growth_richards_prior(),
-    init = growth_richards_init(),
-    iter = 8000,
-    control = list(adapt_delta = 0.99),
-    stanvar_function = growth_sigmoid_stanvar(),
-    expose_functions = TRUE,
-    ...) {
+  data,
+  formula = growth_richards_formula(),
+  prior = growth_richards_prior(),
+  init = growth_richards_init(),
+  iter = 8000,
+  control = list(adapt_delta = 0.99),
+  stanvar_function = growth_sigmoid_stanvar(),
+  expose_functions = TRUE,
+  ...) {
 
   if (!inherits(formula, "bpformula")) {
     warning(
@@ -140,15 +140,15 @@ growth_sigmoid_model <- function(
 #'}
 #' @export
 growth_richards_model <- function(
-    data,
-    formula = growth_richards_formula(),
-    prior = growth_richards_prior(),
-    init = growth_richards_init(),
-    iter = 8000,
-    control = list(adapt_delta = 0.99),
-    stanvar_function = growth_richards_stanvar(),
-    expose_functions = TRUE,
-    ...) {
+  data,
+  formula = growth_richards_formula(),
+  prior = growth_richards_prior(),
+  init = growth_richards_init(),
+  iter = 8000,
+  control = list(adapt_delta = 0.99),
+  stanvar_function = growth_richards_stanvar(),
+  expose_functions = TRUE,
+  ...) {
 
   args <- list(...)
 

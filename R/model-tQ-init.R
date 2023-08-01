@@ -13,9 +13,9 @@
 #'
 #' @export
 tQ_init <- function(
-    kcat = 4,
-    kM = 4,
-    ...) {
+  kcat = 4,
+  kM = 4,
+  ...) {
 
   function() {
     list(

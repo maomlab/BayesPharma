@@ -26,23 +26,23 @@ testthat::test_that(
     "plot_prior_posterior_densities throws error if predictors_col_name and ",
     "half_max_label are not characters"), {
 
-  testthat::expect_error(
-    expect_gg(
-      BayesPharma::plot_prior_posterior_densities(
-        model = test_model,
-        predictors_col_name = NULL)))
+    testthat::expect_error(
+      expect_gg(
+        BayesPharma::plot_prior_posterior_densities(
+          model = test_model,
+          predictors_col_name = NULL)))
 
-  testthat::expect_error(
-    expect_gg(
-      BayesPharma::plot_prior_posterior_densities(
-      model = test_model,
-      predictors_col_name = NULL,
-      half_max_label = NULL)))
+    testthat::expect_error(
+      expect_gg(
+        BayesPharma::plot_prior_posterior_densities(
+          model = test_model,
+          predictors_col_name = NULL,
+          half_max_label = NULL)))
 
-  testthat::expect_error(
-    expect_gg(
-      BayesPharma::plot_prior_posterior_densities(
-        model = test_model,
-        half_max_label = NULL)))
+    testthat::expect_error(
+      expect_gg(
+        BayesPharma::plot_prior_posterior_densities(
+          model = test_model,
+          half_max_label = NULL)))
 
-})
+  })

@@ -39,12 +39,12 @@
 #'
 #'@export
 sigmoid_agonist_formula <- function(
-    treatment_variable = "log_dose",
-    treatment_units = "Log[Molar]",
-    response_variable = "response",
-    response_units = NULL,
-    predictors = 1,
-    ...) {
+  treatment_variable = "log_dose",
+  treatment_units = "Log[Molar]",
+  response_variable = "response",
+  response_units = NULL,
+  predictors = 1,
+  ...) {
   # The sigmoid function is defined in BayesPharma::sigmoid_stanvar
   response_eq <- stats::as.formula(
     paste0(
@@ -113,12 +113,12 @@ sigmoid_agonist_formula <- function(
 #'
 #'@export
 sigmoid_antagonist_formula <- function(
-    treatment_variable = "log_dose",
-    treatment_units = "Log[Molar]",
-    response_variable = "response",
-    response_units = NULL,
-    predictors = 1,
-    ...) {
+  treatment_variable = "log_dose",
+  treatment_units = "Log[Molar]",
+  response_variable = "response",
+  response_units = NULL,
+  predictors = 1,
+  ...) {
 
   # The sigmoid function is defined in BayesPharma::sigmoid_stanvar
   response_eq <- stats::as.formula(

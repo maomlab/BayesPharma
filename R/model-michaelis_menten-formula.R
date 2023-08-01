@@ -36,17 +36,17 @@
 #'
 #' @export
 michaelis_menten_formula <- function(
-    series_index_variable = "series_index",
-    treatment_variable = "time",
-    treatment_units = "seconds",
-    ET_variable = "ET",
-    ET_units = "mg/ml",
-    ST_variable = "ST",
-    ST_units = "mg/ml",
-    response_variable = "P",
-    response_units = "mg/ml",
-    predictors = 1,
-    ...) {
+  series_index_variable = "series_index",
+  treatment_variable = "time",
+  treatment_units = "seconds",
+  ET_variable = "ET",
+  ET_units = "mg/ml",
+  ST_variable = "ST",
+  ST_units = "mg/ml",
+  response_variable = "P",
+  response_units = "mg/ml",
+  predictors = 1,
+  ...) {
 
   # The michaelis_menten function is defined in
   # BayesPharma::michaelis_menten_stanvar

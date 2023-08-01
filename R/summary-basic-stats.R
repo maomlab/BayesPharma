@@ -29,14 +29,14 @@
 #' @importFrom rlang .data
 #' @export
 basic_stats <- function(
-    model,
-    predictors_col_name = "_Intercept",
-    half_max_label = "ec50",
-    l_ci = 0.025,
-    u_ci = 0.975) {
+  model,
+  predictors_col_name = "_Intercept",
+  half_max_label = "ec50",
+  l_ci = 0.025,
+  u_ci = 0.975) {
 
   ple_info <- model |>
-     brms::fixef(probs = c(l_ci, u_ci))
+    brms::fixef(probs = c(l_ci, u_ci))
 
   model |>
     posterior::summarise_draws(
@@ -45,8 +45,9 @@ basic_stats <- function(
     dplyr::filter(!stringr::str_detect(.data[["variable"]], "sigma")) |>
     dplyr::filter(!stringr::str_detect(.data[["variable"]], "lprior")) |>
     dplyr::select(-tidyselect::all_of("variable")) |>
-    cbind(l_ci = c(ple_info[, 3]),
-          u_ci = c(ple_info[, 4])) |>
+    cbind(
+      l_ci = c(ple_info[, 3]),
+      u_ci = c(ple_info[, 4])) |>
     tibble::rownames_to_column("variables") |>
     dplyr::mutate(
       variables = .data[["variables"]] |>

@@ -1,17 +1,17 @@
 #' Fit a Bayesian Sigmoid Model
 #'
 #' @description Fits the sigmoid model. The functional form is
-#'  \preformatted{
-#'    <response> ~ sigmoid(ac50, hill, top, bottom, <treatment>)}
+#'  \preformatted{<response> ~ sigmoid(ac50, hill, top, bottom, <treatment>)}
 #'  where
-#'  \preformatted{
-#'    sigmoid = bottom + (top - bottom)/(1 + 10^((ac50 - <treatment>) * hill))}
+#nolint start
+#'  \preformatted{sigmoid = bottom + (top - bottom)/(1 + 10^((ac50 - <treatment>) * hill))}
 #'  By default the observed data (and therefore should be columns in the input
 #'  data `data.frame`) are
+#nolint end
 #'  \itemize{
-#'    \item{**<treatment>**: `log_dose`, the `log10` of the dose as a molar
+#'    \item{***treatment***: `log_dose`, the `log10` of the dose as a molar
 #'      concentration}
-#'    \item{**<response>**: `response`, with unspecified units}
+#'    \item{***response***: `response`, with unspecified units}
 #'  }
 #'  and the modeled parameters are
 #'  \itemize{
@@ -60,7 +60,7 @@
 #' @param stanvar_function stan code for the model.
 #' @param expose_functions `logical`. Expose the sigmoid function used in
 #'   the model. This is needed e.g. for [brms::loo_compare()]
-#' @param ... additional arguments passed to [brms::brm()]
+#' @param ... additional arguments passed to [brms::brm]
 #'
 #' @returns `bpfit` object, which is a wrapper around a [brms::brmsfit] object.
 #'
@@ -68,7 +68,7 @@
 #' \dontrun{
 #'   BayesPharma::sigmoid_model(
 #'     data = data,
-#'     formula = BayesPharma::sigmoid_antagoinst_formula(predictors = 0 + drug),
+#'     formula = BayesPharma::sigmoid_antagonist_formula(predictors = 0 + drug),
 #'     prior = BayesPharma::sigmoid_antagonist_prior(),
 #'     init = BayesPharma::sigmoid_antagonist_init())
 #' }
@@ -90,7 +90,7 @@ sigmoid_model <- function(
     warning(
       "formula must be a 'bpformula'. You can use the ",
       "'BayesPharma::sigmoid_agonist_formula(...)' or ",
-      "'BayesPharma::sigmoid_antagoinst_formula(...)'")
+      "'BayesPharma::sigmoid_antagonist_formula(...)'")
   }
 
   if (!(formula$bayes_pharma_info[["treatment_variable"]] %in% names(data))) {
@@ -113,7 +113,7 @@ sigmoid_model <- function(
     warning(
       "prior must be a 'brmsprior'. You can use the ",
       "'BayesPharma::sigmoid_agonist_prior(...)' or ",
-      "'BayesPharma::sigmoid_antagoinst_prior(...)")
+      "'BayesPharma::sigmoid_antagonist_prior(...)")
   }
 
   model <- brms::brm(

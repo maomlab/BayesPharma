@@ -5,8 +5,8 @@ load(file = "../testdata/ggplot_test_model.rda")
 testthat::test_that(
   desc = "simple density distribution is a ggplot object",
   code = {
-  expect_gg(
-    BayesPharma::plot_density_distribution(test_model))
+    expect_gg(
+      BayesPharma::plot_density_distribution(test_model))
   })
 
 

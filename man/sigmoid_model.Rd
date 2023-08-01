@@ -56,9 +56,9 @@ where
 By default the observed data (and therefore should be columns in the input
 data \code{data.frame}) are
 \itemize{
-\item{\strong{\if{html}{\out{<treatment>}}}: \code{log_dose}, the \code{log10} of the dose as a molar
+\item{\emph{\strong{treatment}}: \code{log_dose}, the \code{log10} of the dose as a molar
 concentration}
-\item{\strong{\if{html}{\out{<response>}}}: \code{response}, with unspecified units}
+\item{\emph{\strong{response}}: \code{response}, with unspecified units}
 }
 and the modeled parameters are
 \itemize{

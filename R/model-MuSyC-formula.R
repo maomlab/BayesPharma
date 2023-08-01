@@ -38,14 +38,14 @@
 #'
 #' @export
 MuSyC_formula <- function(
-    treatment_1_variable = "logd1",
-    treatment_1_units = "Log[Molar]",
-    treatment_2_variable = "logd2",
-    treatment_2_units = "Log[Molar]",
-    response_variable = "response",
-    response_units = NULL,
-    predictors = 1,
-    ...) {
+  treatment_1_variable = "logd1",
+  treatment_1_units = "Log[Molar]",
+  treatment_2_variable = "logd2",
+  treatment_2_units = "Log[Molar]",
+  response_variable = "response",
+  response_units = NULL,
+  predictors = 1,
+  ...) {
 
   response_eq <- stats::as.formula(
     paste0(
@@ -62,9 +62,9 @@ MuSyC_formula <- function(
   predictor_eq <- rlang::new_formula(
     lhs = quote(
       logE0 +
-      logC1 + logE1 + h1 +
-      logC2 + logE2 + h2 +
-      logE3 + logalpha),
+        logC1 + logE1 + h1 +
+        logC2 + logE2 + h2 +
+        logE3 + logalpha),
     rhs = rlang::enexpr(predictors))
 
   model_formula <- brms::brmsformula(

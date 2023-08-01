@@ -24,16 +24,16 @@
 #'
 #' @export
 drc_model <- function(
-    data,
-    formula = response ~ log_dose,
-    fct = drc::L.4(
-      fixed = c(NA, NA, NA, NA),
-      names = c("hill", "bottom", "top", "ec50")),
-    ...) {
+  data,
+  formula = response ~ log_dose,
+  fct = drc::L.4(
+    fixed = c(NA, NA, NA, NA),
+    names = c("hill", "bottom", "top", "ec50")),
+  ...) {
 
-    drc::drm(
-      formula = formula,
-      data = data,
-      fct = fct,
-      ...)
+  drc::drm(
+    formula = formula,
+    data = data,
+    fct = fct,
+    ...)
 }

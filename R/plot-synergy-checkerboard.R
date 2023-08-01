@@ -20,13 +20,13 @@
 #' @importFrom rlang .data
 #' @export
 plot_synergy_checkerboard <- function(
-    data,
-    treatment_1_label = "Treatment 1",
-    treatment_2_label = "Treatment 2",
-    treatment_1_units = NULL,
-    treatment_2_units = NULL,
-    plot_zero_dose = TRUE,
-    contour_color = "gold") {
+  data,
+  treatment_1_label = "Treatment 1",
+  treatment_2_label = "Treatment 2",
+  treatment_1_units = NULL,
+  treatment_2_units = NULL,
+  plot_zero_dose = TRUE,
+  contour_color = "gold") {
 
   d1 <- d1_label <- data$dose1 |> unique() |> sort()
   d2 <- d2_label <- data$dose2 |> unique() |> sort()
