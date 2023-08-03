@@ -49,6 +49,7 @@ Suggests:
     lintr,
     matrixStats,
     modelr,
+    optparse,
     parsnip,
     readr,
     readxl,
