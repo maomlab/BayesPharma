@@ -1,6 +1,6 @@
 #' Create a Formula for the Sigmoid Growth Model
 #'
-#' @description set-up a sigmoid growth model formula to for use in
+#' @description Set-up a sigmoid growth model formula to for use in
 #'   [growth_sigmoid_model()]. The functional form is
 #'
 #'     response ~ growth_sigmoid(K, K0, rate, lambda, time)
@@ -21,7 +21,8 @@
 #'              growth rate crosses the initial population size `K0`. (see
 #'              Figure 2 in (Kahm et al., 2010)).
 #'
-#' See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
+#' See the vignettes(topic = "derive_growth_model", package = "BayesPharma") for
+#' more details.
 #'
 #' @param treatment_variable `character` variable representing time as a
 #'   treatment
@@ -136,7 +137,8 @@ growth_sigmoid_formula <- function(
 #'     nu     = **growth asymmetry** before and after the inflection
 #'              point.
 #'
-#' See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
+#' See the vignettes(topic = "derive_growth_model", package = "BayesPharma") for
+#' more details.
 #'
 #' @param treatment_variable `character` variable representing time as a
 #'   treatment

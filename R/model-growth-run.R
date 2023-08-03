@@ -1,9 +1,9 @@
 #' Run the Bayesian Sigmoid Growth Model
 #'
 #' @description
-#' For additional information on additional function arguments, reference:
-#' [brms::brms()] and the [stan](https://rdrr.io/cran/rstan/man/stan.html)
-#' documentation.
+#'   For additional information on additional function arguments, reference:
+#'   [brms::brms()] and the [stan](https://rdrr.io/cran/rstan/man/stan.html)
+#'   documentation.
 #'
 #' @param data `data.frame` of experimental data. Must contain column
 #'   representing the treatment, response and predictors specified in the

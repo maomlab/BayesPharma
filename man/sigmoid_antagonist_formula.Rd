@@ -35,9 +35,9 @@ a \code{bpformula}, which is a subclass of \link[brms:brmsformula]{brms::brmsfor
 be passed to \code{\link[=sigmoid_model]{sigmoid_model()}}.
 }
 \description{
-set-up an antagonist sigmoid dose response model formula to
+Set-up an antagonist sigmoid dose response model formula to
 define a non-linear model or multilevel non-linear model for \code{ic50},
-\code{hill}, \code{top}, and, \code{bottom} for use in the \code{\link[=sigmoid_model]{sigmoid_model()}}
+\code{hill}, \code{top}, and, \code{bottom} for use in the \code{\link[=sigmoid_model]{sigmoid_model()}}.
 }
 \examples{
 \dontrun{

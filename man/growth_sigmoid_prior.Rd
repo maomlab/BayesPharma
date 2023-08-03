@@ -32,7 +32,7 @@ of \code{0}).}
 \code{\link[brms:set_prior]{brms::brmsprior()}} \code{data.frame}
 }
 \description{
-Creates a for the priors for the sigmoid growth model. If the
+Create a prior for the sigmoid growth model. If the
 function arguments \code{K}, \code{K0}, \code{rate}, \code{lambda}, or \code{NULL}, normal
 distribution priors will be set.
 

@@ -38,7 +38,7 @@ a \code{bpformula}, which is a subclass of
 \code{\link[=growth_sigmoid_model]{growth_sigmoid_model()}}.
 }
 \description{
-set-up a sigmoid growth model formula to for use in
+Set-up a sigmoid growth model formula to for use in
 \code{\link[=growth_sigmoid_model]{growth_sigmoid_model()}}. The functional form is
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{response ~ growth_sigmoid(K, K0, rate, lambda, time)
@@ -61,7 +61,8 @@ lambda = **duration of the lag-phase** the time point at which the
          Figure 2 in (Kahm et al., 2010)).
 }\if{html}{\out{</div>}}
 
-See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
+See the vignettes(topic = "derive_growth_model", package = "BayesPharma") for
+more details.
 }
 \examples{
 \dontrun{

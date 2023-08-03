@@ -41,18 +41,16 @@ value than \code{10} can improve model convergence (see \link[brms:brm]{brms::br
 \item{expose_functions}{\code{logical}. Expose the sigmoid function used in
 the model. This is needed e.g. for \code{\link[brms:loo_compare.brmsfit]{brms::loo_compare()}}}
 
-\item{...}{additional arguments passed to \code{\link[brms:brm]{brms::brm()}}}
+\item{...}{additional arguments passed to \link[brms:brm]{brms::brm}}
 }
 \value{
 \code{bpfit} object, which is a wrapper around a \link[brms:brmsfit-class]{brms::brmsfit} object.
 }
 \description{
 Fits the sigmoid model. The functional form is
-\preformatted{
-   <response> ~ sigmoid(ac50, hill, top, bottom, <treatment>)}
+\preformatted{<response> ~ sigmoid(ac50, hill, top, bottom, <treatment>)}
 where
-\preformatted{
-   sigmoid = bottom + (top - bottom)/(1 + 10^((ac50 - <treatment>) * hill))}
+\preformatted{sigmoid = bottom + (top - bottom)/(1 + 10^((ac50 - <treatment>) * hill))}
 By default the observed data (and therefore should be columns in the input
 data \code{data.frame}) are
 \itemize{
@@ -95,7 +93,7 @@ model parameters to match the default \code{\link[=sigmoid_antagonist_prior]{sig
 \dontrun{
   BayesPharma::sigmoid_model(
     data = data,
-    formula = BayesPharma::sigmoid_antagoinst_formula(predictors = 0 + drug),
+    formula = BayesPharma::sigmoid_antagonist_formula(predictors = 0 + drug),
     prior = BayesPharma::sigmoid_antagonist_prior(),
     init = BayesPharma::sigmoid_antagonist_init())
 }

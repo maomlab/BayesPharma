@@ -20,7 +20,8 @@
 #'              growth rate crosses the initial population size `K0`. (see
 #'              Figure 2 in (Kahm et al., 2010)).
 #'
-#' See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
+#' See the vignettes(topic = "derive_growth_model", package = "BayesPharma") for
+#' more details.
 #'
 #'
 #' @param K `numeric`, the carrying capacity

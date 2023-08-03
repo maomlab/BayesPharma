@@ -1,6 +1,7 @@
 #' Check if an Object is a [ggplot2] Plot
 #'
-#' @description Use in tests to check if an object is a [ggplot2::ggplot] object
+#' @description
+#'   Use in tests to check if an object is a [ggplot2::ggplot] object.
 #'
 #' @param x [ggplot2::ggplot] object
 #'
