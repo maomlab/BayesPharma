@@ -26,7 +26,7 @@ a function that returns an \code{numeric} \code{array} of length \code{1}, see
 input for \verb{[brm][brms::brm](init = ...)}
 }
 \description{
-Creating initial values for Richards growth model parameters
+Creat initial values for Richards growth model parameters
 that can be passed to the \link{growth_richards_model}.
 }
 \examples{

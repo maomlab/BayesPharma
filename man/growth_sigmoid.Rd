@@ -41,7 +41,8 @@ lambda = **duration of the lag-phase** the time point at which the
          Figure 2 in (Kahm et al., 2010)).
 }\if{html}{\out{</div>}}
 
-See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
+See the vignettes(topic = "derive_growth_model", package = "BayesPharma") for
+more details.
 }
 \details{
 The Richards growth model is given by

@@ -1,8 +1,7 @@
 #' Create Initialization for the Sigmoid Growth Model
 #'
-#' @description Creating initial values for sigmoid growth model
-#'   parameters that can be passed to the
-#'.  [growth_sigmoid_model].
+#' @description Create initial values for sigmoid growth model parameters that
+#'   can be passed to the [growth_sigmoid_model].
 #'
 #' @param K `numeric` or `numeric` returning `function`
 #' @param K0 `numeric` or `numeric` returning `function`
@@ -44,7 +43,7 @@ growth_sigmoid_init <- function(
 
 #' Create Initialization for the Richards Growth Model
 #'
-#' @description Creating initial values for Richards growth model parameters
+#' @description Creat initial values for Richards growth model parameters
 #'   that can be passed to the [growth_richards_model].
 #'
 #' @param K `numeric` or `numeric` returning `function`

@@ -28,7 +28,7 @@ into consideration? i.e. cell number, plate number, etc.}
 bpformula \code{\link[brms:brmsformula]{brms::brmsformula()}}
 }
 \description{
-set-up an equation for formula objects with a constant response.
+Set-up an equation for formula objects with a constant response.
 }
 \examples{
 \dontrun{

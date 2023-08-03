@@ -63,7 +63,8 @@ nu     = **growth asymmetry** before and after the inflection
          point.
 }\if{html}{\out{</div>}}
 
-See the vignettes(topic = "derive_growth_model", package = "BayesPharma")
+See the vignettes(topic = "derive_growth_model", package = "BayesPharma") for
+more details.
 }
 \examples{
 \dontrun{

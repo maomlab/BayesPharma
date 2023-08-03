@@ -25,9 +25,8 @@ init.}
 input for \verb{[brm][brms::brm](init = ...)}
 }
 \description{
-Creating initial values for sigmoid growth model
-parameters that can be passed to the
-.  \link{growth_sigmoid_model}.
+Create initial values for sigmoid growth model parameters that
+can be passed to the \link{growth_sigmoid_model}.
 }
 \examples{
 \dontrun{
