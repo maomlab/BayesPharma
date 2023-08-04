@@ -116,11 +116,20 @@ sigmoid_model <- function(
       "'BayesPharma::sigmoid_antagonist_prior(...)")
   }
 
+  init <- eval_init(
+    init,
+    sdata = brms::make_standata(
+      formula = formula,
+      data = data,
+      prior = prior,
+      ...),
+    chains = args$chains)
+
   model <- brms::brm(
     formula = formula,
     data = data,
     prior = prior,
-    init = eval_init(init, args$chains),
+    init = init,
     iter = iter,
     control = control,
     stanvars = stanvar_function,

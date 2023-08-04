@@ -4,7 +4,14 @@
 \alias{growth_richards_init}
 \title{Create Initialization for the Richards Growth Model}
 \usage{
-growth_richards_init(K = 1, K0 = 0, rate = 1, lambda = 0.5, nu = 1, ...)
+growth_richards_init(
+  K = function() runif(n = 1, min = 0.8, max = 1.2),
+  K0 = function() runif(n = 1, min = -0.2, max = 0.2),
+  rate = function() runif(n = 1, min = 0.8, max = 1.2),
+  lambda = function() runif(n = 1, min = 0.3, max = 0.7),
+  nu = function() runif(n = 1, min = 0.8, max = 1.2),
+  ...
+)
 }
 \arguments{
 \item{K}{\code{numeric} or \code{numeric} returning \code{function}}
@@ -26,7 +33,7 @@ a function that returns an \code{numeric} \code{array} of length \code{1}, see
 input for \verb{[brm][brms::brm](init = ...)}
 }
 \description{
-Creat initial values for Richards growth model parameters
+Create initial values for Richards growth model parameters
 that can be passed to the \link{growth_richards_model}.
 }
 \examples{

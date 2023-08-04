@@ -25,25 +25,26 @@
 #'}
 #'@export
 growth_sigmoid_init <- function(
-  K = 1,
-  K0 = 0,
-  rate = 1,
-  lambda = 0.5,
+  K = \() runif(n = 1, min = 0.8, max = 1.2),
+  K0 = \() runif(n = 1, min = -0.2, max = 0.2),
+  rate = \() runif(n = 1, min = 0.8, max = 1.2),
+  lambda = \() runif(n = 1, min = 0.3, max = 0.7),
   ...) {
 
-  function() {
-    list(
-      b_K = prepare_init(K),
-      b_K0 = prepare_init(K0),
-      b_rate = prepare_init(rate),
-      b_lambda = prepare_init(lambda),
-      ...)
-  }
+  init <- list(
+    b_K = K,
+    b_K0 = K0,
+    b_rate = rate,
+    b_lambda = lambda,
+    ...)
+
+  class(init) <- c("bpinit", class(init))
+  init
 }
 
 #' Create Initialization for the Richards Growth Model
 #'
-#' @description Creat initial values for Richards growth model parameters
+#' @description Create initial values for Richards growth model parameters
 #'   that can be passed to the [growth_richards_model].
 #'
 #' @param K `numeric` or `numeric` returning `function`
@@ -69,20 +70,21 @@ growth_sigmoid_init <- function(
 #'}
 #'@export
 growth_richards_init <- function(
-  K = 1,
-  K0 = 0,
-  rate = 1,
-  lambda = 0.5,
-  nu = 1,
+  K = \() runif(n = 1, min = 0.8, max = 1.2),
+  K0 = \() runif(n = 1, min = -0.2, max = 0.2),
+  rate = \() runif(n = 1, min = 0.8, max = 1.2),
+  lambda = \() runif(n = 1, min = 0.3, max = 0.7),
+  nu = \() runif(n = 1, min = 0.8, max = 1.2),
   ...) {
 
-  function() {
-    list(
-      b_K = prepare_init(K),
-      b_K0 = prepare_init(K0),
-      b_rate = prepare_init(rate),
-      b_lambda = prepare_init(lambda),
-      b_nu = prepare_init(nu),
-      ...)
-  }
+  init <- list(
+    b_K = K,
+    b_K0 = K0,
+    b_rate = rate,
+    b_lambda = lambda,
+    b_nu = nu,
+    ...)
+
+  class(init) <- c("bpinit", class(init))
+  init
 }

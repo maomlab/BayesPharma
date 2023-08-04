@@ -16,14 +16,15 @@
 #'
 #' @export
 michaelis_menten_init <- function(
-  kcat = 4,
-  kM = 4,
+  kcat = \() runif(n = 1, min = 3, max = 5),
+  kM = \() runif(n = 1, max = 3, min = 5),
   ...) {
 
-  function() {
-    list(
-      b_kcat = prepare_init(kcat),
-      b_kM = prepare_init(kM),
-      ...)
-  }
+  init <- list(
+    b_kcat = kcat,
+    b_kM = kM,
+    ...)
+
+  class(init) <- c("bpinit", class(init))
+  init
 }

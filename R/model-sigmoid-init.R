@@ -33,21 +33,22 @@
 #'}
 #'@export
 sigmoid_agonist_init <- function(
-  ec50 = -6,
-  hill = 1,
-  top = 1,
-  bottom = 0,
+  ec50 = \() runif(n = 1, min = -7, max = -5),
+  hill = \() runif(n = 1, min = 0.8, max = 1.2),
+  top = \() runif(n = 1, min = 0.8, max = 1.2),
+  bottom = \() runif(n = 1, min = -0.2, max = 0.2),
   ...) {
+  init <- list(
+    b_ec50 = ec50,
+    b_hill = hill,
+    b_top = top,
+    b_bottom = bottom,
+    ...)
 
-  function() {
-    list(
-      b_ec50 = prepare_init(ec50),
-      b_hill = prepare_init(hill),
-      b_top = prepare_init(top),
-      b_bottom = prepare_init(bottom),
-      ...)
-  }
+  class(init) <- c("bpinit", class(init))
+  init
 }
+
 
 #' Initialize Parameter Values for an Antagonist Sigmoid Model
 #'
@@ -90,18 +91,18 @@ sigmoid_agonist_init <- function(
 #'}
 #'@export
 sigmoid_antagonist_init <- function(
-  ic50 = -6,
-  hill = -1,
-  top = 1,
-  bottom = 0,
+  ic50 = \() runif(n = 1, min = -7, max = -5),
+  hill = \() runif(n = 1, min = -1.2, max = -0.8),
+  top = \() runif(n = 1, min = 0.8, max = 1.2),
+  bottom = \() runif(n = 1, min = -0.2, max = 0.2),
   ...) {
+  init <- list(
+    b_ic50 = ic50,
+    b_hill = hill,
+    b_top = top,
+    b_bottom = bottom,
+    ...)
 
-  function() {
-    list(
-      b_ic50 = prepare_init(ic50),
-      b_hill = prepare_init(hill),
-      b_top = prepare_init(top),
-      b_bottom = prepare_init(bottom),
-      ...)
-  }
+  class(init) <- c("bpinit", class(init))
+  init
 }
