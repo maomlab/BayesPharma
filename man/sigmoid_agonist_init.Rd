@@ -4,7 +4,13 @@
 \alias{sigmoid_agonist_init}
 \title{Initialize Parameter Values for an Agonist Sigmoid Model}
 \usage{
-sigmoid_agonist_init(ec50 = -6, hill = 1, top = 1, bottom = 0, ...)
+sigmoid_agonist_init(
+  ec50 = function() runif(n = 1, min = -7, max = -5),
+  hill = function() runif(n = 1, min = 0.8, max = 1.2),
+  top = function() runif(n = 1, min = 0.8, max = 1.2),
+  bottom = function() runif(n = 1, min = -0.2, max = 0.2),
+  ...
+)
 }
 \arguments{
 \item{ec50}{\code{numeric} or \code{numeric} returning \code{function} units of the

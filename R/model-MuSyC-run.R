@@ -151,11 +151,20 @@ MuSyC_model <- function(
         ]]))
   }
 
+  init <- eval_init(
+    init,
+    sdata = brms::make_standata(
+      formula = formula,
+      data = data,
+      prior = prior,
+      ...),
+    chains = args$chains)
+
   model <- brms::brm(
     formula = formula,
     data = data,
     prior = prior,
-    init = eval_init(init, chains = args$chains),
+    init = init,
     control = control,
     stanvars = stanvars,
     ...)

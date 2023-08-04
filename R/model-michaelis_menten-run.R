@@ -91,11 +91,20 @@ michaelis_menten_model <- function(
       "needs to be a column of the input 'data' data.frame\n"))
   }
 
+  init <- eval_init(
+    init,
+    sdata = brms::make_standata(
+      formula = formula,
+      data = data,
+      prior = prior,
+      ...),
+    chains = args$chains)
+
   model <- brms::brm(
     formula = formula,
     data = data,
     prior = prior,
-    init = eval_init(init, chains = args$chains),
+    init = init,
     iter = iter,
     control = control,
     stanvars = stanvar_function,

@@ -75,6 +75,15 @@ growth_sigmoid_model <- function(
       "'BayesPharma::growth_sigmoid_prior(...)'")
   }
 
+  init <- eval_init(
+    init,
+    sdata = brms::make_standata(
+      formula = formula,
+      data = data,
+      prior = prior,
+      ...),
+    chains = args$chains)
+
   model <- brms::brm(
     formula = formula,
     data = data,
@@ -180,11 +189,20 @@ growth_richards_model <- function(
       "'BayesPharma::growth_richards_prior(...)'")
   }
 
+  init <- eval_init(
+    init,
+    sdata = brms::make_standata(
+      formula = formula,
+      data = data,
+      prior = prior,
+      ...),
+    chains = args$chains)
+
   model <- brms::brm(
     formula = formula,
     data = data,
     prior = prior,
-    init = eval_init(init, chains = args$chains),
+    init = init,
     iter = iter,
     control = control,
     stanvars = stanvar_function,

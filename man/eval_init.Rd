@@ -4,12 +4,22 @@
 \alias{eval_init}
 \title{Evaluate an init}
 \usage{
-eval_init(init, chains = NULL)
+eval_init(init, sdata = NULL, chains = 4)
 }
 \arguments{
-\item{init}{A valid init argument for \link[rstan:rstan]{rstan::rstan}.}
+\item{init}{One of
+\itemize{
+\item \code{NULL}, \code{numeric}, \code{character} in which case use the default \link{rstan} init
+\item named \code{list} with one element for each parameter. The values can be
+either \code{array}, \code{numeric}, or a function returning a \code{numeric} value
+}}
 
-\item{chains}{\code{numeric} number of chains to generate initializations for}
+\item{sdata}{result of running \code{\link[brms:make_standata]{brms::make_standata()}}, in particular it
+it should be list having elements \verb{K_<parameter_name>} for each parameter
+in the model. Where the value of these elements is the dimension of the
+parameter.}
+
+\item{chains}{\code{numeric} number of chains for which to initialize}
 }
 \value{
 \code{list} of \code{lists} form of model initialization.

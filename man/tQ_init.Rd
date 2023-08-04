@@ -4,7 +4,11 @@
 \alias{tQ_init}
 \title{Initialize Parameter Values for the tQ Enzyme Kinetic Model}
 \usage{
-tQ_init(kcat = 4, kM = 4, ...)
+tQ_init(
+  kcat = function() runif(n = 1, min = 3, max = 5),
+  kM = function() runif(n = 1, min = 3, max = 5),
+  ...
+)
 }
 \arguments{
 \item{kcat}{\code{numeric} initial value for \code{kcat} parameter in the tQ model}

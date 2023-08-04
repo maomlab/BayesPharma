@@ -53,28 +53,28 @@
 #'}
 #'@export
 MuSyC_init <- function(
-  logE0 = log(0.5),
-  logC1 = 0,
-  logE1 = log(0.5),
-  h1 = 4,
-  logC2 = 0,
-  logE2 = log(0.5),
-  h2 = 4,
-  logE3 = log(0.5),
-  logalpha = 0,
+  logE0 = \() runif(n = 1, min = log(0.4), max = log(0.6)),
+  logC1 = \() runif(n = 1, min = -0.2, max = 0.2),
+  logE1 = \() runif(n = 1, min = log(0.4), max = log(0.6)),
+  h1 = \() runif(n = 1, min = 3, max = 5),
+  logC2 = \() runif(n = 1, min = -0.2, max = 0.2),
+  logE2 = \() runif(n = 1, min = log(0.4), max = log(0.6)),
+  h2 = \() runif(n = 1, min = 3, max = 5),
+  logE3 = \() runif(n = 1, min = log(0.4), max = log(0.6)),
+  logalpha = \() runif(n = 1, min = -0.2, max = 0.2),
   ...) {
 
-  function() {
-    list(
-      b_logE0 = prepare_init(logE0),
-      b_logC1 = prepare_init(logC1),
-      b_logE1 = prepare_init(logE1),
-      b_h1 = prepare_init(h1),
-      b_logC2 = prepare_init(logC1),
-      b_logE2 = prepare_init(logE1),
-      b_h2 = prepare_init(h1),
-      b_logE3 = prepare_init(logE3),
-      b_logalpha = prepare_init(logalpha),
-      ...)
-  }
+  init <- list(
+    b_logE0 = logE0,
+    b_logC1 = logC1,
+    b_logE1 = logE1,
+    b_h1 = h1,
+    b_logC2 = logC1,
+    b_logE2 = logE1,
+    b_h2 = h2,
+    b_logE3 = logE3,
+    b_logalpha = logalpha,
+    ...)
+  class(init) <- c("bpinit", class(init))
+  init
 }

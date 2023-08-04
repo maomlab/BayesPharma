@@ -117,29 +117,61 @@ rstan_default_init <- function(lb = NULL, ub = NULL, dim = 0) {
 #' To make BayesPharma more backend agnostic, this helper function takes the
 #' an init and the number of chains and reduces it to the list of list format.
 #'
-#' @param init A valid init argument for [rstan::rstan].
-#' @param chains `numeric` number of chains to generate initializations for
+#' @param init One of
+#'   * `NULL`, `numeric`, `character` in which case use the default [rstan] init
+#'   * named `list` with one element for each parameter. The values can be
+#'     either `array`, `numeric`, or a function returning a `numeric` value
+#' @param sdata result of running [brms::make_standata()], in particular it
+#'   it should be list having elements `K_<parameter_name>` for each parameter
+#'   in the model. Where the value of these elements is the dimension of the
+#'   parameter.
+#' @param chains `numeric` number of chains for which to initialize
 #' @returns `list` of `lists` form of model initialization.
 #'
 #' @export
-eval_init <- function(init, chains = NULL) {
+eval_init <- function(init, sdata = NULL, chains = 4) {
   if (is.null(chains)) {
     chains <- 4
   }
   if (is.null(init) || is.numeric(init) || is.character(init)) {
     # not sure if cmdstanr can support this type of initialization or not...
-    return(init)
-  } else if (isa(init, "list")) {
+    init
+  } else if ("bpinit" %in% class(init)) {
+    purrr::map(
+      .x = 1:chains,
+      .f = \(chain_id) {
+        purrr::imap(
+          .x = init,
+          .f = \(param_init, param_name) {
+            if (isa(param_init, "array")) {
+              param_init
+            } else {
+              K <- sdata[[param_name |> stringr::str_replace("^b_", "K_")]]
+              if (is.numeric(param_init)) {
+                rep(x = param_init, times = K)
+              } else if (isa(param_init, "function")) {
+                purrr::map(seq_len(K), ~param_init()) |> unlist() |> array()
+              } else {
+                stop(
+                  "For initializing parameter '", param_name, "', unreconized ",
+                  "class: '", class(param_init), "', expected one of [array, ",
+                  "numeric, function]")
+              }
+            }
+          })
+      })
+  } else if (is.list(init)) {
     if (length(init) != chains) {
       stop(paste0(
-        "Init is given with '", length(init), "' elements, but the ",
-        "number of chains requested is '", chains, "'", sep = ""))
+        "The input init is a list with '", length(init), "' elements. It ",
+        "should have instead '", chains, "' to match the number of chains.",
+        sep = ""))
     }
-    return(init)
-  } else if (isa(init, "function")) {
-    # Assume evaluating the function returns a list of functions, one for each
-    # parameter and evaluating each function returns a numeric array of length 1
-    return(1:chains |> purrr::map(~init() |> purrr::map(~.x())))
+    init
+  } else {
+    stop(
+      "Unrecognized class for init ['", paste0(class(init), sep = "','"),
+      "'], expected one of [NULL, numeric, character, bpinit, list]")
   }
 }
 
@@ -198,12 +230,10 @@ prepare_prior <- function(prior, ...) {
       prior = paste0("constant(", prior, ")"),
       ...)
   } else {
-    stop("prior must be a brms::prior(...) or a numeric value")
+    stop("prior must be a brms::prior(...) or numeric value")
   }
   prior
 }
-
-
 
 #' Get the Treatment Variable from a BayesPharma Model
 #'
