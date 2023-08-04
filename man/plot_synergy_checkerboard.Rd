@@ -6,6 +6,9 @@
 \usage{
 plot_synergy_checkerboard(
   data,
+  treatment_1_variable = "dose1",
+  treatment_2_variable = "dose2",
+  response_variable = "response",
   treatment_1_label = "Treatment 1",
   treatment_2_label = "Treatment 2",
   treatment_1_units = NULL,
@@ -15,7 +18,14 @@ plot_synergy_checkerboard(
 )
 }
 \arguments{
-\item{data}{\code{data.frame} with columns \code{dose1}, \code{dose2}, and \code{response}}
+\item{data}{\code{data.frame} with columns the provided \code{treatment_1_variable},
+\code{treatment_2_variable}, and \code{response_variable}}
+
+\item{treatment_1_variable}{\code{character} column name for treatment 1}
+
+\item{treatment_2_variable}{\code{character} column name for treatment 2}
+
+\item{response_variable}{\code{character} column name for the response}
 
 \item{treatment_1_label}{\code{character} used to make default title and axis
 labels}

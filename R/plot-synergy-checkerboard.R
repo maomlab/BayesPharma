@@ -1,6 +1,10 @@
 #' Plot Synergy Checkerboard
 #'
-#' @param data `data.frame` with columns `dose1`, `dose2`, and `response`
+#' @param data `data.frame` with columns the provided `treatment_1_variable`,
+#'   `treatment_2_variable`, and `response_variable`
+#' @param treatment_1_variable `character` column name for treatment 1
+#' @param treatment_2_variable `character` column name for treatment 2
+#' @param response_variable `character` column name for the response
 #' @param treatment_1_label `character` used to make default title and axis
 #'   labels
 #' @param treatment_2_label `character` used to make default title and axis
@@ -21,6 +25,9 @@
 #' @export
 plot_synergy_checkerboard <- function(
   data,
+  treatment_1_variable = "dose1",
+  treatment_2_variable = "dose2",
+  response_variable = "response",
   treatment_1_label = "Treatment 1",
   treatment_2_label = "Treatment 2",
   treatment_1_units = NULL,
@@ -28,20 +35,55 @@ plot_synergy_checkerboard <- function(
   plot_zero_dose = TRUE,
   contour_color = "gold") {
 
-  d1 <- d1_label <- data$dose1 |> unique() |> sort()
-  d2 <- d2_label <- data$dose2 |> unique() |> sort()
+  if (!(treatment_1_variable %in% names(data))) {
+    warning(
+      paste0(
+        "The input data data.frame should have columns ['",
+        treatment_1_variable, "', '", treatment_2_variable, "', '",
+        response_variable, "'], but it is missing column '",
+        treatment_1_variable, "'"))
+  }
+
+  if (!(treatment_2_variable %in% names(data))) {
+    warning(
+      paste0(
+        "The input data data.frame should have columns ['",
+        treatment_1_variable, "', '", treatment_2_variable, "', '",
+        response_variable, "'], but it is missing column '",
+        treatment_2_variable, "'"))
+  }
+
+
+  if (!(response_variable %in% names(data))) {
+    warning(
+      paste0(
+        "The input data data.frame should have columns ['",
+        treatment_1_variable, "', '", treatment_2_variable, "', '",
+        response_variable, "'], but it is missing column '",
+        response_variable, "'"))
+  }
+
+
+  d1 <- d1_label <- data[[treatment_1_variable]] |> unique() |> sort()
+  d2 <- d2_label <- data[[treatment_2_variable]] |> unique() |> sort()
   if (plot_zero_dose) {
     if (d1[1] == 0) {
       d1[1] <- 10 ^ (log10(d1[2]) - 1.05 * (log10(d1[3]) - log10(d1[2])))
       data <- data |>
         dplyr::mutate(
-          dose1 = ifelse(.data[["dose1"]] != 0, .data[["dose1"]], d1[1]))
+          dose1 = ifelse(
+            .data[[treatment_1_variable]] != 0,
+            .data[[treatment_1_variable]],
+            d1[1]))
     }
     if (d2[1] == 0) {
       d2[1] <- 10 ^ (log10(d2[2]) - 1.05 * (log10(d2[3]) - log10(d2[2])))
       data <- data |>
         dplyr::mutate(
-          dose2 = ifelse(.data[["dose2"]] != 0, .data[["dose2"]], d2[1]))
+          dose2 = ifelse(
+            .data[[treatment_2_variable]] != 0,
+            .data[[treatment_2_variable]],
+            d2[1]))
     }
   }
   ggplot2::ggplot(data = data) +
@@ -53,14 +95,14 @@ plot_synergy_checkerboard <- function(
         ggplot2::element_rect(fill = "grey40", colour = "grey40")) +
     ggplot2::geom_tile(
       mapping = ggplot2::aes(
-        x = log10(.data[["dose1"]]),
-        y = log10(.data[["dose2"]]),
-        fill = .data[["response"]])) +
+        x = log10(.data[[treatment_1_variable]]),
+        y = log10(.data[[treatment_2_variable]]),
+        fill = .data[[response_variable]])) +
     ggplot2::geom_contour(
       mapping = ggplot2::aes(
-        x = log10(.data[["dose1"]]),
-        y = log10(.data[["dose2"]]),
-        z = .data[["response"]]),
+        x = log10(.data[[treatment_1_variable]]),
+        y = log10(.data[[treatment_2_variable]]),
+        z = .data[[response_variable]]),
       color = contour_color) +
     ggplot2::coord_fixed() +
     ggplot2::ggtitle(
