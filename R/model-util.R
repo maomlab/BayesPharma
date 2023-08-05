@@ -226,9 +226,15 @@ prepare_prior <- function(prior, ...) {
           args[[arg]], "', but instead it is '", prior[[arg]], "'"))
     }
   } else if (is.numeric(prior)) {
-    prior <- brms::prior_string(
-      prior = paste0("constant(", prior, ")"),
-      ...)
+    if (prior == -Inf) {
+      prior <- brms::prior_string("constant(negative_infinity())", ...)
+    } else if (prior == Inf) {
+      prior <- brms::prior_string("constant(infinity())", ...)
+    } else {
+      prior <- brms::prior_string(
+        prior = paste0("constant(", prior, ")"),
+        ...)
+    }
   } else {
     stop("prior must be a brms::prior(...) or numeric value")
   }
