@@ -128,7 +128,7 @@ ggplot2::ggplot(
     mapping = ggplot2::aes(
       x = rmsd,
       y = score_mean),
-    size = 2,
+    linewidth = 2,
     color = "blue")
 ```
 

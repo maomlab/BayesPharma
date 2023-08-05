@@ -19,9 +19,6 @@ clean:
 
 deps:
 	Rscript -e "devtools::install_dev_deps()"
-	
-install_cmdstan:
-	Rscript -e "cmdstanr::install_cmdstan()"
 
 
 build: deps vignettes/references.bib vignettes
@@ -78,6 +75,7 @@ vignettes: $(patsubst vignettes_src/%,vignettes/%,$(wildcard vignettes_src/*.Rmd
 vignettes/manuscript.pdf: vignettes/references.bib
 	quarto render vignettes_src/manuscript/manuscript.qmd
 	mv vignettes_src/manuscript/manuscript.pdf vignettes/
+	mv vignettes_src/manuscript/manuscript.docx vignettes/
 
 manuscript: vignettes/manuscript.pdf
 

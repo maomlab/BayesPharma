@@ -36,9 +36,18 @@ library(BayesPharma)
 ```
 
 
+# Re-analysis Figure 1 of (Li, et al., 2021) Molecular Basis for Ligand Activation of the Human KCNQ2 Channel
+
+KCNQ2 is a voltage gated potassium channel important for re-establishing neuronal homeostasis following an action potential. Dis-regulation of channels in the KCNQ family can cause epilepsy, tinnitus, and depression. While there has been sustained interest in developing small-molecule based therapeutics targeting KCNQ2, the only FDA approved drug that targets KCNQ2, retigabine, was given a black-box warning due to unwanted side-effects, even though it was effective at treating epilepsy. Excitingly there has been recent progress in using Cryo-EM to structurally characterize ion channels including KCNQ2, which promise to support structure-based drug design.
+
+Recently, [@Li2021-ef] used Cryo-EM to characterize the structure of KCNQ2 in complex with retigabine, which interacts in the membrane on the outside of the pore, and ztz240, which interacts with the voltage sensor domain. To relate the structure and function, [@Li2021-ef] measured conductance as a function of voltage (G-V curves) in the presence of varying doses of retigabine and ztz240 using whole cell patch-clamp electrophysiology in Chinese hamster ovary (CHO)-K1 cells overexpressing KCNQ2. Both compounds are thought to be agonists, that is with increasing concentration of drug, less negative voltages are required to open the channel.
+
+In this case study, the aim is to re-analyze the effects of retigabine and ztz240 using the data collected in [@Li2021-ef] and presented in panels B and D of figure 1. A key idea is to recognize that voltage and drug treatment can be thought of independent perturbations and the drug effect can be framed as characterizing the interaction between these perturbations.
+
+To begin, we will load and plot the data,
+
 ```{r load-data}
-#| echo=TRUE,
-#| results='hide',
+#| echo=FALSE,
 #| message=FALSE,
 
 read_range <- function(
@@ -134,12 +143,82 @@ data <- dplyr::bind_rows(
   read_range(
     sheet = "fig 1d", range = "M95:Q110",
     treatment = "retigabine", dose_uM = 0.3, is_control = FALSE))
-    
+data
 ```
 
 
+```{r reproduce-fig1}
+#| echo=FALSE,
+#| fig.width = 4
+plot_data <- data |>
+  dplyr::mutate(dose_label = ifelse(is_control, 0, dose_uM)) |>
+  dplyr::arrange(dose_label) |>
+  dplyr::mutate(
+    dose_label = ifelse(dose_label == 0, "Control", paste0(dose_uM, " uM")) |>
+      forcats::fct_inorder()) |>
+  dplyr::arrange(desc(treatment)) |>
+  dplyr::mutate(
+    treatment = treatment |> forcats::fct_inorder())
+
+data_normalize <- plot_data |>
+  dplyr::filter(is_control) |>
+  dplyr::group_by(treatment, dose_uM, voltage) |>
+  dplyr::summarize(
+    conductance_mean = mean(conductance),
+    .groups = "drop") |>
+  dplyr::group_by(treatment, dose_uM) |>
+  dplyr::summarize(
+    conductance_max = max(conductance_mean),
+    .groups = "drop")
+
+plot_data <- plot_data |>
+  dplyr::left_join(
+    data_normalize,
+    by = c("treatment", "dose_uM")) |>
+  dplyr::mutate(
+    conductance_normalized = conductance / conductance_max)
+
+plot_data_replica_summary <- plot_data |>
+  dplyr::group_by(treatment, dose_label, voltage) |>
+  dplyr::summarize(
+    conductance_mean = mean(conductance_normalized),
+    conductance_se = sd(conductance_normalized) / sqrt(dplyr::n()),
+    .groups = "drop")
+
+ggplot2::ggplot() +
+  ggplot2::theme_bw() +
+  ggplot2::geom_line(
+    data = plot_data_replica_summary,
+    mapping = ggplot2::aes(
+      x = voltage,
+      y = conductance_mean,
+      color = dose_label,
+      group = dose_label)) +
+  ggplot2::geom_errorbar(
+    data = plot_data_replica_summary,
+    mapping = ggplot2::aes(
+      x = voltage,
+      ymin = conductance_mean - conductance_se,
+      ymax = conductance_mean + conductance_se,
+      color = dose_label,
+      group = dose_label),
+    width = 2) +
+  ggplot2::geom_point(
+    data = plot_data_replica_summary,
+    mapping = ggplot2::aes(
+      x = voltage,
+      y = conductance_mean,
+      color = dose_label,
+      group = dose_label)) +
+  ggplot2::facet_wrap(
+    facets = dplyr::vars(treatment), ncol = 1) +
+  ggplot2::scale_color_discrete("") +
+  ggplot2::scale_x_continuous("Voltage") +
+  ggplot2::scale_y_continuous("G/Gmax")
+```
+Then, for each treatment and dose, we will fit a sigmoid curve, which has an comparable functional form to the what they call the Boltzmann equation for G/Gmax as a function of voltage. To make the fitting more stable, we will transform the treatment and response scales.
+
 ```{r prepare-model-data}
-#| echo=FALSE
 model_data <- data |>
   dplyr::filter(
     is_control == FALSE) |>
@@ -151,33 +230,6 @@ model_data <- data |>
     logdose = log10(dose_uM) - 6)
 
 ```
-
-
-```{r plot-checkerboard}
-plot_data <- data |>
-  dplyr::filter(
-    treatment == "ztz240",
-    is_control == FALSE) |>
-  dplyr::transmute(
-    response = conductance,
-    dose1 = dose_uM,
-    dose2 = 10^(voltage))
-
-BayesPharma::plot_synergy_checkerboard(
-  data = plot_data,
-  treatment_1_label = "ztz240",
-  treatment_1_units = "μM",
-  treatment_2_label = "Voltage",
-  treatment_2_units = "mV") +
-  ggplot2::coord_cartesian(default = TRUE) +
-  ggplot2::scale_y_continuous(
-    "Voltage (mV)",
-    breaks = data$voltage |> unique() |> sort(),
-    labels = signif(d2_label, 3),
-      expand = c(0, 0))
-```
-
-
 
 ```{r fit-model-conductance}
 #| echo=TRUE,
@@ -195,7 +247,12 @@ model_conductance <- BayesPharma::sigmoid_model(
     predictors = 0 + treatment:doselabel),
   prior = BayesPharma::sigmoid_agonist_prior(
     ec50 = brms::prior(normal(-0.2, 1), nlpar = "ec50"),
-    hill = brms::prior(normal(3, 2), nlpar = "hill", lb = 1)),
+    hill = brms::prior(normal(3, 2), nlpar = "hill", lb = 0)),
+  init = BayesPharma::sigmoid_agonist_init(
+    ec50 = \() runif(1, min = -7, max = -5),
+    hill = \() runif(1, min = 0.8, max = 1.2),
+    bottom = \() runif(1, min = -.1, max = 0.1),
+    top = \() runif(1, min = 0.8, max = 1.2)),
   cores = 4)
 ```
 
@@ -222,13 +279,6 @@ Fit MuSyC Model
 #| echo=FALSE,
 #| message=FALSE,
 #| dependson=c("prepare-model-data")
-model_MuSyC_meanfield <- BayesPharma::MuSyC_model(
-  data = model_data,
-  formula = BayesPharma::MuSyC_formula(
-    treatment_1_variable = "voltage",
-    treatment_2_variable = "log_dose",
-    response_variable = "conductance"),
-  algorithm = "meanfield")
 
 model_MuSyC <- BayesPharma::MuSyC_model(
   data = model_data,
@@ -246,6 +296,16 @@ model_MuSyC <- BayesPharma::MuSyC_model(
     h2 = brms::prior(normal(-1, 1), nlpar = "h2"),    
     logE3 = log(1),
     logalpha = brms::prior(normal(0, 1), nlpar = "logalpha")),
+  init = BayesPharma::MuSyC_init(
+    logE0 = NULL,
+    logE1 = NULL,
+    logC1 = \() runif(n = 1, min = -0.4, max = 0),
+    h1 = \() runif(n = 1, min = 0.8, max = 1.2),
+    logE2 = NULL,
+    logC2 = \() runif(n = 1, min = -7, max = -5),
+    h2 = \() runif(n = 1, min = -1.2, max = -0.8),
+    logE3 = NULL,
+    logalpha = \() runif(n = 1, min = -0.2, max = 0.2)),
   control = list(
       adapt_delta = .99,
       max_treedepth = 12),
@@ -316,37 +376,68 @@ plot
 #| echo=FALSE,
 #| message=FALSE,
 #| dependson=c("extract-voltage-by-dose")
+
+
+formula_bilevel <- brms::brmsformula(
+  conductance ~ sigmoid(
+    sigmoid(Eec50, Ehill, Etop, Ebottom, logdose),
+    sigmoid(Hec50, Hhill, Htop, Hbottom, logdose),
+    vtop,
+    vbottom,
+    voltage),
+  vtop + vbottom ~ 1,
+  Eec50 + Ehill + Etop + Ebottom ~ 0 + treatment,
+  Hec50 + Hhill + Htop + Hbottom ~ 0 + treatment,
+  nl = TRUE)
+
+prior_bilevel <- c(
+  brms::prior(prior = normal(-6, 2.5), nlpar = "Eec50"),
+  brms::prior(prior = normal(-1.5, 1), nlpar = "Ehill", ub = 0.01),
+  brms::prior(prior = normal(-.1, 0.05), nlpar = "Etop"),
+  brms::prior(prior = normal(-.4, 0.05), nlpar = "Ebottom"),
+  
+  brms::prior(prior = normal(-6, 2.5), nlpar = "Hec50"),
+  brms::prior(prior = normal(1, 1), nlpar = "Hhill", lb = 0.01),
+  brms::prior(prior = normal(5, 2), nlpar = "Htop"),
+  brms::prior(prior = normal(3, 0.1), nlpar = "Hbottom"),    
+  
+  brms::prior(prior = normal(1, 0.3), nlpar = "vtop"),
+  brms::prior(prior = normal(0, 0.3), nlpar = "vbottom"))
+
+init_bilevel <- list(
+  b_Eec50 = \() runif(n = 1, min = -7, max = -5),
+  b_Ehill = \() runif(n = 1, min = -1.6, max = -1.4),
+  b_Etop = \() runif(n = 1, min = -.12, max = -.08),
+  b_Ebottom = \() runif(n = 1, min = -.42, max = -0.38),
+  
+  b_Hec50 = \() runif(n = 1, min = -7, max = -5),
+  b_Hhill = \() runif(n = 1, min = 0.8, max = 1.2),
+  b_Htop = \() runif(n = 1, min = 4, max = 6),
+  b_Hbottom = \() runif(n = 1, min = 2.9, max = 3.1),
+  
+  b_vtop = \() runif(n = 1, min = 0.7, max = 1.3),
+  b_vbottom = \() runif(n = 1, min = -0.3, max = .3)) |>
+  `class<-`(c("bpinit")) |>
+  BayesPharma::eval_init(
+    sdata = brms::make_standata(
+      formula = formula_bilevel,
+      data = model_data,
+      prior = prior_bilevel),
+    chains = 4)
+
 model_bilevel <- brms::brm(
   data = model_data,
-  formula = brms::brmsformula(
-    conductance ~ sigmoid(
-      sigmoid(Eec50, Ehill, Etop, Ebottom, logdose),
-      sigmoid(Hec50, Hhill, Htop, Hbottom, logdose),
-      vtop,
-      vbottom,
-      voltage),
-    vtop + vbottom ~ 1,
-    Eec50 + Ehill + Etop + Ebottom ~ 0 + treatment,
-    Hec50 + Hhill + Htop + Hbottom ~ 0 + treatment,
-    nl = TRUE),
-  prior = c(
-    brms::prior(prior = normal(-6, 2.5), nlpar = "Eec50"),
-    brms::prior(prior = normal(-1.5, 1), nlpar = "Ehill", ub = 0.01),
-    brms::prior(prior = normal(-.1, 0.05), nlpar = "Etop"),
-    brms::prior(prior = normal(-.4, 0.05), nlpar = "Ebottom"),
-    
-    brms::prior(prior = normal(-6, 2.5), nlpar = "Hec50"),
-    brms::prior(prior = normal(1, 1), nlpar = "Hhill", lb = 0.01),
-    brms::prior(prior = normal(5, 2), nlpar = "Htop"),
-    brms::prior(prior = normal(3, 0.1), nlpar = "Hbottom"),    
-    
-    brms::prior(prior = normal(1, 0.3), nlpar = "vtop"),
-    brms::prior(prior = normal(0, 0.3), nlpar = "vbottom")),
+  formula = formula_bilevel,
+  prior = prior_bilevel,
+  init = init_bilevel,
   control = list(
       adapt_delta = .99,
       max_treedepth = 12),
   stanvars = BayesPharma::sigmoid_stanvar(),
   cores = 4)
+
+model_bilevel |> brms::expose_functions(vectorize = TRUE)
+
 ```
 
 
@@ -358,12 +449,43 @@ model_bilevel
 ```
 
 
-
-
 ```{r compare-model-fits}
 #| echo=FALSE,
 #| message=FALSE,
 #| dependson=c("fit-MuSyC-model", "fit-bilevel-model")
+
+model_MuSyC <- model_MuSyC |> brms::add_criterion("loo")
+model_bilevel <- model_bilevel |> brms::add_criterion("loo")
+
 brms::loo_compare(model_MuSyC, model_bilevel)
+```
+
+
+```{r model-data-subset}
+#| echo=FALSE,
+#| message=FALSE,
+#| dependson=c("fit-MuSyC-model", "fit-bilevel-model")
+
+model_subsets <- data.frame(
+  fraction = seq_len(10) / 10) |>
+  dplyr::rowwise() |>
+  dplyr::do({
+    fraction <- .$fraction[1]
+    cat(
+      "Re-fitting the models with only ", fraction, " fraction of the data\n",
+      sep = "")
+    model_data_subset <- model_data |>
+      dplyr::sample_frac(size = fraction)
+    data.frame(
+      fraction = fraction,
+      model_MuSyC = model_MuSyC |>
+        stats::update(
+          newdata = model_data_subset |>
+            dplyr::mutate(
+              logd1scale = mean(voltage),
+              logd2scale = mean(logdose))),
+      model_bilevel = model_bilevel |>
+        stats::update(newdata = model_data_subset))
+  })
 ```
 

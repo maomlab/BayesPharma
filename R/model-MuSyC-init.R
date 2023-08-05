@@ -74,7 +74,8 @@ MuSyC_init <- function(
     b_h2 = h2,
     b_logE3 = logE3,
     b_logalpha = logalpha,
-    ...)
+    ...) |>
+    purrr::compact()
   class(init) <- c("bpinit", class(init))
   init
 }
