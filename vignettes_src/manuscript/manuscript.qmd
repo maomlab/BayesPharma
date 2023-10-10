@@ -63,13 +63,13 @@ highlight-style: github
 abstract: |
   In pharmacology, many experiments seek to measure how a reductive biological
   system responds to one or more treatments. Here, we present `BayesPharma`, a
-  collection of Bayesian methods to help analyze these experiments. BayesPharma
-  is an `R` package built around the `Stan` ecosystem that facilitates a
-  principled Bayesian workflow. It can be used to fit and analyze
-  foundational pharmacology models, serve as a pedagogical framework for
-  learning Bayesian methods, and help build and analyze sophisticated
-  pharmacological models. We describe the `BayesPharma` framework here, and
-  illustrate its application through several case studies.  
+  collection of Bayesian methods to increase the robustness of the analysis and
+  interpretation of dose response data. BayesPharma is an `R` package built
+  around the `Stan` ecosystem that facilitates a principled Bayesian workflow.
+  It can be used to fit and analyze foundational pharmacology models, serve as a
+  pedagogical framework for learning Bayesian methods, and help build and
+  analyze sophisticated pharmacological models. We describe the `BayesPharma`
+  framework here, and illustrate its application to several case studies.  
 bibliography: references.bib
 editor: visual
 header-includes: |
@@ -126,7 +126,7 @@ set.seed(0)
 
 # Case Studies
 
-In this section, we will consider several models as case studies: the sigmoidal hill model in @sec-hill, the MuSyC synergy model in @sec-MuSyC}, and the Michaelis-Menten enzyme progress curve in @sec-michaelis_menten}. For each, we will implement it, and apply it to example data by fitting different models, and then we will compare the models based on their fit of the data and inferences that can be made.
+In this section, we will consider several models as case studies: the sigmoidal hill model in @sec-hill, the MuSyC synergy model in @sec-MuSyC}, and the Michaelis-Menten enzyme progress curve in @sec-michaelis_menten}. For each, we will implement it, apply it to example data by fitting different models, and compare the models based on their fit of the data and inferences that can be made.
 
 {{< include sections/case_study_hill.qmd >}}
 

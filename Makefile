@@ -77,7 +77,7 @@ vignettes/manuscript.pdf: vignettes/references.bib
 	mv vignettes_src/manuscript/manuscript.pdf vignettes/
 	mv vignettes_src/manuscript/manuscript.docx vignettes/
 
-manuscript: vignettes/manuscript.pdf
+manuscript: vignettes/manuscript.pdf vignettes/manuscript.docx
 
 site: vignettes manuscript
 	quarto render pkgdown/index.qmd

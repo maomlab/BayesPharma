@@ -16,116 +16,41 @@ vignette: >
 
 
 
+# Re-analysis Figure 1 of (Li, et al., 2021) Molecular Basis for Ligand Activation of the Human KCNQ2 Channel
 
-```r
-read_range <- function(
-    sheet,
-    range,
-    treatment,
-    dose_uM,
-    is_control){
-  readxl::read_excel(
-    path = here::here(
-      "inst", "extdata", "conductance_KCNQ", "Li_CellRes_2021_fig1.xlsx"),
-    sheet = {{sheet}},
-    range = range,
-    col_names = FALSE,
-    .name_repair = ~ paste0("replica_", 1:length(.))) |>
-    dplyr::mutate(
-      treatment = {{treatment}},
-      dose_uM = {{dose_uM}},
-      is_control = {{is_control}},
-      voltage = seq(-90, 60, by = 10),
-      .before = 1) |>
-    tidyr::pivot_longer(
-      cols = c(-treatment, -dose_uM, -is_control, -voltage),
-      names_to = "replica",
-      values_to = "conductance")
-}
+KCNQ2 is a voltage gated potassium channel important for re-establishing neuronal homeostasis following an action potential. Dis-regulation of channels in the KCNQ family can cause epilepsy, tinnitus, and depression. While there has been sustained interest in developing small-molecule based therapeutics targeting KCNQ2, the only FDA approved drug that targets KCNQ2, retigabine, was given a black-box warning due to unwanted side-effects, even though it was effective at treating epilepsy. Excitingly there has been recent progress in using Cryo-EM to structurally characterize ion channels including KCNQ2, which promise to support structure-based drug design.
 
-data <- dplyr::bind_rows(
-  read_range(
-    sheet = "fig1b", range = "E3:I18",
-    treatment = "ztz240", dose_uM = 10, is_control = TRUE),
-  read_range(
-    sheet = "fig1b", range = "L3:P18",
-    treatment = "ztz240", dose_uM = 10, is_control = FALSE),
-  read_range(
-    sheet = "fig1b", range = "E22:I37",
-    treatment = "ztz240", dose_uM = 5, is_control = TRUE),
-  read_range(
-    sheet = "fig1b", range = "L22:P37",
-    treatment = "ztz240", dose_uM = 5, is_control = FALSE),  
-  read_range(
-    sheet = "fig1b", range = "E40:I55",
-    treatment = "ztz240", dose_uM = 3, is_control = TRUE),
-  read_range(
-    sheet = "fig1b", range = "L40:P55",
-    treatment = "ztz240", dose_uM = 3, is_control = FALSE), 
-  read_range(
-    sheet = "fig1b", range = "E58:J73",
-    treatment = "ztz240", dose_uM = 1, is_control = TRUE),
-  read_range(
-    sheet = "fig1b", range = "L58:Q73",
-    treatment = "ztz240", dose_uM = 1, is_control = FALSE),   
-  read_range(
-    sheet = "fig1b", range = "E77:I92",
-    treatment = "ztz240", dose_uM = 0.1, is_control = TRUE),
-  read_range(
-    sheet = "fig1b", range = "L77:P92",
-    treatment = "ztz240", dose_uM = 0.1, is_control = FALSE),
+Recently, [@Li2021-ef] used Cryo-EM to characterize the structure of KCNQ2 in complex with retigabine, which interacts in the membrane on the outside of the pore, and ztz240, which interacts with the voltage sensor domain. To relate the structure and function, [@Li2021-ef] measured conductance as a function of voltage (G-V curves) in the presence of varying doses of retigabine and ztz240 using whole cell patch-clamp electrophysiology in Chinese hamster ovary (CHO)-K1 cells overexpressing KCNQ2. Both compounds are thought to be agonists, that is with increasing concentration of drug, less negative voltages are required to open the channel.
 
-  read_range(
-    sheet = "fig 1d", range = "D2:I17",
-    treatment = "retigabine", dose_uM = 30, is_control = TRUE),
-  read_range(
-    sheet = "fig 1d", range = "M2:R17",
-    treatment = "retigabine", dose_uM = 30, is_control = FALSE),
-  read_range(
-    sheet = "fig 1d", range = "D20:I35",
-    treatment = "retigabine", dose_uM = 10, is_control = TRUE),
-  read_range(
-    sheet = "fig 1d", range = "M20:R35",
-    treatment = "retigabine", dose_uM = 10, is_control = FALSE),  
-  read_range(
-    sheet = "fig 1d", range = "D39:H54",
-    treatment = "retigabine", dose_uM = 5, is_control = TRUE),
-  read_range(
-    sheet = "fig 1d", range = "M39:Q54",
-    treatment = "retigabine", dose_uM = 5, is_control = FALSE), 
-  read_range(
-    sheet = "fig 1d", range = "D57:H72",
-    treatment = "retigabine", dose_uM = 3, is_control = TRUE),
-  read_range(
-    sheet = "fig 1d", range = "M57:Q72",
-    treatment = "retigabine", dose_uM = 3, is_control = FALSE),   
-  read_range(
-    sheet = "fig 1d", range = "D76:H91",
-    treatment = "retigabine", dose_uM = 1, is_control = TRUE),
-  read_range(
-    sheet = "fig 1d", range = "M76:Q91",
-    treatment = "retigabine", dose_uM = 1, is_control = FALSE),
-  read_range(
-    sheet = "fig 1d", range = "D95:H110",
-    treatment = "retigabine", dose_uM = 0.3, is_control = TRUE),
-  read_range(
-    sheet = "fig 1d", range = "M95:Q110",
-    treatment = "retigabine", dose_uM = 0.3, is_control = FALSE))
-```
+In this case study, the aim is to re-analyze the effects of retigabine and ztz240 using the data collected in [@Li2021-ef] and presented in panels B and D of figure 1. A key idea is to recognize that voltage and drug treatment can be thought of independent perturbations and the drug effect can be framed as characterizing the interaction between these perturbations.
 
-
-
-
+To begin, we will load the data,
 
 
 ```
-## Coordinate system already present. Adding new coordinate system, which will
-## replace the existing one.
+## # A tibble: 1,856 × 6
+##    treatment dose_uM is_control voltage replica   conductance
+##    <chr>       <dbl> <lgl>        <dbl> <chr>           <dbl>
+##  1 ztz240         10 TRUE           -90 replica_1      0.0403
+##  2 ztz240         10 TRUE           -90 replica_2      0.0632
+##  3 ztz240         10 TRUE           -90 replica_3      0.0200
+##  4 ztz240         10 TRUE           -90 replica_4      0.0404
+##  5 ztz240         10 TRUE           -90 replica_5      0.0175
+##  6 ztz240         10 TRUE           -80 replica_1      0.0469
+##  7 ztz240         10 TRUE           -80 replica_2      0.0682
+##  8 ztz240         10 TRUE           -80 replica_3      0.0345
+##  9 ztz240         10 TRUE           -80 replica_4      0.0574
+## 10 ztz240         10 TRUE           -80 replica_5      0.0339
+## # ℹ 1,846 more rows
 ```
+And reproduce the their figures
 
-```
-## Error in check_breaks_labels(breaks, labels): object 'd2_label' not found
-```
+<div class="figure" style="text-align: center">
+<img src="apply_MuSyC_KCNQ_files/reproduce-fig1-1.png" alt="plot of chunk reproduce-fig1" width="100%" />
+<p class="caption">plot of chunk reproduce-fig1</p>
+</div>
+
+
 
 
 
@@ -145,6 +70,11 @@ model_conductance <- BayesPharma::sigmoid_model(
   cores = 4)
 ```
 
+```
+## Warning in .local(object, ...): some chains had errors; consider specifying
+## chains = 1 to debug
+```
+
 
 ```r
 model_conductance |>
@@ -154,107 +84,316 @@ model_conductance |>
 ```
 ## 
 ## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
+## Chain 1: Rejecting initial value:
+## Chain 1:   Error evaluating the log probability at the initial value.
+## Chain 1: Exception: lb_free: Lower bounded variable is 0, but must be greater than or equal to 1 (in 'anon_model', line 40, column 2 to column 33)
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 1.5e-05 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.15 seconds.
-## Chain 1: Adjust your expectations accordingly!
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 1: 
-## Chain 1:  Elapsed Time: 0.147 seconds (Warm-up)
-## Chain 1:                0.224 seconds (Sampling)
-## Chain 1:                0.371 seconds (Total)
-## Chain 1: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
-## Chain 2: 
-## Chain 2: Gradient evaluation took 4e-06 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
-## Chain 2: Adjust your expectations accordingly!
-## Chain 2: 
-## Chain 2: 
-## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 2: 
-## Chain 2:  Elapsed Time: 0.159 seconds (Warm-up)
-## Chain 2:                0.172 seconds (Sampling)
-## Chain 2:                0.331 seconds (Total)
-## Chain 2: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
-## Chain 3: 
-## Chain 3: Gradient evaluation took 3e-06 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.
-## Chain 3: Adjust your expectations accordingly!
-## Chain 3: 
-## Chain 3: 
-## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 3: 
-## Chain 3:  Elapsed Time: 0.149 seconds (Warm-up)
-## Chain 3:                0.11 seconds (Sampling)
-## Chain 3:                0.259 seconds (Total)
-## Chain 3: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
-## Chain 4: 
-## Chain 4: Gradient evaluation took 3e-06 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.
-## Chain 4: Adjust your expectations accordingly!
-## Chain 4: 
-## Chain 4: 
-## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 4: 
-## Chain 4:  Elapsed Time: 0.171 seconds (Warm-up)
-## Chain 4:                0.128 seconds (Sampling)
-## Chain 4:                0.299 seconds (Total)
-## Chain 4:
+## Chain 1: Initialization between (-2, 2) failed after 100 attempts. 
+## Chain 1:  Try specifying initial values, reducing ranges of constrained values, or reparameterizing the model.
+## Error in eval(expr, envir, enclos) : Initialization failed.
+## character(0)
 ```
 
-<img src="apply_MuSyC_KCNQ_files/model-conductance-prior-posterior-1.png" alt="plot of chunk model-conductance-prior-posterior" width="100%" style="display: block; margin: auto;" />
+```
+## Error: Don't know how to transform an object of class 'stanfit' to any supported draws format.
+```
 
 
 ```r
@@ -262,7 +401,9 @@ model_conductance |>
   BayesPharma::plot_posterior_draws()
 ```
 
-<img src="apply_MuSyC_KCNQ_files/model-conductance-predictive-1.png" alt="plot of chunk model-conductance-predictive" width="100%" style="display: block; margin: auto;" />
+```
+## Error: The model does not contain posterior draws.
+```
 Fit MuSyC Model
 
 
@@ -289,63 +430,52 @@ Join the conductance model with the dose information to model how the voltage
 dependence depends on the drug dose
 
 ```
-## # A tibble: 44 × 15
-##    variable_type variable predictors_label         mean   median      sd     mad
-##    <chr>         <chr>    <chr>                   <dbl>    <dbl>   <dbl>   <dbl>
-##  1 b             ec50     treatmentztz240:dos… -0.116   -0.117   0.0145  0.0145 
-##  2 b             ec50     treatmentretigabine… -0.189   -0.189   0.0118  0.0118 
-##  3 b             ec50     treatmentretigabine… -0.247   -0.247   0.0141  0.0139 
-##  4 b             ec50     treatmentztz240:dos… -0.194   -0.194   0.0117  0.0117 
-##  5 b             ec50     treatmentretigabine… -0.451   -0.450   0.0139  0.0136 
-##  6 b             ec50     treatmentztz240:dos… -0.438   -0.438   0.00822 0.00809
-##  7 b             ec50     treatmentretigabine… -0.356   -0.356   0.0125  0.0123 
-##  8 b             ec50     treatmentztz240:dos… -0.322   -0.322   0.0108  0.0109 
-##  9 b             ec50     treatmentretigabine… -0.430   -0.430   0.0135  0.0134 
-## 10 b             ec50     treatmentretigabine… -0.398   -0.398   0.0122  0.0122 
-## 11 b             ec50     treatmentztz240:dos… -0.321   -0.322   0.00981 0.00973
-## 12 b             hill     treatmentztz240:dos…  2.48     2.47    0.208   0.209  
-## 13 b             hill     treatmentretigabine…  3.03     3.02    0.244   0.241  
-## 14 b             hill     treatmentretigabine…  2.56     2.56    0.214   0.212  
-## 15 b             hill     treatmentztz240:dos…  2.85     2.85    0.212   0.209  
-## 16 b             hill     treatmentretigabine…  2.89     2.88    0.239   0.239  
-## 17 b             hill     treatmentztz240:dos…  4.99     4.97    0.433   0.427  
-## 18 b             hill     treatmentretigabine…  3.12     3.11    0.269   0.268  
-## 19 b             hill     treatmentztz240:dos…  3.39     3.38    0.270   0.267  
-## 20 b             hill     treatmentretigabine…  2.77     2.77    0.219   0.214  
-## 21 b             hill     treatmentretigabine…  3.12     3.11    0.256   0.258  
-## 22 b             hill     treatmentztz240:dos…  3.88     3.86    0.297   0.293  
-## 23 b             top      treatmentztz240:dos…  0.994    0.994   0.0216  0.0214 
-## 24 b             top      treatmentretigabine…  0.969    0.969   0.0156  0.0154 
-## 25 b             top      treatmentretigabine…  0.980    0.979   0.0168  0.0167 
-## 26 b             top      treatmentztz240:dos…  0.927    0.926   0.0149  0.0146 
-## 27 b             top      treatmentretigabine…  0.964    0.964   0.0113  0.0113 
-## 28 b             top      treatmentztz240:dos…  0.932    0.932   0.00962 0.00973
-## 29 b             top      treatmentretigabine…  0.950    0.950   0.0129  0.0129 
-## 30 b             top      treatmentztz240:dos…  0.965    0.964   0.0127  0.0127 
-## 31 b             top      treatmentretigabine…  0.964    0.964   0.0120  0.0119 
-## 32 b             top      treatmentretigabine…  0.962    0.962   0.0125  0.0125 
-## 33 b             top      treatmentztz240:dos…  0.952    0.952   0.0115  0.0114 
-## 34 b             bottom   treatmentztz240:dos…  0.0107   0.0112  0.0182  0.0178 
-## 35 b             bottom   treatmentretigabine…  0.0194   0.0199  0.0172  0.0169 
-## 36 b             bottom   treatmentretigabine…  0.00380  0.00488 0.0224  0.0222 
-## 37 b             bottom   treatmentztz240:dos… -0.0210  -0.0205  0.0167  0.0165 
-## 38 b             bottom   treatmentretigabine… -0.0378  -0.0358  0.0307  0.0296 
-## 39 b             bottom   treatmentztz240:dos… -0.00425 -0.00388 0.0184  0.0183 
-## 40 b             bottom   treatmentretigabine… -0.0112  -0.0104  0.0232  0.0232 
-## 41 b             bottom   treatmentztz240:dos… -0.0180  -0.0174  0.0195  0.0192 
-## 42 b             bottom   treatmentretigabine… -0.0707  -0.0689  0.0297  0.0288 
-## 43 b             bottom   treatmentretigabine… -0.0505  -0.0492  0.0255  0.0251 
-## 44 b             bottom   treatmentztz240:dos…  0.00339  0.00371 0.0172  0.0170 
-## # ℹ 8 more variables: q5 <dbl>, q95 <dbl>, rhat <dbl>, ess_bulk <dbl>,
-## #   ess_tail <dbl>, treatment <chr>, logdose <dbl>, doselabel <fct>
+## Error: The model does not contain posterior draws.
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'data_conductance_by_voltage' not found
 ```
 
 
-<img src="apply_MuSyC_KCNQ_files/plot-voltage-by-dose-1.png" alt="plot of chunk plot-voltage-by-dose" width="100%" style="display: block; margin: auto;" />
+
+```
+## Error in ggplot2::ggplot(data = data_conductance_by_voltage): object 'data_conductance_by_voltage' not found
+```
+
+```
+## function (x, y, ...) 
+## UseMethod("plot")
+## <bytecode: 0x7f8a9ac0dc48>
+## <environment: namespace:base>
+```
+
+
+```
+## Warning: The largest R-hat is 1.53, indicating chains have not mixed.
+## Running the chains for more iterations may help. See
+## https://mc-stan.org/misc/warnings.html#r-hat
+```
+
+```
+## Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
+## Running the chains for more iterations may help. See
+## https://mc-stan.org/misc/warnings.html#bulk-ess
+```
+
+```
+## Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
+## Running the chains for more iterations may help. See
+## https://mc-stan.org/misc/warnings.html#tail-ess
+```
 
 
 
-
+```
+## Warning: Parts of the model have not converged (some Rhats are > 1.05). Be
+## careful when analysing the results! We recommend running more iterations and/or
+## setting stronger priors.
+```
 
 ```
 ##  Family: gaussian 
@@ -367,47 +497,47 @@ dependence depends on the drug dose
 ## 
 ## Population-Level Effects: 
 ##                             Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-## vtop_Intercept                  0.95      0.00     0.95     0.96 1.00     4873
-## vbottom_Intercept              -0.00      0.01    -0.01     0.01 1.00     4343
-## Eec50_treatmentretigabine      -5.77      0.07    -5.93    -5.64 1.00     2021
-## Eec50_treatmentztz240          -5.46      0.06    -5.56    -5.34 1.00     2316
-## Ehill_treatmentretigabine      -1.61      0.27    -2.18    -1.10 1.00     1722
-## Ehill_treatmentztz240          -1.45      0.18    -1.83    -1.14 1.00     2199
-## Etop_treatmentretigabine       -0.19      0.02    -0.22    -0.14 1.00     1747
-## Etop_treatmentztz240           -0.14      0.01    -0.15    -0.12 1.00     3961
-## Ebottom_treatmentretigabine    -0.43      0.01    -0.44    -0.41 1.00     2889
-## Ebottom_treatmentztz240        -0.48      0.03    -0.54    -0.44 1.00     1926
-## Hec50_treatmentretigabine      -3.94      1.77    -8.05    -0.54 1.00     1080
-## Hec50_treatmentztz240          -5.14      0.22    -5.52    -4.70 1.00     1964
-## Hhill_treatmentretigabine       1.24      0.73     0.25     3.01 1.00     2342
-## Hhill_treatmentztz240           1.77      0.49     1.02     2.93 1.00     2507
-## Htop_treatmentretigabine        4.50      1.60     2.46     8.27 1.00     1944
-## Htop_treatmentztz240            5.85      1.17     4.27     8.74 1.00     2066
-## Hbottom_treatmentretigabine     2.99      0.09     2.82     3.15 1.00     2568
-## Hbottom_treatmentztz240         2.83      0.08     2.68     3.00 1.00     4100
+## vtop_Intercept                  0.71      0.42    -0.01     0.96 1.53        7
+## vbottom_Intercept               0.24      0.41    -0.01     0.96 1.53        7
+## Eec50_treatmentretigabine      -5.77      0.07    -5.92    -5.64 1.00     2764
+## Eec50_treatmentztz240          -5.46      0.06    -5.57    -5.35 1.02      602
+## Ehill_treatmentretigabine      -1.61      0.27    -2.15    -1.11 1.00     2531
+## Ehill_treatmentztz240          -1.47      0.18    -1.86    -1.15 1.00     2332
+## Etop_treatmentretigabine       -0.19      0.02    -0.22    -0.15 1.00     2523
+## Etop_treatmentztz240           -0.14      0.01    -0.15    -0.12 1.00     4043
+## Ebottom_treatmentretigabine    -0.43      0.01    -0.44    -0.41 1.00     3515
+## Ebottom_treatmentztz240        -0.48      0.02    -0.53    -0.44 1.02     1684
+## Hec50_treatmentretigabine      -5.02      2.77   -10.80    -0.36 1.47        8
+## Hec50_treatmentztz240          -6.02      1.55    -9.17    -4.72 1.53        7
+## Hhill_treatmentretigabine       1.28      0.74     0.25     3.00 1.00     2885
+## Hhill_treatmentztz240           1.39      0.77     0.17     2.81 1.53        7
+## Htop_treatmentretigabine        2.69      3.62    -3.23     8.24 1.53        7
+## Htop_treatmentztz240            3.27      4.61    -5.31     8.58 1.53        7
+## Hbottom_treatmentretigabine     3.00      0.09     2.80     3.17 1.01     3510
+## Hbottom_treatmentztz240         2.88      0.11     2.69     3.13 1.29       10
 ##                             Tail_ESS
-## vtop_Intercept                  2666
-## vbottom_Intercept               3061
-## Eec50_treatmentretigabine       1220
-## Eec50_treatmentztz240           2382
-## Ehill_treatmentretigabine       1113
-## Ehill_treatmentztz240           2451
-## Etop_treatmentretigabine        1144
-## Etop_treatmentztz240            2612
-## Ebottom_treatmentretigabine     1680
-## Ebottom_treatmentztz240         2191
-## Hec50_treatmentretigabine       1698
-## Hec50_treatmentztz240           1923
-## Hhill_treatmentretigabine       2038
-## Hhill_treatmentztz240           2884
-## Htop_treatmentretigabine        2328
-## Htop_treatmentztz240            2080
-## Hbottom_treatmentretigabine     3042
-## Hbottom_treatmentztz240         3017
+## vtop_Intercept                    30
+## vbottom_Intercept                 28
+## Eec50_treatmentretigabine       1991
+## Eec50_treatmentztz240           1775
+## Ehill_treatmentretigabine       1769
+## Ehill_treatmentztz240           2584
+## Etop_treatmentretigabine        1704
+## Etop_treatmentztz240            3177
+## Ebottom_treatmentretigabine     2384
+## Ebottom_treatmentztz240         1957
+## Hec50_treatmentretigabine         41
+## Hec50_treatmentztz240             32
+## Hhill_treatmentretigabine       2370
+## Hhill_treatmentztz240             30
+## Htop_treatmentretigabine          29
+## Htop_treatmentztz240              31
+## Hbottom_treatmentretigabine     2330
+## Hbottom_treatmentztz240           29
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     0.06      0.00     0.06     0.06 1.00     4505     3010
+## sigma     0.06      0.00     0.06     0.06 1.02      168     2195
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
