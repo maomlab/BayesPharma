@@ -146,16 +146,39 @@ eval_init <- function(init, sdata = NULL, chains = 4) {
             if (isa(param_init, "array")) {
               param_init
             } else {
-              K <- sdata[[param_name |> stringr::str_replace("^b_", "K_")]]
-              if (is.numeric(param_init)) {
-                rep(x = param_init, times = K)
-              } else if (isa(param_init, "function")) {
-                purrr::map(seq_len(K), ~param_init()) |> unlist() |> array()
+              if (param_name |> stringr::str_detect("^b")) {
+                param_name_K <- param_name |> stringr::str_replace("^b_", "K_")
+                if (!(param_name_K %in% names(sdata))) {
+                  cat("Unable to initialize parameter '", param_name, "'.",
+                    "It starts with 'b_', so assumed to be a global parameter ",
+                    "value but in the stan data, doesn't have a record for ",
+                    "the dimension '", param_name_K, "'\n", sep = "")
+                } else {
+                  K <- sdata[[param_name_K]]
+                }
+                if (is.numeric(param_init)) {
+                  rep(x = param_init, times = K)
+                } else if (isa(param_init, "function")) {
+                  purrr::map(seq_len(K), ~param_init()) |> unlist() |> array()
+                } else {
+                  stop(
+                    "For initializing parameter '", param_name, "', ",
+                    "unreconized class: '", class(param_init), "', expected ",
+                    "one of [array, numeric, function]")
+                }
+
               } else {
-                stop(
-                  "For initializing parameter '", param_name, "', unreconized ",
-                  "class: '", class(param_init), "', expected one of [array, ",
-                  "numeric, function]")
+                # e.g. the parameter is 'sigma' and not a 'b_' parameter
+                if (is.numeric(param_init)) {
+                  param_init
+                } else if (isa(param_init, "function")) {
+                  param_init()
+                } else {
+                  stop(
+                    "For initializing parameter '", param_name, "', ",
+                    "unreconized class: '", class(param_init), "', expected ",
+                    "one of [numeric, function]")
+                }
               }
             }
           })
