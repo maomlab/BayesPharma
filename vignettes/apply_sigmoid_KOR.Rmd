@@ -21,27 +21,29 @@ vignette: >
 
 ## Hill Equation {#sec-hill}
 
-In this case study, we are going to reanalyze the dose response of 4
-Kappa Opioid receptor (KOR) antagonists using the `BayesPharma`
-package from a study performed by Margolis et
-al. (-@Margolis2020-bm). Whole cell electrophysiology in acute rat
+In this case study, we are going to reanalyze the dose responses of 4
+Kappa Opioid receptor (KOR) antagonists from a study performed by Margolis et
+al. (-@Margolis2020-bm) using the `BayesPharma`
+package. Whole cell electrophysiology in acute rat
 midbrain slices was used to evaluate the pharmacological properties of
 four novel KOR antagonists: BTRX-335140, BTRX-395750, PF-04455242, and
-JNJ-67953964
+JNJ-67953964.
 
-Originally, the dose-response data analysis was performed by using
+Originally, the dose-response analysis was performed using
 the `drc` package in R, which implements the minimization of negative
 log likelihood function and reduces to least square estimation for a
-continuous response. The data was normalized to % baseline then fit to
-a 4-parameter log-logistic dose response model, setting the top (max
-response) to 100% and estimating the IC50, its variance, and the
-bottom (min response).
+continuous response. The data were normalized to % baseline agonist response,
+measuring the extent of blockade of agonist response in the presence of
+different concentrations of antagonist. These data were then fit to a 4-parameter
+log-logistic dose response model, setting the top (max agonist response) to
+100% and estimating the IC50, its variance, and the bottom (min agonist
+response).
 
 ### Fitting the sigmoid model
 
 Using the `BayesPharma` package, we can re-fit the sigmoid model with a
 negative slope, and fix the top parameter to `100` as the response is
-normalized to a no-drug baseline.
+normalized to a no-antagonist baseline.
 
 For the prior, we are going to use a normal distribution because the
 response values are continuous. First, we will run the analysis with the
@@ -154,18 +156,18 @@ being good for this type of model.
 ## 
 ## Population-Level Effects: 
 ##                                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## ic50_substance_idBTRX_335140      -8.85      0.20    -9.21    -8.40 1.00    14899     9316
-## ic50_substance_idBTRX_395750      -8.24      0.46    -8.93    -7.36 1.00    12120     5841
-## ic50_substance_idJNJ              -9.15      0.32    -9.79    -8.50 1.00    15256    10460
-## ic50_substance_idPF               -6.18      1.02    -7.67    -3.58 1.00     8272     5238
-## hill_substance_idBTRX_335140      -1.47      0.60    -2.88    -0.58 1.00    14995    11321
-## hill_substance_idBTRX_395750      -0.90      0.51    -2.26    -0.26 1.00    10375     5911
-## hill_substance_idJNJ              -1.01      0.52    -2.41    -0.41 1.00    14910    10490
-## hill_substance_idPF               -0.31      0.24    -0.90    -0.03 1.00     8047     4787
-## bottom_substance_idBTRX_335140    -0.01      0.50    -0.98     0.96 1.00    17281    11401
-## bottom_substance_idBTRX_395750     0.01      0.50    -0.97     0.99 1.00    17587    11876
-## bottom_substance_idJNJ            -0.01      0.50    -0.99     0.96 1.00    16805    10580
-## bottom_substance_idPF              0.01      0.50    -0.97     0.99 1.00    19948    11245
+## ic50_substance_idBTRX_335140      -8.85      0.20    -9.20    -8.41 1.00    14764     9066
+## ic50_substance_idBTRX_395750      -8.23      0.44    -8.92    -7.34 1.00    12065     5249
+## ic50_substance_idJNJ              -9.15      0.32    -9.77    -8.50 1.00    15862    10777
+## ic50_substance_idPF               -6.17      1.02    -7.60    -3.47 1.00     8884     5702
+## hill_substance_idBTRX_335140      -1.47      0.60    -2.90    -0.59 1.00    16414    11136
+## hill_substance_idBTRX_395750      -0.90      0.51    -2.26    -0.25 1.00    11877     6153
+## hill_substance_idJNJ              -1.00      0.51    -2.40    -0.40 1.00    16195    12044
+## hill_substance_idPF               -0.32      0.24    -0.90    -0.03 1.00     8221     5770
+## bottom_substance_idBTRX_335140     0.00      0.50    -0.96     0.96 1.00    19266    12103
+## bottom_substance_idBTRX_395750     0.01      0.49    -0.93     0.97 1.00    18770    11719
+## bottom_substance_idJNJ            -0.01      0.50    -0.99     0.96 1.00    19182    12000
+## bottom_substance_idPF              0.01      0.50    -0.98     0.98 1.00    18866    11787
 ## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA       NA       NA
 ## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA       NA       NA
 ## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA       NA       NA
@@ -173,7 +175,7 @@ being good for this type of model.
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma    32.16      2.86    27.17    38.31 1.00    14530    10557
+## sigma    32.16      2.90    27.17    38.48 1.00    16111    10587
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -284,107 +286,10 @@ Re-fitting the model with the `kor_prior2` gives:
 
 \scriptsize
 
+\normalsize
+
+
 ```
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
-## Chain 1: 
-## Chain 1: Gradient evaluation took 8.5e-05 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.85 seconds.
-## Chain 1: Adjust your expectations accordingly!
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Iteration:    1 / 8000 [  0%]  (Warmup)
-## Chain 1: Iteration:  800 / 8000 [ 10%]  (Warmup)
-## Chain 1: Iteration: 1600 / 8000 [ 20%]  (Warmup)
-## Chain 1: Iteration: 2400 / 8000 [ 30%]  (Warmup)
-## Chain 1: Iteration: 3200 / 8000 [ 40%]  (Warmup)
-## Chain 1: Iteration: 4000 / 8000 [ 50%]  (Warmup)
-## Chain 1: Iteration: 4001 / 8000 [ 50%]  (Sampling)
-## Chain 1: Iteration: 4800 / 8000 [ 60%]  (Sampling)
-## Chain 1: Iteration: 5600 / 8000 [ 70%]  (Sampling)
-## Chain 1: Iteration: 6400 / 8000 [ 80%]  (Sampling)
-## Chain 1: Iteration: 7200 / 8000 [ 90%]  (Sampling)
-## Chain 1: Iteration: 8000 / 8000 [100%]  (Sampling)
-## Chain 1: 
-## Chain 1:  Elapsed Time: 2.759 seconds (Warm-up)
-## Chain 1:                2.503 seconds (Sampling)
-## Chain 1:                5.262 seconds (Total)
-## Chain 1: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
-## Chain 2: 
-## Chain 2: Gradient evaluation took 2.8e-05 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.28 seconds.
-## Chain 2: Adjust your expectations accordingly!
-## Chain 2: 
-## Chain 2: 
-## Chain 2: Iteration:    1 / 8000 [  0%]  (Warmup)
-## Chain 2: Iteration:  800 / 8000 [ 10%]  (Warmup)
-## Chain 2: Iteration: 1600 / 8000 [ 20%]  (Warmup)
-## Chain 2: Iteration: 2400 / 8000 [ 30%]  (Warmup)
-## Chain 2: Iteration: 3200 / 8000 [ 40%]  (Warmup)
-## Chain 2: Iteration: 4000 / 8000 [ 50%]  (Warmup)
-## Chain 2: Iteration: 4001 / 8000 [ 50%]  (Sampling)
-## Chain 2: Iteration: 4800 / 8000 [ 60%]  (Sampling)
-## Chain 2: Iteration: 5600 / 8000 [ 70%]  (Sampling)
-## Chain 2: Iteration: 6400 / 8000 [ 80%]  (Sampling)
-## Chain 2: Iteration: 7200 / 8000 [ 90%]  (Sampling)
-## Chain 2: Iteration: 8000 / 8000 [100%]  (Sampling)
-## Chain 2: 
-## Chain 2:  Elapsed Time: 2.828 seconds (Warm-up)
-## Chain 2:                2.751 seconds (Sampling)
-## Chain 2:                5.579 seconds (Total)
-## Chain 2: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
-## Chain 3: 
-## Chain 3: Gradient evaluation took 3e-05 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.3 seconds.
-## Chain 3: Adjust your expectations accordingly!
-## Chain 3: 
-## Chain 3: 
-## Chain 3: Iteration:    1 / 8000 [  0%]  (Warmup)
-## Chain 3: Iteration:  800 / 8000 [ 10%]  (Warmup)
-## Chain 3: Iteration: 1600 / 8000 [ 20%]  (Warmup)
-## Chain 3: Iteration: 2400 / 8000 [ 30%]  (Warmup)
-## Chain 3: Iteration: 3200 / 8000 [ 40%]  (Warmup)
-## Chain 3: Iteration: 4000 / 8000 [ 50%]  (Warmup)
-## Chain 3: Iteration: 4001 / 8000 [ 50%]  (Sampling)
-## Chain 3: Iteration: 4800 / 8000 [ 60%]  (Sampling)
-## Chain 3: Iteration: 5600 / 8000 [ 70%]  (Sampling)
-## Chain 3: Iteration: 6400 / 8000 [ 80%]  (Sampling)
-## Chain 3: Iteration: 7200 / 8000 [ 90%]  (Sampling)
-## Chain 3: Iteration: 8000 / 8000 [100%]  (Sampling)
-## Chain 3: 
-## Chain 3:  Elapsed Time: 2.923 seconds (Warm-up)
-## Chain 3:                2.084 seconds (Sampling)
-## Chain 3:                5.007 seconds (Total)
-## Chain 3: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
-## Chain 4: 
-## Chain 4: Gradient evaluation took 3.3e-05 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.33 seconds.
-## Chain 4: Adjust your expectations accordingly!
-## Chain 4: 
-## Chain 4: 
-## Chain 4: Iteration:    1 / 8000 [  0%]  (Warmup)
-## Chain 4: Iteration:  800 / 8000 [ 10%]  (Warmup)
-## Chain 4: Iteration: 1600 / 8000 [ 20%]  (Warmup)
-## Chain 4: Iteration: 2400 / 8000 [ 30%]  (Warmup)
-## Chain 4: Iteration: 3200 / 8000 [ 40%]  (Warmup)
-## Chain 4: Iteration: 4000 / 8000 [ 50%]  (Warmup)
-## Chain 4: Iteration: 4001 / 8000 [ 50%]  (Sampling)
-## Chain 4: Iteration: 4800 / 8000 [ 60%]  (Sampling)
-## Chain 4: Iteration: 5600 / 8000 [ 70%]  (Sampling)
-## Chain 4: Iteration: 6400 / 8000 [ 80%]  (Sampling)
-## Chain 4: Iteration: 7200 / 8000 [ 90%]  (Sampling)
-## Chain 4: Iteration: 8000 / 8000 [100%]  (Sampling)
-## Chain 4: 
-## Chain 4:  Elapsed Time: 3.161 seconds (Warm-up)
-## Chain 4:                2.391 seconds (Sampling)
-## Chain 4:                5.552 seconds (Total)
-## Chain 4:
 ##  Family: gaussian 
 ##   Links: mu = identity; sigma = identity 
 ## Formula: response ~ sigmoid(ic50, hill, top, bottom, log_dose) 
@@ -398,35 +303,35 @@ Re-fitting the model with the `kor_prior2` gives:
 ## 
 ## Population-Level Effects: 
 ##                                Estimate Est.Error l-95% CI u-95% CI Rhat
-## ic50_substance_idBTRX_335140      -8.81      0.22    -9.22    -8.36 1.00
-## ic50_substance_idBTRX_395750      -8.58      0.31    -9.16    -7.95 1.00
-## ic50_substance_idJNJ              -8.95      0.31    -9.53    -8.32 1.00
-## ic50_substance_idPF               -8.18      0.45    -9.08    -7.32 1.00
-## hill_substance_idBTRX_335140      -1.19      0.36    -1.96    -0.57 1.00
-## hill_substance_idBTRX_395750      -1.06      0.39    -1.91    -0.42 1.00
-## hill_substance_idJNJ              -0.85      0.33    -1.68    -0.39 1.00
-## hill_substance_idPF               -0.72      0.45    -1.73    -0.08 1.00
-## bottom_substance_idBTRX_335140     1.73     10.55   -19.25    21.97 1.00
-## bottom_substance_idBTRX_395750    15.46     11.14    -7.33    36.36 1.00
-## bottom_substance_idJNJ            -2.88      9.77   -22.88    15.44 1.00
-## bottom_substance_idPF             31.36     11.53     7.09    52.03 1.00
+## ic50_substance_idBTRX_335140      -8.81      0.22    -9.23    -8.36 1.00
+## ic50_substance_idBTRX_395750      -8.58      0.31    -9.16    -7.94 1.00
+## ic50_substance_idJNJ              -8.95      0.31    -9.54    -8.32 1.00
+## ic50_substance_idPF               -8.18      0.45    -9.09    -7.31 1.00
+## hill_substance_idBTRX_335140      -1.19      0.37    -1.98    -0.57 1.00
+## hill_substance_idBTRX_395750      -1.06      0.39    -1.92    -0.42 1.00
+## hill_substance_idJNJ              -0.86      0.32    -1.64    -0.40 1.00
+## hill_substance_idPF               -0.72      0.45    -1.74    -0.07 1.00
+## bottom_substance_idBTRX_335140     1.69     10.55   -19.71    21.78 1.00
+## bottom_substance_idBTRX_395750    15.39     11.05    -7.64    35.95 1.00
+## bottom_substance_idJNJ            -2.72      9.82   -22.83    15.63 1.00
+## bottom_substance_idPF             31.23     11.61     6.78    52.28 1.00
 ## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA
 ## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA
 ## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA
 ## top_substance_idPF               100.00      0.00   100.00   100.00   NA
 ##                                Bulk_ESS Tail_ESS
-## ic50_substance_idBTRX_335140      14132    11090
-## ic50_substance_idBTRX_395750      14373    11993
-## ic50_substance_idJNJ              13025    11727
-## ic50_substance_idPF               14181    11917
-## hill_substance_idBTRX_335140      14765     9899
-## hill_substance_idBTRX_395750      14675    10859
-## hill_substance_idJNJ              13702    12566
-## hill_substance_idPF                9466     6053
-## bottom_substance_idBTRX_335140    14230    11874
-## bottom_substance_idBTRX_395750    14682    10484
-## bottom_substance_idJNJ            12495    11162
-## bottom_substance_idPF             11181    10516
+## ic50_substance_idBTRX_335140      13016    10853
+## ic50_substance_idBTRX_395750      13251    11862
+## ic50_substance_idJNJ              12393    11405
+## ic50_substance_idPF               14103    11188
+## hill_substance_idBTRX_335140      14505     9948
+## hill_substance_idBTRX_395750      12180    10060
+## hill_substance_idJNJ              13486    13152
+## hill_substance_idPF               10262     6935
+## bottom_substance_idBTRX_335140    13738    11212
+## bottom_substance_idBTRX_395750    11894    10144
+## bottom_substance_idJNJ            12846    11477
+## bottom_substance_idPF             11274    10214
 ## top_substance_idBTRX_335140          NA       NA
 ## top_substance_idBTRX_395750          NA       NA
 ## top_substance_idJNJ                  NA       NA
@@ -434,39 +339,69 @@ Re-fitting the model with the `kor_prior2` gives:
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma    31.87      2.84    26.87    37.98 1.00    15342    10954
+## sigma    31.86      2.81    26.90    37.84 1.00    14791     9031
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).
 ```
-\normalsize
+
 
 ## Comparing the Two Models Using LOO-Comparison:
 
 One way to evaluate the quality of a model is for each data-point,
-re-fit the model with remaining points, and evaluate the log
+re-fit the model with remaining points and evaluate the log
 probability of the point in the posterior distribution. Taking the
-expectation across all points give the Expected Log Pointwise
+expectation across all points gives the Expected Log Pointwise
 predictive Density (ELPD). Since this is computationally challenging
 to re-fit the model for each point, if the model fits the data
 reasonably well, then the ELPD can be approximated using the Pareto
-smoothed importance sampling (PSIS). Using the LOO, the package,
-Pareto k value for each data point is computed, where k less than `0.5`
-is good, between `0.5` and `0.7` is OK, and higher than `0.7`
-indicates the data point is not fit by the model well. Evaluating the model for
-the KOR antagonists, shows that the model fits the data well.
+smoothed importance sampling (PSIS). Using the LOO package,
+Pareto k value for each data point is computed that indicate how well that data point is fit by the model, where `k < 0.5` is good, `0.5 <= k < 0.7` is OK, and `0.7 <= k` is bad. Evaluating the model for
+the KOR antagonists shows that the model fits the data well.
 
 \scriptsize
 
 ```
-## No problematic observations found. Returning the original 'loo' object.
-## NULL
+## Trying to compile a simple C file
+## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c
+## clang -mmacosx-version-min=10.13 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o
+## In file included from <built-in>:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:88:
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name 'namespace'
+## namespace Eigen {
+## ^
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected ';' after top level declarator
+## namespace Eigen {
+##                ^
+##                ;
+## In file included from <built-in>:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:96:10: fatal error: 'complex' file not found
+## #include <complex>
+##          ^~~~~~~~~
+## 3 errors generated.
+## make[1]: *** [foo.o] Error 1
+## 
+## Computed from 16000 by 73 log-likelihood matrix
+## 
+##          Estimate   SE
+## elpd_loo   -360.4  6.5
+## p_loo         6.9  1.1
+## looic       720.8 13.0
+## ------
+## Monte Carlo SE of elpd_loo is 0.0.
+## 
+## All Pareto k estimates are good (k < 0.5).
+## See help('pareto-k-diagnostic') for details.
 ```
 \normalsize
 
 Since ELPD is a global measure of model fit, it can be used to compare
-models.  Using `loo_compare` from the LOO package, returns the
+models.  Using `loo_compare` from the LOO package returns the
 `elpd_diff` and `se_diff` for each model relative the model with the
 lowest ELPD. The `kor_model2`, the model with more informative prior,
 is the preferred model, but not significantly.
@@ -474,14 +409,36 @@ is the preferred model, but not significantly.
 \scriptsize
 
 ```
+## Trying to compile a simple C file
+## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c
+## clang -mmacosx-version-min=10.13 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o
+## In file included from <built-in>:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:88:
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name 'namespace'
+## namespace Eigen {
+## ^
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected ';' after top level declarator
+## namespace Eigen {
+##                ^
+##                ;
+## In file included from <built-in>:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:96:10: fatal error: 'complex' file not found
+## #include <complex>
+##          ^~~~~~~~~
+## 3 errors generated.
+## make[1]: *** [foo.o] Error 1
 ## No problematic observations found. Returning the original 'loo' object.
 ##            elpd_diff se_diff
 ## kor_model2  0.0       0.0   
-## kor_model  -0.9       1.2
+## kor_model  -0.8       1.2
 ```
 \normalsize
 
-##Analysis Using the `drc` Package
+## Analysis Using the drc Package
 
 Here we will analyze the KOR antagonist data using the drc package and
 compare it to the results from the `BayesPharma` analysis.
@@ -533,13 +490,29 @@ and has smaller confidence intervals than most of the standard errors
 provided by the `drc` method.
 
 
-
-
 ```
-## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-## ℹ Please use `linewidth` instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
+## Trying to compile a simple C file
+## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c
+## clang -mmacosx-version-min=10.13 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o
+## In file included from <built-in>:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:88:
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name 'namespace'
+## namespace Eigen {
+## ^
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected ';' after top level declarator
+## namespace Eigen {
+##                ^
+##                ;
+## In file included from <built-in>:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:96:10: fatal error: 'complex' file not found
+## #include <complex>
+##          ^~~~~~~~~
+## 3 errors generated.
+## make[1]: *** [foo.o] Error 1
 ```
 
 <div class="figure" style="text-align: center">
