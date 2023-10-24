@@ -1,32 +1,32 @@
 library(BayesPharma)
 
+#' let
+#'   treatment 1 have parameters
+#'      bottom: 0    => logE0 = log(0)
+#'      top: 1       => logE1 = log(1)
+#'      EC50: 1 nM   => logC1 = log(1e-9 / 1e-6)
+#'      hill: 1      => si = 1 => hi = 4
+#'  treatment 2 have parameters
+#'      bottom: 0    => logE0 = log(0)
+#'      top: 1       => logE1 = log(1)
+#'      EC50: 10 nM  => logC1 = log(1e-9 / 1e-6)
+#'      hill: 2      => si = 1 => hi = 8
+#'   synergistic potency
+#'     logalpha: log(5)
+#'   synergistic efficacy
+#'     logE3: 1
+#'
+#' note the bottom parameter for treatment 1 and treatment 2 are shared
+#'
+#' Let the logd1scale and logd2scale to be micromolar e.g. 1e-6
+#' then logd1, logd2, logC1, and logC2 all scaled accordingly
+#'
+#' test at
+#'   treatment 1: 1 nM => logd1 = log(1e-9 / 1e-6)
+#'   treatment 2: 1 uM => logd2 = log(1e-6 / 1e-6)
+#'
 testthat::test_that("MuSyC returns numeric class:", {
   testthat::expect_equal(
-    # let
-    #   treatment 1 have parameters
-    #      bottom = 0    => logE0 = log(0)
-    #      top = 1       => logE1 = log(1)
-    #      EC50 = 1 nM   => logC1 = log(1e-9 / 1e-6)   
-    #      hill = 1      => si = 1 => hi = 4
-    #  treatment 2 have parameters
-    #      bottom = 0    => logE0 = log(0)
-    #      top = 1       => logE1 = log(1)
-    #      EC50 = 10 nM  => logC1 = log(1e-9 / 1e-6)     
-    #      hill = 2      => si = 1 => hi = 8
-    #   synergistic potency
-    #     logalpha = log(5)
-    #   synergistic efficacy
-    #     logE3 = 1
-    #
-    # note the bottom parameter for treatment 1 and treatment 2 are shared
-    
-    # Let the logd1scale and logd2scale to be micromolar e.g. 1e-6
-    # then logd1, logd2, logC1, and logC2 all scaled accordingly
-    
-    # test at
-    #   treatment 1: 1 nM => logd1 = log(1e-9 / 1e-6)
-    #   treatment 2: 1 uM => logd2 = log(1e-6 / 1e-6)
-    
     BayesPharma::MuSyC(
       logd1 = log(1e-9 / 1e-6),
       logd2 = log(1),
@@ -124,14 +124,14 @@ testthat::test_that("MuSyC function is defined in inhibition mode", {
 
 
 testthat::test_that("R and stan versions of MuSyC agree", {
-  
+
   model <- brms::brm(
     formula = y ~ 1,
     data = data.frame(y = rep(1, 10)),
     stanvars = BayesPharma::MuSyC_stanvar(),
     chains = 0)
   model |> brms::expose_functions(vectorize = TRUE)
-  
+
   z <- tidyr::expand_grid(
     logd1 = log(c(0, 1)),
     logd2 = log(c(0, 1)),
@@ -172,8 +172,6 @@ testthat::test_that("R and stan versions of MuSyC agree", {
           h2 = params$h2[1],
           logE3 = params$logE3[1],
           logalpha = params$logalpha[1]))
-    data.frame()
+      data.frame()
     })
 })
-
-
