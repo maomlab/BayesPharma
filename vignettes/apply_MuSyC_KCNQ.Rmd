@@ -99,124 +99,67 @@ model_conductance <- BayesPharma::sigmoid_model(
 ##          total post-warmup draws = 16000
 ## 
 ## Population-Level Effects: 
-##                                           Estimate Est.Error l-95% CI u-95% CI
-## ec50_treatmentretigabine:doselabel0.1uM      -0.21      0.99    -2.16     1.74
-## ec50_treatmentztz240:doselabel0.1uM          -0.12      0.01    -0.14    -0.09
-## ec50_treatmentretigabine:doselabel0.3uM      -0.19      0.01    -0.21    -0.17
-## ec50_treatmentztz240:doselabel0.3uM          -0.19      1.00    -2.13     1.76
-## ec50_treatmentretigabine:doselabel1uM        -0.25      0.01    -0.28    -0.22
-## ec50_treatmentztz240:doselabel1uM            -0.19      0.01    -0.22    -0.17
-## ec50_treatmentretigabine:doselabel10uM       -0.45      0.01    -0.48    -0.43
-## ec50_treatmentztz240:doselabel10uM           -0.44      0.01    -0.45    -0.42
-## ec50_treatmentretigabine:doselabel3uM        -0.36      0.01    -0.38    -0.33
-## ec50_treatmentztz240:doselabel3uM            -0.32      0.01    -0.34    -0.30
-## ec50_treatmentretigabine:doselabel30uM       -0.43      0.01    -0.46    -0.40
-## ec50_treatmentztz240:doselabel30uM           -0.21      0.99    -2.14     1.73
-## ec50_treatmentretigabine:doselabel5uM        -0.40      0.01    -0.42    -0.37
-## ec50_treatmentztz240:doselabel5uM            -0.32      0.01    -0.34    -0.30
-## hill_treatmentretigabine:doselabel0.1uM       3.29      1.76     0.34     7.02
-## hill_treatmentztz240:doselabel0.1uM           2.48      0.21     2.09     2.91
-## hill_treatmentretigabine:doselabel0.3uM       3.02      0.25     2.57     3.54
-## hill_treatmentztz240:doselabel0.3uM           3.27      1.78     0.31     7.06
-## hill_treatmentretigabine:doselabel1uM         2.57      0.21     2.17     3.00
-## hill_treatmentztz240:doselabel1uM             2.85      0.21     2.46     3.28
-## hill_treatmentretigabine:doselabel10uM        2.89      0.24     2.45     3.37
-## hill_treatmentztz240:doselabel10uM            4.99      0.44     4.20     5.93
-## hill_treatmentretigabine:doselabel3uM         3.11      0.27     2.63     3.67
-## hill_treatmentztz240:doselabel3uM             3.39      0.27     2.88     3.96
-## hill_treatmentretigabine:doselabel30uM        2.78      0.22     2.37     3.23
-## hill_treatmentztz240:doselabel30uM            3.28      1.74     0.34     6.95
-## hill_treatmentretigabine:doselabel5uM         3.12      0.25     2.64     3.64
-## hill_treatmentztz240:doselabel5uM             3.88      0.29     3.34     4.50
-## top_treatmentretigabine:doselabel0.1uM        1.00      0.50    -0.01     1.97
-## top_treatmentztz240:doselabel0.1uM            0.99      0.02     0.95     1.04
-## top_treatmentretigabine:doselabel0.3uM        0.97      0.02     0.94     1.00
-## top_treatmentztz240:doselabel0.3uM            1.00      0.51     0.00     2.01
-## top_treatmentretigabine:doselabel1uM          0.98      0.02     0.95     1.01
-## top_treatmentztz240:doselabel1uM              0.93      0.01     0.90     0.96
-## top_treatmentretigabine:doselabel10uM         0.96      0.01     0.94     0.99
-## top_treatmentztz240:doselabel10uM             0.93      0.01     0.91     0.95
-## top_treatmentretigabine:doselabel3uM          0.95      0.01     0.93     0.98
-## top_treatmentztz240:doselabel3uM              0.96      0.01     0.94     0.99
-## top_treatmentretigabine:doselabel30uM         0.96      0.01     0.94     0.99
-## top_treatmentztz240:doselabel30uM             1.00      0.51     0.00     2.00
-## top_treatmentretigabine:doselabel5uM          0.96      0.01     0.94     0.99
-## top_treatmentztz240:doselabel5uM              0.95      0.01     0.93     0.98
-## bottom_treatmentretigabine:doselabel0.1uM    -0.00      0.50    -0.99     1.00
-## bottom_treatmentztz240:doselabel0.1uM         0.01      0.02    -0.03     0.05
-## bottom_treatmentretigabine:doselabel0.3uM     0.02      0.02    -0.02     0.05
-## bottom_treatmentztz240:doselabel0.3uM        -0.00      0.50    -0.98     0.97
-## bottom_treatmentretigabine:doselabel1uM       0.00      0.02    -0.04     0.04
-## bottom_treatmentztz240:doselabel1uM          -0.02      0.02    -0.06     0.01
-## bottom_treatmentretigabine:doselabel10uM     -0.04      0.03    -0.10     0.02
-## bottom_treatmentztz240:doselabel10uM         -0.00      0.02    -0.04     0.03
-## bottom_treatmentretigabine:doselabel3uM      -0.01      0.02    -0.06     0.03
-## bottom_treatmentztz240:doselabel3uM          -0.02      0.02    -0.06     0.02
-## bottom_treatmentretigabine:doselabel30uM     -0.07      0.03    -0.13    -0.02
-## bottom_treatmentztz240:doselabel30uM          0.00      0.51    -0.98     0.99
-## bottom_treatmentretigabine:doselabel5uM      -0.05      0.03    -0.10    -0.00
-## bottom_treatmentztz240:doselabel5uM           0.00      0.02    -0.03     0.04
-##                                           Rhat Bulk_ESS Tail_ESS
-## ec50_treatmentretigabine:doselabel0.1uM   1.00    30391    11436
-## ec50_treatmentztz240:doselabel0.1uM       1.00    20374    12095
-## ec50_treatmentretigabine:doselabel0.3uM   1.00    20548    12368
-## ec50_treatmentztz240:doselabel0.3uM       1.00    30562    11078
-## ec50_treatmentretigabine:doselabel1uM     1.00    19529    12866
-## ec50_treatmentztz240:doselabel1uM         1.00    18726    11783
-## ec50_treatmentretigabine:doselabel10uM    1.00    14923    11194
-## ec50_treatmentztz240:doselabel10uM        1.00    19044    12709
-## ec50_treatmentretigabine:doselabel3uM     1.00    19893    12650
-## ec50_treatmentztz240:doselabel3uM         1.00    18533    12575
-## ec50_treatmentretigabine:doselabel30uM    1.00    15556    11467
-## ec50_treatmentztz240:doselabel30uM        1.00    32094    12295
-## ec50_treatmentretigabine:doselabel5uM     1.00    16017    11630
-## ec50_treatmentztz240:doselabel5uM         1.00    19357    12504
-## hill_treatmentretigabine:doselabel0.1uM   1.00    11901     6023
-## hill_treatmentztz240:doselabel0.1uM       1.00    13038    11273
-## hill_treatmentretigabine:doselabel0.3uM   1.00    13990    11889
-## hill_treatmentztz240:doselabel0.3uM       1.00    10958     5961
-## hill_treatmentretigabine:doselabel1uM     1.00    13862    11493
-## hill_treatmentztz240:doselabel1uM         1.00    14460    12552
-## hill_treatmentretigabine:doselabel10uM    1.00    12166    10898
-## hill_treatmentztz240:doselabel10uM        1.00    17855    12689
-## hill_treatmentretigabine:doselabel3uM     1.00    13874    11471
-## hill_treatmentztz240:doselabel3uM         1.00    15542    12281
-## hill_treatmentretigabine:doselabel30uM    1.00    12468    10799
-## hill_treatmentztz240:doselabel30uM        1.00    11153     5701
-## hill_treatmentretigabine:doselabel5uM     1.00    14008    10974
-## hill_treatmentztz240:doselabel5uM         1.00    18037    13691
-## top_treatmentretigabine:doselabel0.1uM    1.00    29269    10972
-## top_treatmentztz240:doselabel0.1uM        1.00    13585    10941
-## top_treatmentretigabine:doselabel0.3uM    1.00    15611    12140
-## top_treatmentztz240:doselabel0.3uM        1.00    31344    11397
-## top_treatmentretigabine:doselabel1uM      1.00    16947    12046
-## top_treatmentztz240:doselabel1uM          1.00    15880    11971
-## top_treatmentretigabine:doselabel10uM     1.00    18849    12348
-## top_treatmentztz240:doselabel10uM         1.00    22645    13130
-## top_treatmentretigabine:doselabel3uM      1.00    18227    11925
-## top_treatmentztz240:doselabel3uM          1.00    19419    12914
-## top_treatmentretigabine:doselabel30uM     1.00    18399    12911
-## top_treatmentztz240:doselabel30uM         1.00    32006    11651
-## top_treatmentretigabine:doselabel5uM      1.00    20547    12750
-## top_treatmentztz240:doselabel5uM          1.00    21502    12343
-## bottom_treatmentretigabine:doselabel0.1uM 1.00    30476    10916
-## bottom_treatmentztz240:doselabel0.1uM     1.00    15599    11659
-## bottom_treatmentretigabine:doselabel0.3uM 1.00    15979    11851
-## bottom_treatmentztz240:doselabel0.3uM     1.00    28315    11477
-## bottom_treatmentretigabine:doselabel1uM   1.00    14083    12040
-## bottom_treatmentztz240:doselabel1uM       1.00    15537    12230
-## bottom_treatmentretigabine:doselabel10uM  1.00    11420     9609
-## bottom_treatmentztz240:doselabel10uM      1.00    16765    12710
-## bottom_treatmentretigabine:doselabel3uM   1.00    13924     9992
-## bottom_treatmentztz240:doselabel3uM       1.00    15230    11342
-## bottom_treatmentretigabine:doselabel30uM  1.00    12530     9593
-## bottom_treatmentztz240:doselabel30uM      1.00    31204    11866
-## bottom_treatmentretigabine:doselabel5uM   1.00    12771     9741
-## bottom_treatmentztz240:doselabel5uM       1.00    16585    12256
+##                                           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## ec50_treatmentretigabine:doselabel0.1uM      -0.20      0.99    -2.13     1.72 1.00    31481    11496
+## ec50_treatmentztz240:doselabel0.1uM          -0.12      0.01    -0.14    -0.09 1.00    23072    11779
+## ec50_treatmentretigabine:doselabel0.3uM      -0.19      0.01    -0.21    -0.17 1.00    23620    12800
+## ec50_treatmentztz240:doselabel0.3uM          -0.20      0.99    -2.15     1.73 1.00    33491    12190
+## ec50_treatmentretigabine:doselabel1uM        -0.25      0.01    -0.28    -0.22 1.00    22963    12804
+## ec50_treatmentztz240:doselabel1uM            -0.19      0.01    -0.22    -0.17 1.00    23523    12045
+## ec50_treatmentretigabine:doselabel10uM       -0.45      0.01    -0.48    -0.43 1.00    17121    11505
+## ec50_treatmentztz240:doselabel10uM           -0.44      0.01    -0.45    -0.42 1.00    23429    12318
+## ec50_treatmentretigabine:doselabel3uM        -0.36      0.01    -0.38    -0.33 1.00    21177    12455
+## ec50_treatmentztz240:doselabel3uM            -0.32      0.01    -0.34    -0.30 1.00    22522    13052
+## ec50_treatmentretigabine:doselabel30uM       -0.43      0.01    -0.46    -0.40 1.00    16711    10825
+## ec50_treatmentztz240:doselabel30uM           -0.20      1.00    -2.13     1.75 1.00    33246    11397
+## ec50_treatmentretigabine:doselabel5uM        -0.40      0.01    -0.42    -0.37 1.00    19719    12734
+## ec50_treatmentztz240:doselabel5uM            -0.32      0.01    -0.34    -0.30 1.00    22419    12999
+## hill_treatmentretigabine:doselabel0.1uM       3.27      1.78     0.31     7.05 1.00    12001     6654
+## hill_treatmentztz240:doselabel0.1uM           2.48      0.21     2.09     2.91 1.00    15616    11802
+## hill_treatmentretigabine:doselabel0.3uM       3.02      0.24     2.57     3.53 1.00    16313    12006
+## hill_treatmentztz240:doselabel0.3uM           3.25      1.78     0.26     6.93 1.00     9117     5445
+## hill_treatmentretigabine:doselabel1uM         2.57      0.21     2.17     3.00 1.00    16147    10272
+## hill_treatmentztz240:doselabel1uM             2.85      0.21     2.46     3.28 1.00    17076    11776
+## hill_treatmentretigabine:doselabel10uM        2.89      0.24     2.43     3.39 1.00    13906    11153
+## hill_treatmentztz240:doselabel10uM            5.00      0.43     4.22     5.89 1.00    19509    12712
+## hill_treatmentretigabine:doselabel3uM         3.12      0.26     2.63     3.67 1.00    16865    12473
+## hill_treatmentztz240:doselabel3uM             3.39      0.27     2.89     3.96 1.00    19367    12542
+## hill_treatmentretigabine:doselabel30uM        2.78      0.22     2.37     3.23 1.00    13675    11399
+## hill_treatmentztz240:doselabel30uM            3.26      1.77     0.31     6.99 1.00    10308     5374
+## hill_treatmentretigabine:doselabel5uM         3.12      0.26     2.65     3.65 1.00    15298    12668
+## hill_treatmentztz240:doselabel5uM             3.88      0.30     3.33     4.49 1.00    19205    12216
+## top_treatmentretigabine:doselabel0.1uM        1.01      0.50     0.01     2.00 1.00    32180    10490
+## top_treatmentztz240:doselabel0.1uM            0.99      0.02     0.95     1.04 1.00    16438    11203
+## top_treatmentretigabine:doselabel0.3uM        0.97      0.02     0.94     1.00 1.00    18530    12344
+## top_treatmentztz240:doselabel0.3uM            1.00      0.50     0.03     1.98 1.00    32623    10972
+## top_treatmentretigabine:doselabel1uM          0.98      0.02     0.95     1.01 1.00    17680    10151
+## top_treatmentztz240:doselabel1uM              0.93      0.01     0.90     0.96 1.00    19281    12007
+## top_treatmentretigabine:doselabel10uM         0.96      0.01     0.94     0.99 1.00    20534    12361
+## top_treatmentztz240:doselabel10uM             0.93      0.01     0.91     0.95 1.00    22913    13862
+## top_treatmentretigabine:doselabel3uM          0.95      0.01     0.93     0.98 1.00    22725    12834
+## top_treatmentztz240:doselabel3uM              0.96      0.01     0.94     0.99 1.00    24302    12648
+## top_treatmentretigabine:doselabel30uM         0.96      0.01     0.94     0.99 1.00    19553    11895
+## top_treatmentztz240:doselabel30uM             1.00      0.49     0.04     1.96 1.00    31101    11233
+## top_treatmentretigabine:doselabel5uM          0.96      0.01     0.94     0.99 1.00    19828    12874
+## top_treatmentztz240:doselabel5uM              0.95      0.01     0.93     0.98 1.00    23635    12851
+## bottom_treatmentretigabine:doselabel0.1uM     0.00      0.50    -0.97     0.98 1.00    32703    11571
+## bottom_treatmentztz240:doselabel0.1uM         0.01      0.02    -0.03     0.04 1.00    18527    11372
+## bottom_treatmentretigabine:doselabel0.3uM     0.02      0.02    -0.02     0.05 1.00    18223    12049
+## bottom_treatmentztz240:doselabel0.3uM        -0.00      0.49    -0.95     0.94 1.00    31153    12072
+## bottom_treatmentretigabine:doselabel1uM       0.00      0.02    -0.04     0.04 1.00    15601    11561
+## bottom_treatmentztz240:doselabel1uM          -0.02      0.02    -0.05     0.01 1.00    18952    10800
+## bottom_treatmentretigabine:doselabel10uM     -0.04      0.03    -0.10     0.02 1.00    13560    10667
+## bottom_treatmentztz240:doselabel10uM         -0.00      0.02    -0.04     0.03 1.00    18881    12136
+## bottom_treatmentretigabine:doselabel3uM      -0.01      0.02    -0.06     0.03 1.00    16385    11431
+## bottom_treatmentztz240:doselabel3uM          -0.02      0.02    -0.06     0.02 1.00    19121    12264
+## bottom_treatmentretigabine:doselabel30uM     -0.07      0.03    -0.13    -0.02 1.00    13362    10313
+## bottom_treatmentztz240:doselabel30uM          0.00      0.50    -0.97     1.00 1.00    35198    11699
+## bottom_treatmentretigabine:doselabel5uM      -0.05      0.03    -0.10    -0.00 1.00    15103    11293
+## bottom_treatmentztz240:doselabel5uM           0.00      0.02    -0.03     0.04 1.00    19016    11999
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     0.06      0.00     0.06     0.06 1.00    26064    12204
+## sigma     0.06      0.00     0.06     0.06 1.00    27569    12251
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -298,21 +241,19 @@ dependence depends on the drug dose
 
 ```
 ## # A tibble: 44 × 15
-##    variable_type variable predictors_label    mean median      sd     mad     q5
-##    <chr>         <chr>    <chr>              <dbl>  <dbl>   <dbl>   <dbl>  <dbl>
-##  1 b             ec50     treatmentztz240:… -0.116 -0.116 0.0146  0.0145  -0.140
-##  2 b             ec50     treatmentretigab… -0.189 -0.189 0.0122  0.0121  -0.209
-##  3 b             ec50     treatmentretigab… -0.247 -0.247 0.0143  0.0143  -0.271
-##  4 b             ec50     treatmentztz240:… -0.194 -0.194 0.0117  0.0115  -0.214
-##  5 b             ec50     treatmentretigab… -0.451 -0.451 0.0137  0.0133  -0.474
-##  6 b             ec50     treatmentztz240:… -0.438 -0.438 0.00835 0.00834 -0.452
-##  7 b             ec50     treatmentretigab… -0.356 -0.356 0.0124  0.0122  -0.377
-##  8 b             ec50     treatmentztz240:… -0.322 -0.322 0.0109  0.0108  -0.340
-##  9 b             ec50     treatmentretigab… -0.430 -0.429 0.0135  0.0132  -0.453
-## 10 b             ec50     treatmentretigab… -0.398 -0.398 0.0123  0.0121  -0.419
+##    variable_type variable predictors_label                     mean median      sd     mad     q5     q95  rhat ess_bulk ess_tail treatment  logdose doselabel
+##    <chr>         <chr>    <chr>                               <dbl>  <dbl>   <dbl>   <dbl>  <dbl>   <dbl> <dbl>    <dbl>    <dbl> <chr>        <dbl> <fct>    
+##  1 b             ec50     treatmentztz240:doselabel0.1uM     -0.116 -0.116 0.0147  0.0148  -0.140 -0.0918  1.00   23072.   11779. ztz240       -7    0.1 uM   
+##  2 b             ec50     treatmentretigabine:doselabel0.3uM -0.189 -0.189 0.0121  0.0122  -0.209 -0.170   1.00   23620.   12800. retigabine   -6.52 0.3 uM   
+##  3 b             ec50     treatmentretigabine:doselabel1uM   -0.247 -0.247 0.0144  0.0144  -0.271 -0.224   1.00   22963.   12804. retigabine   -6    1 uM     
+##  4 b             ec50     treatmentztz240:doselabel1uM       -0.194 -0.194 0.0117  0.0117  -0.213 -0.175   1.00   23523.   12045. ztz240       -6    1 uM     
+##  5 b             ec50     treatmentretigabine:doselabel10uM  -0.451 -0.451 0.0139  0.0137  -0.475 -0.429   1.00   17121.   11505. retigabine   -5    10 uM    
+##  6 b             ec50     treatmentztz240:doselabel10uM      -0.438 -0.438 0.00828 0.00821 -0.452 -0.425   1.00   23429.   12318. ztz240       -5    10 uM    
+##  7 b             ec50     treatmentretigabine:doselabel3uM   -0.356 -0.356 0.0124  0.0124  -0.376 -0.336   1.00   21177.   12455. retigabine   -5.52 3 uM     
+##  8 b             ec50     treatmentztz240:doselabel3uM       -0.322 -0.322 0.0108  0.0108  -0.340 -0.304   1.00   22522.   13052. ztz240       -5.52 3 uM     
+##  9 b             ec50     treatmentretigabine:doselabel30uM  -0.430 -0.429 0.0136  0.0133  -0.453 -0.408   1.00   16711.   10825. retigabine   -4.52 30 uM    
+## 10 b             ec50     treatmentretigabine:doselabel5uM   -0.398 -0.398 0.0122  0.0120  -0.418 -0.378   1.00   19719.   12734. retigabine   -5.30 5 uM     
 ## # ℹ 34 more rows
-## # ℹ 7 more variables: q95 <dbl>, rhat <dbl>, ess_bulk <dbl>, ess_tail <dbl>,
-## #   treatment <chr>, logdose <dbl>, doselabel <fct>
 ```
 
 
@@ -391,48 +332,29 @@ dependence depends on the drug dose
 ##          total post-warmup draws = 4000
 ## 
 ## Population-Level Effects: 
-##                             Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-## vtop_Intercept                  0.95      0.00     0.95     0.96 1.00     5764
-## vbottom_Intercept              -0.00      0.01    -0.01     0.01 1.00     5140
-## Eec50_treatmentretigabine      -5.77      0.07    -5.93    -5.65 1.00     2180
-## Eec50_treatmentztz240          -5.46      0.06    -5.56    -5.34 1.00     2720
-## Ehill_treatmentretigabine      -1.61      0.27    -2.16    -1.08 1.00     2093
-## Ehill_treatmentztz240          -1.46      0.18    -1.85    -1.15 1.00     2646
-## Etop_treatmentretigabine       -0.19      0.02    -0.22    -0.14 1.00     1915
-## Etop_treatmentztz240           -0.14      0.01    -0.15    -0.12 1.00     4369
-## Ebottom_treatmentretigabine    -0.43      0.01    -0.44    -0.41 1.00     3845
-## Ebottom_treatmentztz240        -0.48      0.03    -0.54    -0.44 1.00     2384
-## Hec50_treatmentretigabine      -3.89      1.88    -8.25    -0.29 1.00      871
-## Hec50_treatmentztz240          -5.14      0.22    -5.53    -4.69 1.00     2129
-## Hhill_treatmentretigabine       1.27      0.76     0.19     2.99 1.00     2461
-## Hhill_treatmentztz240           1.76      0.50     1.00     2.97 1.00     2604
-## Htop_treatmentretigabine        4.48      1.59     2.40     8.26 1.00     2271
-## Htop_treatmentztz240            5.89      1.22     4.25     8.83 1.00     2139
-## Hbottom_treatmentretigabine     2.99      0.09     2.81     3.15 1.00     2407
-## Hbottom_treatmentztz240         2.84      0.08     2.67     2.99 1.00     4919
-##                             Tail_ESS
-## vtop_Intercept                  3222
-## vbottom_Intercept               3250
-## Eec50_treatmentretigabine       1536
-## Eec50_treatmentztz240           2174
-## Ehill_treatmentretigabine       1351
-## Ehill_treatmentztz240           2157
-## Etop_treatmentretigabine        1362
-## Etop_treatmentztz240            2801
-## Ebottom_treatmentretigabine     2675
-## Ebottom_treatmentztz240         2111
-## Hec50_treatmentretigabine       1330
-## Hec50_treatmentztz240           2233
-## Hhill_treatmentretigabine       1406
-## Hhill_treatmentztz240           3054
-## Htop_treatmentretigabine        2624
-## Htop_treatmentztz240            2173
-## Hbottom_treatmentretigabine     2673
-## Hbottom_treatmentztz240         3111
+##                             Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## vtop_Intercept                  0.95      0.00     0.95     0.96 1.00     5150     3106
+## vbottom_Intercept              -0.00      0.01    -0.01     0.01 1.00     4194     3140
+## Eec50_treatmentretigabine      -5.77      0.07    -5.91    -5.65 1.00     2859     2377
+## Eec50_treatmentztz240          -5.46      0.06    -5.56    -5.34 1.00     2708     1923
+## Ehill_treatmentretigabine      -1.61      0.26    -2.15    -1.13 1.00     2513     2161
+## Ehill_treatmentztz240          -1.46      0.18    -1.84    -1.15 1.00     2599     2729
+## Etop_treatmentretigabine       -0.19      0.02    -0.22    -0.15 1.00     2486     2172
+## Etop_treatmentztz240           -0.14      0.01    -0.15    -0.12 1.00     4059     2731
+## Ebottom_treatmentretigabine    -0.43      0.01    -0.44    -0.41 1.00     3186     2744
+## Ebottom_treatmentztz240        -0.48      0.02    -0.54    -0.44 1.00     2358     1922
+## Hec50_treatmentretigabine      -3.95      1.86    -8.20    -0.28 1.00     1147     1550
+## Hec50_treatmentztz240          -5.15      0.21    -5.51    -4.71 1.00     2286     2672
+## Hhill_treatmentretigabine       1.26      0.75     0.22     3.05 1.00     2134     1414
+## Hhill_treatmentztz240           1.77      0.49     1.03     2.97 1.00     2880     3098
+## Htop_treatmentretigabine        4.44      1.58     2.41     8.13 1.00     2009     2038
+## Htop_treatmentztz240            5.83      1.15     4.28     8.61 1.00     2467     2620
+## Hbottom_treatmentretigabine     2.99      0.09     2.81     3.16 1.00     2755     2998
+## Hbottom_treatmentztz240         2.83      0.08     2.68     3.00 1.00     4726     2894
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     0.06      0.00     0.06     0.06 1.00     5089     2821
+## sigma     0.06      0.00     0.06     0.06 1.00     4014     2555
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -444,7 +366,7 @@ dependence depends on the drug dose
 ```
 ##               elpd_diff se_diff
 ## model_bilevel    0.0       0.0 
-## model_MuSyC   -124.8      17.2
+## model_MuSyC   -125.5      17.2
 ```
 
 
