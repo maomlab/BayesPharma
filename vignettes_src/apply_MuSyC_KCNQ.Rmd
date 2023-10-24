@@ -4,11 +4,23 @@ description: Demonstrate the MuSyC_model to analyze the interaction between
   voltage and small molecules interact modulate conductance through the KCNQ2
   voltage gated potassium channel.
 output: rmarkdown::html_vignette
+bibliography: references.bib
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Apply: MuSyC Model -- KCNQ Conductance}
   %\VignetteEncoding{UTF-8}
 ---
+
+<style type="text/css">
+
+code.r{
+  font-size: 9px;
+}
+pre {
+  font-size: 9px
+}
+</style>
+
 
 ```{r set-options, echo=FALSE}
 
@@ -26,6 +38,7 @@ knitr::opts_chunk$set(
   fig.align = "center",
   dpi = if (knitr::is_latex_output()) 72 else 300, 
   out.width = "100%")
+options(width = 300)
 ```
 
 
@@ -48,7 +61,7 @@ To begin, we will load and plot the data,
 
 ```{r load-data}
 #| echo=FALSE,
-#| message=FALSE,
+#| message=FALSE
 
 read_range <- function(
     sheet,
@@ -145,13 +158,14 @@ data <- dplyr::bind_rows(
     treatment = "retigabine", dose_uM = 0.3, is_control = FALSE))
 data
 ```
-
+\normalsize
 
 ```{r reproduce-fig1}
 #| echo=FALSE,
 #| fig.width=4,
 #| fig.heigh=4,
-#| fig.caption="Reproduction of Figure 1b and 1d from (Li, et al., 2021)"
+#| fig.cap="Reproduction of Figure 1b and 1d from (Li, et al., 2021)",
+#| dependson=c("load-data")
 plot_data <- data |>
   dplyr::mutate(dose_label = ifelse(is_control, 0, dose_uM)) |>
   dplyr::arrange(dose_label) |>
@@ -214,13 +228,14 @@ ggplot2::ggplot() +
       group = dose_label)) +
   ggplot2::facet_wrap(
     facets = dplyr::vars(treatment), ncol = 1) +
-  ggplot2::scale_color_discrete("") +
+  ggplot2::scale_color_discrete("Drug Dose") +
   ggplot2::scale_x_continuous("Voltage") +
   ggplot2::scale_y_continuous("G/Gmax")
 ```
 Then, for each treatment and dose, we will fit a sigmoid curve, which has an comparable functional form to the what they call the Boltzmann equation for G/Gmax as a function of voltage. To make the fitting more stable, we will transform the treatment and response scales.
 
 ```{r prepare-model-data}
+#| dependson=c("load-data")
 model_data <- data |>
   dplyr::filter(
     is_control == FALSE) |>
@@ -258,7 +273,8 @@ model_conductance <- BayesPharma::sigmoid_model(
   cores = 4)
 ```
 ```{r model_conductance_summary}
-#| echo=FALSE
+#| echo=FALSE,
+#| dependson=c("fit-model-conductance")
 model_conductance
 ```
 
@@ -266,16 +282,16 @@ model_conductance
 ```{r model-conductance-prior-posterior}
 #| echo=TRUE,
 #| message=FALSE,
-#| dependson=c("model-conductance-by-voltage")
+#| dependson=c("model-conductance")
 
 model_conductance |>
-  BayesPharma::plot_prior_posterior_densities()
+  BayesPharma::plot_prior_posterior_densities(refresh = 0)
 ```
 
 ```{r model-conductance-predictive}
 #| echo=TRUE,
 #| message=FALSE,
-#| dependson=c("model-conductance-by-voltage")
+#| dependson=c("model-conductance")
 
 model_conductance |>
   BayesPharma::plot_posterior_draws()
@@ -325,7 +341,7 @@ dependence depends on the drug dose
 ```{r extract-voltage-by-dose}
 #| echo=FALSE,
 #| message=FALSE,
-#| dependson=c("prepare-model-data", "model-conductance-by-voltage")
+#| dependson=c("prepare-model-data", "model-conductance")
 
 data_conductance_by_voltage <- model_conductance |>
   posterior::summarize_draws() |>
@@ -382,7 +398,7 @@ plot
 ```{r fit-bilevel-model}
 #| echo=FALSE,
 #| message=FALSE,
-#| dependson=c("extract-voltage-by-dose")
+#| dependson=c("prepare-model-data")
 
 
 formula_bilevel <- brms::brmsformula(
@@ -459,7 +475,7 @@ model_bilevel
 ```{r compare-model-fits}
 #| echo=FALSE,
 #| message=FALSE,
-#| dependson=c("fit-MuSyC-model", "fit-bilevel-model")
+#| dependson=c("fit-model-conductance", "fit-bilevel-model")
 
 model_MuSyC <- model_MuSyC |> brms::add_criterion("loo")
 model_bilevel <- model_bilevel |> brms::add_criterion("loo")
