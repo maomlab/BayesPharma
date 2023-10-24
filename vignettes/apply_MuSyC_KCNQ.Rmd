@@ -4,11 +4,23 @@ description: Demonstrate the MuSyC_model to analyze the interaction between
   voltage and small molecules interact modulate conductance through the KCNQ2
   voltage gated potassium channel.
 output: rmarkdown::html_vignette
+bibliography: references.bib
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Apply: MuSyC Model -- KCNQ Conductance}
   %\VignetteEncoding{UTF-8}
 ---
+
+<style type="text/css">
+
+code.r{
+  font-size: 9px;
+}
+pre {
+  font-size: 9px
+}
+</style>
+
 
 
 
@@ -43,11 +55,11 @@ To begin, we will load and plot the data,
 ## 10 ztz240         10 TRUE           -80 replica_5      0.0339
 ## # ℹ 1,846 more rows
 ```
-
+\normalsize
 
 <div class="figure" style="text-align: center">
-<img src="apply_MuSyC_KCNQ_files/reproduce-fig1-1.png" alt="plot of chunk reproduce-fig1" width="100%" />
-<p class="caption">plot of chunk reproduce-fig1</p>
+<img src="apply_MuSyC_KCNQ_files/reproduce-fig1-1.png" alt="Reproduction of Figure 1b and 1d from (Li, et al., 2021)" width="100%" />
+<p class="caption">Reproduction of Figure 1b and 1d from (Li, et al., 2021)</p>
 </div>
 Then, for each treatment and dose, we will fit a sigmoid curve, which has an comparable functional form to the what they call the Boltzmann equation for G/Gmax as a function of voltage. To make the fitting more stable, we will transform the treatment and response scales.
 
@@ -88,10 +100,10 @@ model_conductance <- BayesPharma::sigmoid_model(
 ## 
 ## Population-Level Effects: 
 ##                                           Estimate Est.Error l-95% CI u-95% CI
-## ec50_treatmentretigabine:doselabel0.1uM      -0.21      1.00    -2.17     1.74
+## ec50_treatmentretigabine:doselabel0.1uM      -0.21      0.99    -2.16     1.74
 ## ec50_treatmentztz240:doselabel0.1uM          -0.12      0.01    -0.14    -0.09
 ## ec50_treatmentretigabine:doselabel0.3uM      -0.19      0.01    -0.21    -0.17
-## ec50_treatmentztz240:doselabel0.3uM          -0.20      1.00    -2.17     1.76
+## ec50_treatmentztz240:doselabel0.3uM          -0.19      1.00    -2.13     1.76
 ## ec50_treatmentretigabine:doselabel1uM        -0.25      0.01    -0.28    -0.22
 ## ec50_treatmentztz240:doselabel1uM            -0.19      0.01    -0.22    -0.17
 ## ec50_treatmentretigabine:doselabel10uM       -0.45      0.01    -0.48    -0.43
@@ -99,27 +111,27 @@ model_conductance <- BayesPharma::sigmoid_model(
 ## ec50_treatmentretigabine:doselabel3uM        -0.36      0.01    -0.38    -0.33
 ## ec50_treatmentztz240:doselabel3uM            -0.32      0.01    -0.34    -0.30
 ## ec50_treatmentretigabine:doselabel30uM       -0.43      0.01    -0.46    -0.40
-## ec50_treatmentztz240:doselabel30uM           -0.20      0.99    -2.15     1.73
+## ec50_treatmentztz240:doselabel30uM           -0.21      0.99    -2.14     1.73
 ## ec50_treatmentretigabine:doselabel5uM        -0.40      0.01    -0.42    -0.37
 ## ec50_treatmentztz240:doselabel5uM            -0.32      0.01    -0.34    -0.30
-## hill_treatmentretigabine:doselabel0.1uM       3.28      1.75     0.34     6.98
-## hill_treatmentztz240:doselabel0.1uM           2.48      0.21     2.08     2.91
-## hill_treatmentretigabine:doselabel0.3uM       3.02      0.24     2.58     3.53
-## hill_treatmentztz240:doselabel0.3uM           3.28      1.75     0.32     6.96
-## hill_treatmentretigabine:doselabel1uM         2.56      0.21     2.16     3.00
+## hill_treatmentretigabine:doselabel0.1uM       3.29      1.76     0.34     7.02
+## hill_treatmentztz240:doselabel0.1uM           2.48      0.21     2.09     2.91
+## hill_treatmentretigabine:doselabel0.3uM       3.02      0.25     2.57     3.54
+## hill_treatmentztz240:doselabel0.3uM           3.27      1.78     0.31     7.06
+## hill_treatmentretigabine:doselabel1uM         2.57      0.21     2.17     3.00
 ## hill_treatmentztz240:doselabel1uM             2.85      0.21     2.46     3.28
-## hill_treatmentretigabine:doselabel10uM        2.89      0.24     2.45     3.38
-## hill_treatmentztz240:doselabel10uM            4.99      0.44     4.20     5.92
-## hill_treatmentretigabine:doselabel3uM         3.11      0.26     2.63     3.66
-## hill_treatmentztz240:doselabel3uM             3.39      0.27     2.89     3.96
-## hill_treatmentretigabine:doselabel30uM        2.77      0.22     2.36     3.23
-## hill_treatmentztz240:doselabel30uM            3.25      1.76     0.30     6.98
-## hill_treatmentretigabine:doselabel5uM         3.12      0.26     2.65     3.66
-## hill_treatmentztz240:doselabel5uM             3.88      0.30     3.33     4.50
-## top_treatmentretigabine:doselabel0.1uM        1.00      0.50     0.03     1.96
+## hill_treatmentretigabine:doselabel10uM        2.89      0.24     2.45     3.37
+## hill_treatmentztz240:doselabel10uM            4.99      0.44     4.20     5.93
+## hill_treatmentretigabine:doselabel3uM         3.11      0.27     2.63     3.67
+## hill_treatmentztz240:doselabel3uM             3.39      0.27     2.88     3.96
+## hill_treatmentretigabine:doselabel30uM        2.78      0.22     2.37     3.23
+## hill_treatmentztz240:doselabel30uM            3.28      1.74     0.34     6.95
+## hill_treatmentretigabine:doselabel5uM         3.12      0.25     2.64     3.64
+## hill_treatmentztz240:doselabel5uM             3.88      0.29     3.34     4.50
+## top_treatmentretigabine:doselabel0.1uM        1.00      0.50    -0.01     1.97
 ## top_treatmentztz240:doselabel0.1uM            0.99      0.02     0.95     1.04
 ## top_treatmentretigabine:doselabel0.3uM        0.97      0.02     0.94     1.00
-## top_treatmentztz240:doselabel0.3uM            1.00      0.51     0.00     2.00
+## top_treatmentztz240:doselabel0.3uM            1.00      0.51     0.00     2.01
 ## top_treatmentretigabine:doselabel1uM          0.98      0.02     0.95     1.01
 ## top_treatmentztz240:doselabel1uM              0.93      0.01     0.90     0.96
 ## top_treatmentretigabine:doselabel10uM         0.96      0.01     0.94     0.99
@@ -127,84 +139,84 @@ model_conductance <- BayesPharma::sigmoid_model(
 ## top_treatmentretigabine:doselabel3uM          0.95      0.01     0.93     0.98
 ## top_treatmentztz240:doselabel3uM              0.96      0.01     0.94     0.99
 ## top_treatmentretigabine:doselabel30uM         0.96      0.01     0.94     0.99
-## top_treatmentztz240:doselabel30uM             1.00      0.50     0.01     1.98
+## top_treatmentztz240:doselabel30uM             1.00      0.51     0.00     2.00
 ## top_treatmentretigabine:doselabel5uM          0.96      0.01     0.94     0.99
-## top_treatmentztz240:doselabel5uM              0.95      0.01     0.93     0.97
-## bottom_treatmentretigabine:doselabel0.1uM    -0.00      0.50    -0.98     0.99
-## bottom_treatmentztz240:doselabel0.1uM         0.01      0.02    -0.03     0.04
+## top_treatmentztz240:doselabel5uM              0.95      0.01     0.93     0.98
+## bottom_treatmentretigabine:doselabel0.1uM    -0.00      0.50    -0.99     1.00
+## bottom_treatmentztz240:doselabel0.1uM         0.01      0.02    -0.03     0.05
 ## bottom_treatmentretigabine:doselabel0.3uM     0.02      0.02    -0.02     0.05
-## bottom_treatmentztz240:doselabel0.3uM         0.00      0.50    -0.97     0.97
-## bottom_treatmentretigabine:doselabel1uM       0.00      0.02    -0.04     0.05
+## bottom_treatmentztz240:doselabel0.3uM        -0.00      0.50    -0.98     0.97
+## bottom_treatmentretigabine:doselabel1uM       0.00      0.02    -0.04     0.04
 ## bottom_treatmentztz240:doselabel1uM          -0.02      0.02    -0.06     0.01
 ## bottom_treatmentretigabine:doselabel10uM     -0.04      0.03    -0.10     0.02
 ## bottom_treatmentztz240:doselabel10uM         -0.00      0.02    -0.04     0.03
 ## bottom_treatmentretigabine:doselabel3uM      -0.01      0.02    -0.06     0.03
 ## bottom_treatmentztz240:doselabel3uM          -0.02      0.02    -0.06     0.02
 ## bottom_treatmentretigabine:doselabel30uM     -0.07      0.03    -0.13    -0.02
-## bottom_treatmentztz240:doselabel30uM         -0.00      0.50    -0.98     0.97
-## bottom_treatmentretigabine:doselabel5uM      -0.05      0.03    -0.11    -0.00
+## bottom_treatmentztz240:doselabel30uM          0.00      0.51    -0.98     0.99
+## bottom_treatmentretigabine:doselabel5uM      -0.05      0.03    -0.10    -0.00
 ## bottom_treatmentztz240:doselabel5uM           0.00      0.02    -0.03     0.04
 ##                                           Rhat Bulk_ESS Tail_ESS
-## ec50_treatmentretigabine:doselabel0.1uM   1.00    34783    11068
-## ec50_treatmentztz240:doselabel0.1uM       1.00    25288    11223
-## ec50_treatmentretigabine:doselabel0.3uM   1.00    24792    11852
-## ec50_treatmentztz240:doselabel0.3uM       1.00    35485    11480
-## ec50_treatmentretigabine:doselabel1uM     1.00    25280    12104
-## ec50_treatmentztz240:doselabel1uM         1.00    25026    11198
-## ec50_treatmentretigabine:doselabel10uM    1.00    17942    11644
-## ec50_treatmentztz240:doselabel10uM        1.00    23346    12379
-## ec50_treatmentretigabine:doselabel3uM     1.00    22956    12199
-## ec50_treatmentztz240:doselabel3uM         1.00    24904    11832
-## ec50_treatmentretigabine:doselabel30uM    1.00    20528    11891
-## ec50_treatmentztz240:doselabel30uM        1.00    33097    10886
-## ec50_treatmentretigabine:doselabel5uM     1.00    22066    10918
-## ec50_treatmentztz240:doselabel5uM         1.00    24969    11622
-## hill_treatmentretigabine:doselabel0.1uM   1.00    11316     6605
-## hill_treatmentztz240:doselabel0.1uM       1.00    16130    11554
-## hill_treatmentretigabine:doselabel0.3uM   1.00    18195    11964
-## hill_treatmentztz240:doselabel0.3uM       1.00    10769     5702
-## hill_treatmentretigabine:doselabel1uM     1.00    16991    11091
-## hill_treatmentztz240:doselabel1uM         1.00    18318    10961
-## hill_treatmentretigabine:doselabel10uM    1.00    14215    10879
-## hill_treatmentztz240:doselabel10uM        1.00    21265    13050
-## hill_treatmentretigabine:doselabel3uM     1.00    18021    12448
-## hill_treatmentztz240:doselabel3uM         1.00    19661    12961
-## hill_treatmentretigabine:doselabel30uM    1.00    15569    10928
-## hill_treatmentztz240:doselabel30uM        1.00    10709     6219
-## hill_treatmentretigabine:doselabel5uM     1.00    16213    10503
-## hill_treatmentztz240:doselabel5uM         1.00    21759    12512
-## top_treatmentretigabine:doselabel0.1uM    1.00    31311    10887
-## top_treatmentztz240:doselabel0.1uM        1.00    16792    10851
-## top_treatmentretigabine:doselabel0.3uM    1.00    19113    12309
-## top_treatmentztz240:doselabel0.3uM        1.00    33295    10303
-## top_treatmentretigabine:doselabel1uM      1.00    20687    11878
-## top_treatmentztz240:doselabel1uM          1.00    20688    11449
-## top_treatmentretigabine:doselabel10uM     1.00    22627    13010
-## top_treatmentztz240:doselabel10uM         1.00    26273    13117
-## top_treatmentretigabine:doselabel3uM      1.00    21977    12626
-## top_treatmentztz240:doselabel3uM          1.00    23135    12228
-## top_treatmentretigabine:doselabel30uM     1.00    20546    12915
-## top_treatmentztz240:doselabel30uM         1.00    34890    10813
-## top_treatmentretigabine:doselabel5uM      1.00    23638    12335
-## top_treatmentztz240:doselabel5uM          1.00    25793    12158
-## bottom_treatmentretigabine:doselabel0.1uM 1.00    36318    11303
-## bottom_treatmentztz240:doselabel0.1uM     1.00    19506    12083
-## bottom_treatmentretigabine:doselabel0.3uM 1.00    20395    11791
-## bottom_treatmentztz240:doselabel0.3uM     1.00    36621    11094
-## bottom_treatmentretigabine:doselabel1uM   1.00    17868    11011
-## bottom_treatmentztz240:doselabel1uM       1.00    18972    12351
-## bottom_treatmentretigabine:doselabel10uM  1.00    14148     9853
-## bottom_treatmentztz240:doselabel10uM      1.00    21253    11743
-## bottom_treatmentretigabine:doselabel3uM   1.00    18186    11233
-## bottom_treatmentztz240:doselabel3uM       1.00    19723    12867
-## bottom_treatmentretigabine:doselabel30uM  1.00    15546    10646
-## bottom_treatmentztz240:doselabel30uM      1.00    32655    10736
-## bottom_treatmentretigabine:doselabel5uM   1.00    17254     9650
-## bottom_treatmentztz240:doselabel5uM       1.00    21366    12002
+## ec50_treatmentretigabine:doselabel0.1uM   1.00    30391    11436
+## ec50_treatmentztz240:doselabel0.1uM       1.00    20374    12095
+## ec50_treatmentretigabine:doselabel0.3uM   1.00    20548    12368
+## ec50_treatmentztz240:doselabel0.3uM       1.00    30562    11078
+## ec50_treatmentretigabine:doselabel1uM     1.00    19529    12866
+## ec50_treatmentztz240:doselabel1uM         1.00    18726    11783
+## ec50_treatmentretigabine:doselabel10uM    1.00    14923    11194
+## ec50_treatmentztz240:doselabel10uM        1.00    19044    12709
+## ec50_treatmentretigabine:doselabel3uM     1.00    19893    12650
+## ec50_treatmentztz240:doselabel3uM         1.00    18533    12575
+## ec50_treatmentretigabine:doselabel30uM    1.00    15556    11467
+## ec50_treatmentztz240:doselabel30uM        1.00    32094    12295
+## ec50_treatmentretigabine:doselabel5uM     1.00    16017    11630
+## ec50_treatmentztz240:doselabel5uM         1.00    19357    12504
+## hill_treatmentretigabine:doselabel0.1uM   1.00    11901     6023
+## hill_treatmentztz240:doselabel0.1uM       1.00    13038    11273
+## hill_treatmentretigabine:doselabel0.3uM   1.00    13990    11889
+## hill_treatmentztz240:doselabel0.3uM       1.00    10958     5961
+## hill_treatmentretigabine:doselabel1uM     1.00    13862    11493
+## hill_treatmentztz240:doselabel1uM         1.00    14460    12552
+## hill_treatmentretigabine:doselabel10uM    1.00    12166    10898
+## hill_treatmentztz240:doselabel10uM        1.00    17855    12689
+## hill_treatmentretigabine:doselabel3uM     1.00    13874    11471
+## hill_treatmentztz240:doselabel3uM         1.00    15542    12281
+## hill_treatmentretigabine:doselabel30uM    1.00    12468    10799
+## hill_treatmentztz240:doselabel30uM        1.00    11153     5701
+## hill_treatmentretigabine:doselabel5uM     1.00    14008    10974
+## hill_treatmentztz240:doselabel5uM         1.00    18037    13691
+## top_treatmentretigabine:doselabel0.1uM    1.00    29269    10972
+## top_treatmentztz240:doselabel0.1uM        1.00    13585    10941
+## top_treatmentretigabine:doselabel0.3uM    1.00    15611    12140
+## top_treatmentztz240:doselabel0.3uM        1.00    31344    11397
+## top_treatmentretigabine:doselabel1uM      1.00    16947    12046
+## top_treatmentztz240:doselabel1uM          1.00    15880    11971
+## top_treatmentretigabine:doselabel10uM     1.00    18849    12348
+## top_treatmentztz240:doselabel10uM         1.00    22645    13130
+## top_treatmentretigabine:doselabel3uM      1.00    18227    11925
+## top_treatmentztz240:doselabel3uM          1.00    19419    12914
+## top_treatmentretigabine:doselabel30uM     1.00    18399    12911
+## top_treatmentztz240:doselabel30uM         1.00    32006    11651
+## top_treatmentretigabine:doselabel5uM      1.00    20547    12750
+## top_treatmentztz240:doselabel5uM          1.00    21502    12343
+## bottom_treatmentretigabine:doselabel0.1uM 1.00    30476    10916
+## bottom_treatmentztz240:doselabel0.1uM     1.00    15599    11659
+## bottom_treatmentretigabine:doselabel0.3uM 1.00    15979    11851
+## bottom_treatmentztz240:doselabel0.3uM     1.00    28315    11477
+## bottom_treatmentretigabine:doselabel1uM   1.00    14083    12040
+## bottom_treatmentztz240:doselabel1uM       1.00    15537    12230
+## bottom_treatmentretigabine:doselabel10uM  1.00    11420     9609
+## bottom_treatmentztz240:doselabel10uM      1.00    16765    12710
+## bottom_treatmentretigabine:doselabel3uM   1.00    13924     9992
+## bottom_treatmentztz240:doselabel3uM       1.00    15230    11342
+## bottom_treatmentretigabine:doselabel30uM  1.00    12530     9593
+## bottom_treatmentztz240:doselabel30uM      1.00    31204    11866
+## bottom_treatmentretigabine:doselabel5uM   1.00    12771     9741
+## bottom_treatmentztz240:doselabel5uM       1.00    16585    12256
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     0.06      0.00     0.06     0.06 1.00    27866    12208
+## sigma     0.06      0.00     0.06     0.06 1.00    26064    12204
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -215,110 +227,7 @@ model_conductance <- BayesPharma::sigmoid_model(
 
 ```r
 model_conductance |>
-  BayesPharma::plot_prior_posterior_densities()
-```
-
-```
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
-## Chain 1: 
-## Chain 1: Gradient evaluation took 2.6e-05 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.26 seconds.
-## Chain 1: Adjust your expectations accordingly!
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 1: 
-## Chain 1:  Elapsed Time: 0.258 seconds (Warm-up)
-## Chain 1:                0.274 seconds (Sampling)
-## Chain 1:                0.532 seconds (Total)
-## Chain 1: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
-## Chain 2: 
-## Chain 2: Gradient evaluation took 8e-06 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
-## Chain 2: Adjust your expectations accordingly!
-## Chain 2: 
-## Chain 2: 
-## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 2: 
-## Chain 2:  Elapsed Time: 0.192 seconds (Warm-up)
-## Chain 2:                0.138 seconds (Sampling)
-## Chain 2:                0.33 seconds (Total)
-## Chain 2: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
-## Chain 3: 
-## Chain 3: Gradient evaluation took 7e-06 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
-## Chain 3: Adjust your expectations accordingly!
-## Chain 3: 
-## Chain 3: 
-## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 3: 
-## Chain 3:  Elapsed Time: 0.199 seconds (Warm-up)
-## Chain 3:                0.272 seconds (Sampling)
-## Chain 3:                0.471 seconds (Total)
-## Chain 3: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
-## Chain 4: 
-## Chain 4: Gradient evaluation took 1.1e-05 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
-## Chain 4: Adjust your expectations accordingly!
-## Chain 4: 
-## Chain 4: 
-## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 4: 
-## Chain 4:  Elapsed Time: 0.222 seconds (Warm-up)
-## Chain 4:                0.27 seconds (Sampling)
-## Chain 4:                0.492 seconds (Total)
-## Chain 4:
+  BayesPharma::plot_prior_posterior_densities(refresh = 0)
 ```
 
 <div class="figure" style="text-align: center">
@@ -391,16 +300,16 @@ dependence depends on the drug dose
 ## # A tibble: 44 × 15
 ##    variable_type variable predictors_label    mean median      sd     mad     q5
 ##    <chr>         <chr>    <chr>              <dbl>  <dbl>   <dbl>   <dbl>  <dbl>
-##  1 b             ec50     treatmentztz240:… -0.116 -0.116 0.0148  0.0147  -0.140
-##  2 b             ec50     treatmentretigab… -0.189 -0.189 0.0121  0.0122  -0.209
-##  3 b             ec50     treatmentretigab… -0.247 -0.247 0.0142  0.0142  -0.271
-##  4 b             ec50     treatmentztz240:… -0.194 -0.194 0.0118  0.0118  -0.213
-##  5 b             ec50     treatmentretigab… -0.451 -0.451 0.0140  0.0137  -0.475
-##  6 b             ec50     treatmentztz240:… -0.438 -0.438 0.00830 0.00829 -0.452
-##  7 b             ec50     treatmentretigab… -0.356 -0.356 0.0125  0.0126  -0.377
-##  8 b             ec50     treatmentztz240:… -0.322 -0.322 0.0106  0.0106  -0.340
-##  9 b             ec50     treatmentretigab… -0.430 -0.430 0.0135  0.0132  -0.453
-## 10 b             ec50     treatmentretigab… -0.398 -0.398 0.0123  0.0122  -0.419
+##  1 b             ec50     treatmentztz240:… -0.116 -0.116 0.0146  0.0145  -0.140
+##  2 b             ec50     treatmentretigab… -0.189 -0.189 0.0122  0.0121  -0.209
+##  3 b             ec50     treatmentretigab… -0.247 -0.247 0.0143  0.0143  -0.271
+##  4 b             ec50     treatmentztz240:… -0.194 -0.194 0.0117  0.0115  -0.214
+##  5 b             ec50     treatmentretigab… -0.451 -0.451 0.0137  0.0133  -0.474
+##  6 b             ec50     treatmentztz240:… -0.438 -0.438 0.00835 0.00834 -0.452
+##  7 b             ec50     treatmentretigab… -0.356 -0.356 0.0124  0.0122  -0.377
+##  8 b             ec50     treatmentztz240:… -0.322 -0.322 0.0109  0.0108  -0.340
+##  9 b             ec50     treatmentretigab… -0.430 -0.429 0.0135  0.0132  -0.453
+## 10 b             ec50     treatmentretigab… -0.398 -0.398 0.0123  0.0121  -0.419
 ## # ℹ 34 more rows
 ## # ℹ 7 more variables: q95 <dbl>, rhat <dbl>, ess_bulk <dbl>, ess_tail <dbl>,
 ## #   treatment <chr>, logdose <dbl>, doselabel <fct>
@@ -483,47 +392,47 @@ dependence depends on the drug dose
 ## 
 ## Population-Level Effects: 
 ##                             Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-## vtop_Intercept                  0.95      0.00     0.95     0.96 1.00     5733
-## vbottom_Intercept              -0.00      0.01    -0.01     0.01 1.00     4525
-## Eec50_treatmentretigabine      -5.77      0.07    -5.91    -5.64 1.00     2639
-## Eec50_treatmentztz240          -5.46      0.05    -5.56    -5.35 1.00     2408
-## Ehill_treatmentretigabine      -1.62      0.27    -2.17    -1.13 1.00     2131
-## Ehill_treatmentztz240          -1.46      0.18    -1.84    -1.14 1.00     2260
-## Etop_treatmentretigabine       -0.19      0.02    -0.22    -0.15 1.00     2309
-## Etop_treatmentztz240           -0.14      0.01    -0.15    -0.12 1.00     3649
-## Ebottom_treatmentretigabine    -0.43      0.01    -0.44    -0.41 1.00     3507
-## Ebottom_treatmentztz240        -0.48      0.02    -0.54    -0.44 1.00     2072
-## Hec50_treatmentretigabine      -3.87      1.81    -7.92    -0.34 1.00      981
-## Hec50_treatmentztz240          -5.14      0.22    -5.52    -4.68 1.00     1626
-## Hhill_treatmentretigabine       1.27      0.75     0.23     2.98 1.00     2689
-## Hhill_treatmentztz240           1.77      0.49     0.99     2.90 1.00     2203
-## Htop_treatmentretigabine        4.47      1.63     2.16     8.41 1.00     2087
-## Htop_treatmentztz240            5.85      1.16     4.27     8.70 1.00     1664
-## Hbottom_treatmentretigabine     2.99      0.09     2.81     3.15 1.00     2477
-## Hbottom_treatmentztz240         2.83      0.08     2.69     2.98 1.00     4795
+## vtop_Intercept                  0.95      0.00     0.95     0.96 1.00     5764
+## vbottom_Intercept              -0.00      0.01    -0.01     0.01 1.00     5140
+## Eec50_treatmentretigabine      -5.77      0.07    -5.93    -5.65 1.00     2180
+## Eec50_treatmentztz240          -5.46      0.06    -5.56    -5.34 1.00     2720
+## Ehill_treatmentretigabine      -1.61      0.27    -2.16    -1.08 1.00     2093
+## Ehill_treatmentztz240          -1.46      0.18    -1.85    -1.15 1.00     2646
+## Etop_treatmentretigabine       -0.19      0.02    -0.22    -0.14 1.00     1915
+## Etop_treatmentztz240           -0.14      0.01    -0.15    -0.12 1.00     4369
+## Ebottom_treatmentretigabine    -0.43      0.01    -0.44    -0.41 1.00     3845
+## Ebottom_treatmentztz240        -0.48      0.03    -0.54    -0.44 1.00     2384
+## Hec50_treatmentretigabine      -3.89      1.88    -8.25    -0.29 1.00      871
+## Hec50_treatmentztz240          -5.14      0.22    -5.53    -4.69 1.00     2129
+## Hhill_treatmentretigabine       1.27      0.76     0.19     2.99 1.00     2461
+## Hhill_treatmentztz240           1.76      0.50     1.00     2.97 1.00     2604
+## Htop_treatmentretigabine        4.48      1.59     2.40     8.26 1.00     2271
+## Htop_treatmentztz240            5.89      1.22     4.25     8.83 1.00     2139
+## Hbottom_treatmentretigabine     2.99      0.09     2.81     3.15 1.00     2407
+## Hbottom_treatmentztz240         2.84      0.08     2.67     2.99 1.00     4919
 ##                             Tail_ESS
-## vtop_Intercept                  3617
-## vbottom_Intercept               3125
-## Eec50_treatmentretigabine       1910
-## Eec50_treatmentztz240           2401
-## Ehill_treatmentretigabine       1579
-## Ehill_treatmentztz240           2227
-## Etop_treatmentretigabine        1766
-## Etop_treatmentztz240            2780
-## Ebottom_treatmentretigabine     2515
-## Ebottom_treatmentztz240         1939
-## Hec50_treatmentretigabine       1274
-## Hec50_treatmentztz240           2346
-## Hhill_treatmentretigabine       2226
-## Hhill_treatmentztz240           2470
-## Htop_treatmentretigabine        2065
-## Htop_treatmentztz240            2365
-## Hbottom_treatmentretigabine     2873
-## Hbottom_treatmentztz240         3034
+## vtop_Intercept                  3222
+## vbottom_Intercept               3250
+## Eec50_treatmentretigabine       1536
+## Eec50_treatmentztz240           2174
+## Ehill_treatmentretigabine       1351
+## Ehill_treatmentztz240           2157
+## Etop_treatmentretigabine        1362
+## Etop_treatmentztz240            2801
+## Ebottom_treatmentretigabine     2675
+## Ebottom_treatmentztz240         2111
+## Hec50_treatmentretigabine       1330
+## Hec50_treatmentztz240           2233
+## Hhill_treatmentretigabine       1406
+## Hhill_treatmentztz240           3054
+## Htop_treatmentretigabine        2624
+## Htop_treatmentztz240            2173
+## Hbottom_treatmentretigabine     2673
+## Hbottom_treatmentztz240         3111
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     0.06      0.00     0.06     0.06 1.00     5330     2479
+## sigma     0.06      0.00     0.06     0.06 1.00     5089     2821
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -535,7 +444,7 @@ dependence depends on the drug dose
 ```
 ##               elpd_diff se_diff
 ## model_bilevel    0.0       0.0 
-## model_MuSyC   -125.2      17.2
+## model_MuSyC   -124.8      17.2
 ```
 
 
