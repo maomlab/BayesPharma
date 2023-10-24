@@ -14,8 +14,9 @@ vignette: >
 
 # inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
 knitr::opts_chunk$set(
-  cache = TRUE,
   echo = FALSE,
+  cache = TRUE,
+  cache.path = "cache/apply_model_tQ_ChABC_design/",
   fig.path = "apply_model_tQ_ChABC_design_files/",
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images

@@ -15,8 +15,9 @@ vignette: >
 # inspired by
 # https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
 knitr::opts_chunk$set(
-  cache = TRUE,
   echo = FALSE,
+  cache = TRUE,
+  cache.path = "cache/apply_MuSyC_KCNQ/",
   fig.path = "apply_MuSyC_KCNQ_files/",
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images
@@ -25,7 +26,6 @@ knitr::opts_chunk$set(
   fig.align = "center",
   dpi = if (knitr::is_latex_output()) 72 else 300, 
   out.width = "100%")
-
 ```
 
 
@@ -149,7 +149,9 @@ data
 
 ```{r reproduce-fig1}
 #| echo=FALSE,
-#| fig.width = 4
+#| fig.width=4,
+#| fig.heigh=4,
+#| fig.caption="Reproduction of Figure 1b and 1d from (Li, et al., 2021)"
 plot_data <- data |>
   dplyr::mutate(dose_label = ifelse(is_control, 0, dose_uM)) |>
   dplyr::arrange(dose_label) |>
@@ -255,6 +257,11 @@ model_conductance <- BayesPharma::sigmoid_model(
     top = \() runif(1, min = 0.8, max = 1.2)),
   cores = 4)
 ```
+```{r model_conductance_summary}
+#| echo=FALSE
+model_conductance
+```
+
 
 ```{r model-conductance-prior-posterior}
 #| echo=TRUE,
@@ -466,26 +473,26 @@ brms::loo_compare(model_MuSyC, model_bilevel)
 #| message=FALSE,
 #| dependson=c("fit-MuSyC-model", "fit-bilevel-model")
 
-model_subsets <- data.frame(
-  fraction = seq_len(10) / 10) |>
-  dplyr::rowwise() |>
-  dplyr::do({
-    fraction <- .$fraction[1]
-    cat(
-      "Re-fitting the models with only ", fraction, " fraction of the data\n",
-      sep = "")
-    model_data_subset <- model_data |>
-      dplyr::sample_frac(size = fraction)
-    data.frame(
-      fraction = fraction,
-      model_MuSyC = model_MuSyC |>
-        stats::update(
-          newdata = model_data_subset |>
-            dplyr::mutate(
-              logd1scale = mean(voltage),
-              logd2scale = mean(logdose))),
-      model_bilevel = model_bilevel |>
-        stats::update(newdata = model_data_subset))
-  })
+# model_subsets <- data.frame(
+#   fraction = seq_len(10) / 10) |>
+#   dplyr::rowwise() |>
+#   dplyr::do({
+#     fraction <- .$fraction[1]
+#     cat(
+#       "Re-fitting the models with only ", fraction, " fraction of the data\n",
+#       sep = "")
+#     model_data_subset <- model_data |>
+#       dplyr::sample_frac(size = fraction)
+#     data.frame(
+#       fraction = fraction,
+#       model_MuSyC = model_MuSyC |>
+#         stats::update(
+#           newdata = model_data_subset |>
+#             dplyr::mutate(
+#               logd1scale = mean(voltage),
+#               logd2scale = mean(logdose))),
+#       model_bilevel = model_bilevel |>
+#         stats::update(newdata = model_data_subset))
+#  })
 ```
 
