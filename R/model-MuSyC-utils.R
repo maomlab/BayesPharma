@@ -70,4 +70,3 @@ MuSyC_si_to_hi <- function(si, Ci, E0, Ei) {
 MuSyC_hi_to_si <- function(hi, Ci, E0, Ei) {
   hi * (E0 + Ei) / (4 * Ci)
 }
-

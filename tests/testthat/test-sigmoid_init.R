@@ -27,7 +27,7 @@ testthat::test_that(
       hill = \() 0.5,
       top = \() 50,
       bottom = \() 0)
-    
+
     testthat::expect_true(inherits(init, "bpinit"))
   })
 
@@ -58,6 +58,6 @@ testthat::test_that(
       hill = \() -0.5,
       top = \() 50,
       bottom = \() 0)
-    
+
     testthat::expect_true(inherits(init, "bpinit"))
   })

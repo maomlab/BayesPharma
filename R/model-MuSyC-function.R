@@ -51,7 +51,7 @@ MuSyC <- function(
 
   numerator_parts <- h1 * logC1 + h2 * logC2 + logE0
   denominator_parts <- h1 * logC1 + h2 * logC2
-  
+
   if (logd1 > -Inf) {
     numerator_parts <- c(numerator_parts, h1 * logd1 + h2 * logC2 + logE1)
     denominator_parts <- c(denominator_parts, h1 * logd1 + h2 * logC2)
@@ -66,9 +66,9 @@ MuSyC <- function(
   } else {
     numerator_parts <- c(numerator_parts, -Inf)
     denominator_parts <- c(denominator_parts, -Inf)
-  }  
-  
-  if ((logd1 > -Inf) & (logd2 > -Inf)) {
+  }
+
+  if ((logd1 > -Inf) && (logd2 > -Inf)) {
     numerator_parts <- c(
       numerator_parts, h1 * logd1 + h2 * logd2 + logE3 + logalpha)
     denominator_parts <- c(
@@ -76,9 +76,9 @@ MuSyC <- function(
   } else {
     numerator_parts <- c(numerator_parts, -Inf)
     denominator_parts <- c(denominator_parts, -Inf)
-  } 
-  
-  stable_logsumexp <- function(parts){
+  }
+
+  stable_logsumexp <- function(parts) {
     stabilizer <- parts |>
       max() |>
       is.finite() |>
