@@ -82,29 +82,35 @@ Opioid Receptor Antagonists</h3>
 <div class="section level2">
 <h2 id="sec-hill">Hill Equation<a class="anchor" aria-label="anchor" href="#sec-hill"></a>
 </h2>
-<p>In this case study we are going to reanalyze the dose response of 4
-Kappa Opioid receptor (KOR) antagonists using the package from from a
-study done by Margolis et al. (-<span class="citation">@Margolis2020-bm</span>). Whole cell electrophysiology
-in acute rat midbrain slices was used to evaluate pharmacological
+<p>In this case study, we are going to reanalyze the dose responses of 4
+Kappa Opioid receptor (KOR) antagonists from a study performed by
+Margolis et al. (-<span class="citation">@Margolis2020-bm</span>) using
+the <code>BayesPharma</code> package. Whole cell electrophysiology in
+acute rat midbrain slices was used to evaluate the pharmacological
 properties of four novel KOR antagonists: BTRX-335140, BTRX-395750,
-PF-04455242, and JNJ-67953964</p>
-<p>Originally in the paper the dose-response data analysis was done by
-using the package in R which implements the minimization of negative log
-likelihood function and reduces to least square estimation for a
-continuous response. The data was normalized to % baseline then fit to a
-4-parameter log-logistic dose response model, setting the top (max
-response) to 100% and estimating the IC50, its variance, and the bottom
-(min response).</p>
+PF-04455242, and JNJ-67953964.</p>
+<p>Originally, the dose-response analysis was performed using the
+<code>drc</code> package in R, which implements the minimization of
+negative log likelihood function and reduces to least square estimation
+for a continuous response. The data were normalized to % baseline
+agonist response, measuring the extent of blockade of agonist response
+in the presence of different concentrations of antagonist. These data
+were then fit to a 4-parameter log-logistic dose response model, setting
+the top (max agonist response) to 100% and estimating the IC50, its
+variance, and the bottom (min agonist response).</p>
 <div class="section level3">
 <h3 id="fitting-the-sigmoid-model">Fitting the sigmoid model<a class="anchor" aria-label="anchor" href="#fitting-the-sigmoid-model"></a>
 </h3>
-<p>Using the package, we can re-fit the sigmoid model with a negative
-slope, and fixing the top parameter to as the response is normalized to
-a no-drug baseline.</p>
+<p>Using the <code>BayesPharma</code> package, we can re-fit the sigmoid
+model with a negative slope, and fix the top parameter to
+<code>100</code> as the response is normalized to a no-antagonist
+baseline.</p>
 <p>For the prior, we are going to use a normal distribution because the
-response values are continuous. First, we will run the analysis with top
-(max response) parameter prior set to a constant value of 100 because
-top is normalized to and the default broad prior for the , and
+response values are continuous. First, we will run the analysis with the
+<code>top</code> (max response) parameter prior set to a constant value
+of <code>100</code> because <code>top</code> is normalized to
+<code>100</code> and is the default broad prior for the
+<code>ic50</code>, <code>hill</code>, and <code>bottom</code>
 parameters. Broad priors represent unbiased uncertainty and provide an
 opportunity for extreme responses.</p>
 <p>The level of informativeness of the prior will affect how much
@@ -126,8 +132,10 @@ to check the prior predictive distributions to see if they are
 compatible with the domain expertise. So, before running the model, we
 will verify that the prior distributions cover a plausible range of
 values for each parameter. To do this, we want to sample only from the
-prior distributions by adding as an argument to the function. We will
-use the default response distribution of the model ().</p>
+prior distributions by adding <code>sample_prior = "only"</code> as an
+argument to the <code>sigmoid_model</code> function. We will use the
+default response distribution of the model
+(<code>family = gaussian()</code>).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kor_sample_prior</span> <span class="op">&lt;-</span> <span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/sigmoid_model.html">sigmoid_model</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">kor_antag</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">substance_id</span>, <span class="va">log_dose</span>, <span class="va">response</span><span class="op">)</span>,</span>
@@ -139,10 +147,16 @@ use the default response distribution of the model ().</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kor_sample_prior</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/plot_density_distribution.html">plot_density_distribution</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="apply_sigmoid_KOR_files/kor-prior-density-plot-1.png" alt="KOR antagonists prior distribution" width="100%" style="display: block; margin: auto;"></p>
-<p>To sample from the model we will the NUTs Hamiltonian Monte Carlo,
-and initialize the parameters to the prior means to help with model
-convergence, using the default values of , , , .</p>
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_KOR_files/kor-prior-density-plot-1.png" alt="KOR antagonists prior distribution" width="100%"><p class="caption">
+KOR antagonists prior distribution
+</p>
+</div>
+<p>To sample from the model, we will use the <code>Stan</code> NUTs
+Hamiltonian Monte Carlo, and initialize the parameters to the prior
+means to help with model convergence, using the default values of
+<code>ec50 = -9</code>, <code>hill = -1</code>, <code>top = 100</code>,
+<code>bottom = 0</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kor_model</span> <span class="op">&lt;-</span> <span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/sigmoid_model.html">sigmoid_model</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">kor_antag</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">substance_id</span>, <span class="va">log_dose</span>, <span class="va">response</span><span class="op">)</span>,</span>
@@ -155,17 +169,19 @@ convergence, using the default values of , , , .</p>
 <div class="section level3">
 <h3 id="analyzing-model-fit">Analyzing model fit<a class="anchor" aria-label="anchor" href="#analyzing-model-fit"></a>
 </h3>
-<p>The generated model summary shows the formula that the expected
-response is sigmoid function of the log_dose with four parameters, and a
-shared Gaussian distribution. Each parameter is dependent on the
-substance_id. Since want to fit a separate model for each substance we
-include a to indicate that there is no common intercept. The consists of
-data points and the posterior sampling was done in chains each with
-steps with steps of warm-up. The population effects for each parameter
-summarize marginal posterior distributions, as well as the effective
-sample size in the bulk and tail. This gives an indication of the
-sampling quality, with an ESS of &gt; samples being good for this type
-of model.</p>
+<p>The <code>brms</code> generated model summary shows the formula that
+the expected response a is sigmoid function of the <code>log_dose</code>
+with four parameters, and a shared Gaussian distribution. Each parameter
+is dependent on the <code>substance_id</code>. Since we want to fit a
+separate model for each substance, we include a <code>0 +</code> to
+indicate that there is no common intercept. The data consists of
+<code>73</code> data points and the posterior sampling was done in
+<code>4</code> chains each with <code>8000</code> steps with
+<code>4000</code> steps of warm-up. The population effects for each
+parameter summarize the marginal posterior distributions, as well as the
+effective sample size in the bulk and tail. This gives an indication of
+the sampling quality, with an ESS of &gt; <code>500</code> samples being
+good for this type of model.</p>
 <pre><code><span><span class="co">##  Family: gaussian </span></span>
 <span><span class="co">##   Links: mu = identity; sigma = identity </span></span>
 <span><span class="co">## Formula: response ~ sigmoid(ic50, hill, top, bottom, log_dose) </span></span>
@@ -179,18 +195,18 @@ of model.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Population-Level Effects: </span></span>
 <span><span class="co">##                                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
-<span><span class="co">## ic50_substance_idBTRX_335140      -8.84      0.20    -9.20    -8.40 1.00    14883     8873</span></span>
-<span><span class="co">## ic50_substance_idBTRX_395750      -8.24      0.41    -8.92    -7.39 1.00    12333     5863</span></span>
-<span><span class="co">## ic50_substance_idJNJ              -9.15      0.32    -9.78    -8.50 1.00    17511    10242</span></span>
-<span><span class="co">## ic50_substance_idPF               -6.15      1.05    -7.64    -3.41 1.00     8649     6213</span></span>
-<span><span class="co">## hill_substance_idBTRX_335140      -1.47      0.60    -2.89    -0.59 1.00    15340    10545</span></span>
-<span><span class="co">## hill_substance_idBTRX_395750      -0.89      0.51    -2.24    -0.26 1.00    12763     6273</span></span>
-<span><span class="co">## hill_substance_idJNJ              -1.01      0.51    -2.38    -0.41 1.00    15285    11508</span></span>
-<span><span class="co">## hill_substance_idPF               -0.31      0.24    -0.88    -0.03 1.00     7904     4559</span></span>
-<span><span class="co">## bottom_substance_idBTRX_335140    -0.00      0.50    -0.99     0.97 1.00    19984    11491</span></span>
-<span><span class="co">## bottom_substance_idBTRX_395750     0.01      0.50    -0.97     1.00 1.00    19123    11247</span></span>
-<span><span class="co">## bottom_substance_idJNJ            -0.01      0.50    -0.98     0.98 1.00    18940    11984</span></span>
-<span><span class="co">## bottom_substance_idPF              0.00      0.50    -0.98     0.98 1.00    21351    12102</span></span>
+<span><span class="co">## ic50_substance_idBTRX_335140      -8.85      0.20    -9.20    -8.41 1.00    14764     9066</span></span>
+<span><span class="co">## ic50_substance_idBTRX_395750      -8.23      0.44    -8.92    -7.34 1.00    12065     5249</span></span>
+<span><span class="co">## ic50_substance_idJNJ              -9.15      0.32    -9.77    -8.50 1.00    15862    10777</span></span>
+<span><span class="co">## ic50_substance_idPF               -6.17      1.02    -7.60    -3.47 1.00     8884     5702</span></span>
+<span><span class="co">## hill_substance_idBTRX_335140      -1.47      0.60    -2.90    -0.59 1.00    16414    11136</span></span>
+<span><span class="co">## hill_substance_idBTRX_395750      -0.90      0.51    -2.26    -0.25 1.00    11877     6153</span></span>
+<span><span class="co">## hill_substance_idJNJ              -1.00      0.51    -2.40    -0.40 1.00    16195    12044</span></span>
+<span><span class="co">## hill_substance_idPF               -0.32      0.24    -0.90    -0.03 1.00     8221     5770</span></span>
+<span><span class="co">## bottom_substance_idBTRX_335140     0.00      0.50    -0.96     0.96 1.00    19266    12103</span></span>
+<span><span class="co">## bottom_substance_idBTRX_395750     0.01      0.49    -0.93     0.97 1.00    18770    11719</span></span>
+<span><span class="co">## bottom_substance_idJNJ            -0.01      0.50    -0.99     0.96 1.00    19182    12000</span></span>
+<span><span class="co">## bottom_substance_idPF              0.01      0.50    -0.98     0.98 1.00    18866    11787</span></span>
 <span><span class="co">## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA       NA       NA</span></span>
 <span><span class="co">## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA       NA       NA</span></span>
 <span><span class="co">## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA       NA       NA</span></span>
@@ -198,7 +214,7 @@ of model.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Family Specific Parameters: </span></span>
 <span><span class="co">##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
-<span><span class="co">## sigma    32.17      2.84    27.19    38.32 1.00    14690    10539</span></span>
+<span><span class="co">## sigma    32.16      2.90    27.17    38.48 1.00    16111    10587</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
 <span><span class="co">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
@@ -206,21 +222,25 @@ of model.</p>
 <div class="section level4">
 <h4 id="traceplot">Traceplot<a class="anchor" aria-label="anchor" href="#traceplot"></a>
 </h4>
-<p>The model ran without warning messages meaning there were no
+<p>The model ran without warning messages, meaning there were no
 parameter value problems or MCMC conflicts. The bulk and tail ESS
 indicate high resolution and stability. The R-hat for each parameter
-equals and the shows the chains mixed well indicating the chains
-converged.</p>
+equals <code>1.00</code> and the <code>traceplot</code> shows the chains
+mixed well, indicating the chains converged.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kor_model</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">bayesplot</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-traces.html" class="external-link">mcmc_trace</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="apply_sigmoid_KOR_files/kor-model-traceplot-1.png" alt="plot of chunk kor-model-traceplot" width="100%" style="display: block; margin: auto;"></p>
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_KOR_files/kor-model-traceplot-1.png" alt="plot of chunk kor-model-traceplot" width="100%"><p class="caption">
+plot of chunk kor-model-traceplot
+</p>
+</div>
 </div>
 <div class="section level4">
 <h4 id="compare-prior-and-posterior-marginal-distributions">Compare prior and posterior marginal distributions<a class="anchor" aria-label="anchor" href="#compare-prior-and-posterior-marginal-distributions"></a>
 </h4>
 <p>Displayed below is a plot for the prior and posterior distributions
-of the parameters (prior is pink and posterior is teal). this can be
+of the parameters (prior is pink and posterior is teal). This can be
 useful for comparing the density distribution of the prior and posterior
 produced by the model:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -229,10 +249,15 @@ produced by the model:</p>
 <span>  predictors_col_name <span class="op">=</span> <span class="st">"substance_id"</span>,</span>
 <span>  half_max_label <span class="op">=</span> <span class="st">"ic50"</span>,</span>
 <span>  title_label<span class="op">=</span><span class="st">""</span><span class="op">)</span></span></code></pre></div>
-<p><img src="apply_sigmoid_KOR_files/kor-model-prior-posterior-densities-1.png" alt="KOR antagonists model, compare prior and posterior distributions for each substance" width="100%" style="display: block; margin: auto;"></p>
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_KOR_files/kor-model-prior-posterior-densities-1.png" alt="KOR antagonists model, compare prior and posterior distributions for each substance" width="100%"><p class="caption">
+KOR antagonists model, compare prior and posterior distributions for
+each substance
+</p>
+</div>
 <p>Displayed below is a plot of the posterior distributions for each
 parameter with the confidence intervals and mean. This is a useful
-visual of the model results and to highlight the mode and high density
+visual of the model results and can highlight the mode and high-density
 intervals:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/plot_posterior_density.html">plot_posterior_density</a></span><span class="op">(</span></span>
@@ -240,7 +265,11 @@ intervals:</p>
 <span>  predictors_col_name <span class="op">=</span> <span class="st">"substance_id"</span>, </span>
 <span>  half_max_label <span class="op">=</span> <span class="st">"ic50"</span>,</span>
 <span>  title_label <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
-<p><img src="apply_sigmoid_KOR_files/kor-model-posterior-densities-1.png" alt="KOR Antagonists, posterior distribution for each substance" width="100%" style="display: block; margin: auto;"></p>
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_KOR_files/kor-model-posterior-densities-1.png" alt="KOR Antagonists, posterior distribution for each substance" width="100%"><p class="caption">
+KOR Antagonists, posterior distribution for each substance
+</p>
+</div>
 <p>Displayed below is a plot of a sample of 100 sigmoid dose-response
 curves from the posterior distribution (purple) and the median quantile
 intervals:</p>
@@ -248,52 +277,171 @@ intervals:</p>
 <code class="sourceCode R"><span><span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/plot_posterior_draws.html">plot_posterior_draws</a></span><span class="op">(</span></span>
 <span>  model <span class="op">=</span> <span class="va">kor_model</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
-<p><img src="apply_sigmoid_KOR_files/kor-model-posterior-draws-1.png" alt="KOR antagonists, posterior draws" width="100%" style="display: block; margin: auto;"></p>
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_KOR_files/kor-model-posterior-draws-1.png" alt="KOR antagonists, posterior draws" width="100%"><p class="caption">
+KOR antagonists, posterior draws
+</p>
+</div>
 </div>
 </div>
 <div class="section level3">
 <h3 id="comparing-alternative-models">Comparing alternative models<a class="anchor" aria-label="anchor" href="#comparing-alternative-models"></a>
 </h3>
 <p>To test the sensitivity of the analysis to the prior, we can re-fit
-the model with more informative prior:</p>
+the model with a more informative prior:</p>
 <pre><code><span><span class="co">##              prior class coef group resp dpar  nlpar   lb   ub source</span></span>
 <span><span class="co">##  normal(-8.5, 0.5)     b                        ic50 &lt;NA&gt; &lt;NA&gt;   user</span></span>
 <span><span class="co">##    normal(-1, 0.5)     b                        hill &lt;NA&gt; 0.01   user</span></span>
 <span><span class="co">##      constant(100)     b                         top &lt;NA&gt; &lt;NA&gt;   user</span></span>
 <span><span class="co">##     normal(10, 15)     b                      bottom &lt;NA&gt; &lt;NA&gt;   user</span></span></code></pre>
-<p>Re-fitting the model</p>
+<p>Re-fitting the model with the <code>kor_prior2</code> gives:</p>
+<pre><code><span><span class="co">##  Family: gaussian </span></span>
+<span><span class="co">##   Links: mu = identity; sigma = identity </span></span>
+<span><span class="co">## Formula: response ~ sigmoid(ic50, hill, top, bottom, log_dose) </span></span>
+<span><span class="co">##          ic50 ~ 0 + substance_id</span></span>
+<span><span class="co">##          hill ~ 0 + substance_id</span></span>
+<span><span class="co">##          top ~ 0 + substance_id</span></span>
+<span><span class="co">##          bottom ~ 0 + substance_id</span></span>
+<span><span class="co">##    Data: data (Number of observations: 73) </span></span>
+<span><span class="co">##   Draws: 4 chains, each with iter = 8000; warmup = 4000; thin = 1;</span></span>
+<span><span class="co">##          total post-warmup draws = 16000</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Population-Level Effects: </span></span>
+<span><span class="co">##                                Estimate Est.Error l-95% CI u-95% CI Rhat</span></span>
+<span><span class="co">## ic50_substance_idBTRX_335140      -8.81      0.22    -9.23    -8.36 1.00</span></span>
+<span><span class="co">## ic50_substance_idBTRX_395750      -8.58      0.31    -9.16    -7.94 1.00</span></span>
+<span><span class="co">## ic50_substance_idJNJ              -8.95      0.31    -9.54    -8.32 1.00</span></span>
+<span><span class="co">## ic50_substance_idPF               -8.18      0.45    -9.09    -7.31 1.00</span></span>
+<span><span class="co">## hill_substance_idBTRX_335140      -1.19      0.37    -1.98    -0.57 1.00</span></span>
+<span><span class="co">## hill_substance_idBTRX_395750      -1.06      0.39    -1.92    -0.42 1.00</span></span>
+<span><span class="co">## hill_substance_idJNJ              -0.86      0.32    -1.64    -0.40 1.00</span></span>
+<span><span class="co">## hill_substance_idPF               -0.72      0.45    -1.74    -0.07 1.00</span></span>
+<span><span class="co">## bottom_substance_idBTRX_335140     1.69     10.55   -19.71    21.78 1.00</span></span>
+<span><span class="co">## bottom_substance_idBTRX_395750    15.39     11.05    -7.64    35.95 1.00</span></span>
+<span><span class="co">## bottom_substance_idJNJ            -2.72      9.82   -22.83    15.63 1.00</span></span>
+<span><span class="co">## bottom_substance_idPF             31.23     11.61     6.78    52.28 1.00</span></span>
+<span><span class="co">## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA</span></span>
+<span><span class="co">## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA</span></span>
+<span><span class="co">## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA</span></span>
+<span><span class="co">## top_substance_idPF               100.00      0.00   100.00   100.00   NA</span></span>
+<span><span class="co">##                                Bulk_ESS Tail_ESS</span></span>
+<span><span class="co">## ic50_substance_idBTRX_335140      13016    10853</span></span>
+<span><span class="co">## ic50_substance_idBTRX_395750      13251    11862</span></span>
+<span><span class="co">## ic50_substance_idJNJ              12393    11405</span></span>
+<span><span class="co">## ic50_substance_idPF               14103    11188</span></span>
+<span><span class="co">## hill_substance_idBTRX_335140      14505     9948</span></span>
+<span><span class="co">## hill_substance_idBTRX_395750      12180    10060</span></span>
+<span><span class="co">## hill_substance_idJNJ              13486    13152</span></span>
+<span><span class="co">## hill_substance_idPF               10262     6935</span></span>
+<span><span class="co">## bottom_substance_idBTRX_335140    13738    11212</span></span>
+<span><span class="co">## bottom_substance_idBTRX_395750    11894    10144</span></span>
+<span><span class="co">## bottom_substance_idJNJ            12846    11477</span></span>
+<span><span class="co">## bottom_substance_idPF             11274    10214</span></span>
+<span><span class="co">## top_substance_idBTRX_335140          NA       NA</span></span>
+<span><span class="co">## top_substance_idBTRX_395750          NA       NA</span></span>
+<span><span class="co">## top_substance_idJNJ                  NA       NA</span></span>
+<span><span class="co">## top_substance_idPF                   NA       NA</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Family Specific Parameters: </span></span>
+<span><span class="co">##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span><span class="co">## sigma    31.86      2.81    26.90    37.84 1.00    14791     9031</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
+<span><span class="co">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
+<span><span class="co">## scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
 <h2 id="comparing-the-two-models-using-loo-comparison">Comparing the Two Models Using LOO-Comparison:<a class="anchor" aria-label="anchor" href="#comparing-the-two-models-using-loo-comparison"></a>
 </h2>
 <p>One way to evaluate the quality of a model is for each data-point,
-re-fit the model with remaining points, and evaluate the log probability
+re-fit the model with remaining points and evaluate the log probability
 of the point in the posterior distribution. Taking the expectation
-across all points give the Expected Log Pointwise predictive Density
+across all points gives the Expected Log Pointwise predictive Density
 (ELPD). Since this is computationally challenging to re-fit the model
 for each point, if the model fits the data reasonably well, then the
 ELPD can be approximated using the Pareto smoothed importance sampling
-(PSIS). Using the LOO, the package, Pareto k value for each data point
-is computed, where k less than is good, between and is OK, and higher
-than indicates the data point is not fit by the model well. Evaluating
-the model for the KOR antagonists, shows that the model fits the data
-well.</p>
-<pre><code><span><span class="co">## No problematic observations found. Returning the original 'loo' object.</span></span>
-<span><span class="co">## NULL</span></span></code></pre>
+(PSIS). Using the LOO package, Pareto k value for each data point is
+computed that indicate how well that data point is fit by the model,
+where <code>k &lt; 0.5</code> is good, <code>0.5 &lt;= k &lt; 0.7</code>
+is OK, and <code>0.7 &lt;= k</code> is bad. Evaluating the model for the
+KOR antagonists shows that the model fits the data well.</p>
+<pre><code><span><span class="co">## Trying to compile a simple C file</span></span>
+<span><span class="co">## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c</span></span>
+<span><span class="co">## clang -mmacosx-version-min=10.13 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o</span></span>
+<span><span class="co">## In file included from &lt;built-in&gt;:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:88:</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name 'namespace'</span></span>
+<span><span class="co">## namespace Eigen {</span></span>
+<span><span class="co">## ^</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected ';' after top level declarator</span></span>
+<span><span class="co">## namespace Eigen {</span></span>
+<span><span class="co">##                ^</span></span>
+<span><span class="co">##                ;</span></span>
+<span><span class="co">## In file included from &lt;built-in&gt;:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:96:10: fatal error: 'complex' file not found</span></span>
+<span><span class="co">## #include &lt;complex&gt;</span></span>
+<span><span class="co">##          ^~~~~~~~~</span></span>
+<span><span class="co">## 3 errors generated.</span></span>
+<span><span class="co">## make[1]: *** [foo.o] Error 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Computed from 16000 by 73 log-likelihood matrix</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##          Estimate   SE</span></span>
+<span><span class="co">## elpd_loo   -360.4  6.5</span></span>
+<span><span class="co">## p_loo         6.9  1.1</span></span>
+<span><span class="co">## looic       720.8 13.0</span></span>
+<span><span class="co">## ------</span></span>
+<span><span class="co">## Monte Carlo SE of elpd_loo is 0.0.</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## All Pareto k estimates are good (k &lt; 0.5).</span></span>
+<span><span class="co">## See help('pareto-k-diagnostic') for details.</span></span></code></pre>
 <p>Since ELPD is a global measure of model fit, it can be used to
-compare models. Using from the LOO package, returns the and for each
-model relative the model with the lowest ELPD. The , the model with more
-informative prior, is the preferred model, but not significantly.</p>
-<pre><code><span><span class="co">## No problematic observations found. Returning the original 'loo' object.</span></span>
+compare models. Using <code>loo_compare</code> from the LOO package
+returns the <code>elpd_diff</code> and <code>se_diff</code> for each
+model relative the model with the lowest ELPD. The
+<code>kor_model2</code>, the model with more informative prior, is the
+preferred model, but not significantly.</p>
+<pre><code><span><span class="co">## Trying to compile a simple C file</span></span>
+<span><span class="co">## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c</span></span>
+<span><span class="co">## clang -mmacosx-version-min=10.13 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o</span></span>
+<span><span class="co">## In file included from &lt;built-in&gt;:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:88:</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name 'namespace'</span></span>
+<span><span class="co">## namespace Eigen {</span></span>
+<span><span class="co">## ^</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected ';' after top level declarator</span></span>
+<span><span class="co">## namespace Eigen {</span></span>
+<span><span class="co">##                ^</span></span>
+<span><span class="co">##                ;</span></span>
+<span><span class="co">## In file included from &lt;built-in&gt;:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:96:10: fatal error: 'complex' file not found</span></span>
+<span><span class="co">## #include &lt;complex&gt;</span></span>
+<span><span class="co">##          ^~~~~~~~~</span></span>
+<span><span class="co">## 3 errors generated.</span></span>
+<span><span class="co">## make[1]: *** [foo.o] Error 1</span></span>
+<span><span class="co">## No problematic observations found. Returning the original 'loo' object.</span></span>
 <span><span class="co">##            elpd_diff se_diff</span></span>
 <span><span class="co">## kor_model2  0.0       0.0   </span></span>
 <span><span class="co">## kor_model  -0.8       1.2</span></span></code></pre>
-<p>##Analysis Using the drc Package</p>
+</div>
+<div class="section level2">
+<h2 id="analysis-using-the-drc-package">Analysis Using the drc Package<a class="anchor" aria-label="anchor" href="#analysis-using-the-drc-package"></a>
+</h2>
 <p>Here we will analyze the KOR antagonist data using the drc package
-and compare it to the results from the analysis.</p>
-<p>We will fix the top to and fit the , , and .</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+and compare it to the results from the <code>BayesPharma</code>
+analysis.</p>
+<p>We will fix the top to <code>100</code> and fit the
+<code>ic50</code>, <code>hill</code>, and <code>bottom</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">drc_models</span> <span class="op">&lt;-</span> <span class="va">kor_antag</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">substance_id</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_nest.html" class="external-link">group_nest</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -325,16 +473,41 @@ and compare it to the results from the analysis.</p>
 <span><span class="co">## 10 BTRX_395750  ic50      -8.97     0.505  -17.8    1.70e-10  -10.1        -7.88</span></span>
 <span><span class="co">## 11 JNJ          ic50      -8.77     0.670  -13.1    2.89e-11  -10.2        -7.37</span></span>
 <span><span class="co">## 12 PF           ic50      -7.96     1.27    -6.29   2.78e- 5  -10.7        -5.23</span></span></code></pre></div>
-<p>Displayed below is the comparison of results from and for each
-parameter of the dose-response curve. Here we see that the Bayesian
-method provides a distribution curve as evidence and has smaller
-confidence intervals than most of the standard errors provided by the
-method.</p>
-<pre><code><span><span class="co">## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
-<span><span class="co">## ℹ Please use `linewidth` instead.</span></span>
-<span><span class="co">## This warning is displayed once every 8 hours.</span></span>
-<span><span class="co">## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</span></span></code></pre>
-<p><img src="apply_sigmoid_KOR_files/kor-model-plot-vs-drc-1.png" alt="KOR antagonists conditional effects. The blue lines are samples from the    exttt{BayesPharma} kor_model posterior distribution, the orange line is the conditional mean, and the purple line is the conditional mean for the   exttt{drc} model fit." width="100%" style="display: block; margin: auto;"></p>
+<p>Displayed below is the comparison of results from <code>drc</code>
+and <code>BayesPharma</code> for each parameter of the dose-response
+curve. Here we see that the Bayesian method provides a distribution
+curve as evidence and has smaller confidence intervals than most of the
+standard errors provided by the <code>drc</code> method.</p>
+<pre><code><span><span class="co">## Trying to compile a simple C file</span></span>
+<span><span class="co">## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c</span></span>
+<span><span class="co">## clang -mmacosx-version-min=10.13 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o</span></span>
+<span><span class="co">## In file included from &lt;built-in&gt;:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:88:</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name 'namespace'</span></span>
+<span><span class="co">## namespace Eigen {</span></span>
+<span><span class="co">## ^</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected ';' after top level declarator</span></span>
+<span><span class="co">## namespace Eigen {</span></span>
+<span><span class="co">##                ^</span></span>
+<span><span class="co">##                ;</span></span>
+<span><span class="co">## In file included from &lt;built-in&gt;:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:96:10: fatal error: 'complex' file not found</span></span>
+<span><span class="co">## #include &lt;complex&gt;</span></span>
+<span><span class="co">##          ^~~~~~~~~</span></span>
+<span><span class="co">## 3 errors generated.</span></span>
+<span><span class="co">## make[1]: *** [foo.o] Error 1</span></span></code></pre>
+<div class="figure" style="text-align: center">
+<img src="apply_sigmoid_KOR_files/kor-model-plot-vs-drc-1.png" alt="KOR antagonists conditional effects. The blue lines are samples from the `BayesPharma` kor_model posterior distribution, the orange line is the conditional mean, and the purple line is the conditional mean for the `drc` model fit." width="100%"><p class="caption">
+KOR antagonists conditional effects. The blue lines are samples from the
+<code>BayesPharma</code> kor_model posterior distribution, the orange
+line is the conditional mean, and the purple line is the conditional
+mean for the <code>drc</code> model fit.
+</p>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

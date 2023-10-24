@@ -79,13 +79,14 @@ O’Meara</h4>
 
     
     
+<pre><code><span><span class="co">## Error in library(tidymodels): there is no package called 'tidymodels'</span></span></code></pre>
 <div class="section level2">
 <h2 id="using-bayespharma-models-with-tidymodels">Using BayesPharma models with Tidymodels<a class="anchor" aria-label="anchor" href="#using-bayespharma-models-with-tidymodels"></a>
 </h2>
 <p>Tidymodels is a platform for running and analyzing models in R. This
 vignette demonstrates how to use the BayesPharma models with Tidy
 Models.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"kor_antag.rda"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">kor_antag</span> <span class="op">&lt;-</span> <span class="va">kor_antag</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/transmute.html" class="external-link">transmute</a></span><span class="op">(</span></span>
 <span>  substance_id <span class="op">=</span> <span class="va">Drug</span>,</span>
@@ -93,14 +94,14 @@ Models.</p>
 <span>  log_dose <span class="op">=</span> <span class="va">log_dose</span>,</span>
 <span>  response <span class="op">=</span> <span class="va">normalized_measurement</span><span class="op">)</span></span></code></pre></div>
 <p>Define a recipe and assign roles to different columns</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kor_recipe</span> <span class="op">&lt;-</span> <span class="va">kor_antag</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/roles.html" class="external-link">update_role</a></span><span class="op">(</span><span class="va">response</span>, new_role <span class="op">=</span> <span class="st">"outcome"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/roles.html" class="external-link">update_role</a></span><span class="op">(</span><span class="va">log_dose</span>, new_role <span class="op">=</span> <span class="st">"predictor"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/roles.html" class="external-link">update_role</a></span><span class="op">(</span><span class="va">substance_id</span>, new_role <span class="op">=</span> <span class="st">"predictor"</span><span class="op">)</span></span></code></pre></div>
 <p>Define the model using the wrapper package for Tidymodels.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kor_model</span> <span class="op">&lt;-</span> <span class="fu">bayesian</span><span class="fu">::</span><span class="fu"><a href="https://hsbadr.github.io/bayesian/reference/bayesian.html" class="external-link">bayesian</a></span><span class="op">(</span></span>
 <span>  cores <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  chains <span class="op">=</span> <span class="fl">4</span>,</span>
@@ -118,23 +119,23 @@ Models.</p>
 <span>      nl <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Build and run the workflow by adding the recipe and model and then
 running fit.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kor_workflow</span> <span class="op">&lt;-</span> <span class="fu">workflows</span><span class="fu">::</span><span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html" class="external-link">workflow</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">workflows</span><span class="fu">::</span><span class="fu"><a href="https://workflows.tidymodels.org/reference/add_recipe.html" class="external-link">add_recipe</a></span><span class="op">(</span><span class="va">kor_recipe</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">workflows</span><span class="fu">::</span><span class="fu"><a href="https://workflows.tidymodels.org/reference/add_model.html" class="external-link">add_model</a></span><span class="op">(</span>spec <span class="op">=</span> <span class="va">kor_model</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">kor_antag</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Compiling Stan program...</span></span></code></pre>
 <pre><code><span><span class="co">## Start sampling</span></span></code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kor_workflow</span></span></code></pre></div>
-<pre><code><span><span class="co">## ══ Workflow [trained] ════════════════════════════════════════════════════════════════════════════════════════════════════</span></span>
+<pre><code><span><span class="co">## ══ Workflow [trained] ══════════════════════════════════════════════════════════════════════════════════════════════════</span></span>
 <span><span class="co">## Preprocessor: Recipe</span></span>
 <span><span class="co">## Model: bayesian()</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## ── Preprocessor ──────────────────────────────────────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## ── Preprocessor ────────────────────────────────────────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">## 0 Recipe Steps</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## ── Model ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## ── Model ───────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">##  Family: gaussian </span></span>
 <span><span class="co">##   Links: mu = identity; sigma = identity </span></span>
 <span><span class="co">## Formula: ..y ~ sigmoid(ic50, hill, top, bottom, log_dose) </span></span>
@@ -148,35 +149,35 @@ running fit.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Population-Level Effects: </span></span>
 <span><span class="co">##                                Estimate Est.Error l-95% CI u-95% CI Rhat</span></span>
-<span><span class="co">## ic50_substance_idBTRX_335140      -8.85      0.20    -9.22    -8.42 1.00</span></span>
-<span><span class="co">## ic50_substance_idBTRX_395750      -8.25      0.39    -8.92    -7.46 1.00</span></span>
-<span><span class="co">## ic50_substance_idJNJ              -9.15      0.31    -9.76    -8.51 1.00</span></span>
-<span><span class="co">## ic50_substance_idPF               -6.13      1.10    -7.65    -3.14 1.00</span></span>
-<span><span class="co">## hill_substance_idBTRX_335140      -1.46      0.59    -2.83    -0.58 1.00</span></span>
-<span><span class="co">## hill_substance_idBTRX_395750      -0.90      0.51    -2.27    -0.28 1.00</span></span>
-<span><span class="co">## hill_substance_idJNJ              -1.01      0.52    -2.48    -0.41 1.00</span></span>
-<span><span class="co">## hill_substance_idPF               -0.31      0.25    -0.91    -0.03 1.00</span></span>
-<span><span class="co">## bottom_substance_idBTRX_335140     0.00      0.51    -1.02     1.00 1.00</span></span>
-<span><span class="co">## bottom_substance_idBTRX_395750     0.01      0.50    -0.97     0.98 1.00</span></span>
-<span><span class="co">## bottom_substance_idJNJ             0.00      0.51    -1.03     0.98 1.00</span></span>
-<span><span class="co">## bottom_substance_idPF              0.01      0.50    -0.94     0.99 1.00</span></span>
+<span><span class="co">## ic50_substance_idBTRX_335140      -8.85      0.19    -9.20    -8.42 1.00</span></span>
+<span><span class="co">## ic50_substance_idBTRX_395750      -8.21      0.46    -8.92    -7.31 1.00</span></span>
+<span><span class="co">## ic50_substance_idJNJ              -9.14      0.32    -9.78    -8.51 1.00</span></span>
+<span><span class="co">## ic50_substance_idPF               -6.14      1.06    -7.67    -3.39 1.00</span></span>
+<span><span class="co">## hill_substance_idBTRX_335140      -1.46      0.60    -2.88    -0.59 1.00</span></span>
+<span><span class="co">## hill_substance_idBTRX_395750      -0.89      0.51    -2.20    -0.23 1.00</span></span>
+<span><span class="co">## hill_substance_idJNJ              -0.99      0.50    -2.31    -0.41 1.00</span></span>
+<span><span class="co">## hill_substance_idPF               -0.31      0.24    -0.87    -0.03 1.00</span></span>
+<span><span class="co">## bottom_substance_idBTRX_335140     0.01      0.50    -0.99     0.98 1.00</span></span>
+<span><span class="co">## bottom_substance_idBTRX_395750     0.01      0.51    -0.98     0.99 1.00</span></span>
+<span><span class="co">## bottom_substance_idJNJ            -0.00      0.50    -1.00     0.99 1.00</span></span>
+<span><span class="co">## bottom_substance_idPF             -0.00      0.50    -0.98     0.97 1.00</span></span>
 <span><span class="co">## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA</span></span>
 <span><span class="co">## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA</span></span>
 <span><span class="co">## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA</span></span>
 <span><span class="co">## top_substance_idPF               100.00      0.00   100.00   100.00   NA</span></span>
 <span><span class="co">##                                Bulk_ESS Tail_ESS</span></span>
-<span><span class="co">## ic50_substance_idBTRX_335140       3453     2241</span></span>
-<span><span class="co">## ic50_substance_idBTRX_395750       2970     1707</span></span>
-<span><span class="co">## ic50_substance_idJNJ               3764     2646</span></span>
-<span><span class="co">## ic50_substance_idPF                2124     1222</span></span>
-<span><span class="co">## hill_substance_idBTRX_335140       2996     2651</span></span>
-<span><span class="co">## hill_substance_idBTRX_395750       2949     1852</span></span>
-<span><span class="co">## hill_substance_idJNJ               3926     3141</span></span>
-<span><span class="co">## hill_substance_idPF                1784     1342</span></span>
-<span><span class="co">## bottom_substance_idBTRX_335140     4155     2948</span></span>
-<span><span class="co">## bottom_substance_idBTRX_395750     4618     2963</span></span>
-<span><span class="co">## bottom_substance_idJNJ             4014     3065</span></span>
-<span><span class="co">## bottom_substance_idPF              4128     2920</span></span>
+<span><span class="co">## ic50_substance_idBTRX_335140       4061     2264</span></span>
+<span><span class="co">## ic50_substance_idBTRX_395750       2239     1044</span></span>
+<span><span class="co">## ic50_substance_idJNJ               3939     2606</span></span>
+<span><span class="co">## ic50_substance_idPF                2289     1435</span></span>
+<span><span class="co">## hill_substance_idBTRX_335140       4018     3195</span></span>
+<span><span class="co">## hill_substance_idBTRX_395750       2344     1262</span></span>
+<span><span class="co">## hill_substance_idJNJ               4884     3233</span></span>
+<span><span class="co">## hill_substance_idPF                1856     1474</span></span>
+<span><span class="co">## bottom_substance_idBTRX_335140     4951     2833</span></span>
+<span><span class="co">## bottom_substance_idBTRX_395750     5480     2896</span></span>
+<span><span class="co">## bottom_substance_idJNJ             5218     2544</span></span>
+<span><span class="co">## bottom_substance_idPF              5071     2943</span></span>
 <span><span class="co">## top_substance_idBTRX_335140          NA       NA</span></span>
 <span><span class="co">## top_substance_idBTRX_395750          NA       NA</span></span>
 <span><span class="co">## top_substance_idJNJ                  NA       NA</span></span>
@@ -184,7 +185,7 @@ running fit.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Family Specific Parameters: </span></span>
 <span><span class="co">##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
-<span><span class="co">## sigma    32.15      2.84    27.30    38.27 1.00     3616     2674</span></span>
+<span><span class="co">## sigma    32.09      2.86    27.14    38.46 1.00     4192     2983</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## ...</span></span>
 <span><span class="co">## and 4 more lines.</span></span></code></pre>

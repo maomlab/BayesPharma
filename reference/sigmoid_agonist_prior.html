@@ -65,16 +65,16 @@ For other distribution options, reference brms::prior and Prior Choice Recommend
 normal distribution priors will be set.</p>
 <p>If you would like to set a parameter as a constant, enter a numeric
 value for the function argument.</p>
-<p>For other distribution options, reference <a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">brms::prior</a> and <a href="https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations" class="external-link">Prior Choice Recommendations </a></p>
+<p>For other distribution options, reference <a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::prior</a> and <a href="https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations" class="external-link">Prior Choice Recommendations </a></p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sigmoid_agonist_prior</span><span class="op">(</span></span>
-<span>  ec50 <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">prior</a></span><span class="op">(</span>prior <span class="op">=</span> <span class="fu">normal</span><span class="op">(</span><span class="op">-</span><span class="fl">6</span>, <span class="fl">2.5</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"ec50"</span><span class="op">)</span>,</span>
-<span>  hill <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">prior</a></span><span class="op">(</span>prior <span class="op">=</span> <span class="fu">normal</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"hill"</span>, lb <span class="op">=</span> <span class="op">-</span><span class="fl">0.01</span><span class="op">)</span>,</span>
-<span>  top <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">prior</a></span><span class="op">(</span>prior <span class="op">=</span> <span class="fu">normal</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span>,</span>
-<span>  bottom <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">prior</a></span><span class="op">(</span>prior <span class="op">=</span> <span class="fu">normal</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span>,</span>
+<span>  ec50 <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span>prior <span class="op">=</span> <span class="fu">normal</span><span class="op">(</span><span class="op">-</span><span class="fl">6</span>, <span class="fl">2.5</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"ec50"</span><span class="op">)</span>,</span>
+<span>  hill <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span>prior <span class="op">=</span> <span class="fu">normal</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"hill"</span>, lb <span class="op">=</span> <span class="op">-</span><span class="fl">0.01</span><span class="op">)</span>,</span>
+<span>  top <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span>prior <span class="op">=</span> <span class="fu">normal</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span>,</span>
+<span>  bottom <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span>prior <span class="op">=</span> <span class="fu">normal</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -82,39 +82,39 @@ value for the function argument.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>ec50</dt>
-<dd><p><a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">brms::brmsprior</a> or <code>numeric</code>. Prior for the <code>ec50</code>
+<dd><p><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior</a> or <code>numeric</code>. Prior for the <code>ec50</code>
 parameter.  Setting ec50 to a numeric value constrains it to a constant
 value. Default: normal(-6, 2.5) where the mean -6 corresponds to a
 concentration of 1e-6 or 1 μM.</p></dd>
 
 
 <dt>hill</dt>
-<dd><p><a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">brms::brmsprior</a> or <code>numeric</code>. Prior for the <code>hill</code>
+<dd><p><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior</a> or <code>numeric</code>. Prior for the <code>hill</code>
 parameter. Default: <code>normal(1, 1)</code> with and a lower bound of
 <code>-0.1</code>.</p></dd>
 
 
 <dt>top</dt>
-<dd><p><a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">brms::brmsprior</a> or <code>numeric</code> giving the prior for the <code>top</code>
+<dd><p><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior</a> or <code>numeric</code> giving the prior for the <code>top</code>
 parameter. Setting <code>top</code> to a <code>numeric</code> constrains it to a constant
 value.</p></dd>
 
 
 <dt>bottom</dt>
-<dd><p><a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">brms::brmsprior</a> or <code>numeric</code> giving the prior for the
+<dd><p><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior</a> or <code>numeric</code> giving the prior for the
 <code>bottom</code> parameter. Setting <code>bottom</code> to <code>numeric</code> constrains it to a
 constant value.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>additional <a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">brms::brmsprior</a> objects.</p></dd>
+<dd><p>additional <a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior</a> objects.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p><a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">brms::brmsprior</a></p>
+<p><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior</a></p>
 
 
     </div>
@@ -130,8 +130,8 @@ constant value.</p></dd>
 <span class="r-in"><span><span class="co"># Consider an activator that has a max response around 50%, EC50 is estimated</span></span></span>
 <span class="r-in"><span><span class="co"># to be around 1 nM, and minimum response is known to be 0.</span></span></span>
 <span class="r-in"><span><span class="va">priors</span> <span class="op">&lt;-</span> <span class="fu">sigmoid_agonist_prior</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  ec50 <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">prior</a></span><span class="op">(</span>prior <span class="op">=</span> <span class="fu">normal</span><span class="op">(</span><span class="op">-</span><span class="fl">9</span>, <span class="fl">0.5</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"ec50"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  top <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">prior</a></span><span class="op">(</span>prior <span class="op">=</span> <span class="fu">normal</span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.2</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ec50 <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span>prior <span class="op">=</span> <span class="fu">normal</span><span class="op">(</span><span class="op">-</span><span class="fl">9</span>, <span class="fl">0.5</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"ec50"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  top <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span>prior <span class="op">=</span> <span class="fu">normal</span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.2</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  bottom <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>

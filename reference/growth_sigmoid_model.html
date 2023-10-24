@@ -55,7 +55,7 @@ documentation."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/l
 
     <div class="ref-description section level2">
     <p>For additional information on additional function arguments, reference:
-<code><a href="https://rdrr.io/pkg/brms/man/brms-package.html" class="external-link">brms::brms()</a></code> and the <a href="https://rdrr.io/cran/rstan/man/stan.html" class="external-link">stan</a>
+<code><a href="https://paul-buerkner.github.io/brms/reference/brms-package.html" class="external-link">brms::brms()</a></code> and the <a href="https://rdrr.io/cran/rstan/man/stan.html" class="external-link">stan</a>
 documentation.</p>
     </div>
 
@@ -68,7 +68,7 @@ documentation.</p>
 <span>  init <span class="op">=</span> <span class="fu"><a href="growth_richards_init.html">growth_richards_init</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  iter <span class="op">=</span> <span class="fl">8000</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span>,</span>
-<span>  stanvar_function <span class="op">=</span> <span class="fu"><a href="growth_richards_stanvar.html">growth_richards_stanvar</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  stanvar_function <span class="op">=</span> <span class="fu"><a href="growth_sigmoid_stanvar.html">growth_sigmoid_stanvar</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  expose_functions <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -114,25 +114,25 @@ behavior. Adding <code>max_treedepth</code> and giving a greater value than
 
 <dt>expose_functions</dt>
 <dd><p><code>logical</code>. Expose the stan functions for the
-model. This is needed e.g. to run <code><a href="https://rdrr.io/pkg/brms/man/loo_compare.brmsfit.html" class="external-link">brms::loo_compare()</a></code></p></dd>
+model. This is needed e.g. to run <code><a href="https://paul-buerkner.github.io/brms/reference/loo_compare.brmsfit.html" class="external-link">brms::loo_compare()</a></code></p></dd>
 
 
 <dt>...</dt>
-<dd><p>additional arguments passed to <code><a href="https://rdrr.io/pkg/brms/man/brm.html" class="external-link">brms::brm()</a></code></p></dd>
+<dd><p>additional arguments passed to <code><a href="https://paul-buerkner.github.io/brms/reference/brm.html" class="external-link">brms::brm()</a></code></p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p><code>bpfit</code> a wrapper for <code><a href="https://rdrr.io/pkg/brms/man/brmsfit-class.html" class="external-link">brms::brmsfit()</a></code></p>
+<p><code>bpfit</code> a wrapper for <code><a href="https://paul-buerkner.github.io/brms/reference/brmsfit-class.html" class="external-link">brms::brmsfit()</a></code></p>
 
 
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Helper functions: <a href="growth_sigmoid_formula.html">growth_sigmoid_formula</a>, and
-<a href="growth_sigmoid_prior.html">growth_sigmoid_prior</a>, <a href="growth_sigmoid_init.html">growth_sigmoid_init</a> and <a href="https://rdrr.io/pkg/brms/man/brmsfit-class.html" class="external-link">brms::brmsfit</a></p></div>
+<a href="growth_sigmoid_prior.html">growth_sigmoid_prior</a>, <a href="growth_sigmoid_init.html">growth_sigmoid_init</a> and <a href="https://paul-buerkner.github.io/brms/reference/brmsfit-class.html" class="external-link">brms::brmsfit</a></p></div>
     </div>
 
     <div class="section level2">

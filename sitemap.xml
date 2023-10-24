@@ -82,13 +82,46 @@
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/calculate_log_dose.html</loc>
   </url>
   <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/cli_init_output_path.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/cli_load_bivariate_formula.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/cli_load_data.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/cli_load_init.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/cli_load_model_fn.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/cli_load_prior.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/cli_load_univariate_formula.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/cli_parse_options.html</loc>
+  </url>
+  <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/constant_formula.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/drc_model.html</loc>
   </url>
   <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/eval_init.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/eval_init_one_param.html</loc>
+  </url>
+  <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/expect_gg.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/fit_model_cli.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/get_response_units.html</loc>
@@ -194,6 +227,9 @@
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/prepare_prior.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/rstan_default_init.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/sigmoid.html</loc>

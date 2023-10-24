@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="Demonsrate the MuSyC_model to analyze the interaction between voltage and small molecules interact modulate conductance through the KCNQ2 voltage gated potassium channel.">
+<meta name="description" content="Demonstrate the MuSyC_model to analyze the interaction between voltage and small molecules interact modulate conductance through the KCNQ2 voltage gated potassium channel.">
 <title>Apply: MuSyC Model -- KCNQ Conductance • BayesPharma</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Apply: MuSyC Model -- KCNQ Conductance">
-<meta property="og:description" content="Demonsrate the MuSyC_model to analyze the interaction between voltage and small molecules interact modulate conductance through the KCNQ2 voltage gated potassium channel.">
+<meta property="og:description" content="Demonstrate the MuSyC_model to analyze the interaction between voltage and small molecules interact modulate conductance through the KCNQ2 voltage gated potassium channel.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -77,104 +77,62 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">read_range</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span></span>
-<span>    <span class="va">sheet</span>,</span>
-<span>    <span class="va">range</span>,</span>
-<span>    <span class="va">treatment</span>,</span>
-<span>    <span class="va">dose_uM</span>,</span>
-<span>    <span class="va">is_control</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span></span>
-<span>    path <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span></span>
-<span>      <span class="st">"inst"</span>, <span class="st">"extdata"</span>, <span class="st">"conductance_KCNQ"</span>, <span class="st">"Li_CellRes_2021_fig1.xlsx"</span><span class="op">)</span>,</span>
-<span>    sheet <span class="op">=</span> <span class="op">{</span><span class="op">{</span><span class="va">sheet</span><span class="op">}</span><span class="op">}</span>,</span>
-<span>    range <span class="op">=</span> <span class="va">range</span>,</span>
-<span>    col_names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>    .name_repair <span class="op">=</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"replica_"</span>, <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>      treatment <span class="op">=</span> <span class="op">{</span><span class="op">{</span><span class="va">treatment</span><span class="op">}</span><span class="op">}</span>,</span>
-<span>      dose_uM <span class="op">=</span> <span class="op">{</span><span class="op">{</span><span class="va">dose_uM</span><span class="op">}</span><span class="op">}</span>,</span>
-<span>      is_control <span class="op">=</span> <span class="op">{</span><span class="op">{</span><span class="va">is_control</span><span class="op">}</span><span class="op">}</span>,</span>
-<span>      voltage <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">90</span>, <span class="fl">60</span>, by <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
-<span>      .before <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span></span>
-<span>      cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">treatment</span>, <span class="op">-</span><span class="va">dose_uM</span>, <span class="op">-</span><span class="va">is_control</span>, <span class="op">-</span><span class="va">voltage</span><span class="op">)</span>,</span>
-<span>      names_to <span class="op">=</span> <span class="st">"replica"</span>,</span>
-<span>      values_to <span class="op">=</span> <span class="st">"conductance"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig1b"</span>, range <span class="op">=</span> <span class="st">"E3:I18"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"ztz240"</span>, dose_uM <span class="op">=</span> <span class="fl">10</span>, is_control <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig1b"</span>, range <span class="op">=</span> <span class="st">"L3:P18"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"ztz240"</span>, dose_uM <span class="op">=</span> <span class="fl">10</span>, is_control <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig1b"</span>, range <span class="op">=</span> <span class="st">"E22:I37"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"ztz240"</span>, dose_uM <span class="op">=</span> <span class="fl">5</span>, is_control <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig1b"</span>, range <span class="op">=</span> <span class="st">"L22:P37"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"ztz240"</span>, dose_uM <span class="op">=</span> <span class="fl">5</span>, is_control <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,  </span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig1b"</span>, range <span class="op">=</span> <span class="st">"E40:I55"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"ztz240"</span>, dose_uM <span class="op">=</span> <span class="fl">3</span>, is_control <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig1b"</span>, range <span class="op">=</span> <span class="st">"L40:P55"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"ztz240"</span>, dose_uM <span class="op">=</span> <span class="fl">3</span>, is_control <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>, </span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig1b"</span>, range <span class="op">=</span> <span class="st">"E58:J73"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"ztz240"</span>, dose_uM <span class="op">=</span> <span class="fl">1</span>, is_control <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig1b"</span>, range <span class="op">=</span> <span class="st">"L58:Q73"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"ztz240"</span>, dose_uM <span class="op">=</span> <span class="fl">1</span>, is_control <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,   </span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig1b"</span>, range <span class="op">=</span> <span class="st">"E77:I92"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"ztz240"</span>, dose_uM <span class="op">=</span> <span class="fl">0.1</span>, is_control <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig1b"</span>, range <span class="op">=</span> <span class="st">"L77:P92"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"ztz240"</span>, dose_uM <span class="op">=</span> <span class="fl">0.1</span>, is_control <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span></span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig 1d"</span>, range <span class="op">=</span> <span class="st">"D2:I17"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"retigabine"</span>, dose_uM <span class="op">=</span> <span class="fl">30</span>, is_control <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig 1d"</span>, range <span class="op">=</span> <span class="st">"M2:R17"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"retigabine"</span>, dose_uM <span class="op">=</span> <span class="fl">30</span>, is_control <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig 1d"</span>, range <span class="op">=</span> <span class="st">"D20:I35"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"retigabine"</span>, dose_uM <span class="op">=</span> <span class="fl">10</span>, is_control <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig 1d"</span>, range <span class="op">=</span> <span class="st">"M20:R35"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"retigabine"</span>, dose_uM <span class="op">=</span> <span class="fl">10</span>, is_control <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,  </span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig 1d"</span>, range <span class="op">=</span> <span class="st">"D39:H54"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"retigabine"</span>, dose_uM <span class="op">=</span> <span class="fl">5</span>, is_control <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig 1d"</span>, range <span class="op">=</span> <span class="st">"M39:Q54"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"retigabine"</span>, dose_uM <span class="op">=</span> <span class="fl">5</span>, is_control <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>, </span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig 1d"</span>, range <span class="op">=</span> <span class="st">"D57:H72"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"retigabine"</span>, dose_uM <span class="op">=</span> <span class="fl">3</span>, is_control <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig 1d"</span>, range <span class="op">=</span> <span class="st">"M57:Q72"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"retigabine"</span>, dose_uM <span class="op">=</span> <span class="fl">3</span>, is_control <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,   </span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig 1d"</span>, range <span class="op">=</span> <span class="st">"D76:H91"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"retigabine"</span>, dose_uM <span class="op">=</span> <span class="fl">1</span>, is_control <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig 1d"</span>, range <span class="op">=</span> <span class="st">"M76:Q91"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"retigabine"</span>, dose_uM <span class="op">=</span> <span class="fl">1</span>, is_control <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig 1d"</span>, range <span class="op">=</span> <span class="st">"D95:H110"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"retigabine"</span>, dose_uM <span class="op">=</span> <span class="fl">0.3</span>, is_control <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  <span class="fu">read_range</span><span class="op">(</span></span>
-<span>    sheet <span class="op">=</span> <span class="st">"fig 1d"</span>, range <span class="op">=</span> <span class="st">"M95:Q110"</span>,</span>
-<span>    treatment <span class="op">=</span> <span class="st">"retigabine"</span>, dose_uM <span class="op">=</span> <span class="fl">0.3</span>, is_control <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Coordinate system already present. Adding new coordinate system, which will</span></span>
-<span><span class="co">## replace the existing one.</span></span></code></pre>
-<pre><code><span><span class="co">## Error in check_breaks_labels(breaks, labels): object 'd2_label' not found</span></span></code></pre>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="section level2">
+<h2 id="re-analysis-figure-1-of-li-et-al--2021-molecular-basis-for-ligand-activation-of-the-human-kcnq2-channel">Re-analysis Figure 1 of (Li, et al., 2021) Molecular Basis for
+Ligand Activation of the Human KCNQ2 Channel<a class="anchor" aria-label="anchor" href="#re-analysis-figure-1-of-li-et-al--2021-molecular-basis-for-ligand-activation-of-the-human-kcnq2-channel"></a>
+</h2>
+<p>KCNQ2 is a voltage gated potassium channel important for
+re-establishing neuronal homeostasis following an action potential.
+Dis-regulation of channels in the KCNQ family can cause epilepsy,
+tinnitus, and depression. While there has been sustained interest in
+developing small-molecule based therapeutics targeting KCNQ2, the only
+FDA approved drug that targets KCNQ2, retigabine, was given a black-box
+warning due to unwanted side-effects, even though it was effective at
+treating epilepsy. Excitingly there has been recent progress in using
+Cryo-EM to structurally characterize ion channels including KCNQ2, which
+promise to support structure-based drug design.</p>
+<p>Recently, <span class="citation">[@Li2021-ef]</span> used Cryo-EM to
+characterize the structure of KCNQ2 in complex with retigabine, which
+interacts in the membrane on the outside of the pore, and ztz240, which
+interacts with the voltage sensor domain. To relate the structure and
+function, <span class="citation">[@Li2021-ef]</span> measured
+conductance as a function of voltage (G-V curves) in the presence of
+varying doses of retigabine and ztz240 using whole cell patch-clamp
+electrophysiology in Chinese hamster ovary (CHO)-K1 cells overexpressing
+KCNQ2. Both compounds are thought to be agonists, that is with
+increasing concentration of drug, less negative voltages are required to
+open the channel.</p>
+<p>In this case study, the aim is to re-analyze the effects of
+retigabine and ztz240 using the data collected in <span class="citation">[@Li2021-ef]</span> and presented in panels B and D of
+figure 1. A key idea is to recognize that voltage and drug treatment can
+be thought of independent perturbations and the drug effect can be
+framed as characterizing the interaction between these
+perturbations.</p>
+<p>To begin, we will load and plot the data,</p>
+<pre><code><span><span class="co">## # A tibble: 1,856 × 6</span></span>
+<span><span class="co">##    treatment dose_uM is_control voltage replica   conductance</span></span>
+<span><span class="co">##    &lt;chr&gt;       &lt;dbl&gt; &lt;lgl&gt;        &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;</span></span>
+<span><span class="co">##  1 ztz240         10 TRUE           -90 replica_1      0.0403</span></span>
+<span><span class="co">##  2 ztz240         10 TRUE           -90 replica_2      0.0632</span></span>
+<span><span class="co">##  3 ztz240         10 TRUE           -90 replica_3      0.0200</span></span>
+<span><span class="co">##  4 ztz240         10 TRUE           -90 replica_4      0.0404</span></span>
+<span><span class="co">##  5 ztz240         10 TRUE           -90 replica_5      0.0175</span></span>
+<span><span class="co">##  6 ztz240         10 TRUE           -80 replica_1      0.0469</span></span>
+<span><span class="co">##  7 ztz240         10 TRUE           -80 replica_2      0.0682</span></span>
+<span><span class="co">##  8 ztz240         10 TRUE           -80 replica_3      0.0345</span></span>
+<span><span class="co">##  9 ztz240         10 TRUE           -80 replica_4      0.0574</span></span>
+<span><span class="co">## 10 ztz240         10 TRUE           -80 replica_5      0.0339</span></span>
+<span><span class="co">## # ℹ 1,846 more rows</span></span></code></pre>
+<div class="figure" style="text-align: center">
+<img src="apply_MuSyC_KCNQ_files/reproduce-fig1-1.png" alt="plot of chunk reproduce-fig1" width="100%"><p class="caption">
+plot of chunk reproduce-fig1
+</p>
+</div>
+<p>Then, for each treatment and dose, we will fit a sigmoid curve, which
+has an comparable functional form to the what they call the Boltzmann
+equation for G/Gmax as a function of voltage. To make the fitting more
+stable, we will transform the treatment and response scales.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_conductance</span> <span class="op">&lt;-</span> <span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/sigmoid_model.html">sigmoid_model</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">model_data</span>,</span>
 <span>  formula <span class="op">=</span> <span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/sigmoid_agonist_formula.html">sigmoid_agonist_formula</a></span><span class="op">(</span></span>
@@ -184,17 +142,156 @@
 <span>    response_units <span class="op">=</span> <span class="st">"% Gmax"</span>,</span>
 <span>    predictors <span class="op">=</span> <span class="fl">0</span> <span class="op">+</span> <span class="va">treatment</span><span class="op">:</span><span class="va">doselabel</span><span class="op">)</span>,</span>
 <span>  prior <span class="op">=</span> <span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/sigmoid_agonist_prior.html">sigmoid_agonist_prior</a></span><span class="op">(</span></span>
-<span>    ec50 <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="op">-</span><span class="fl">0.2</span>, <span class="fl">1</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"ec50"</span><span class="op">)</span>,</span>
-<span>    hill <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"hill"</span>, lb <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    ec50 <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="op">-</span><span class="fl">0.2</span>, <span class="fl">1</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"ec50"</span><span class="op">)</span>,</span>
+<span>    hill <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span>, nlpar <span class="op">=</span> <span class="st">"hill"</span>, lb <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  init <span class="op">=</span> <span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/sigmoid_agonist_init.html">sigmoid_agonist_init</a></span><span class="op">(</span></span>
+<span>    ec50 <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">7</span>, max <span class="op">=</span> <span class="op">-</span><span class="fl">5</span><span class="op">)</span>,</span>
+<span>    hill <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span>, min <span class="op">=</span> <span class="fl">0.8</span>, max <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span>,</span>
+<span>    bottom <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">.1</span>, max <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>    top <span class="op">=</span> \<span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span>, min <span class="op">=</span> <span class="fl">0.8</span>, max <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  cores <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">##  Family: gaussian </span></span>
+<span><span class="co">##   Links: mu = identity; sigma = identity </span></span>
+<span><span class="co">## Formula: conductance ~ sigmoid(ec50, hill, top, bottom, voltage) </span></span>
+<span><span class="co">##          ec50 ~ 0 + treatment:doselabel</span></span>
+<span><span class="co">##          hill ~ 0 + treatment:doselabel</span></span>
+<span><span class="co">##          top ~ 0 + treatment:doselabel</span></span>
+<span><span class="co">##          bottom ~ 0 + treatment:doselabel</span></span>
+<span><span class="co">##    Data: data (Number of observations: 928) </span></span>
+<span><span class="co">##   Draws: 4 chains, each with iter = 8000; warmup = 4000; thin = 1;</span></span>
+<span><span class="co">##          total post-warmup draws = 16000</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Population-Level Effects: </span></span>
+<span><span class="co">##                                           Estimate Est.Error l-95% CI u-95% CI</span></span>
+<span><span class="co">## ec50_treatmentretigabine:doselabel0.1uM      -0.21      1.00    -2.17     1.74</span></span>
+<span><span class="co">## ec50_treatmentztz240:doselabel0.1uM          -0.12      0.01    -0.14    -0.09</span></span>
+<span><span class="co">## ec50_treatmentretigabine:doselabel0.3uM      -0.19      0.01    -0.21    -0.17</span></span>
+<span><span class="co">## ec50_treatmentztz240:doselabel0.3uM          -0.20      1.00    -2.17     1.76</span></span>
+<span><span class="co">## ec50_treatmentretigabine:doselabel1uM        -0.25      0.01    -0.28    -0.22</span></span>
+<span><span class="co">## ec50_treatmentztz240:doselabel1uM            -0.19      0.01    -0.22    -0.17</span></span>
+<span><span class="co">## ec50_treatmentretigabine:doselabel10uM       -0.45      0.01    -0.48    -0.43</span></span>
+<span><span class="co">## ec50_treatmentztz240:doselabel10uM           -0.44      0.01    -0.45    -0.42</span></span>
+<span><span class="co">## ec50_treatmentretigabine:doselabel3uM        -0.36      0.01    -0.38    -0.33</span></span>
+<span><span class="co">## ec50_treatmentztz240:doselabel3uM            -0.32      0.01    -0.34    -0.30</span></span>
+<span><span class="co">## ec50_treatmentretigabine:doselabel30uM       -0.43      0.01    -0.46    -0.40</span></span>
+<span><span class="co">## ec50_treatmentztz240:doselabel30uM           -0.20      0.99    -2.15     1.73</span></span>
+<span><span class="co">## ec50_treatmentretigabine:doselabel5uM        -0.40      0.01    -0.42    -0.37</span></span>
+<span><span class="co">## ec50_treatmentztz240:doselabel5uM            -0.32      0.01    -0.34    -0.30</span></span>
+<span><span class="co">## hill_treatmentretigabine:doselabel0.1uM       3.28      1.75     0.34     6.98</span></span>
+<span><span class="co">## hill_treatmentztz240:doselabel0.1uM           2.48      0.21     2.08     2.91</span></span>
+<span><span class="co">## hill_treatmentretigabine:doselabel0.3uM       3.02      0.24     2.58     3.53</span></span>
+<span><span class="co">## hill_treatmentztz240:doselabel0.3uM           3.28      1.75     0.32     6.96</span></span>
+<span><span class="co">## hill_treatmentretigabine:doselabel1uM         2.56      0.21     2.16     3.00</span></span>
+<span><span class="co">## hill_treatmentztz240:doselabel1uM             2.85      0.21     2.46     3.28</span></span>
+<span><span class="co">## hill_treatmentretigabine:doselabel10uM        2.89      0.24     2.45     3.38</span></span>
+<span><span class="co">## hill_treatmentztz240:doselabel10uM            4.99      0.44     4.20     5.92</span></span>
+<span><span class="co">## hill_treatmentretigabine:doselabel3uM         3.11      0.26     2.63     3.66</span></span>
+<span><span class="co">## hill_treatmentztz240:doselabel3uM             3.39      0.27     2.89     3.96</span></span>
+<span><span class="co">## hill_treatmentretigabine:doselabel30uM        2.77      0.22     2.36     3.23</span></span>
+<span><span class="co">## hill_treatmentztz240:doselabel30uM            3.25      1.76     0.30     6.98</span></span>
+<span><span class="co">## hill_treatmentretigabine:doselabel5uM         3.12      0.26     2.65     3.66</span></span>
+<span><span class="co">## hill_treatmentztz240:doselabel5uM             3.88      0.30     3.33     4.50</span></span>
+<span><span class="co">## top_treatmentretigabine:doselabel0.1uM        1.00      0.50     0.03     1.96</span></span>
+<span><span class="co">## top_treatmentztz240:doselabel0.1uM            0.99      0.02     0.95     1.04</span></span>
+<span><span class="co">## top_treatmentretigabine:doselabel0.3uM        0.97      0.02     0.94     1.00</span></span>
+<span><span class="co">## top_treatmentztz240:doselabel0.3uM            1.00      0.51     0.00     2.00</span></span>
+<span><span class="co">## top_treatmentretigabine:doselabel1uM          0.98      0.02     0.95     1.01</span></span>
+<span><span class="co">## top_treatmentztz240:doselabel1uM              0.93      0.01     0.90     0.96</span></span>
+<span><span class="co">## top_treatmentretigabine:doselabel10uM         0.96      0.01     0.94     0.99</span></span>
+<span><span class="co">## top_treatmentztz240:doselabel10uM             0.93      0.01     0.91     0.95</span></span>
+<span><span class="co">## top_treatmentretigabine:doselabel3uM          0.95      0.01     0.93     0.98</span></span>
+<span><span class="co">## top_treatmentztz240:doselabel3uM              0.96      0.01     0.94     0.99</span></span>
+<span><span class="co">## top_treatmentretigabine:doselabel30uM         0.96      0.01     0.94     0.99</span></span>
+<span><span class="co">## top_treatmentztz240:doselabel30uM             1.00      0.50     0.01     1.98</span></span>
+<span><span class="co">## top_treatmentretigabine:doselabel5uM          0.96      0.01     0.94     0.99</span></span>
+<span><span class="co">## top_treatmentztz240:doselabel5uM              0.95      0.01     0.93     0.97</span></span>
+<span><span class="co">## bottom_treatmentretigabine:doselabel0.1uM    -0.00      0.50    -0.98     0.99</span></span>
+<span><span class="co">## bottom_treatmentztz240:doselabel0.1uM         0.01      0.02    -0.03     0.04</span></span>
+<span><span class="co">## bottom_treatmentretigabine:doselabel0.3uM     0.02      0.02    -0.02     0.05</span></span>
+<span><span class="co">## bottom_treatmentztz240:doselabel0.3uM         0.00      0.50    -0.97     0.97</span></span>
+<span><span class="co">## bottom_treatmentretigabine:doselabel1uM       0.00      0.02    -0.04     0.05</span></span>
+<span><span class="co">## bottom_treatmentztz240:doselabel1uM          -0.02      0.02    -0.06     0.01</span></span>
+<span><span class="co">## bottom_treatmentretigabine:doselabel10uM     -0.04      0.03    -0.10     0.02</span></span>
+<span><span class="co">## bottom_treatmentztz240:doselabel10uM         -0.00      0.02    -0.04     0.03</span></span>
+<span><span class="co">## bottom_treatmentretigabine:doselabel3uM      -0.01      0.02    -0.06     0.03</span></span>
+<span><span class="co">## bottom_treatmentztz240:doselabel3uM          -0.02      0.02    -0.06     0.02</span></span>
+<span><span class="co">## bottom_treatmentretigabine:doselabel30uM     -0.07      0.03    -0.13    -0.02</span></span>
+<span><span class="co">## bottom_treatmentztz240:doselabel30uM         -0.00      0.50    -0.98     0.97</span></span>
+<span><span class="co">## bottom_treatmentretigabine:doselabel5uM      -0.05      0.03    -0.11    -0.00</span></span>
+<span><span class="co">## bottom_treatmentztz240:doselabel5uM           0.00      0.02    -0.03     0.04</span></span>
+<span><span class="co">##                                           Rhat Bulk_ESS Tail_ESS</span></span>
+<span><span class="co">## ec50_treatmentretigabine:doselabel0.1uM   1.00    34783    11068</span></span>
+<span><span class="co">## ec50_treatmentztz240:doselabel0.1uM       1.00    25288    11223</span></span>
+<span><span class="co">## ec50_treatmentretigabine:doselabel0.3uM   1.00    24792    11852</span></span>
+<span><span class="co">## ec50_treatmentztz240:doselabel0.3uM       1.00    35485    11480</span></span>
+<span><span class="co">## ec50_treatmentretigabine:doselabel1uM     1.00    25280    12104</span></span>
+<span><span class="co">## ec50_treatmentztz240:doselabel1uM         1.00    25026    11198</span></span>
+<span><span class="co">## ec50_treatmentretigabine:doselabel10uM    1.00    17942    11644</span></span>
+<span><span class="co">## ec50_treatmentztz240:doselabel10uM        1.00    23346    12379</span></span>
+<span><span class="co">## ec50_treatmentretigabine:doselabel3uM     1.00    22956    12199</span></span>
+<span><span class="co">## ec50_treatmentztz240:doselabel3uM         1.00    24904    11832</span></span>
+<span><span class="co">## ec50_treatmentretigabine:doselabel30uM    1.00    20528    11891</span></span>
+<span><span class="co">## ec50_treatmentztz240:doselabel30uM        1.00    33097    10886</span></span>
+<span><span class="co">## ec50_treatmentretigabine:doselabel5uM     1.00    22066    10918</span></span>
+<span><span class="co">## ec50_treatmentztz240:doselabel5uM         1.00    24969    11622</span></span>
+<span><span class="co">## hill_treatmentretigabine:doselabel0.1uM   1.00    11316     6605</span></span>
+<span><span class="co">## hill_treatmentztz240:doselabel0.1uM       1.00    16130    11554</span></span>
+<span><span class="co">## hill_treatmentretigabine:doselabel0.3uM   1.00    18195    11964</span></span>
+<span><span class="co">## hill_treatmentztz240:doselabel0.3uM       1.00    10769     5702</span></span>
+<span><span class="co">## hill_treatmentretigabine:doselabel1uM     1.00    16991    11091</span></span>
+<span><span class="co">## hill_treatmentztz240:doselabel1uM         1.00    18318    10961</span></span>
+<span><span class="co">## hill_treatmentretigabine:doselabel10uM    1.00    14215    10879</span></span>
+<span><span class="co">## hill_treatmentztz240:doselabel10uM        1.00    21265    13050</span></span>
+<span><span class="co">## hill_treatmentretigabine:doselabel3uM     1.00    18021    12448</span></span>
+<span><span class="co">## hill_treatmentztz240:doselabel3uM         1.00    19661    12961</span></span>
+<span><span class="co">## hill_treatmentretigabine:doselabel30uM    1.00    15569    10928</span></span>
+<span><span class="co">## hill_treatmentztz240:doselabel30uM        1.00    10709     6219</span></span>
+<span><span class="co">## hill_treatmentretigabine:doselabel5uM     1.00    16213    10503</span></span>
+<span><span class="co">## hill_treatmentztz240:doselabel5uM         1.00    21759    12512</span></span>
+<span><span class="co">## top_treatmentretigabine:doselabel0.1uM    1.00    31311    10887</span></span>
+<span><span class="co">## top_treatmentztz240:doselabel0.1uM        1.00    16792    10851</span></span>
+<span><span class="co">## top_treatmentretigabine:doselabel0.3uM    1.00    19113    12309</span></span>
+<span><span class="co">## top_treatmentztz240:doselabel0.3uM        1.00    33295    10303</span></span>
+<span><span class="co">## top_treatmentretigabine:doselabel1uM      1.00    20687    11878</span></span>
+<span><span class="co">## top_treatmentztz240:doselabel1uM          1.00    20688    11449</span></span>
+<span><span class="co">## top_treatmentretigabine:doselabel10uM     1.00    22627    13010</span></span>
+<span><span class="co">## top_treatmentztz240:doselabel10uM         1.00    26273    13117</span></span>
+<span><span class="co">## top_treatmentretigabine:doselabel3uM      1.00    21977    12626</span></span>
+<span><span class="co">## top_treatmentztz240:doselabel3uM          1.00    23135    12228</span></span>
+<span><span class="co">## top_treatmentretigabine:doselabel30uM     1.00    20546    12915</span></span>
+<span><span class="co">## top_treatmentztz240:doselabel30uM         1.00    34890    10813</span></span>
+<span><span class="co">## top_treatmentretigabine:doselabel5uM      1.00    23638    12335</span></span>
+<span><span class="co">## top_treatmentztz240:doselabel5uM          1.00    25793    12158</span></span>
+<span><span class="co">## bottom_treatmentretigabine:doselabel0.1uM 1.00    36318    11303</span></span>
+<span><span class="co">## bottom_treatmentztz240:doselabel0.1uM     1.00    19506    12083</span></span>
+<span><span class="co">## bottom_treatmentretigabine:doselabel0.3uM 1.00    20395    11791</span></span>
+<span><span class="co">## bottom_treatmentztz240:doselabel0.3uM     1.00    36621    11094</span></span>
+<span><span class="co">## bottom_treatmentretigabine:doselabel1uM   1.00    17868    11011</span></span>
+<span><span class="co">## bottom_treatmentztz240:doselabel1uM       1.00    18972    12351</span></span>
+<span><span class="co">## bottom_treatmentretigabine:doselabel10uM  1.00    14148     9853</span></span>
+<span><span class="co">## bottom_treatmentztz240:doselabel10uM      1.00    21253    11743</span></span>
+<span><span class="co">## bottom_treatmentretigabine:doselabel3uM   1.00    18186    11233</span></span>
+<span><span class="co">## bottom_treatmentztz240:doselabel3uM       1.00    19723    12867</span></span>
+<span><span class="co">## bottom_treatmentretigabine:doselabel30uM  1.00    15546    10646</span></span>
+<span><span class="co">## bottom_treatmentztz240:doselabel30uM      1.00    32655    10736</span></span>
+<span><span class="co">## bottom_treatmentretigabine:doselabel5uM   1.00    17254     9650</span></span>
+<span><span class="co">## bottom_treatmentztz240:doselabel5uM       1.00    21366    12002</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Family Specific Parameters: </span></span>
+<span><span class="co">##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span><span class="co">## sigma     0.06      0.00     0.06     0.06 1.00    27866    12208</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
+<span><span class="co">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
+<span><span class="co">## scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_conductance</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/plot_prior_posterior_densities.html">plot_prior_posterior_densities</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).</span></span>
 <span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1: Gradient evaluation took 1.5e-05 seconds</span></span>
-<span><span class="co">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.15 seconds.</span></span>
+<span><span class="co">## Chain 1: Gradient evaluation took 2.6e-05 seconds</span></span>
+<span><span class="co">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.26 seconds.</span></span>
 <span><span class="co">## Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 1: </span></span>
 <span><span class="co">## Chain 1: </span></span>
@@ -211,15 +308,15 @@
 <span><span class="co">## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1:  Elapsed Time: 0.147 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 1:                0.224 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 1:                0.371 seconds (Total)</span></span>
+<span><span class="co">## Chain 1:  Elapsed Time: 0.258 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 1:                0.274 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 1:                0.532 seconds (Total)</span></span>
 <span><span class="co">## Chain 1: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).</span></span>
 <span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2: Gradient evaluation took 4e-06 seconds</span></span>
-<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.</span></span>
+<span><span class="co">## Chain 2: Gradient evaluation took 8e-06 seconds</span></span>
+<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.</span></span>
 <span><span class="co">## Chain 2: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 2: </span></span>
 <span><span class="co">## Chain 2: </span></span>
@@ -236,15 +333,15 @@
 <span><span class="co">## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2:  Elapsed Time: 0.159 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 2:                0.172 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 2:                0.331 seconds (Total)</span></span>
+<span><span class="co">## Chain 2:  Elapsed Time: 0.192 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 2:                0.138 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 2:                0.33 seconds (Total)</span></span>
 <span><span class="co">## Chain 2: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).</span></span>
 <span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3: Gradient evaluation took 3e-06 seconds</span></span>
-<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.</span></span>
+<span><span class="co">## Chain 3: Gradient evaluation took 7e-06 seconds</span></span>
+<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.</span></span>
 <span><span class="co">## Chain 3: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 3: </span></span>
 <span><span class="co">## Chain 3: </span></span>
@@ -261,15 +358,15 @@
 <span><span class="co">## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3:  Elapsed Time: 0.149 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 3:                0.11 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 3:                0.259 seconds (Total)</span></span>
+<span><span class="co">## Chain 3:  Elapsed Time: 0.199 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 3:                0.272 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 3:                0.471 seconds (Total)</span></span>
 <span><span class="co">## Chain 3: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).</span></span>
 <span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4: Gradient evaluation took 3e-06 seconds</span></span>
-<span><span class="co">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.</span></span>
+<span><span class="co">## Chain 4: Gradient evaluation took 1.1e-05 seconds</span></span>
+<span><span class="co">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.</span></span>
 <span><span class="co">## Chain 4: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 4: </span></span>
 <span><span class="co">## Chain 4: </span></span>
@@ -286,78 +383,131 @@
 <span><span class="co">## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4:  Elapsed Time: 0.171 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 4:                0.128 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 4:                0.299 seconds (Total)</span></span>
+<span><span class="co">## Chain 4:  Elapsed Time: 0.222 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 4:                0.27 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 4:                0.492 seconds (Total)</span></span>
 <span><span class="co">## Chain 4:</span></span></code></pre>
-<p><img src="apply_MuSyC_KCNQ_files/model-conductance-prior-posterior-1.png" alt="plot of chunk model-conductance-prior-posterior" width="100%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="figure" style="text-align: center">
+<img src="apply_MuSyC_KCNQ_files/model-conductance-prior-posterior-1.png" alt="plot of chunk model-conductance-prior-posterior" width="100%"><p class="caption">
+plot of chunk model-conductance-prior-posterior
+</p>
+</div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_conductance</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">BayesPharma</span><span class="fu">::</span><span class="fu"><a href="../reference/plot_posterior_draws.html">plot_posterior_draws</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="apply_MuSyC_KCNQ_files/model-conductance-predictive-1.png" alt="plot of chunk model-conductance-predictive" width="100%" style="display: block; margin: auto;">
-Fit MuSyC Model</p>
-<pre><code><span><span class="co">## Warning in BayesPharma::MuSyC_model(data = model_data, formula = BayesPharma::MuSyC_formula(treatment_1_variable = "voltage", : There needs to be variable for treatment 2 'log_dose' as a column in the input 'data' data.frame</span></span></code></pre>
-<pre><code><span><span class="co">## Error in `dplyr::mutate()`:</span></span>
-<span><span class="co">## ℹ In argument: `logd2scale = mean(.data[["log_dose"]])`.</span></span>
-<span><span class="co">## Caused by error in `.data[["log_dose"]]`:</span></span>
-<span><span class="co">## ! Column `log_dose` not found in `.data`.</span></span></code></pre>
-<pre><code><span><span class="co">## Error in stanc(file = file, model_code = model_code, model_name = model_name, : 0</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Semantic error in 'string', line 84, column 24 to column 27:</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Identifier 'Inf' not in scope.</span></span></code></pre>
+<div class="figure" style="text-align: center">
+<img src="apply_MuSyC_KCNQ_files/model-conductance-predictive-1.png" alt="plot of chunk model-conductance-predictive" width="100%"><p class="caption">
+plot of chunk model-conductance-predictive
+</p>
+</div>
+<p>Fit MuSyC Model</p>
+<pre><code><span><span class="co">## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c</span></span>
+<span><span class="co">## clang -mmacosx-version-min=10.13 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o</span></span>
+<span><span class="co">## In file included from &lt;built-in&gt;:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:88:</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name 'namespace'</span></span>
+<span><span class="co">## namespace Eigen {</span></span>
+<span><span class="co">## ^</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected ';' after top level declarator</span></span>
+<span><span class="co">## namespace Eigen {</span></span>
+<span><span class="co">##                ^</span></span>
+<span><span class="co">##                ;</span></span>
+<span><span class="co">## In file included from &lt;built-in&gt;:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:96:10: fatal error: 'complex' file not found</span></span>
+<span><span class="co">## #include &lt;complex&gt;</span></span>
+<span><span class="co">##          ^~~~~~~~~</span></span>
+<span><span class="co">## 3 errors generated.</span></span>
+<span><span class="co">## make[1]: *** [foo.o] Error 1</span></span>
+<span><span class="co">## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c</span></span>
+<span><span class="co">## clang -mmacosx-version-min=10.13 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o</span></span>
+<span><span class="co">## In file included from &lt;built-in&gt;:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:88:</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name 'namespace'</span></span>
+<span><span class="co">## namespace Eigen {</span></span>
+<span><span class="co">## ^</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected ';' after top level declarator</span></span>
+<span><span class="co">## namespace Eigen {</span></span>
+<span><span class="co">##                ^</span></span>
+<span><span class="co">##                ;</span></span>
+<span><span class="co">## In file included from &lt;built-in&gt;:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:96:10: fatal error: 'complex' file not found</span></span>
+<span><span class="co">## #include &lt;complex&gt;</span></span>
+<span><span class="co">##          ^~~~~~~~~</span></span>
+<span><span class="co">## 3 errors generated.</span></span>
+<span><span class="co">## make[1]: *** [foo.o] Error 1</span></span></code></pre>
 <p>Join the conductance model with the dose information to model how the
 voltage dependence depends on the drug dose</p>
 <pre><code><span><span class="co">## # A tibble: 44 × 15</span></span>
-<span><span class="co">##    variable_type variable predictors_label         mean   median      sd     mad</span></span>
-<span><span class="co">##    &lt;chr&gt;         &lt;chr&gt;    &lt;chr&gt;                   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">##  1 b             ec50     treatmentztz240:dos… -0.116   -0.117   0.0145  0.0145 </span></span>
-<span><span class="co">##  2 b             ec50     treatmentretigabine… -0.189   -0.189   0.0118  0.0118 </span></span>
-<span><span class="co">##  3 b             ec50     treatmentretigabine… -0.247   -0.247   0.0141  0.0139 </span></span>
-<span><span class="co">##  4 b             ec50     treatmentztz240:dos… -0.194   -0.194   0.0117  0.0117 </span></span>
-<span><span class="co">##  5 b             ec50     treatmentretigabine… -0.451   -0.450   0.0139  0.0136 </span></span>
-<span><span class="co">##  6 b             ec50     treatmentztz240:dos… -0.438   -0.438   0.00822 0.00809</span></span>
-<span><span class="co">##  7 b             ec50     treatmentretigabine… -0.356   -0.356   0.0125  0.0123 </span></span>
-<span><span class="co">##  8 b             ec50     treatmentztz240:dos… -0.322   -0.322   0.0108  0.0109 </span></span>
-<span><span class="co">##  9 b             ec50     treatmentretigabine… -0.430   -0.430   0.0135  0.0134 </span></span>
-<span><span class="co">## 10 b             ec50     treatmentretigabine… -0.398   -0.398   0.0122  0.0122 </span></span>
-<span><span class="co">## 11 b             ec50     treatmentztz240:dos… -0.321   -0.322   0.00981 0.00973</span></span>
-<span><span class="co">## 12 b             hill     treatmentztz240:dos…  2.48     2.47    0.208   0.209  </span></span>
-<span><span class="co">## 13 b             hill     treatmentretigabine…  3.03     3.02    0.244   0.241  </span></span>
-<span><span class="co">## 14 b             hill     treatmentretigabine…  2.56     2.56    0.214   0.212  </span></span>
-<span><span class="co">## 15 b             hill     treatmentztz240:dos…  2.85     2.85    0.212   0.209  </span></span>
-<span><span class="co">## 16 b             hill     treatmentretigabine…  2.89     2.88    0.239   0.239  </span></span>
-<span><span class="co">## 17 b             hill     treatmentztz240:dos…  4.99     4.97    0.433   0.427  </span></span>
-<span><span class="co">## 18 b             hill     treatmentretigabine…  3.12     3.11    0.269   0.268  </span></span>
-<span><span class="co">## 19 b             hill     treatmentztz240:dos…  3.39     3.38    0.270   0.267  </span></span>
-<span><span class="co">## 20 b             hill     treatmentretigabine…  2.77     2.77    0.219   0.214  </span></span>
-<span><span class="co">## 21 b             hill     treatmentretigabine…  3.12     3.11    0.256   0.258  </span></span>
-<span><span class="co">## 22 b             hill     treatmentztz240:dos…  3.88     3.86    0.297   0.293  </span></span>
-<span><span class="co">## 23 b             top      treatmentztz240:dos…  0.994    0.994   0.0216  0.0214 </span></span>
-<span><span class="co">## 24 b             top      treatmentretigabine…  0.969    0.969   0.0156  0.0154 </span></span>
-<span><span class="co">## 25 b             top      treatmentretigabine…  0.980    0.979   0.0168  0.0167 </span></span>
-<span><span class="co">## 26 b             top      treatmentztz240:dos…  0.927    0.926   0.0149  0.0146 </span></span>
-<span><span class="co">## 27 b             top      treatmentretigabine…  0.964    0.964   0.0113  0.0113 </span></span>
-<span><span class="co">## 28 b             top      treatmentztz240:dos…  0.932    0.932   0.00962 0.00973</span></span>
-<span><span class="co">## 29 b             top      treatmentretigabine…  0.950    0.950   0.0129  0.0129 </span></span>
-<span><span class="co">## 30 b             top      treatmentztz240:dos…  0.965    0.964   0.0127  0.0127 </span></span>
-<span><span class="co">## 31 b             top      treatmentretigabine…  0.964    0.964   0.0120  0.0119 </span></span>
-<span><span class="co">## 32 b             top      treatmentretigabine…  0.962    0.962   0.0125  0.0125 </span></span>
-<span><span class="co">## 33 b             top      treatmentztz240:dos…  0.952    0.952   0.0115  0.0114 </span></span>
-<span><span class="co">## 34 b             bottom   treatmentztz240:dos…  0.0107   0.0112  0.0182  0.0178 </span></span>
-<span><span class="co">## 35 b             bottom   treatmentretigabine…  0.0194   0.0199  0.0172  0.0169 </span></span>
-<span><span class="co">## 36 b             bottom   treatmentretigabine…  0.00380  0.00488 0.0224  0.0222 </span></span>
-<span><span class="co">## 37 b             bottom   treatmentztz240:dos… -0.0210  -0.0205  0.0167  0.0165 </span></span>
-<span><span class="co">## 38 b             bottom   treatmentretigabine… -0.0378  -0.0358  0.0307  0.0296 </span></span>
-<span><span class="co">## 39 b             bottom   treatmentztz240:dos… -0.00425 -0.00388 0.0184  0.0183 </span></span>
-<span><span class="co">## 40 b             bottom   treatmentretigabine… -0.0112  -0.0104  0.0232  0.0232 </span></span>
-<span><span class="co">## 41 b             bottom   treatmentztz240:dos… -0.0180  -0.0174  0.0195  0.0192 </span></span>
-<span><span class="co">## 42 b             bottom   treatmentretigabine… -0.0707  -0.0689  0.0297  0.0288 </span></span>
-<span><span class="co">## 43 b             bottom   treatmentretigabine… -0.0505  -0.0492  0.0255  0.0251 </span></span>
-<span><span class="co">## 44 b             bottom   treatmentztz240:dos…  0.00339  0.00371 0.0172  0.0170 </span></span>
-<span><span class="co">## # ℹ 8 more variables: q5 &lt;dbl&gt;, q95 &lt;dbl&gt;, rhat &lt;dbl&gt;, ess_bulk &lt;dbl&gt;,</span></span>
-<span><span class="co">## #   ess_tail &lt;dbl&gt;, treatment &lt;chr&gt;, logdose &lt;dbl&gt;, doselabel &lt;fct&gt;</span></span></code></pre>
-<p><img src="apply_MuSyC_KCNQ_files/plot-voltage-by-dose-1.png" alt="plot of chunk plot-voltage-by-dose" width="100%" style="display: block; margin: auto;"></p>
+<span><span class="co">##    variable_type variable predictors_label    mean median      sd     mad     q5</span></span>
+<span><span class="co">##    &lt;chr&gt;         &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">##  1 b             ec50     treatmentztz240:… -0.116 -0.116 0.0148  0.0147  -0.140</span></span>
+<span><span class="co">##  2 b             ec50     treatmentretigab… -0.189 -0.189 0.0121  0.0122  -0.209</span></span>
+<span><span class="co">##  3 b             ec50     treatmentretigab… -0.247 -0.247 0.0142  0.0142  -0.271</span></span>
+<span><span class="co">##  4 b             ec50     treatmentztz240:… -0.194 -0.194 0.0118  0.0118  -0.213</span></span>
+<span><span class="co">##  5 b             ec50     treatmentretigab… -0.451 -0.451 0.0140  0.0137  -0.475</span></span>
+<span><span class="co">##  6 b             ec50     treatmentztz240:… -0.438 -0.438 0.00830 0.00829 -0.452</span></span>
+<span><span class="co">##  7 b             ec50     treatmentretigab… -0.356 -0.356 0.0125  0.0126  -0.377</span></span>
+<span><span class="co">##  8 b             ec50     treatmentztz240:… -0.322 -0.322 0.0106  0.0106  -0.340</span></span>
+<span><span class="co">##  9 b             ec50     treatmentretigab… -0.430 -0.430 0.0135  0.0132  -0.453</span></span>
+<span><span class="co">## 10 b             ec50     treatmentretigab… -0.398 -0.398 0.0123  0.0122  -0.419</span></span>
+<span><span class="co">## # ℹ 34 more rows</span></span>
+<span><span class="co">## # ℹ 7 more variables: q95 &lt;dbl&gt;, rhat &lt;dbl&gt;, ess_bulk &lt;dbl&gt;, ess_tail &lt;dbl&gt;,</span></span>
+<span><span class="co">## #   treatment &lt;chr&gt;, logdose &lt;dbl&gt;, doselabel &lt;fct&gt;</span></span></code></pre>
+<div class="figure" style="text-align: center">
+<img src="apply_MuSyC_KCNQ_files/plot-voltage-by-dose-1.png" alt="plot of chunk plot-voltage-by-dose" width="100%"><p class="caption">
+plot of chunk plot-voltage-by-dose
+</p>
+</div>
+<pre><code><span><span class="co">## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c</span></span>
+<span><span class="co">## clang -mmacosx-version-min=10.13 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o</span></span>
+<span><span class="co">## In file included from &lt;built-in&gt;:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:88:</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name 'namespace'</span></span>
+<span><span class="co">## namespace Eigen {</span></span>
+<span><span class="co">## ^</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected ';' after top level declarator</span></span>
+<span><span class="co">## namespace Eigen {</span></span>
+<span><span class="co">##                ^</span></span>
+<span><span class="co">##                ;</span></span>
+<span><span class="co">## In file included from &lt;built-in&gt;:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:96:10: fatal error: 'complex' file not found</span></span>
+<span><span class="co">## #include &lt;complex&gt;</span></span>
+<span><span class="co">##          ^~~~~~~~~</span></span>
+<span><span class="co">## 3 errors generated.</span></span>
+<span><span class="co">## make[1]: *** [foo.o] Error 1</span></span></code></pre>
+<pre><code><span><span class="co">## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c</span></span>
+<span><span class="co">## clang -mmacosx-version-min=10.13 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o</span></span>
+<span><span class="co">## In file included from &lt;built-in&gt;:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:88:</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name 'namespace'</span></span>
+<span><span class="co">## namespace Eigen {</span></span>
+<span><span class="co">## ^</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected ';' after top level declarator</span></span>
+<span><span class="co">## namespace Eigen {</span></span>
+<span><span class="co">##                ^</span></span>
+<span><span class="co">##                ;</span></span>
+<span><span class="co">## In file included from &lt;built-in&gt;:1:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:</span></span>
+<span><span class="co">## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:</span></span>
+<span><span class="co">## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:96:10: fatal error: 'complex' file not found</span></span>
+<span><span class="co">## #include &lt;complex&gt;</span></span>
+<span><span class="co">##          ^~~~~~~~~</span></span>
+<span><span class="co">## 3 errors generated.</span></span>
+<span><span class="co">## make[1]: *** [foo.o] Error 1</span></span></code></pre>
 <pre><code><span><span class="co">##  Family: gaussian </span></span>
 <span><span class="co">##   Links: mu = identity; sigma = identity </span></span>
 <span><span class="co">## Formula: conductance ~ sigmoid(sigmoid(Eec50, Ehill, Etop, Ebottom, logdose), sigmoid(Hec50, Hhill, Htop, Hbottom, logdose), vtop, vbottom, voltage) </span></span>
@@ -377,52 +527,55 @@ voltage dependence depends on the drug dose</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Population-Level Effects: </span></span>
 <span><span class="co">##                             Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS</span></span>
-<span><span class="co">## vtop_Intercept                  0.95      0.00     0.95     0.96 1.00     4873</span></span>
-<span><span class="co">## vbottom_Intercept              -0.00      0.01    -0.01     0.01 1.00     4343</span></span>
-<span><span class="co">## Eec50_treatmentretigabine      -5.77      0.07    -5.93    -5.64 1.00     2021</span></span>
-<span><span class="co">## Eec50_treatmentztz240          -5.46      0.06    -5.56    -5.34 1.00     2316</span></span>
-<span><span class="co">## Ehill_treatmentretigabine      -1.61      0.27    -2.18    -1.10 1.00     1722</span></span>
-<span><span class="co">## Ehill_treatmentztz240          -1.45      0.18    -1.83    -1.14 1.00     2199</span></span>
-<span><span class="co">## Etop_treatmentretigabine       -0.19      0.02    -0.22    -0.14 1.00     1747</span></span>
-<span><span class="co">## Etop_treatmentztz240           -0.14      0.01    -0.15    -0.12 1.00     3961</span></span>
-<span><span class="co">## Ebottom_treatmentretigabine    -0.43      0.01    -0.44    -0.41 1.00     2889</span></span>
-<span><span class="co">## Ebottom_treatmentztz240        -0.48      0.03    -0.54    -0.44 1.00     1926</span></span>
-<span><span class="co">## Hec50_treatmentretigabine      -3.94      1.77    -8.05    -0.54 1.00     1080</span></span>
-<span><span class="co">## Hec50_treatmentztz240          -5.14      0.22    -5.52    -4.70 1.00     1964</span></span>
-<span><span class="co">## Hhill_treatmentretigabine       1.24      0.73     0.25     3.01 1.00     2342</span></span>
-<span><span class="co">## Hhill_treatmentztz240           1.77      0.49     1.02     2.93 1.00     2507</span></span>
-<span><span class="co">## Htop_treatmentretigabine        4.50      1.60     2.46     8.27 1.00     1944</span></span>
-<span><span class="co">## Htop_treatmentztz240            5.85      1.17     4.27     8.74 1.00     2066</span></span>
-<span><span class="co">## Hbottom_treatmentretigabine     2.99      0.09     2.82     3.15 1.00     2568</span></span>
-<span><span class="co">## Hbottom_treatmentztz240         2.83      0.08     2.68     3.00 1.00     4100</span></span>
+<span><span class="co">## vtop_Intercept                  0.95      0.00     0.95     0.96 1.00     5733</span></span>
+<span><span class="co">## vbottom_Intercept              -0.00      0.01    -0.01     0.01 1.00     4525</span></span>
+<span><span class="co">## Eec50_treatmentretigabine      -5.77      0.07    -5.91    -5.64 1.00     2639</span></span>
+<span><span class="co">## Eec50_treatmentztz240          -5.46      0.05    -5.56    -5.35 1.00     2408</span></span>
+<span><span class="co">## Ehill_treatmentretigabine      -1.62      0.27    -2.17    -1.13 1.00     2131</span></span>
+<span><span class="co">## Ehill_treatmentztz240          -1.46      0.18    -1.84    -1.14 1.00     2260</span></span>
+<span><span class="co">## Etop_treatmentretigabine       -0.19      0.02    -0.22    -0.15 1.00     2309</span></span>
+<span><span class="co">## Etop_treatmentztz240           -0.14      0.01    -0.15    -0.12 1.00     3649</span></span>
+<span><span class="co">## Ebottom_treatmentretigabine    -0.43      0.01    -0.44    -0.41 1.00     3507</span></span>
+<span><span class="co">## Ebottom_treatmentztz240        -0.48      0.02    -0.54    -0.44 1.00     2072</span></span>
+<span><span class="co">## Hec50_treatmentretigabine      -3.87      1.81    -7.92    -0.34 1.00      981</span></span>
+<span><span class="co">## Hec50_treatmentztz240          -5.14      0.22    -5.52    -4.68 1.00     1626</span></span>
+<span><span class="co">## Hhill_treatmentretigabine       1.27      0.75     0.23     2.98 1.00     2689</span></span>
+<span><span class="co">## Hhill_treatmentztz240           1.77      0.49     0.99     2.90 1.00     2203</span></span>
+<span><span class="co">## Htop_treatmentretigabine        4.47      1.63     2.16     8.41 1.00     2087</span></span>
+<span><span class="co">## Htop_treatmentztz240            5.85      1.16     4.27     8.70 1.00     1664</span></span>
+<span><span class="co">## Hbottom_treatmentretigabine     2.99      0.09     2.81     3.15 1.00     2477</span></span>
+<span><span class="co">## Hbottom_treatmentztz240         2.83      0.08     2.69     2.98 1.00     4795</span></span>
 <span><span class="co">##                             Tail_ESS</span></span>
-<span><span class="co">## vtop_Intercept                  2666</span></span>
-<span><span class="co">## vbottom_Intercept               3061</span></span>
-<span><span class="co">## Eec50_treatmentretigabine       1220</span></span>
-<span><span class="co">## Eec50_treatmentztz240           2382</span></span>
-<span><span class="co">## Ehill_treatmentretigabine       1113</span></span>
-<span><span class="co">## Ehill_treatmentztz240           2451</span></span>
-<span><span class="co">## Etop_treatmentretigabine        1144</span></span>
-<span><span class="co">## Etop_treatmentztz240            2612</span></span>
-<span><span class="co">## Ebottom_treatmentretigabine     1680</span></span>
-<span><span class="co">## Ebottom_treatmentztz240         2191</span></span>
-<span><span class="co">## Hec50_treatmentretigabine       1698</span></span>
-<span><span class="co">## Hec50_treatmentztz240           1923</span></span>
-<span><span class="co">## Hhill_treatmentretigabine       2038</span></span>
-<span><span class="co">## Hhill_treatmentztz240           2884</span></span>
-<span><span class="co">## Htop_treatmentretigabine        2328</span></span>
-<span><span class="co">## Htop_treatmentztz240            2080</span></span>
-<span><span class="co">## Hbottom_treatmentretigabine     3042</span></span>
-<span><span class="co">## Hbottom_treatmentztz240         3017</span></span>
+<span><span class="co">## vtop_Intercept                  3617</span></span>
+<span><span class="co">## vbottom_Intercept               3125</span></span>
+<span><span class="co">## Eec50_treatmentretigabine       1910</span></span>
+<span><span class="co">## Eec50_treatmentztz240           2401</span></span>
+<span><span class="co">## Ehill_treatmentretigabine       1579</span></span>
+<span><span class="co">## Ehill_treatmentztz240           2227</span></span>
+<span><span class="co">## Etop_treatmentretigabine        1766</span></span>
+<span><span class="co">## Etop_treatmentztz240            2780</span></span>
+<span><span class="co">## Ebottom_treatmentretigabine     2515</span></span>
+<span><span class="co">## Ebottom_treatmentztz240         1939</span></span>
+<span><span class="co">## Hec50_treatmentretigabine       1274</span></span>
+<span><span class="co">## Hec50_treatmentztz240           2346</span></span>
+<span><span class="co">## Hhill_treatmentretigabine       2226</span></span>
+<span><span class="co">## Hhill_treatmentztz240           2470</span></span>
+<span><span class="co">## Htop_treatmentretigabine        2065</span></span>
+<span><span class="co">## Htop_treatmentztz240            2365</span></span>
+<span><span class="co">## Hbottom_treatmentretigabine     2873</span></span>
+<span><span class="co">## Hbottom_treatmentztz240         3034</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Family Specific Parameters: </span></span>
 <span><span class="co">##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
-<span><span class="co">## sigma     0.06      0.00     0.06     0.06 1.00     4505     3010</span></span>
+<span><span class="co">## sigma     0.06      0.00     0.06     0.06 1.00     5330     2479</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
 <span><span class="co">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
 <span><span class="co">## scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code></pre>
-<pre><code><span><span class="co">## Error in brms::loo_compare(model_MuSyC, model_bilevel): object 'model_MuSyC' not found</span></span></code></pre>
+<pre><code><span><span class="co">##               elpd_diff se_diff</span></span>
+<span><span class="co">## model_bilevel    0.0       0.0 </span></span>
+<span><span class="co">## model_MuSyC   -125.2      17.2</span></span></code></pre>
+</div>
   </main>
 </div>
 
