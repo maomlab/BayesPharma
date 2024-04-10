@@ -2,7 +2,7 @@
 #'
 #' @docType package
 #' @name BayesPharma-package
-#' @aliases BayesPharma
+#' @aliases BayesPharma-package
 #'
 #' @description
 #' The \pkg{BayesPharma} package builds on the \pkg{Stan} and \pkg{brms} to
@@ -45,4 +45,4 @@
 #' data, measurement error, and other response distributions (see
 #' <https://paul-buerkner.github.io/brms/>).
 #'
-NULL
+"_PACKAGE"

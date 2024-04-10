@@ -14,7 +14,7 @@ eval_init(init, sdata = NULL, chains = 4)
 either \code{array}, \code{numeric}, or a function returning a \code{numeric} value
 }}
 
-\item{sdata}{result of running \code{\link[brms:make_standata]{brms::make_standata()}}, in particular it
+\item{sdata}{result of running \code{\link[brms:standata]{brms::make_standata()}}, in particular it
 it should be list having elements \verb{K_<parameter_name>} for each parameter
 in the model. Where the value of these elements is the dimension of the
 parameter.}
