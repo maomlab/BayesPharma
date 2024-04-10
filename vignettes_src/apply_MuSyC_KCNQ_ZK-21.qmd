@@ -1,0 +1,280 @@
+
+---
+title: "Apply: MuSyC Model -- KCNQ Conductance"
+description: Demonstrate the MuSyC_model to analyze the interaction between
+  voltage and small molecules interact modulate conductance through the KCNQ2
+  voltage gated potassium channel.
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Apply: MuSyC Model -- ZK-21}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r set-options}
+#| echo=FALSE
+options(rmarkdown.html_vignette.check_title = FALSE)
+
+# inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
+knitr::opts_chunk$set(
+  echo = FALSE,
+  cache = TRUE,
+  cache.path = "cache/apply_MuSyC_KCNQ_ZK-21/",
+  fig.path = "apply_MuSyC_KCNQ_ZK-21_files/",
+  fig.retina = 2, # Control using dpi
+  fig.width = 6,  # generated images
+  fig.height = 5, # generated images
+  fig.pos = "t",  # pdf mode
+  fig.align = "center",
+  dpi = if (knitr::is_latex_output()) 72 else 300, 
+  out.width = "100%",
+  collapse = TRUE)
+
+set.seed(0)
+```
+
+
+
+
+# Data
+
+![Plate1 Layout](../inst/extdata/conductance_KCNQ_ZK-21/plate1_layout.png)
+
+![Plate2 Layout](../inst/extdata/conductance_KCNQ_ZK-21/plate2_layout.png)
+
+
+## NANION-230804-KCNQ2Q3-ASB-79329_rev.prism
+
+REFERENCE 79329 1min
+2-REFERENCE 97329 1min-R1
+2-REFERENCE 97329 1min-R2
+2-REFERENCE 97331 1min
+   X: [-120, -100, ..., -40] voltages
+   Mean: values ranging from -8.33e-011 to -165e-010
+   SD: values around 5e-12
+   N: 9
+
+ASB-3 minor <dose> ()
+   
+
+
+
+## CRC-FITTING_Q2-Q3 DATA.prism
+For each of the 10 compounds, there are two tables: `<CMD>-with ref` and
+`<CMD>-with no-ref`. In each table there are 8 rows, with the first column being
+the log dose and the 4-10 additional columns of repeated conductance
+measurements ranging from around -50 to 50.
+
+The file `CRC-FITTING_Q2-Q3 DATA.prism` has the same raw data.
+
+
+
+
+```{r load-data}
+
+
+path <- "~/opt/BayesPharma/inst/extdata/conductance_KCNQ_ZK-21/PRISM9 version/NANION-230822-KCNQ2Q3-ASB-79380_rev.pzfx"
+data <- tibble::tibble(
+  table_name = pzfx::pzfx_tables(path = path)) |>
+  dplyr::mutate(table_index = dplyr::row_number(), .before = 1) |>
+  dplyr::rowwise() |>
+  dplyr::do({
+    meta <- .
+    data <- pzfx::read_pzfx(
+      path = path,
+      table = meta$table_index[1],
+      strike_action = "keep")
+    if ((length(names(data)) == 4) &&
+      all(names(data) == c("Var.1", "_MEAN", "_SD", "_N"))) {
+      data  |>
+        dplyr::mutate(
+          table_index = meta$table_index[1],
+          table_name = meta$table_name[1],
+          .before = 1) |>
+        dplyr::rename(
+          voltage_mV = Var.1,
+          conductance_mean = `_MEAN`,
+          conductance_sd = `_SD`,
+          conductance_n = `_N`)
+    } else {
+      cat("Not primary data table: ", meta$table_name[1], "\n", sep = "")
+      data.frame()
+    }
+  })
+  
+data <- data |>  
+  dplyr::mutate(
+    timepoint_min = ifelse(table_name |> stringr::str_detect("^2-"), 2, 1),
+    substance_name = table_name |>
+      stringr::str_extract(
+        paste0(
+        "(",
+          "ASB[^ ]+ (minor|major)|",
+          "acrylamide|",
+          "RETIGABINE|",
+          "REFERENCE)")),
+    dose_nM = table_name |>
+      stringr::str_replace(paste0("(2[-])?", substance_name, "[ ]*"), "") |>
+      stringr::str_replace("[ ]?((u|n)M)?[*]?$", ""),
+    dose_nM = ifelse(
+      substance_name == "REFERENCE", NA,
+      ifelse(
+        as.numeric(dose_nM) < 100,
+        as.numeric(dose_nM) * 1000,
+        as.numeric(dose_nM))),
+    conductance_se = conductance_sd / sqrt(conductance_n))
+
+data <- data |>
+  dplyr::group_by(substance_name, dose_nM, timepoint_min) |>
+  dplyr::mutate(
+    conductance_norm = conductance_mean / max(conductance_mean, na.rm = TRUE),
+    conductance_norm_se =
+      conductance_se / max(conductance_mean, na.rm = TRUE)) |>
+  dplyr::ungroup()
+
+
+```
+
+```{r plot-conductance-retigabine}
+
+ggplot2::ggplot(
+  data = data |>
+    dplyr::filter(substance_name == "RETIGABINE")) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_line(
+    mapping = ggplot2::aes(
+      x = voltage_mV,
+      y = conductance_norm,
+      #y = conductance_mean * 1e9,
+      color = log10(dose_nM) - 9,
+      group = dose_nM)) +
+  ggplot2::facet_wrap(
+    facets = dplyr::vars(timepoint_min)) +
+  ggplot2::scale_y_continuous(
+    "G/Gmax",
+    breaks = c(-5, -2, -1, 0, 1)) +
+    #limits = c(-10, 1)) +
+  ggplot2::scale_x_continuous("Voltage mV") +
+  ggplot2::scale_color_continuous(
+    "log10[Dose]") +
+  ggplot2::theme(
+    legend.position = "bottom")
+
+```
+
+```{r fit-conductance-model}
+
+model_data <- data |>
+  dplyr::filter(
+    substance_name == "RETIGABINE",
+    timepoint_min == 1) |>
+  dplyr::transmute(
+    conductance = conductance_mean * 1e9,
+    conductance_se = conductance_se * 1e9,
+    voltage = voltage_mV/100,
+    treatment = substance_name,
+    doselabel = paste(dose_nM, "nM") |> as.factor(),
+    logdose = log10(dose_nM) - 9) |>
+  dplyr::filter(!is.na(conductance))
+model_data |> summary()
+
+
+model_conductance2 <- BayesPharma::sigmoid_model(
+  data = model_data,
+  formula = BayesPharma::sigmoid_agonist_formula(
+    treatment_variable = "voltage",
+    treatment_units = "mV",
+    response_variable = "conductance | se(conductance_se)",
+    response_units = "G/Gmax",
+    predictors = 0 + doselabel),
+  prior = BayesPharma::sigmoid_agonist_prior(
+    ec50 = brms::prior(normal(-0.5, 2), nlpar = "ec50"),
+    hill = brms::prior(normal(3, 1), nlpar = "hill", lb = 0),
+    top = brms::prior(normal(0.2, 1), nlpar = "top"),
+    bottom = brms::prior(normal(-0.2, 2), nlpar = "bottom")),
+  init = BayesPharma::sigmoid_agonist_init(
+    ec50 = \() runif(1, min = -1, max = 0.2),
+    hill = \() runif(1, min = 2, max = 4),
+    bottom = \() runif(1, min = -0.25, max = 0),
+    top = \() runif(1, min = 0, max = 0.25)),
+  control = list(adapt_delta = 0.99, max_treedepth = 12),
+  cores = 4)
+
+
+```
+
+
+
+```{r plot-posterior-draws}
+model_conductance2 |>
+  BayesPharma::plot_posterior_draws(
+    response_variable = "conductance")
+
+ggplot2::ggsave("/tmp/abc.pdf", width = 30, height = 30)
+
+```
+
+```{r plot-posterior-draws}
+
+model_conductance2 |>
+  BayesPharma::plot_posterior_draws(
+    newdata = dplyr::expand_grid(
+      
+      
+    )
+    response_variable = "conductance")
+
+
+```
+
+
+
+
+```{r conductance-by-voltage}
+data_conductance_by_voltage <- model_conductance2 |>
+  posterior::summarize_draws() |>
+  tidyr::separate_wider_delim(
+    cols = variable,
+    delim = "_",
+    names = c("variable_type", "variable", "predictors_label"),
+    too_few = "align_start") |>
+  dplyr::filter(variable_type == "b") |>
+  dplyr::inner_join(
+    model_data |>
+      dplyr::distinct(logdose, doselabel) |>
+      dplyr::mutate(
+        predictors_label = paste0(
+          "doselabel", doselabel |> stringr::str_replace(" ", ""))),
+    by = "predictors_label")
+data_conductance_by_voltage
+
+
+```
+```{r plot-voltage-by-dose}
+#| echo=FALSE,
+#| message=FALSE,
+#| dependson=c("extract-voltage-by-dose")
+plot <- ggplot2::ggplot(
+  data = data_conductance_by_voltage) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_ribbon(
+    mapping = ggplot2::aes(
+      x = logdose,
+      ymin = q5,
+      ymax = q95),
+    alpha = .2) +
+  ggplot2::geom_line(
+    mapping = ggplot2::aes(
+      x = logdose,
+      y = mean),
+    linewidth = 1.8) +
+  ggplot2::facet_wrap(
+    facets = dplyr::vars(variable),
+    scales = "free_y") +
+  ggplot2::theme(legend.position = "bottom") +
+  ggplot2::scale_x_continuous("Log[Molar]") +
+  ggplot2::scale_y_continuous("Parameter Value")
+plot
+```
+

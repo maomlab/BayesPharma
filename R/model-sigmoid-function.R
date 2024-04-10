@@ -173,18 +173,18 @@ plot_sigmoid_functional_form <- function(
     ggplot2::geom_hline(
       yintercept = top,
       linetype = 2,
-      size = 1.2,
+      linewidth = 1.2,
       color = "darkgrey") +
     ggplot2::geom_hline(
       yintercept = bottom,
       linetype = 2,
-      size = 1.2,
+      linewidth = 1.2,
       color = "darkgrey") +
     ggplot2::geom_abline(
       intercept = xintercept,
       slope = s,
       color = "blue",
-      size = 1.2) +
+      linewidth = 1.2) +
     ggplot2::geom_line(
       data = data.frame(
         x = c(ac50, ac50),
@@ -192,7 +192,7 @@ plot_sigmoid_functional_form <- function(
       mapping = ggplot2::aes(
         x = .data[["x"]],
         y = .data[["y"]]),
-      size = 1.2,
+      linewidth = 1.2,
       color = "orange") +
     ggplot2::geom_point(
       data = data.frame(

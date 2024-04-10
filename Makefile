@@ -16,8 +16,10 @@ clean:
 	rm -rf vignettes/*_files
 	rm -rf vignettes/references.bib
 	rm -rf vignettes/manuscript.pdf
+	rm -rf vignettes/manuscript.docx
 
 deps:
+	Rscript -e 'if(!require("devtools")) install.packages("devtools", repos="http://cran.us.r-project.org")'
 	Rscript -e "devtools::install_dev_deps()"
 
 

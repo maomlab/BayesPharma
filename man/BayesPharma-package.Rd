@@ -2,8 +2,8 @@
 % Please edit documentation in R/BayesPharma-package.R
 \docType{package}
 \name{BayesPharma-package}
-\alias{BayesPharma-package}
 \alias{BayesPharma}
+\alias{BayesPharma-package}
 \title{BayesPharma: Tools for Bayesian Analysis of Non-Linear Pharmacology Models}
 \description{
 The \pkg{BayesPharma} package builds on the \pkg{Stan} and \pkg{brms} to
@@ -45,4 +45,20 @@ Building on \pkg{brms} allows for compact formula based model specification
 adding complexity to the model incrementally, including handling missing
 data, measurement error, and other response distributions (see
 \url{https://paul-buerkner.github.io/brms/}).
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://maomlab.github.io/BayesPharma/}
+}
+
+}
+\author{
+\strong{Maintainer}: Matthew O'Meara \email{maom@umich.edu} (\href{https://orcid.org/0000-0002-3128-5331}{ORCID})
+
+Authors:
+\itemize{
+  \item Madeline Martin \email{mmarti29@uoregon.edu}
+}
+
 }
