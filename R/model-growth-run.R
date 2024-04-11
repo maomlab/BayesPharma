@@ -120,7 +120,7 @@ growth_sigmoid_model <- function(
 #'   formula.
 #' @param formula `bpformula` object. To create a growth model formula, use
 #'   [growth_richards_formula()]
-#' @param prior `brmspriors` `data.frame` for `K`, `K0`,
+#' @param prior [brms::brmsprior] `data.frame` for `K`, `K0`,
 #'   `rate`, `lambda`, and `nu`. To create a prior, use
 #'   [growth_richards_prior()]
 #' @param init initial values of the parameters being modeled. To create an
@@ -131,7 +131,7 @@ growth_sigmoid_model <- function(
 #'   behavior. Adding `max_treedepth` and giving a greater value than
 #'   `10` can improve model convergence
 #' @param stanvar_function Stan code for the model
-#' @param expose_functions `logical`. Expose the stan functions for the
+#' @param expose_functions `logical`. Expose the Stan functions for the
 #'   model. This is needed e.g. to run [brms::loo_compare()]
 #' @param ... additional arguments passed to [brms::brm()]
 #'

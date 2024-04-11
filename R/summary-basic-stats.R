@@ -5,7 +5,7 @@
 #'   standard deviation, lower confidence interval, and upper confidence
 #'   interval.
 #'
-#' @param model [brms::brmsfit()] model
+#' @param model [brms::brmsfit] object
 #' @param predictors_col_name `character` expression for predictors column
 #'   in the input `data.frame`. Predictors are the perturbations tested
 #'   during the experiment (i.e. Drug, Temperature, etc.)
