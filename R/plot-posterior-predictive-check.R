@@ -1,25 +1,24 @@
 #' Perform Posterior Predictive Check
 #'
-#' @description Given a brms model, perform a graphical posterior
-#'     predictive check.
+#' @description Given a \pkg{brms} model, perform a graphical posterior
+#'     predictive check (PPC).
 #'
-#' pp_check from the brms package has different plot types to analyze
-#' the model fit by comparing the observed data with generated data
-#' from the model.
+#' [brms::pp_check()] has different plot types to analyze the model fit by
+#' comparing the observed data with generated data from the model.
 #'
-#' Here is the documentation for pp_check:
+#' Here is the documentation for [brms::pp_check]:
 #' <http://paul-buerkner.github.io/brms/reference/pp_check.brmsfit.html>
 #'
-#' Here is the documentation for pp_check plot types under PPC
+#' Here is the documentation for [bayesplot::pp_check] plot types under PPC
 #' plotting functions:
 #' <https://mc-stan.org/bayesplot/reference/PPC-overview.html>
 #'
-#' @param model `brmsfit` model.
+#' @param model [brms::brmsfit] model.
 #' @param plot_type `character` for the plot type.
 #' @param n `numeric` number of posterior draws to be used.
 #' @param ... additional arguments to [brms::pp_check()].
 #'
-#' @returns [ggplot2::ggplot()] object.
+#' @returns [ggplot2::ggplot] object.
 #'
 #' @examples
 #'\dontrun{

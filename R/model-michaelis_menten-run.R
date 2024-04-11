@@ -6,7 +6,7 @@
 #' @param formula [brms::brmsformula] object. To create a dose-response
 #'   [brms::brmsformula], use the [michaelis_menten_formula] function.
 #' @param prior [brms::brmsprior] for `kcat`, and `kM`. Use
-#'   [michaelis_menten_formula()] to create priors to use here.
+#'   [michaelis_menten_formula()] to create priors to be used here.
 #' @param init `list` of `lists`, `numeric` value, or "random" for the initial
 #'   values of the parameters being modeled.
 #' @param iter `numeric` of iterations the model runs. Increasing `iter` can
