@@ -68,7 +68,7 @@ growth_sigmoid_prior <- function(
 #' @param lambda [brms::brmsprior()] or `numeric`. Prior for the
 #'   `lambda` parameter. (Default: `normal(0.5, 0.5)`).
 #' @param nu [brms::brmsprior()] or `numeric`. Prior for the
-#'   `nu` parameter.  (Default: normal(1, 1) with a lower bound of
+#'   `nu` parameter. (Default: normal(1, 1) with a lower bound of
 #'   `0`).
 #' @param ... additional [brms::brmsprior()] objects.
 #'

@@ -9,7 +9,7 @@
 #'
 #' @param model `[brms::brmsfit] model.
 #' @param pars `character` vector of parameters or tidy parameter selection
-#'.  using e.g. \pkg{tidyselect} to plot (Default `'b_<parameter>_Intercept'`)
+#'.  using e.g. \pkg{tidyselect} to plot (Default: `'b_<parameter>_Intercept'`)
 #' @param labeller `function` (Default: strip off the `'b_'` and `'_Intercept'`
 #'   from the parameter labels).
 #' @param title_label `character` of the plot title.
