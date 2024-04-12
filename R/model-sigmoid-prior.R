@@ -15,7 +15,7 @@
 #'
 #'
 #' @param ec50 [brms::brmsprior] or `numeric`. Prior for the `ec50`
-#'  parameter.  Setting ec50 to a numeric value constrains it to a constant
+#'  parameter. Setting ec50 to a numeric value constrains it to a constant
 #'  value. Default: normal(-6, 2.5) where the mean -6 corresponds to a
 #'  concentration of 1e-6 or 1 μM.
 #' @param hill [brms::brmsprior] or `numeric`. Prior for the `hill`

@@ -55,7 +55,7 @@
 #' @param iter `numeric` of iterations the model runs. Increasing
 #'   `iter` can help with model convergence (see [brms::brm])
 #' @param control a named `list` of arguments to control the sampler's
-#'   behavior.  Adding `max_treedepth` and giving a greater
+#'   behavior. Adding `max_treedepth` and giving a greater
 #'   value than `10` can improve model convergence (see [brms::brm])
 #' @param stanvar_function stan code for the model.
 #' @param expose_functions `logical`. Expose the sigmoid function used in
