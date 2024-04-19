@@ -1,5 +1,5 @@
-pandoc: 2.19.2
-pkgdown: 2.0.7
+pandoc: 3.1.11
+pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   apply_MuSyC_KCNQ: apply_MuSyC_KCNQ.html
@@ -10,7 +10,7 @@ articles:
   derive_MuSyC_model: derive_MuSyC_model.html
   derive_tQ_model: derive_tQ_model.html
   implement_tidymodels: implement_tidymodels.html
-last_built: 2023-10-24T18:19Z
+last_built: 2024-04-19T19:15Z
 urls:
   reference: https://api.github.com/repos/maomlab/BayesPharma/pages/reference
   article: https://api.github.com/repos/maomlab/BayesPharma/pages/articles

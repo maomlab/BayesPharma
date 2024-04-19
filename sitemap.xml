@@ -43,9 +43,6 @@
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/BayesPharma-package.html</loc>
   </url>
   <url>
-    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/MuSyC.html</loc>
-  </url>
-  <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/MuSyC_formula.html</loc>
   </url>
   <url>
@@ -62,6 +59,9 @@
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/MuSyC_prior.html</loc>
+  </url>
+  <url>
+    <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/MuSyC_robust.html</loc>
   </url>
   <url>
     <loc>https://api.github.com/repos/maomlab/BayesPharma/pages/reference/MuSyC_si_to_hi.html</loc>
