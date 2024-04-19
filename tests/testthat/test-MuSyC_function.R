@@ -27,7 +27,7 @@ library(BayesPharma)
 #'
 testthat::test_that("MuSyC returns numeric class:", {
   testthat::expect_equal(
-    BayesPharma::MuSyC(
+    BayesPharma::MuSyC_robust(
       logd1 = log(1e-9 / 1e-6),
       logd2 = log(1),
       logE0 = log(0),
@@ -46,7 +46,7 @@ testthat::test_that("MuSyC returns numeric class:", {
 
 testthat::test_that("MuSyC returns correct numeric value:", {
   testthat::expect_equal(
-    BayesPharma::MuSyC(
+    BayesPharma::MuSyC_robust(
       logd1 = log(0.001),
       logd2 = log(1),
       logE0 = log(0),
@@ -65,7 +65,7 @@ testthat::test_that("MuSyC returns correct numeric value:", {
 
 testthat::test_that("MuSyC returns correct numeric value at zero doses:", {
   testthat::expect_equal(
-    BayesPharma::MuSyC(
+    BayesPharma::MuSyC_robust(
       logd1 = log(0),
       logd2 = log(0),
       logE0 = log(0),
@@ -85,7 +85,7 @@ testthat::test_that("MuSyC returns correct numeric value at zero doses:", {
 
 testthat::test_that("MuSyC function is defined in inhibition mode", {
   testthat::expect_equal(
-    BayesPharma::MuSyC(
+    BayesPharma::MuSyC_robust(
       logd1 = log(0.001),
       logd2 = log(1),
       logE0 = log(1),
@@ -105,7 +105,7 @@ testthat::test_that("MuSyC function is defined in inhibition mode", {
 
 testthat::test_that("MuSyC function is defined in inhibition mode", {
   testthat::expect_equal(
-    BayesPharma::MuSyC(
+    BayesPharma::MuSyC_robust(
       logd1 = log(0),
       logd2 = log(0),
       logE0 = log(1),
@@ -160,7 +160,7 @@ testthat::test_that("R and stan versions of MuSyC agree", {
           h2 = params$h2[1],
           logE3 = params$logE3[1],
           logalpha = params$logalpha[1]),
-        BayesPharma::MuSyC(
+        BayesPharma::MuSyC_robust(
           logd1 = params$logd1[1],
           logd2 = params$logd2[1],
           logE0 = params$logE0[1],
