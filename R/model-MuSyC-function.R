@@ -40,7 +40,7 @@
 #'   https://doi.org/10.1038/s41467-021-24789-z
 #'
 #' @export
-MuSyC <- function(
+MuSyC_robust <- function(
   logd1,
   logd2,
   logE0,
