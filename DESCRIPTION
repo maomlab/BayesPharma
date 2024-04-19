@@ -52,6 +52,7 @@ Suggests:
     modelr,
     optparse,
     parsnip,
+    tidyverse,
     readr,
     readxl,
     recipes,
