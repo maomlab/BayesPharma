@@ -14,7 +14,7 @@ sigmoid_agonist_prior(
 }
 \arguments{
 \item{ec50}{\link[brms:set_prior]{brms::brmsprior} or \code{numeric}. Prior for the \code{ec50}
-parameter.  Setting ec50 to a numeric value constrains it to a constant
+parameter. Setting ec50 to a numeric value constrains it to a constant
 value. Default: normal(-6, 2.5) where the mean -6 corresponds to a
 concentration of 1e-6 or 1 μM.}
 

@@ -26,7 +26,7 @@ the formula.}
 \link[brms:brmsformula]{brms::brmsformula}, use the \link{michaelis_menten_formula} function.}
 
 \item{prior}{\link[brms:set_prior]{brms::brmsprior} for \code{kcat}, and \code{kM}. Use
-\code{\link[=michaelis_menten_formula]{michaelis_menten_formula()}} to create priors to use here.}
+\code{\link[=michaelis_menten_formula]{michaelis_menten_formula()}} to create priors to be used here.}
 
 \item{init}{\code{list} of \code{lists}, \code{numeric} value, or "random" for the initial
 values of the parameters being modeled.}

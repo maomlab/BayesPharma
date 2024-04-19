@@ -13,6 +13,9 @@ vignette: >
 
 
 
+```
+## Error in library(tidyverse): there is no package called 'tidyverse'
+```
 ## Enzyme Kinetic Modeling
 Enzymes are proteins that catalyze chemical reactions. Not only do they
 facilitate producing virtual all biological matter, but they are crucial for
@@ -121,12 +124,12 @@ head(data_single)
 
 ```
 ##   time    P_true         P ST ET
-## 1 0.00 0.0000000 0.4799215 10 10
-## 2 0.05 0.7311578 0.7939460 10 10
-## 3 0.10 1.4243598 2.6459084 10 10
-## 4 0.15 2.0794197 1.2737768 10 10
-## 5 0.20 2.6964485 3.2691204 10 10
-## 6 0.25 3.2758537 4.0948480 10 10
+## 1 0.00 0.0000000 0.1223538 10 10
+## 2 0.05 0.7311578 0.6060729 10 10
+## 3 0.10 1.4243598 2.0420722 10 10
+## 4 0.15 2.0794197 2.3973591 10 10
+## 5 0.20 2.6964485 2.1516463 10 10
+## 6 0.25 3.2758537 3.3034788 10 10
 ```
 To visualize, the true enzyme progress curve is shown in
 <span style="color:blue">blue</span>, and the enzyme progress curve fit to the
@@ -252,127 +255,37 @@ model_single <- do.call(what = brms::brm, args = c(list(
 ```
 
 ```
-## ld: warning: duplicate -rpath '/Users/maom/.cmdstan/cmdstan-2.32.2/stan/lib/stan_math/lib/tbb' ignored
+## Warning in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-141037b56c0ad.stan', line 34, column 2: Declaration
+##     of arrays by placing brackets after a variable name is deprecated and
+##     will be removed in Stan 2.33.0. Instead use the array keyword before the
+##     type. This can be changed automatically using the auto-format flag to
+##     stanc
 ```
 
 ```
-## Start sampling
+## error: PCH file uses an older PCH format that is no longer supported
 ```
 
 ```
-## Init values were only set for a subset of parameters. 
-## Missing init values for the following parameters:
-##  - chain 1: b_kcat, b_kM, sigma
-##  - chain 2: b_kcat, b_kM, sigma
-##  - chain 3: b_kcat, b_kM, sigma
-##  - chain 4: b_kcat, b_kM, sigma
+## Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
+## If your model failed to compile please run rebuild_cmdstan().
+## If the issue persists please open a bug report.
 ```
 
 ```
-## Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
+## 1 error generated.
+## make[1]: *** [/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-141037b56c0ad] Error 1
 ```
 
 ```
-## Chain 2 Exception: gamma_lpdf: Random variable[1] is inf, but must be positive finite! (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d15dcb311.stan', line 65, column 2 to column 38)
-```
-
-```
-## Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 2
-```
-
-```
-## Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-```
-
-```
-## Chain 2 Exception: gamma_lpdf: Random variable[1] is inf, but must be positive finite! (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d15dcb311.stan', line 65, column 2 to column 38)
-```
-
-```
-## Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 2
-```
-
-```
-## Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-```
-
-```
-## Chain 3 Exception: gamma_lpdf: Random variable[1] is 0, but must be positive finite! (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d15dcb311.stan', line 65, column 2 to column 38)
-```
-
-```
-## Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 3
-```
-
-```
-## Chain 4 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-```
-
-```
-## Chain 4 Exception: gamma_lpdf: Random variable[1] is inf, but must be positive finite! (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d15dcb311.stan', line 65, column 2 to column 38)
-```
-
-```
-## Chain 4 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 4 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 4
+## Error: An error occured during compilation! See the message above for more information.
 ```
 Fitting the model takes ~15 seconds, with `Rhat = 1` and
 effective sample size for the bulk and tail greater than `1400` for
 both parameters. The estimates and 95% confidence intervals are good.
 
 ```
-##  Family: gaussian 
-##   Links: mu = identity; sigma = identity 
-## Formula: P ~ tQ_single(time, kcat, kM, ET, ST) 
-##          kcat ~ 1
-##          kM ~ 1
-##    Data: structure(list(time = c(0.05, 0.1, 0.15, 0.2, 0.25 (Number of observations: 60) 
-##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
-##          total post-warmup draws = 4000
-## 
-## Population-Level Effects: 
-##                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## kcat_Intercept     2.87      0.42     2.17     3.81 1.00     1301     1535
-## kM_Intercept       4.27      1.92     1.35     8.71 1.00     1282     1439
-## 
-## Family Specific Parameters: 
-##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     0.51      0.05     0.43     0.62 1.00     1703     1668
-## 
-## Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
-## and Tail_ESS are effective sample size measures, and Rhat is the potential
-## scale reduction factor on split chains (at convergence, Rhat = 1).
+## Error in eval(expr, envir, enclos): object 'model_single' not found
 ```
 
 To visualize the posterior distribution vs. the prior distribution, we first
@@ -399,20 +312,33 @@ model_single_prior <- do.call(what = brms::brm, args = c(list(
 ```
 
 ```
-## ld: warning: duplicate -rpath '/Users/maom/.cmdstan/cmdstan-2.32.2/stan/lib/stan_math/lib/tbb' ignored
+## Warning in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-1410319141a6d.stan', line 34, column 2: Declaration
+##     of arrays by placing brackets after a variable name is deprecated and
+##     will be removed in Stan 2.33.0. Instead use the array keyword before the
+##     type. This can be changed automatically using the auto-format flag to
+##     stanc
 ```
 
 ```
-## Start sampling
+## error: PCH file uses an older PCH format that is no longer supported
 ```
 
 ```
-## Init values were only set for a subset of parameters. 
-## Missing init values for the following parameters:
-##  - chain 1: b_kcat, b_kM, sigma
-##  - chain 2: b_kcat, b_kM, sigma
-##  - chain 3: b_kcat, b_kM, sigma
-##  - chain 4: b_kcat, b_kM, sigma
+## Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
+## If your model failed to compile please run rebuild_cmdstan().
+## If the issue persists please open a bug report.
+```
+
+```
+## 1 error generated.
+```
+
+```
+## make[1]: *** [/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-1410319141a6d] Error 1
+```
+
+```
+## Error: An error occured during compilation! See the message above for more information.
 ```
 
 And to plot, we use `tidybayes` to gather the draws and `ggplot2` to map them to
@@ -420,20 +346,35 @@ curves, with the prior as the<span style="color:orange">orange curve</span>,
 posterior as the <span style="color:blue">blue curve</span>, and the true
 parameter marked as a vertical line.
 
+```
+## Error in eval(expr, envir, enclos): object 'model_single_prior' not found
+```
 
-<div class="figure" style="text-align: center">
-<img src="derive_tQ_model_files/prior-posterior-single-marginal-plot-1.png" alt="plot of chunk prior-posterior-single-marginal-plot" width="100%" />
-<p class="caption">plot of chunk prior-posterior-single-marginal-plot</p>
-</div>
+```
+## Error in eval(expr, envir, enclos): object 'model_single' not found
+```
+
+
+```
+## Error in eval(expr, envir, enclos): object 'draws_single_prior' not found
+```
 
 Next, we plot the prior and posterior samples as a scatter plot. Note that
 the high correlation of the `kcat` and `kM` parameters in the posterior. This is
 expected, and typically better estimates require varying the enzyme and
 substrate concentrations.
-<div class="figure" style="text-align: center">
-<img src="derive_tQ_model_files/prior-posterior-single-scatter-1.png" alt="plot of chunk prior-posterior-single-scatter" width="100%" />
-<p class="caption">plot of chunk prior-posterior-single-scatter</p>
-</div>
+
+```
+## Error in eval(expr, envir, enclos): object 'draws_single_prior' not found
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'draws_single_posterior' not found
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'draws_single_prior_pairs' not found
+```
 
 ## Fitting multiple observations
 
@@ -525,264 +466,33 @@ model_multiple <- do.call(what = brms::brm, args = c(list(
 ```
 
 ```
-## ld: warning: duplicate -rpath '/Users/maom/.cmdstan/cmdstan-2.32.2/stan/lib/stan_math/lib/tbb' ignored
+## Warning in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-141033d27a17.stan', line 34, column 2: Declaration
+##     of arrays by placing brackets after a variable name is deprecated and
+##     will be removed in Stan 2.33.0. Instead use the array keyword before the
+##     type. This can be changed automatically using the auto-format flag to
+##     stanc
 ```
 
 ```
-## Start sampling
+## error: PCH file uses an older PCH format that is no longer supported
 ```
 
 ```
-## Init values were only set for a subset of parameters. 
-## Missing init values for the following parameters:
-##  - chain 1: b_kcat, b_kM, sigma
-##  - chain 2: b_kcat, b_kM, sigma
-##  - chain 3: b_kcat, b_kM, sigma
-##  - chain 4: b_kcat, b_kM, sigma
+## Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
+## If your model failed to compile please run rebuild_cmdstan().
+## If the issue persists please open a bug report.
 ```
 
 ```
-## Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
+## 1 error generated.
 ```
 
 ```
-## Chain 1 Exception: gamma_lpdf: Random variable[1] is 0, but must be positive finite! (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d125eab912.stan', line 86, column 2 to column 38)
+## make[1]: *** [/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-141033d27a17] Error 1
 ```
 
 ```
-## Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 1
-```
-
-```
-## Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-```
-
-```
-## Chain 1 Exception: normal_lpdf: Scale parameter is 0, but must be positive! (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d125eab912.stan', line 104, column 4 to column 41)
-```
-
-```
-## Chain 1 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 1 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 1
-```
-
-```
-## Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-```
-
-```
-## Chain 2 Exception: gamma_lpdf: Random variable[1] is 0, but must be positive finite! (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d125eab912.stan', line 86, column 2 to column 38)
-```
-
-```
-## Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 2
-```
-
-```
-## Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-```
-
-```
-## Chain 2 Exception: gamma_lpdf: Random variable[1] is 0, but must be positive finite! (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d125eab912.stan', line 86, column 2 to column 38)
-```
-
-```
-## Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 2
-```
-
-```
-## Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-```
-
-```
-## Chain 2 Exception: gamma_lpdf: Random variable[1] is 0, but must be positive finite! (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d125eab912.stan', line 86, column 2 to column 38)
-```
-
-```
-## Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 2
-```
-
-```
-## Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-```
-
-```
-## Chain 2 Exception: gamma_lpdf: Random variable[1] is 0, but must be positive finite! (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d125eab912.stan', line 86, column 2 to column 38)
-```
-
-```
-## Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 2
-```
-
-```
-## Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-```
-
-```
-## Chain 3 Exception: gamma_lpdf: Random variable[1] is 0, but must be positive finite! (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d125eab912.stan', line 86, column 2 to column 38)
-```
-
-```
-## Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 3
-```
-
-```
-## Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-```
-
-```
-## Chain 3 Exception: gamma_lpdf: Random variable[1] is 0, but must be positive finite! (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d125eab912.stan', line 86, column 2 to column 38)
-```
-
-```
-## Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 3
-```
-
-```
-## Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-```
-
-```
-## Chain 3 Exception: gamma_lpdf: Random variable[1] is inf, but must be positive finite! (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d125eab912.stan', line 86, column 2 to column 38)
-```
-
-```
-## Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 3
-```
-
-```
-## Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-```
-
-```
-## Chain 3 Exception: Exception: Exception: CVode(cvodes_mem, t_final, nv_state_, &t_init, CV_NORMAL) failed with error flag -4:
-```
-
-```
-## Chain 3 Convergence test failures occurred too many times during one internal time step or minimum step size was reached. (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d125eab912.stan', line 23, column 4 to line 33, column 47) (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d125eab912.stan', line 50, column 8 to line 52, column 45) (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d125eab912.stan', line 103, column 4 to column 59)
-```
-
-```
-## Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 3
-```
-
-```
-## Chain 4 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-```
-
-```
-## Chain 4 Exception: gamma_lpdf: Random variable[1] is inf, but must be positive finite! (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d125eab912.stan', line 86, column 2 to column 38)
-```
-
-```
-## Chain 4 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 4 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 4
-```
-
-```
-## Chain 4 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
-```
-
-```
-## Chain 4 Exception: gamma_lpdf: Random variable[1] is inf, but must be positive finite! (in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/Rtmpi2mqgp/model-184d125eab912.stan', line 86, column 2 to column 38)
-```
-
-```
-## Chain 4 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
-```
-
-```
-## Chain 4 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
-```
-
-```
-## Chain 4
+## Error: An error occured during compilation! See the message above for more information.
 ```
 
 ```r
@@ -790,57 +500,47 @@ model_multiple
 ```
 
 ```
-##  Family: gaussian 
-##   Links: mu = identity; sigma = identity 
-## Formula: P ~ tQ_multiple(observation_index, time, kcat, kM, ET, ST) 
-##          kcat ~ 1
-##          kM ~ 1
-##    Data: structure(list(kcat = c(3, 3, 3, 3, 3, 3, 3, 3, 3, (Number of observations: 540) 
-##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
-##          total post-warmup draws = 4000
-## 
-## Population-Level Effects: 
-##                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## kcat_Intercept     2.78      0.04     2.70     2.87 1.00     1481     1388
-## kM_Intercept       4.44      0.31     3.86     5.09 1.00     1475     1440
-## 
-## Family Specific Parameters: 
-##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     0.60      0.02     0.57     0.64 1.00     1986     1783
-## 
-## Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
-## and Tail_ESS are effective sample size measures, and Rhat is the potential
-## scale reduction factor on split chains (at convergence, Rhat = 1).
+## Error in eval(expr, envir, enclos): object 'model_multiple' not found
 ```
 
 
 ```
-## Start sampling
-```
-
-```
-## Init values were only set for a subset of parameters. 
-## Missing init values for the following parameters:
-##  - chain 1: b_kcat, b_kM, sigma
-##  - chain 2: b_kcat, b_kM, sigma
-##  - chain 3: b_kcat, b_kM, sigma
-##  - chain 4: b_kcat, b_kM, sigma
+## Error in eval(expr, envir, enclos): object 'model_multiple' not found
 ```
 
 
+```
+## Error in eval(expr, envir, enclos): object 'model_multiple_prior' not found
+```
 
-<div class="figure" style="text-align: center">
-<img src="derive_tQ_model_files/prior-posterior-multiple-scatter-1.png" alt="plot of chunk prior-posterior-multiple-scatter" width="100%" />
-<p class="caption">plot of chunk prior-posterior-multiple-scatter</p>
-</div>
+```
+## Error in eval(expr, envir, enclos): object 'model_multiple' not found
+```
+
+
+```
+## Error in eval(expr, envir, enclos): object 'draws_multiple_prior' not found
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'draws_multiple_posterior' not found
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'draws_multiple_prior_pairs' not found
+```
 
 
 Next we will sample enzyme progress curves from the posterior
 
-<div class="figure" style="text-align: center">
-<img src="derive_tQ_model_files/model-multiple-curves-1.png" alt="plot of chunk model-multiple-curves" width="100%" />
-<p class="caption">plot of chunk model-multiple-curves</p>
-</div>
+
+```
+## Error in eval(expr, envir, enclos): object 'draws_multiple_posterior' not found
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'sample_multiple' not found
+```
 
 
 

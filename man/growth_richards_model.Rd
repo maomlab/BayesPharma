@@ -24,7 +24,7 @@ formula.}
 \item{formula}{\code{bpformula} object. To create a growth model formula, use
 \code{\link[=growth_richards_formula]{growth_richards_formula()}}}
 
-\item{prior}{\code{brmspriors} \code{data.frame} for \code{K}, \code{K0},
+\item{prior}{\link[brms:set_prior]{brms::brmsprior} \code{data.frame} for \code{K}, \code{K0},
 \code{rate}, \code{lambda}, and \code{nu}. To create a prior, use
 \code{\link[=growth_richards_prior]{growth_richards_prior()}}}
 
@@ -40,7 +40,7 @@ behavior. Adding \code{max_treedepth} and giving a greater value than
 
 \item{stanvar_function}{Stan code for the model}
 
-\item{expose_functions}{\code{logical}. Expose the stan functions for the
+\item{expose_functions}{\code{logical}. Expose the Stan functions for the
 model. This is needed e.g. to run \code{\link[brms:loo_compare.brmsfit]{brms::loo_compare()}}}
 
 \item{...}{additional arguments passed to \code{\link[brms:brm]{brms::brm()}}}
