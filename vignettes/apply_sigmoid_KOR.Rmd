@@ -17,9 +17,12 @@ vignette: >
 
 
 
+```
+## Error in library(tidyverse): there is no package called 'tidyverse'
+```
 
 
-## Hill Equation {#sec-hill}
+### Hill Equation {#sec-hill}
 
 In this case study, we are going to reanalyze the dose responses of 4
 Kappa Opioid receptor (KOR) antagonists from a study performed by Margolis et
@@ -39,7 +42,7 @@ log-logistic dose response model, setting the top (max agonist response) to
 100% and estimating the IC50, its variance, and the bottom (min agonist
 response).
 
-### Fitting the sigmoid model
+#### Fitting the sigmoid model
 
 Using the `BayesPharma` package, we can re-fit the sigmoid model with a
 negative slope, and fix the top parameter to `100` as the response is
@@ -126,13 +129,13 @@ kor_model <- BayesPharma::sigmoid_model(
 ```
 \normalsize
 
-### Analyzing model fit
+#### Analyzing model fit
 
 The `brms` generated model summary shows the formula that the expected
 response a is sigmoid function of the `log_dose` with four parameters, and
 a shared Gaussian distribution. Each parameter is dependent on the
 `substance_id`. Since we want to fit a separate model for each substance, we
-include a `0 +` to indicate that there is no common intercept.  The data
+include a `0 +` to indicate that there is no common intercept. The data
 consists of `73` data points and the posterior sampling was done in `4`
 chains each with `8000` steps with `4000` steps of warm-up. The population
 effects for each parameter summarize the marginal posterior distributions,
@@ -154,28 +157,28 @@ being good for this type of model.
 ##   Draws: 4 chains, each with iter = 8000; warmup = 4000; thin = 1;
 ##          total post-warmup draws = 16000
 ## 
-## Population-Level Effects: 
+## Regression Coefficients:
 ##                                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## ic50_substance_idBTRX_335140      -8.85      0.20    -9.20    -8.41 1.00    14764     9066
-## ic50_substance_idBTRX_395750      -8.23      0.44    -8.92    -7.34 1.00    12065     5249
-## ic50_substance_idJNJ              -9.15      0.32    -9.77    -8.50 1.00    15862    10777
-## ic50_substance_idPF               -6.17      1.02    -7.60    -3.47 1.00     8884     5702
-## hill_substance_idBTRX_335140      -1.47      0.60    -2.90    -0.59 1.00    16414    11136
-## hill_substance_idBTRX_395750      -0.90      0.51    -2.26    -0.25 1.00    11877     6153
-## hill_substance_idJNJ              -1.00      0.51    -2.40    -0.40 1.00    16195    12044
-## hill_substance_idPF               -0.32      0.24    -0.90    -0.03 1.00     8221     5770
-## bottom_substance_idBTRX_335140     0.00      0.50    -0.96     0.96 1.00    19266    12103
-## bottom_substance_idBTRX_395750     0.01      0.49    -0.93     0.97 1.00    18770    11719
-## bottom_substance_idJNJ            -0.01      0.50    -0.99     0.96 1.00    19182    12000
-## bottom_substance_idPF              0.01      0.50    -0.98     0.98 1.00    18866    11787
+## ic50_substance_idBTRX_335140      -8.85      0.20    -9.20    -8.40 1.00    14135     9018
+## ic50_substance_idBTRX_395750      -8.23      0.45    -8.91    -7.29 1.00    10846     4602
+## ic50_substance_idJNJ              -9.15      0.32    -9.76    -8.50 1.00    17186    10919
+## ic50_substance_idPF               -6.16      1.04    -7.61    -3.37 1.00     9645     5970
+## hill_substance_idBTRX_335140      -1.47      0.60    -2.87    -0.59 1.00    16482    10841
+## hill_substance_idBTRX_395750      -0.89      0.51    -2.23    -0.25 1.00    10844     5228
+## hill_substance_idJNJ              -0.99      0.50    -2.37    -0.41 1.00    17080    12246
+## hill_substance_idPF               -0.31      0.24    -0.90    -0.03 1.00     8241     5679
+## bottom_substance_idBTRX_335140     0.00      0.50    -0.97     0.97 1.00    20382    11820
+## bottom_substance_idBTRX_395750     0.01      0.49    -0.94     0.97 1.00    18821    11724
+## bottom_substance_idJNJ            -0.01      0.50    -0.98     0.95 1.00    20862    11229
+## bottom_substance_idPF              0.01      0.50    -0.97     0.98 1.00    19638    11667
 ## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA       NA       NA
 ## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA       NA       NA
 ## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA       NA       NA
 ## top_substance_idPF               100.00      0.00   100.00   100.00   NA       NA       NA
 ## 
-## Family Specific Parameters: 
+## Further Distributional Parameters:
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma    32.16      2.90    27.17    38.48 1.00    16111    10587
+## sigma    32.15      2.91    27.10    38.42 1.00    15644    10950
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -183,9 +186,7 @@ being good for this type of model.
 ```
 \normalsize
 
-#### Traceplot
-
-The model ran without warning messages, meaning there were no parameter
+**Traceplot**: The model ran without warning messages, meaning there were no parameter
 value problems or MCMC conflicts. The bulk and tail ESS indicate high
 resolution and stability. The R-hat for each parameter equals `1.00` and
 the `traceplot` shows the chains mixed well, indicating the chains
@@ -204,12 +205,10 @@ kor_model |>
 </div>
 \normalsize
 
-#### Compare prior and posterior marginal distributions
-
-Displayed below is a plot for the prior and posterior distributions of
-the parameters (prior is pink and posterior is teal). This can be
-useful for comparing the density distribution of the prior and
-posterior produced by the model:
+**Compare prior and posterior marginal distributions**: Displayed below is a
+plot for the prior and posterior distributions of the parameters (prior is pink
+and posterior is teal). This can be useful for comparing the density
+distribution of the prior and posterior produced by the model:
 
 \scriptsize
 
@@ -266,7 +265,7 @@ BayesPharma::plot_posterior_draws(
 </div>
 \normalsize
 
-### Comparing alternative models
+#### Comparing alternative models
 
 To test the sensitivity of the analysis to the prior, we can re-fit the model
 with a more informative prior:
@@ -301,45 +300,45 @@ Re-fitting the model with the `kor_prior2` gives:
 ##   Draws: 4 chains, each with iter = 8000; warmup = 4000; thin = 1;
 ##          total post-warmup draws = 16000
 ## 
-## Population-Level Effects: 
+## Regression Coefficients:
 ##                                Estimate Est.Error l-95% CI u-95% CI Rhat
-## ic50_substance_idBTRX_335140      -8.81      0.22    -9.23    -8.36 1.00
-## ic50_substance_idBTRX_395750      -8.58      0.31    -9.16    -7.94 1.00
-## ic50_substance_idJNJ              -8.95      0.31    -9.54    -8.32 1.00
-## ic50_substance_idPF               -8.18      0.45    -9.09    -7.31 1.00
-## hill_substance_idBTRX_335140      -1.19      0.37    -1.98    -0.57 1.00
-## hill_substance_idBTRX_395750      -1.06      0.39    -1.92    -0.42 1.00
-## hill_substance_idJNJ              -0.86      0.32    -1.64    -0.40 1.00
-## hill_substance_idPF               -0.72      0.45    -1.74    -0.07 1.00
-## bottom_substance_idBTRX_335140     1.69     10.55   -19.71    21.78 1.00
-## bottom_substance_idBTRX_395750    15.39     11.05    -7.64    35.95 1.00
-## bottom_substance_idJNJ            -2.72      9.82   -22.83    15.63 1.00
-## bottom_substance_idPF             31.23     11.61     6.78    52.28 1.00
+## ic50_substance_idBTRX_335140      -8.82      0.21    -9.22    -8.37 1.00
+## ic50_substance_idBTRX_395750      -8.58      0.31    -9.16    -7.95 1.00
+## ic50_substance_idJNJ              -8.94      0.31    -9.53    -8.32 1.00
+## ic50_substance_idPF               -8.18      0.44    -9.07    -7.32 1.00
+## hill_substance_idBTRX_335140      -1.19      0.36    -1.96    -0.57 1.00
+## hill_substance_idBTRX_395750      -1.06      0.39    -1.91    -0.42 1.00
+## hill_substance_idJNJ              -0.85      0.33    -1.66    -0.39 1.00
+## hill_substance_idPF               -0.72      0.45    -1.74    -0.08 1.00
+## bottom_substance_idBTRX_335140     1.70     10.40   -19.38    21.68 1.00
+## bottom_substance_idBTRX_395750    15.36     11.28    -8.15    36.41 1.00
+## bottom_substance_idJNJ            -2.82      9.62   -22.42    15.25 1.00
+## bottom_substance_idPF             31.14     11.51     6.70    51.73 1.00
 ## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA
 ## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA
 ## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA
 ## top_substance_idPF               100.00      0.00   100.00   100.00   NA
 ##                                Bulk_ESS Tail_ESS
-## ic50_substance_idBTRX_335140      13016    10853
-## ic50_substance_idBTRX_395750      13251    11862
-## ic50_substance_idJNJ              12393    11405
-## ic50_substance_idPF               14103    11188
-## hill_substance_idBTRX_335140      14505     9948
-## hill_substance_idBTRX_395750      12180    10060
-## hill_substance_idJNJ              13486    13152
-## hill_substance_idPF               10262     6935
-## bottom_substance_idBTRX_335140    13738    11212
-## bottom_substance_idBTRX_395750    11894    10144
-## bottom_substance_idJNJ            12846    11477
-## bottom_substance_idPF             11274    10214
+## ic50_substance_idBTRX_335140      11764    10044
+## ic50_substance_idBTRX_395750      10886    10660
+## ic50_substance_idJNJ              10947    11426
+## ic50_substance_idPF               12278    11427
+## hill_substance_idBTRX_335140      12695     9613
+## hill_substance_idBTRX_395750      12556    10058
+## hill_substance_idJNJ              12118    12421
+## hill_substance_idPF                8448     6202
+## bottom_substance_idBTRX_335140    12544    11578
+## bottom_substance_idBTRX_395750    10507     8739
+## bottom_substance_idJNJ            10637    10621
+## bottom_substance_idPF             10096    10812
 ## top_substance_idBTRX_335140          NA       NA
 ## top_substance_idBTRX_395750          NA       NA
 ## top_substance_idJNJ                  NA       NA
 ## top_substance_idPF                   NA       NA
 ## 
-## Family Specific Parameters: 
+## Further Distributional Parameters:
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma    31.86      2.81    26.90    37.84 1.00    14791     9031
+## sigma    31.86      2.86    26.84    38.06 1.00    12322    10306
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -347,17 +346,16 @@ Re-fitting the model with the `kor_prior2` gives:
 ```
 
 
-## Comparing the Two Models Using LOO-Comparison:
-
-One way to evaluate the quality of a model is for each data-point,
-re-fit the model with remaining points and evaluate the log
-probability of the point in the posterior distribution. Taking the
-expectation across all points gives the Expected Log Pointwise
-predictive Density (ELPD). Since this is computationally challenging
-to re-fit the model for each point, if the model fits the data
-reasonably well, then the ELPD can be approximated using the Pareto
-smoothed importance sampling (PSIS). Using the LOO package,
-Pareto k value for each data point is computed that indicate how well that data point is fit by the model, where `k < 0.5` is good, `0.5 <= k < 0.7` is OK, and `0.7 <= k` is bad. Evaluating the model for
+**Comparing the Two Models Using LOO-Comparison**: One way to evaluate the
+quality of a model is for each data-point, re-fit the model with remaining
+points and evaluate the log probability of the point in the posterior
+distribution. Taking the expectation across all points gives the Expected Log
+Pointwise predictive Density (ELPD). Since this is computationally challenging
+to re-fit the model for each point, if the model fits the data reasonably well,
+then the ELPD can be approximated using the Pareto smoothed importance sampling
+(PSIS). Using the LOO package, Pareto k value for each data point is computed
+that indicate how well that data point is fit by the model, where `k < 0.5` is
+good, `0.5 <= k < 0.7` is OK, and `0.7 <= k` is bad. Evaluating the model for
 the KOR antagonists shows that the model fits the data well.
 
 \scriptsize
@@ -365,43 +363,36 @@ the KOR antagonists shows that the model fits the data well.
 ```
 ## Trying to compile a simple C file
 ## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c
-## clang -mmacosx-version-min=10.13 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o
+## using C compiler: ‘Apple clang version 15.0.0 (clang-1500.3.9.4)’
+## using SDK: ‘’
+## clang -arch x86_64 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/opt/R/x86_64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c foo.c -o foo.o
 ## In file included from <built-in>:1:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:88:
-## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name 'namespace'
-## namespace Eigen {
-## ^
-## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected ';' after top level declarator
-## namespace Eigen {
-##                ^
-##                ;
-## In file included from <built-in>:1:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
-## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:96:10: fatal error: 'complex' file not found
-## #include <complex>
-##          ^~~~~~~~~
-## 3 errors generated.
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/Dense:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/Core:19:
+## /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:679:10: fatal error: 'cmath' file not found
+## #include <cmath>
+##          ^~~~~~~
+## 1 error generated.
 ## make[1]: *** [foo.o] Error 1
 ## 
-## Computed from 16000 by 73 log-likelihood matrix
+## Computed from 16000 by 73 log-likelihood matrix.
 ## 
 ##          Estimate   SE
 ## elpd_loo   -360.4  6.5
 ## p_loo         6.9  1.1
-## looic       720.8 13.0
+## looic       720.9 13.1
 ## ------
-## Monte Carlo SE of elpd_loo is 0.0.
+## MCSE of elpd_loo is 0.0.
+## MCSE and ESS estimates assume MCMC draws (r_eff in [0.4, 1.3]).
 ## 
-## All Pareto k estimates are good (k < 0.5).
+## All Pareto k estimates are good (k < 0.7).
 ## See help('pareto-k-diagnostic') for details.
 ```
 \normalsize
 
 Since ELPD is a global measure of model fit, it can be used to compare
-models.  Using `loo_compare` from the LOO package returns the
+models. Using `loo_compare` from the LOO package returns the
 `elpd_diff` and `se_diff` for each model relative the model with the
 lowest ELPD. The `kor_model2`, the model with more informative prior,
 is the preferred model, but not significantly.
@@ -411,36 +402,27 @@ is the preferred model, but not significantly.
 ```
 ## Trying to compile a simple C file
 ## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c
-## clang -mmacosx-version-min=10.13 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o
+## using C compiler: ‘Apple clang version 15.0.0 (clang-1500.3.9.4)’
+## using SDK: ‘’
+## clang -arch x86_64 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/opt/R/x86_64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c foo.c -o foo.o
 ## In file included from <built-in>:1:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:88:
-## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name 'namespace'
-## namespace Eigen {
-## ^
-## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected ';' after top level declarator
-## namespace Eigen {
-##                ^
-##                ;
-## In file included from <built-in>:1:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
-## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:96:10: fatal error: 'complex' file not found
-## #include <complex>
-##          ^~~~~~~~~
-## 3 errors generated.
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/Dense:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/Core:19:
+## /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:679:10: fatal error: 'cmath' file not found
+## #include <cmath>
+##          ^~~~~~~
+## 1 error generated.
 ## make[1]: *** [foo.o] Error 1
 ## No problematic observations found. Returning the original 'loo' object.
 ##            elpd_diff se_diff
 ## kor_model2  0.0       0.0   
-## kor_model  -0.8       1.2
+## kor_model  -0.9       1.2
 ```
 \normalsize
 
-## Analysis Using the drc Package
-
-Here we will analyze the KOR antagonist data using the drc package and
+**Comparing against models fit with the `drc` Package**:
+Here we will analyze the KOR antagonist data using the `drc` package and
 compare it to the results from the `BayesPharma` analysis.
 
 We will fix the top to `100` and fit the `ic50`, `hill`, and
@@ -493,25 +475,17 @@ provided by the `drc` method.
 ```
 ## Trying to compile a simple C file
 ## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c
-## clang -mmacosx-version-min=10.13 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o
+## using C compiler: ‘Apple clang version 15.0.0 (clang-1500.3.9.4)’
+## using SDK: ‘’
+## clang -arch x86_64 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/opt/R/x86_64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c foo.c -o foo.o
 ## In file included from <built-in>:1:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:88:
-## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name 'namespace'
-## namespace Eigen {
-## ^
-## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected ';' after top level declarator
-## namespace Eigen {
-##                ^
-##                ;
-## In file included from <built-in>:1:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
-## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:96:10: fatal error: 'complex' file not found
-## #include <complex>
-##          ^~~~~~~~~
-## 3 errors generated.
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/Dense:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/Core:19:
+## /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:679:10: fatal error: 'cmath' file not found
+## #include <cmath>
+##          ^~~~~~~
+## 1 error generated.
 ## make[1]: *** [foo.o] Error 1
 ```
 

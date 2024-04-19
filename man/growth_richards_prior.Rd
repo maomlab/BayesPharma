@@ -28,7 +28,7 @@ of \code{0}).}
 \code{lambda} parameter. (Default: \code{normal(0.5, 0.5)}).}
 
 \item{nu}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric}. Prior for the
-\code{nu} parameter.  (Default: normal(1, 1) with a lower bound of
+\code{nu} parameter. (Default: normal(1, 1) with a lower bound of
 \code{0}).}
 
 \item{...}{additional \code{\link[brms:set_prior]{brms::brmsprior()}} objects.}

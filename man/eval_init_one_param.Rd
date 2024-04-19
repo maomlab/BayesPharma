@@ -15,7 +15,7 @@ eval_init_one_param(param_init, param_name, sdata)
 }
 \value{
 \code{numeric} or \code{array}. If the parameter is of the form \verb{b_<param>}
-then \link{brms} expects an array of dimension \verb{sdata$K_<param>}, otherwise
+then \pkg{brms} expects an array of dimension \verb{sdata$K_<param>}, otherwise
 return a \code{numeric} value.
 }
 \description{

@@ -10,7 +10,7 @@ sigmoid_stanvar()
 Stan Code for the Sigmoid Model.
 }
 \note{
-stanvar script of a sigmoid dose response equation.  For log dose
+stanvar script of a sigmoid dose response equation. For log dose
 greater than negative infinity (dose greater than 0), the sigmoid dose
 response equation is used. \code{ac50} is the half maximal response, hill is the
 slope, top is the maximum response, and bottom is the minimum response. For

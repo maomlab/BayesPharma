@@ -13,7 +13,7 @@ basic_stats(
 )
 }
 \arguments{
-\item{model}{\code{\link[brms:brmsfit-class]{brms::brmsfit()}} model}
+\item{model}{\link[brms:brmsfit-class]{brms::brmsfit} object}
 
 \item{predictors_col_name}{\code{character} expression for predictors column
 in the input \code{data.frame}. Predictors are the perturbations tested

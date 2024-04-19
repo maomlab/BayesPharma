@@ -1,15 +1,36 @@
 
 
-## MuSyC synergy model {#sec-MuSyC}
-When two different treatments are combined they may interact. For end-point assays, if the response is stronger or weaker than what would be expected with an additive model, the treatments are said to be epistatic. For sigmoidal dose-response models, however, the analysis may be more complicated. One drug may not only may shift the maximal response (efficacy) of the other, but it may also shift the effective dose and shape of the response (potency). Historically a range of models have been proposed that capture different aspects of synergy, for example the Bliss independence[@Bliss1956-hf] and Loewe additivity[@Loewe1926-sr] are null-models for no synergistic efficacy or potency, respectively. The `SynergyFinder` R package[@Ianevski2022-cb] and the `synergy` python package[@Wooten2021-cr] can be used to visualize treatment interactions, compute a range of synergy scores, and test if the interactions are significant.
+### MuSyC Epistasis Model {#sec-MuSyC}
+When two different treatments are made in an assay, their combined effect may be
+stronger or weaker than what would be expected with an additive model, the
+treatments are said to be epistatic For sigmoidal dose-response models,
+one treatment may effect of the other in two different ways; by either shifting
+the maximal response (efficacy) or by shifting the dose needed to cause the
+response (potency). A range of statistical models have been proposed that
+capture different aspects of synergy, notably Bliss independence[@Bliss1956-hf]
+and Loewe additivity[@Loewe1926-sr] models can be used to test for significant
+efficacy or potency interactions, respectively. The `SynergyFinder` R
+package[@Ianevski2022-cb] and the `synergy` python package[@Wooten2021-cr] can
+be used to visualize treatment interactions, compute a range of synergy scores,
+and test if the interactions are significant.
 
-Recently Meyer et al.[@Meyer2019-zr,Wooten2021-lg] derived an integrated functional synergistic sigmoidal dose-response, which has the Loewe and Bliss models as special cases. They implemented a Bayesian model-fitting strategy in `Matlab`, and a maximum likelihood model-fitting into the synergy python package. To make the model more accessible to the pharmacology community, in this section, we briefly review the `MuSyC` functional form, describe a Bayesian implementation in `Stan`/`BRMS`, and illustrate using the model to re-analyze how drugs and voltage may interact to modulate the current through a potassium channel.
+Recently Meyer et al.[@Meyer2019-zr,@Wooten2021-lg] derived an integrated
+functional synergistic sigmoidal dose-response called the Multi-dimensional
+Synergy of Combinations (MuSyC) method, which has the Loewe and Bliss models as
+special cases. They implemented a Bayesian model-fitting strategy in `Matlab`,
+and a maximum likelihood model-fitting into the synergy python package. To make
+the model more accessible to the pharmacology community, in this section, we
+briefly review the `MuSyC` functional form, describe a Bayesian implementation
+in `Stan`/`BRMS`, and illustrate using the model to re-analyze how drugs and
+voltage may interact to modulate the current through a potassium channel.
 
-### MuSyC Functional Form
-The functional form for the MuSyC model gives an equation for the response $\color{brown}{E_d}$ at doses of $\color{teal}{d_1}$ and $\color{teal}{d_2}$ of the two treatments and has $9$ free parameters $\color{purple}{C_1}$, $\color{purple}{C_2}$, $\color{brown}{E_0}$, $\color{brown}{E_1}$, $\color{brown}{E_2}$, $\color{brown}{E_3}$, $\color{purple}{h_1}$, $\color{purple}{h_2}$, $\color{purple}{\alpha}$:
+**MuSyC Functional Form**: The functional form for the MuSyC model gives an
+equation for the response $\color{brown}{E_d}$ at doses of $\color{teal}{d_1}$
+and $\color{teal}{d_2}$ of the two treatments and has $9$ free parameters $\theta = \left({\color{purple}{C_1}}, {\color{purple}{C_2}}, {\color{brown}{E_0}}, {\color{brown}{E_1}}, {\color{brown}{E_2}}, {\color{brown}{E_3}},
+{\color{purple}{h_1}}, {\color{purple}{h_2}}, {\color{purple}{\alpha}}\right)$
 
 \begin{align}
-\color{brown}{E_d} &= \frac{
+{\color{brown}{E_d}} = \mbox{MuSyC}({\color{teal}{d_1}}, {\color{teal}{d_2}}; \theta) &= \frac{
           {\color{purple}{C_1}}^{\color{purple}{h_1}}{\color{purple}{C_2}}^{\color{purple}{h_2}}{\color{brown}{E_0}} +
           {\color{teal}{d_1}}^{\color{purple}{h_1}}{\color{purple}{C_2}}^{\color{purple}{h_2}}{\color{brown}{E_1}} +
           {\color{purple}{C_1}}^{\color{purple}{h_1}}{\color{teal}{d_2}}^{\color{purple}{h_2}}{\color{brown}{E_2}} +
@@ -20,6 +41,10 @@ The functional form for the MuSyC model gives an equation for the response $\col
           {\color{purple}{C_1}}^{\color{purple}{h_1}}{\color{teal}{d_2}}^{\color{purple}{h_2}} +
           {\color{teal}{d_1}}^{\color{purple}{h_1}}{\color{teal}{d_2}}^{\color{purple}{h_2}}{\color{purple}{\alpha}}}
 \end{align}
+The parameters $\color{brown}{E_0}$, $\color{brown}{E_3}$,
+give response values for the extreme values for the doses: $\mbox{MuSyC}({\color{teal}{0}}, {\color{teal}{0}}; \theta) = \color{brown}{E_0}$ and $\mbox{MuSyC}({\color{teal}{\infty}}, {\color{teal}{\infty}}; \theta) = \color{brown}{E_3}$. Setting one of the doses to zero e.g., ${\color{teal}{d_2}} = 0$, the MuSyC functional form reduces to a sigmoid function of the other, where $\mbox{MuSyC}({\color{teal}{d_1}}, {\color{teal}{0}}; \theta) = Sigmoid({\color{teal}{d_1}}; \phi)$, where the half maximal activity is $\mbox{AC}_{50} = \color{purple}{C_1}$ and the slope at the half maximal activity is ${\color{purple}{\mbox{hill}}} = {\color{purple}{h_1}}$ and if $h_1 > 0$, then ${\color{brown}{\mbox{top}}} = {\color{brown}{E_1}}$ and ${\color{brown}{\mbox{bottom}}} = {\color{brown}{E_0}}$, otherwise the assignment is reversed. See Appendix XXX for a derivation.
+
+
 
 To interpret these parameters if we set $\color{teal}{d_2}=0$, then 
 \begin{align}
@@ -30,7 +55,16 @@ To interpret these parameters if we set $\color{teal}{d_2}=0$, then
           {\color{purple}{C_1}}^{\color{purple}{h_1}} +
           {\color{teal}{d_1}}^{\color{purple}{h_1}}}
 \end{align}
-which is the Hill equation, which we modeled above \ref{sec:hill}. If we then additionally set $\color{teal}{d_1}=0$ then $\color{brown}{E_d}=\color{brown}{E_0}$, in the limit as ${\color{teal}{d_1}}\rightarrow \infty$ then ${\color{brown}{E_d}}\rightarrow {\color{brown}{E_1}}$, and if ${\color{teal}{d_1}}=\color{purple}{C_1}$ then ${\color{brown}{E_d}} = ({\color{brown}{E_0}} + {\color{brown}{E_2}})/2$, which is the half maximal response (either the $\color{brown}{\mbox{IC}_{50}}$ if treatment $1$ is an inhibitor or $\color{brown}{\mbox{EC}_{50}}$ if treatment $1$ is agonist). The slope at ${\color{teal}{d_1}}={\color{purple}{C_1}}$ is 
+which is the Hill equation, which we modeled above \ref{sec:hill}. If we then
+additionally set $\color{teal}{d_1}=0$ then
+$\color{brown}{E_d}=\color{brown}{E_0}$, in the limit as
+${\color{teal}{d_1}}\rightarrow \infty$ then
+${\color{brown}{E_d}}\rightarrow {\color{brown}{E_1}}$, and if
+${\color{teal}{d_1}}=\color{purple}{C_1}$ then
+${\color{brown}{E_d}} = ({\color{brown}{E_0}} + {\color{brown}{E_2}})/2$, which
+is the half maximal response (either the $\color{brown}{\mbox{IC}_{50}}$ if
+treatment $1$ is an inhibitor or $\color{brown}{\mbox{EC}_{50}}$ if treatment
+$1$ is agonist). The slope at ${\color{teal}{d_1}}={\color{purple}{C_1}}$ is 
 \begin{align*}
     \frac{\mathrm{d}\;\color{brown}{E_d}}{\mathrm{d}\color{teal}{d_1}}
         &= {\color{purple}{C_1}}^{v}{\color{brown}{E_0}}
@@ -46,27 +80,63 @@ which is the Hill equation, which we modeled above \ref{sec:hill}. If we then ad
         &= ({\color{brown}{E_0}} + {\color{brown}{E_1}})
 \end{align*}
 
-The evaluation of the functional form for ${\color{brown}{E_d}}$ is numerically unstable. To transform using the $\mbox{log\_sum\_exp}$ trick, let
+The evaluation of the functional form for ${\color{brown}{E_d}}$ is numerically
+unstable due to the exponentiation. To transform using the $\texttt{log-sum-exp}$ trick, let
 
 \begin{align*}
-\mbox{numerator\_parts} = [\\
+\texttt{numerator\_parts} = [\\
       &{\color{purple}{h_1}}\log({\color{purple}{C_1}}) + {\color{purple}{h_2}}\log({\color{purple}{C_2}}) + \log({\color{brown}{E_0}}),\\
       &{\color{purple}{h_1}}\log({\color{teal}{d_1}}) + {\color{purple}{h_2}}\log({\color{purple}{C_2}}) + \log({\color{brown}{E_1}}),\\
       &{\color{purple}{h_1}}\log({\color{purple}{C_1}}) + {\color{purple}{h_2}}\log({\color{teal}{d_2}}) + \log({\color{brown}{E_2}}),\\
       &{\color{purple}{h_1}}\log({\color{teal}{d_1}}) + {\color{purple}{h_2}}\log({\color{teal}{d_2}}) + \log({\color{brown}{E_3}}) + \log({\color{purple}{\alpha}}) ]\\
-\mbox{denominator\_parts} = [\\
+\texttt{denominator\_parts} = [\\
       &{\color{purple}{h_1}}\log({\color{purple}{C_1}}) + {\color{purple}{h_2}}\log({\color{purple}{C_2}}),\\
       &{\color{purple}{h_1}}\log({\color{teal}{d_1}}) + {\color{purple}{h_2}}\log({\color{purple}{C_2}}),\\
       &{\color{purple}{h_1}}\log({\color{purple}{C_1}}) + {\color{purple}{h_2}}\log({\color{teal}{d_2}}),\\
       &{\color{purple}{h_1}}\log({\color{teal}{d_1}}) + {\color{purple}{h_2}}\log({\color{teal}{d_2}})]\\
 \end{align*}
-Then 
+Then for a vector $x = [x_1, x_2, \dots, x_n]$, let $\texttt{log\_sum\_exp}(x) = \mbox{log}\left(\mbox{exp}(x_1) + \mbox{exp}(x_2) + \dots + \mbox{exp}(x_n)\right)$. Then
+
 $$
-    E_d = \mbox{exp}\!\left(\mbox{log\_sum\_exp}(\mbox{numerator\_parts}) - \mbox{log\_sum\_exp}(\mbox{denominator\_parts})\right).
+    {\color{brown}{E_d}} = \mbox{exp}\!\left(\texttt{log-sum-exp}(\texttt{numerator\_parts}) - \texttt{log-sum-exp}(\texttt{denominator\_parts})\right).
 $$
+To implement the $\mbox{MuSyC}$ model in Stan we use the following parameterization.
+
+\scriptsize
+```{r MuSyC-formula}
+#| echo = TRUE
+
+# the brms MuSyC formula with given covariates
+synergy_formula <- MuSyC_formula(predictors = covariates)
+
+# will generate a formula like this
+synergy_formula_alt <- brms::brmsformula(
+  # The Stan MuSyC function is defined in BayesPharma::MuSyC_stanvar()
+  response ~ MuSyC(
+    logd1 - logd1scale,
+    logd2 - logd2scale,
+    logE0,
+    logC1, logE1, h1,
+    logC2, logE2, h2,
+    logE3, logalpha),
+  nl = TRUE) +
+  # The free parameters are regressed against the given covariates
+  brms::lf(logE0              ~ covariates) +
+  brms::lf(logC1 + logE1 + h1 ~ covariates) +
+  brms::lf(logC2 + logE2 + h2 ~ covariates) +
+  brms::lf(logE3 + logalpha   ~ covariates)
+```
+\normalsize
+
+Note that if the `logd1scale` and `logd1scale` values are not provided in the
+the data, when the model is run, they are automatically computed as the mean
+value of the doses and is used to make the model easier to fit.
 
 
-### Implementation and usage of the MuSyC model in Stan/BRMS
+
+
+
+#### MuSyC model BayesPharma
 
 
 
