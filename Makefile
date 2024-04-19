@@ -5,7 +5,6 @@
 
 
 clean:
-	rm -rf vignettes_src/*_cache
 	rm -rf vignettes_src/manuscript_files
 	rm -rf vignettes_src/manuscript/manuscript_cache
 	rm -rf vignettes_src/manuscript/manuscript_files/figure-*
@@ -70,11 +69,27 @@ vignettes/references.bib: vignettes_src/references.bib
 vignettes/%.Rmd: vignettes_src/%.Rmd vignettes/references.bib
 # For each file matching vignettes_src/<vignette>.Rmd call
 # cd vignettes && Rscript -e "knitr::knit(input = '../vignettes_src/<vignette>.Rmd', output = '<vignette>.Rmd')"
+# This will generate the following files
+#    * vignettes/<vignette>.Rmd
+#    * vignettes/<vignette>_files/
+#        - Defined by `knitr::opts_chunk$set(fig.path = ...)` in the vignette
+#    * vignettes/cache/<vignette>/
+#        - Defined by `knitr::opts_chunk$set(cache.path = ...)` in the vignette
 	cd vignettes &&	Rscript -e "knitr::knit(input = '../$<', output = '$(@F)')"
 
+# check that all the vignettes have been pre-generated
+#   vignettes_src/<vignette>.Rmd => vignettes/<vignette>.Rmd
+#   pre-computing the each vignette makes building the R-package faster
 vignettes: $(patsubst vignettes_src/%,vignettes/%,$(wildcard vignettes_src/*.Rmd))
 
+# quarto renders both the .pdf and .docx version so tell make how to build both
+# of these files
 vignettes/manuscript.pdf: vignettes/references.bib
+	quarto render vignettes_src/manuscript/manuscript.qmd
+	mv vignettes_src/manuscript/manuscript.pdf vignettes/
+	mv vignettes_src/manuscript/manuscript.docx vignettes/
+	
+vignettes/manuscript.docx: vignettes/references.bib
 	quarto render vignettes_src/manuscript/manuscript.qmd
 	mv vignettes_src/manuscript/manuscript.pdf vignettes/
 	mv vignettes_src/manuscript/manuscript.docx vignettes/
