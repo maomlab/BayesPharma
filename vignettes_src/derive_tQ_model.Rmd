@@ -11,8 +11,9 @@ vignette: >
   
 ```{r set-options, echo=FALSE}
 knitr::opts_chunk$set(
-  cache = TRUE,
   echo = FALSE,
+  cache = TRUE,
+  cache.path = "cache/derive_tQ_model/",
   fig.path = "derive_tQ_model_files/",
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images

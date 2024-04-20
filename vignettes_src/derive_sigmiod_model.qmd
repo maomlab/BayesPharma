@@ -1,9 +1,38 @@
+---
+title: "Derive: Sigmoid Model"
+description: Derive the Sigmoid model functional form
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Derive: Sigmoid Model}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r set-options, echo=FALSE}
+
+# inspired by
+# https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
+knitr::opts_chunk$set(
+  echo = FALSE,
+  cache = TRUE,
+  cache.path = "cache/derive_sigmoid_model/",
+  fig.path = "derive_sigmoid_model_files/",
+  fig.retina = 2, # Control using dpi
+  fig.width = 6,  # generated images
+  fig.height = 5, # generated images
+  fig.pos = "t",  # pdf mode
+  fig.align = "center",
+  dpi = if (knitr::is_latex_output()) 72 else 300, 
+  out.width = "100%")
+
+algorithm <- "meanfield"
+
+```
+
+
 
 ```{r load-libraries}
-library(plyr)
-library(dplyr)
-library(ggplot2)
-library(scales)
+suppressWarnings(suppressMessages(library(tidyverse)))
 ```
 
 
@@ -12,27 +41,28 @@ source("src/analysis_parameters.R")
 
 ```{r generate-date}
 data <- expand.grid(
-  mu=c(.2, .4, .6, .8),
-  size=c(10, 20, 100, 500),
-  x=seq(0, 1, length.out=200)) %>%
+  mu = c(.2, .4, .6, .8),
+  size = c(10, 20, 100, 500),
+  x = seq(from = 0, to = 1, length.out = 200)) |>
   dplyr::mutate(
-    p = dbeta(x=x, shape1=mu*size, shape2=(1-mu)*size))
+    p = dbeta(
+      x = x,
+      shape1 = mu * size,
+      shape2 = (1 - mu) * size))
 ```
 
 ```{r plot-functional-form}
 ggplot2::ggplot(data=data) +
   ggplot2::theme_bw() +
-  ggplot2::geom_line(aes(x=x, y=p, color=mu, group=mu), size=2) +
-  ggplot2::facet_wrap(~size, scales="free_y") +
+  ggplot2::geom_line(
+    mapping = ggplot2::aes(
+      x = x,
+      y = p,
+      color = mu,
+      group = mu),
+    size = 2) +
+  ggplot2::facet_wrap(~size, scales = "free_y") +
   ggplot2::scale_x_continuous("Hit Rate") +
   ggplot2::scale_y_continuous("Probability of Beta Distribution") +
   ggplot2::scale_color_continuous("Mean")
-ggplot2::ggsave("product/beta_model.pdf", height=5, width=7)
-ggplot2::ggsave("product/beta_model.png", height=5, width=7)
-
-```
-
-```{r }
-
-
 ```

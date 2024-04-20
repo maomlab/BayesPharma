@@ -4,7 +4,7 @@
 #' parameters required for the MuSyC model.
 #'
 #' If you would like to set a parameter as a constant, enter a
-#' numeric value for the function argument.  If you would like to set your own
+#' numeric value for the function argument. If you would like to set your own
 #' distribution, for example, in the function arguments type
 #' `ec50 = brms::prior(prior = normal(<mu>, <sigma>), nlpar = 'ec50')`.
 

@@ -13,7 +13,7 @@
 #'   of the parameter, see [rstan_default_init()] to use the \pkg{rstan} default
 #'   init.
 #'
-#' @returns input for `[brm][brms::brm](init = ...)`
+#' @returns input for `[brms::brm](init = ...)`
 #'
 #' @seealso [growth_sigmoid_formula], [growth_sigmoid_prior], and
 #'   [growth_sigmoid_model]

@@ -68,7 +68,7 @@ Creating a \code{data.frame} of priors of the dose response
 parameters required for the MuSyC model.
 
 If you would like to set a parameter as a constant, enter a
-numeric value for the function argument.  If you would like to set your own
+numeric value for the function argument. If you would like to set your own
 distribution, for example, in the function arguments type
 \verb{ec50 = brms::prior(prior = normal(<mu>, <sigma>), nlpar = 'ec50')}.
 For other distribution options, reference \link[brms:set_prior]{brms::prior} and \href{https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations}{Prior Choice Recommendations }

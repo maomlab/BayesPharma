@@ -17,31 +17,36 @@ vignette: >
 
 
 
+```
+## Error in library(tidyverse): there is no package called 'tidyverse'
+```
 
 
-## Hill Equation {#sec-hill}
+### Hill Equation {#sec-hill}
 
-In this case study, we are going to reanalyze the dose response of 4
-Kappa Opioid receptor (KOR) antagonists using the `BayesPharma`
-package from a study performed by Margolis et
-al. (-@Margolis2020-bm). Whole cell electrophysiology in acute rat
+In this case study, we are going to reanalyze the dose responses of 4
+Kappa Opioid receptor (KOR) antagonists from a study performed by Margolis et
+al. (-@Margolis2020-bm) using the `BayesPharma`
+package. Whole cell electrophysiology in acute rat
 midbrain slices was used to evaluate the pharmacological properties of
 four novel KOR antagonists: BTRX-335140, BTRX-395750, PF-04455242, and
-JNJ-67953964
+JNJ-67953964.
 
-Originally, the dose-response data analysis was performed by using
+Originally, the dose-response analysis was performed using
 the `drc` package in R, which implements the minimization of negative
 log likelihood function and reduces to least square estimation for a
-continuous response. The data was normalized to % baseline then fit to
-a 4-parameter log-logistic dose response model, setting the top (max
-response) to 100% and estimating the IC50, its variance, and the
-bottom (min response).
+continuous response. The data were normalized to % baseline agonist response,
+measuring the extent of blockade of agonist response in the presence of
+different concentrations of antagonist. These data were then fit to a 4-parameter
+log-logistic dose response model, setting the top (max agonist response) to
+100% and estimating the IC50, its variance, and the bottom (min agonist
+response).
 
-### Fitting the sigmoid model
+#### Fitting the sigmoid model
 
 Using the `BayesPharma` package, we can re-fit the sigmoid model with a
 negative slope, and fix the top parameter to `100` as the response is
-normalized to a no-drug baseline.
+normalized to a no-antagonist baseline.
 
 For the prior, we are going to use a normal distribution because the
 response values are continuous. First, we will run the analysis with the
@@ -124,13 +129,13 @@ kor_model <- BayesPharma::sigmoid_model(
 ```
 \normalsize
 
-### Analyzing model fit
+#### Analyzing model fit
 
 The `brms` generated model summary shows the formula that the expected
 response a is sigmoid function of the `log_dose` with four parameters, and
 a shared Gaussian distribution. Each parameter is dependent on the
 `substance_id`. Since we want to fit a separate model for each substance, we
-include a `0 +` to indicate that there is no common intercept.  The data
+include a `0 +` to indicate that there is no common intercept. The data
 consists of `73` data points and the posterior sampling was done in `4`
 chains each with `8000` steps with `4000` steps of warm-up. The population
 effects for each parameter summarize the marginal posterior distributions,
@@ -152,28 +157,28 @@ being good for this type of model.
 ##   Draws: 4 chains, each with iter = 8000; warmup = 4000; thin = 1;
 ##          total post-warmup draws = 16000
 ## 
-## Population-Level Effects: 
+## Regression Coefficients:
 ##                                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## ic50_substance_idBTRX_335140      -8.85      0.20    -9.21    -8.40 1.00    14899     9316
-## ic50_substance_idBTRX_395750      -8.24      0.46    -8.93    -7.36 1.00    12120     5841
-## ic50_substance_idJNJ              -9.15      0.32    -9.79    -8.50 1.00    15256    10460
-## ic50_substance_idPF               -6.18      1.02    -7.67    -3.58 1.00     8272     5238
-## hill_substance_idBTRX_335140      -1.47      0.60    -2.88    -0.58 1.00    14995    11321
-## hill_substance_idBTRX_395750      -0.90      0.51    -2.26    -0.26 1.00    10375     5911
-## hill_substance_idJNJ              -1.01      0.52    -2.41    -0.41 1.00    14910    10490
-## hill_substance_idPF               -0.31      0.24    -0.90    -0.03 1.00     8047     4787
-## bottom_substance_idBTRX_335140    -0.01      0.50    -0.98     0.96 1.00    17281    11401
-## bottom_substance_idBTRX_395750     0.01      0.50    -0.97     0.99 1.00    17587    11876
-## bottom_substance_idJNJ            -0.01      0.50    -0.99     0.96 1.00    16805    10580
-## bottom_substance_idPF              0.01      0.50    -0.97     0.99 1.00    19948    11245
+## ic50_substance_idBTRX_335140      -8.85      0.20    -9.20    -8.40 1.00    14135     9018
+## ic50_substance_idBTRX_395750      -8.23      0.45    -8.91    -7.29 1.00    10846     4602
+## ic50_substance_idJNJ              -9.15      0.32    -9.76    -8.50 1.00    17186    10919
+## ic50_substance_idPF               -6.16      1.04    -7.61    -3.37 1.00     9645     5970
+## hill_substance_idBTRX_335140      -1.47      0.60    -2.87    -0.59 1.00    16482    10841
+## hill_substance_idBTRX_395750      -0.89      0.51    -2.23    -0.25 1.00    10844     5228
+## hill_substance_idJNJ              -0.99      0.50    -2.37    -0.41 1.00    17080    12246
+## hill_substance_idPF               -0.31      0.24    -0.90    -0.03 1.00     8241     5679
+## bottom_substance_idBTRX_335140     0.00      0.50    -0.97     0.97 1.00    20382    11820
+## bottom_substance_idBTRX_395750     0.01      0.49    -0.94     0.97 1.00    18821    11724
+## bottom_substance_idJNJ            -0.01      0.50    -0.98     0.95 1.00    20862    11229
+## bottom_substance_idPF              0.01      0.50    -0.97     0.98 1.00    19638    11667
 ## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA       NA       NA
 ## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA       NA       NA
 ## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA       NA       NA
 ## top_substance_idPF               100.00      0.00   100.00   100.00   NA       NA       NA
 ## 
-## Family Specific Parameters: 
+## Further Distributional Parameters:
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma    32.16      2.86    27.17    38.31 1.00    14530    10557
+## sigma    32.15      2.91    27.10    38.42 1.00    15644    10950
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -181,9 +186,7 @@ being good for this type of model.
 ```
 \normalsize
 
-#### Traceplot
-
-The model ran without warning messages, meaning there were no parameter
+**Traceplot**: The model ran without warning messages, meaning there were no parameter
 value problems or MCMC conflicts. The bulk and tail ESS indicate high
 resolution and stability. The R-hat for each parameter equals `1.00` and
 the `traceplot` shows the chains mixed well, indicating the chains
@@ -202,12 +205,10 @@ kor_model |>
 </div>
 \normalsize
 
-#### Compare prior and posterior marginal distributions
-
-Displayed below is a plot for the prior and posterior distributions of
-the parameters (prior is pink and posterior is teal). This can be
-useful for comparing the density distribution of the prior and
-posterior produced by the model:
+**Compare prior and posterior marginal distributions**: Displayed below is a
+plot for the prior and posterior distributions of the parameters (prior is pink
+and posterior is teal). This can be useful for comparing the density
+distribution of the prior and posterior produced by the model:
 
 \scriptsize
 
@@ -264,7 +265,7 @@ BayesPharma::plot_posterior_draws(
 </div>
 \normalsize
 
-### Comparing alternative models
+#### Comparing alternative models
 
 To test the sensitivity of the analysis to the prior, we can re-fit the model
 with a more informative prior:
@@ -284,107 +285,10 @@ Re-fitting the model with the `kor_prior2` gives:
 
 \scriptsize
 
+\normalsize
+
+
 ```
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
-## Chain 1: 
-## Chain 1: Gradient evaluation took 8.5e-05 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.85 seconds.
-## Chain 1: Adjust your expectations accordingly!
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Iteration:    1 / 8000 [  0%]  (Warmup)
-## Chain 1: Iteration:  800 / 8000 [ 10%]  (Warmup)
-## Chain 1: Iteration: 1600 / 8000 [ 20%]  (Warmup)
-## Chain 1: Iteration: 2400 / 8000 [ 30%]  (Warmup)
-## Chain 1: Iteration: 3200 / 8000 [ 40%]  (Warmup)
-## Chain 1: Iteration: 4000 / 8000 [ 50%]  (Warmup)
-## Chain 1: Iteration: 4001 / 8000 [ 50%]  (Sampling)
-## Chain 1: Iteration: 4800 / 8000 [ 60%]  (Sampling)
-## Chain 1: Iteration: 5600 / 8000 [ 70%]  (Sampling)
-## Chain 1: Iteration: 6400 / 8000 [ 80%]  (Sampling)
-## Chain 1: Iteration: 7200 / 8000 [ 90%]  (Sampling)
-## Chain 1: Iteration: 8000 / 8000 [100%]  (Sampling)
-## Chain 1: 
-## Chain 1:  Elapsed Time: 2.759 seconds (Warm-up)
-## Chain 1:                2.503 seconds (Sampling)
-## Chain 1:                5.262 seconds (Total)
-## Chain 1: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
-## Chain 2: 
-## Chain 2: Gradient evaluation took 2.8e-05 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.28 seconds.
-## Chain 2: Adjust your expectations accordingly!
-## Chain 2: 
-## Chain 2: 
-## Chain 2: Iteration:    1 / 8000 [  0%]  (Warmup)
-## Chain 2: Iteration:  800 / 8000 [ 10%]  (Warmup)
-## Chain 2: Iteration: 1600 / 8000 [ 20%]  (Warmup)
-## Chain 2: Iteration: 2400 / 8000 [ 30%]  (Warmup)
-## Chain 2: Iteration: 3200 / 8000 [ 40%]  (Warmup)
-## Chain 2: Iteration: 4000 / 8000 [ 50%]  (Warmup)
-## Chain 2: Iteration: 4001 / 8000 [ 50%]  (Sampling)
-## Chain 2: Iteration: 4800 / 8000 [ 60%]  (Sampling)
-## Chain 2: Iteration: 5600 / 8000 [ 70%]  (Sampling)
-## Chain 2: Iteration: 6400 / 8000 [ 80%]  (Sampling)
-## Chain 2: Iteration: 7200 / 8000 [ 90%]  (Sampling)
-## Chain 2: Iteration: 8000 / 8000 [100%]  (Sampling)
-## Chain 2: 
-## Chain 2:  Elapsed Time: 2.828 seconds (Warm-up)
-## Chain 2:                2.751 seconds (Sampling)
-## Chain 2:                5.579 seconds (Total)
-## Chain 2: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
-## Chain 3: 
-## Chain 3: Gradient evaluation took 3e-05 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.3 seconds.
-## Chain 3: Adjust your expectations accordingly!
-## Chain 3: 
-## Chain 3: 
-## Chain 3: Iteration:    1 / 8000 [  0%]  (Warmup)
-## Chain 3: Iteration:  800 / 8000 [ 10%]  (Warmup)
-## Chain 3: Iteration: 1600 / 8000 [ 20%]  (Warmup)
-## Chain 3: Iteration: 2400 / 8000 [ 30%]  (Warmup)
-## Chain 3: Iteration: 3200 / 8000 [ 40%]  (Warmup)
-## Chain 3: Iteration: 4000 / 8000 [ 50%]  (Warmup)
-## Chain 3: Iteration: 4001 / 8000 [ 50%]  (Sampling)
-## Chain 3: Iteration: 4800 / 8000 [ 60%]  (Sampling)
-## Chain 3: Iteration: 5600 / 8000 [ 70%]  (Sampling)
-## Chain 3: Iteration: 6400 / 8000 [ 80%]  (Sampling)
-## Chain 3: Iteration: 7200 / 8000 [ 90%]  (Sampling)
-## Chain 3: Iteration: 8000 / 8000 [100%]  (Sampling)
-## Chain 3: 
-## Chain 3:  Elapsed Time: 2.923 seconds (Warm-up)
-## Chain 3:                2.084 seconds (Sampling)
-## Chain 3:                5.007 seconds (Total)
-## Chain 3: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
-## Chain 4: 
-## Chain 4: Gradient evaluation took 3.3e-05 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.33 seconds.
-## Chain 4: Adjust your expectations accordingly!
-## Chain 4: 
-## Chain 4: 
-## Chain 4: Iteration:    1 / 8000 [  0%]  (Warmup)
-## Chain 4: Iteration:  800 / 8000 [ 10%]  (Warmup)
-## Chain 4: Iteration: 1600 / 8000 [ 20%]  (Warmup)
-## Chain 4: Iteration: 2400 / 8000 [ 30%]  (Warmup)
-## Chain 4: Iteration: 3200 / 8000 [ 40%]  (Warmup)
-## Chain 4: Iteration: 4000 / 8000 [ 50%]  (Warmup)
-## Chain 4: Iteration: 4001 / 8000 [ 50%]  (Sampling)
-## Chain 4: Iteration: 4800 / 8000 [ 60%]  (Sampling)
-## Chain 4: Iteration: 5600 / 8000 [ 70%]  (Sampling)
-## Chain 4: Iteration: 6400 / 8000 [ 80%]  (Sampling)
-## Chain 4: Iteration: 7200 / 8000 [ 90%]  (Sampling)
-## Chain 4: Iteration: 8000 / 8000 [100%]  (Sampling)
-## Chain 4: 
-## Chain 4:  Elapsed Time: 3.161 seconds (Warm-up)
-## Chain 4:                2.391 seconds (Sampling)
-## Chain 4:                5.552 seconds (Total)
-## Chain 4:
 ##  Family: gaussian 
 ##   Links: mu = identity; sigma = identity 
 ## Formula: response ~ sigmoid(ic50, hill, top, bottom, log_dose) 
@@ -396,77 +300,99 @@ Re-fitting the model with the `kor_prior2` gives:
 ##   Draws: 4 chains, each with iter = 8000; warmup = 4000; thin = 1;
 ##          total post-warmup draws = 16000
 ## 
-## Population-Level Effects: 
+## Regression Coefficients:
 ##                                Estimate Est.Error l-95% CI u-95% CI Rhat
-## ic50_substance_idBTRX_335140      -8.81      0.22    -9.22    -8.36 1.00
+## ic50_substance_idBTRX_335140      -8.82      0.21    -9.22    -8.37 1.00
 ## ic50_substance_idBTRX_395750      -8.58      0.31    -9.16    -7.95 1.00
-## ic50_substance_idJNJ              -8.95      0.31    -9.53    -8.32 1.00
-## ic50_substance_idPF               -8.18      0.45    -9.08    -7.32 1.00
+## ic50_substance_idJNJ              -8.94      0.31    -9.53    -8.32 1.00
+## ic50_substance_idPF               -8.18      0.44    -9.07    -7.32 1.00
 ## hill_substance_idBTRX_335140      -1.19      0.36    -1.96    -0.57 1.00
 ## hill_substance_idBTRX_395750      -1.06      0.39    -1.91    -0.42 1.00
-## hill_substance_idJNJ              -0.85      0.33    -1.68    -0.39 1.00
-## hill_substance_idPF               -0.72      0.45    -1.73    -0.08 1.00
-## bottom_substance_idBTRX_335140     1.73     10.55   -19.25    21.97 1.00
-## bottom_substance_idBTRX_395750    15.46     11.14    -7.33    36.36 1.00
-## bottom_substance_idJNJ            -2.88      9.77   -22.88    15.44 1.00
-## bottom_substance_idPF             31.36     11.53     7.09    52.03 1.00
+## hill_substance_idJNJ              -0.85      0.33    -1.66    -0.39 1.00
+## hill_substance_idPF               -0.72      0.45    -1.74    -0.08 1.00
+## bottom_substance_idBTRX_335140     1.70     10.40   -19.38    21.68 1.00
+## bottom_substance_idBTRX_395750    15.36     11.28    -8.15    36.41 1.00
+## bottom_substance_idJNJ            -2.82      9.62   -22.42    15.25 1.00
+## bottom_substance_idPF             31.14     11.51     6.70    51.73 1.00
 ## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA
 ## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA
 ## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA
 ## top_substance_idPF               100.00      0.00   100.00   100.00   NA
 ##                                Bulk_ESS Tail_ESS
-## ic50_substance_idBTRX_335140      14132    11090
-## ic50_substance_idBTRX_395750      14373    11993
-## ic50_substance_idJNJ              13025    11727
-## ic50_substance_idPF               14181    11917
-## hill_substance_idBTRX_335140      14765     9899
-## hill_substance_idBTRX_395750      14675    10859
-## hill_substance_idJNJ              13702    12566
-## hill_substance_idPF                9466     6053
-## bottom_substance_idBTRX_335140    14230    11874
-## bottom_substance_idBTRX_395750    14682    10484
-## bottom_substance_idJNJ            12495    11162
-## bottom_substance_idPF             11181    10516
+## ic50_substance_idBTRX_335140      11764    10044
+## ic50_substance_idBTRX_395750      10886    10660
+## ic50_substance_idJNJ              10947    11426
+## ic50_substance_idPF               12278    11427
+## hill_substance_idBTRX_335140      12695     9613
+## hill_substance_idBTRX_395750      12556    10058
+## hill_substance_idJNJ              12118    12421
+## hill_substance_idPF                8448     6202
+## bottom_substance_idBTRX_335140    12544    11578
+## bottom_substance_idBTRX_395750    10507     8739
+## bottom_substance_idJNJ            10637    10621
+## bottom_substance_idPF             10096    10812
 ## top_substance_idBTRX_335140          NA       NA
 ## top_substance_idBTRX_395750          NA       NA
 ## top_substance_idJNJ                  NA       NA
 ## top_substance_idPF                   NA       NA
 ## 
-## Family Specific Parameters: 
+## Further Distributional Parameters:
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma    31.87      2.84    26.87    37.98 1.00    15342    10954
+## sigma    31.86      2.86    26.84    38.06 1.00    12322    10306
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).
 ```
-\normalsize
 
-## Comparing the Two Models Using LOO-Comparison:
 
-One way to evaluate the quality of a model is for each data-point,
-re-fit the model with remaining points, and evaluate the log
-probability of the point in the posterior distribution. Taking the
-expectation across all points give the Expected Log Pointwise
-predictive Density (ELPD). Since this is computationally challenging
-to re-fit the model for each point, if the model fits the data
-reasonably well, then the ELPD can be approximated using the Pareto
-smoothed importance sampling (PSIS). Using the LOO, the package,
-Pareto k value for each data point is computed, where k less than `0.5`
-is good, between `0.5` and `0.7` is OK, and higher than `0.7`
-indicates the data point is not fit by the model well. Evaluating the model for
-the KOR antagonists, shows that the model fits the data well.
+**Comparing the Two Models Using LOO-Comparison**: One way to evaluate the
+quality of a model is for each data-point, re-fit the model with remaining
+points and evaluate the log probability of the point in the posterior
+distribution. Taking the expectation across all points gives the Expected Log
+Pointwise predictive Density (ELPD). Since this is computationally challenging
+to re-fit the model for each point, if the model fits the data reasonably well,
+then the ELPD can be approximated using the Pareto smoothed importance sampling
+(PSIS). Using the LOO package, Pareto k value for each data point is computed
+that indicate how well that data point is fit by the model, where `k < 0.5` is
+good, `0.5 <= k < 0.7` is OK, and `0.7 <= k` is bad. Evaluating the model for
+the KOR antagonists shows that the model fits the data well.
 
 \scriptsize
 
 ```
-## No problematic observations found. Returning the original 'loo' object.
-## NULL
+## Trying to compile a simple C file
+## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c
+## using C compiler: ‘Apple clang version 15.0.0 (clang-1500.3.9.4)’
+## using SDK: ‘’
+## clang -arch x86_64 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/opt/R/x86_64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c foo.c -o foo.o
+## In file included from <built-in>:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/Dense:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/Core:19:
+## /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:679:10: fatal error: 'cmath' file not found
+## #include <cmath>
+##          ^~~~~~~
+## 1 error generated.
+## make[1]: *** [foo.o] Error 1
+## 
+## Computed from 16000 by 73 log-likelihood matrix.
+## 
+##          Estimate   SE
+## elpd_loo   -360.4  6.5
+## p_loo         6.9  1.1
+## looic       720.9 13.1
+## ------
+## MCSE of elpd_loo is 0.0.
+## MCSE and ESS estimates assume MCMC draws (r_eff in [0.4, 1.3]).
+## 
+## All Pareto k estimates are good (k < 0.7).
+## See help('pareto-k-diagnostic') for details.
 ```
 \normalsize
 
 Since ELPD is a global measure of model fit, it can be used to compare
-models.  Using `loo_compare` from the LOO package, returns the
+models. Using `loo_compare` from the LOO package returns the
 `elpd_diff` and `se_diff` for each model relative the model with the
 lowest ELPD. The `kor_model2`, the model with more informative prior,
 is the preferred model, but not significantly.
@@ -474,6 +400,20 @@ is the preferred model, but not significantly.
 \scriptsize
 
 ```
+## Trying to compile a simple C file
+## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c
+## using C compiler: ‘Apple clang version 15.0.0 (clang-1500.3.9.4)’
+## using SDK: ‘’
+## clang -arch x86_64 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/opt/R/x86_64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c foo.c -o foo.o
+## In file included from <built-in>:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/Dense:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/Core:19:
+## /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:679:10: fatal error: 'cmath' file not found
+## #include <cmath>
+##          ^~~~~~~
+## 1 error generated.
+## make[1]: *** [foo.o] Error 1
 ## No problematic observations found. Returning the original 'loo' object.
 ##            elpd_diff se_diff
 ## kor_model2  0.0       0.0   
@@ -481,9 +421,8 @@ is the preferred model, but not significantly.
 ```
 \normalsize
 
-##Analysis Using the `drc` Package
-
-Here we will analyze the KOR antagonist data using the drc package and
+**Comparing against models fit with the `drc` Package**:
+Here we will analyze the KOR antagonist data using the `drc` package and
 compare it to the results from the `BayesPharma` analysis.
 
 We will fix the top to `100` and fit the `ic50`, `hill`, and
@@ -533,13 +472,21 @@ and has smaller confidence intervals than most of the standard errors
 provided by the `drc` method.
 
 
-
-
 ```
-## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-## ℹ Please use `linewidth` instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
+## Trying to compile a simple C file
+## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c
+## using C compiler: ‘Apple clang version 15.0.0 (clang-1500.3.9.4)’
+## using SDK: ‘’
+## clang -arch x86_64 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/opt/R/x86_64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c foo.c -o foo.o
+## In file included from <built-in>:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/Dense:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/Core:19:
+## /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:679:10: fatal error: 'cmath' file not found
+## #include <cmath>
+##          ^~~~~~~
+## 1 error generated.
+## make[1]: *** [foo.o] Error 1
 ```
 
 <div class="figure" style="text-align: center">

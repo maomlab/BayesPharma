@@ -12,8 +12,9 @@
 #' @param half_max_label string of the label for the half maximal that
 #'     fits the type of experiment that was done (i.e. ec50, ic50,
 #'     ed50, id50, ld50, etc.).
-#' @param title_label string of the plot title.  (default =
-#'     "Prior Posterior Density Plots")
+#' @param title_label string of the plot title.
+#' @param ... further arguments passed to [stats::update()] to sample from the
+#'   prior
 #' @returns [ggplot2::ggplot()] object.
 #'
 #' @examples
@@ -32,7 +33,8 @@ plot_prior_posterior_densities <- function(
   model,
   predictors_col_name = "_Intercept",
   half_max_label = "ec50",
-  title_label = "Prior Posterior Density") {
+  title_label = "Prior Posterior Density",
+  ...) {
 
   if (!inherits(model, "bpfit")) {
     warning(paste0(
@@ -43,7 +45,8 @@ plot_prior_posterior_densities <- function(
   model_prior <- model |>
     stats::update(
       sample_prior = "only",
-      iter = 2000)
+      iter = 2000,
+      ...)
 
   draws <- dplyr::bind_rows(
     model_prior |>

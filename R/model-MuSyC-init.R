@@ -2,9 +2,8 @@
 #'
 #' @description Initial values for the MuSyC model
 #'
-#' @param logE0 `numeric` or function returning `array` of
-#'     length `1`.  Initial value for the `logE0`
-#'     parameter. Default: `log(0.5)`
+#' @param logE0 `numeric` or function returning `array` of length `1`. Initial
+#'     value for the `logE0` parameter. Default: `log(0.5)`
 #' @param logC1 `numeric` or function returning array of length
 #'     1. Initial value for the `logC1` parameter. Default:
 #'     `0 = log(1)`

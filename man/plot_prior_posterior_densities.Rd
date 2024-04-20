@@ -8,7 +8,8 @@ plot_prior_posterior_densities(
   model,
   predictors_col_name = "_Intercept",
   half_max_label = "ec50",
-  title_label = "Prior Posterior Density"
+  title_label = "Prior Posterior Density",
+  ...
 )
 }
 \arguments{
@@ -23,8 +24,10 @@ Temperature, etc.).}
 fits the type of experiment that was done (i.e. ec50, ic50,
 ed50, id50, ld50, etc.).}
 
-\item{title_label}{string of the plot title.  (default =
-"Prior Posterior Density Plots")}
+\item{title_label}{string of the plot title.}
+
+\item{...}{further arguments passed to \code{\link[stats:update]{stats::update()}} to sample from the
+prior}
 }
 \value{
 \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.

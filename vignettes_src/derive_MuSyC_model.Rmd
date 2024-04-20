@@ -22,8 +22,9 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 
 # inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
 knitr::opts_chunk$set(
-  cache = TRUE,
   echo = FALSE,
+  cache = TRUE,
+  cache.path = "cache/derive_MuSyC_model/",
   fig.path = "derive_MuSyC_model_files/",
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images
@@ -65,27 +66,29 @@ bayesplot::bayesplot_theme_set(
 #'      `MuSyC_formula(predictors = 0 + predictors + (1|cell_ID))`
 #'} \#' \#' @export MuSyC_formula \<- function( predictors = 1, ...) {
 
-    predictor_eq <- rlang::new_formula(
-      lhs = quote(E0 + C1 + E1 + s1 + C2 + E2 + s2 + log10alpha + E3alpha),
-      rhs = rlang::enexpr(predictors))
+```         
+predictor_eq <- rlang::new_formula(
+  lhs = quote(E0 + C1 + E1 + s1 + C2 + E2 + s2 + log10alpha + E3alpha),
+  rhs = rlang::enexpr(predictors))
 
-    brms::brmsformula(
-      response ~ (C1^h1 * C2^h2 * E0 +
-          d1^h1 * C2^h2 * E1 +
-          C1^h1 * d2^h2 * E2 +
-          d1^h1 * d2^h2 * E3alpha
-        ) / (
-          C1^h1 * C2^h2 +
-          d1^h1 * C2^h2 +
-          C1^h1 * d2^h2 +
-          d1^h1 * d2^h2 * 10^log10alpha),
-      brms::nlf(d1 ~ dose1 / d1_scale_factor),
-      brms::nlf(d2 ~ dose2 / d2_scale_factor),
-      brms::nlf(h1 ~ s1 * (4 * C1) / (E0 + E1)),
-      brms::nlf(h2 ~ s2 * (4 * C2) / (E0 + E2)),
-      predictors_eq,
-      nl = TRUE,
-      ...)
+brms::brmsformula(
+  response ~ (C1^h1 * C2^h2 * E0 +
+      d1^h1 * C2^h2 * E1 +
+      C1^h1 * d2^h2 * E2 +
+      d1^h1 * d2^h2 * E3alpha
+    ) / (
+      C1^h1 * C2^h2 +
+      d1^h1 * C2^h2 +
+      C1^h1 * d2^h2 +
+      d1^h1 * d2^h2 * 10^log10alpha),
+  brms::nlf(d1 ~ dose1 / d1_scale_factor),
+  brms::nlf(d2 ~ dose2 / d2_scale_factor),
+  brms::nlf(h1 ~ s1 * (4 * C1) / (E0 + E1)),
+  brms::nlf(h2 ~ s2 * (4 * C2) / (E0 + E2)),
+  predictors_eq,
+  nl = TRUE,
+  ...)
+```
 
 }
 

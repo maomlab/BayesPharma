@@ -9,12 +9,13 @@ eval_init(init, sdata = NULL, chains = 4)
 \arguments{
 \item{init}{One of
 \itemize{
-\item \code{NULL}, \code{numeric}, \code{character} in which case use the default \link{rstan} init
+\item \code{NULL}, \code{numeric}, \code{character} in which case use the default \pkg{rstan}
+init.
 \item named \code{list} with one element for each parameter. The values can be
 either \code{array}, \code{numeric}, or a function returning a \code{numeric} value
 }}
 
-\item{sdata}{result of running \code{\link[brms:make_standata]{brms::make_standata()}}, in particular it
+\item{sdata}{result of running \code{\link[brms:standata]{brms::make_standata()}}, in particular it
 it should be list having elements \verb{K_<parameter_name>} for each parameter
 in the model. Where the value of these elements is the dimension of the
 parameter.}
@@ -22,20 +23,21 @@ parameter.}
 \item{chains}{\code{numeric} number of chains for which to initialize}
 }
 \value{
-\code{list} of \code{lists} form of model initialization.
+\code{list} of \code{list} form of model initialization
 }
 \description{
-How brms models can be initialized depends on the backend. The
-method that all backends supports is as a list (one for each chain) of lists
-(one for each variable) with numeric values. Since this requires knowing
-how many chains are being run, which may not be available when the model is
-being defined, and to support random initialization, the rstan backend
-also supports initialization as a function returning a list of functions
-(one for each parameter) returning a numeric array of length 1. Also, to
-support the common use-case of initializing everything to zero or randomly in
-the range (-2, 2) on the unconstrained scale, rstan also supports
-initializing with \code{0} and \code{"random"}.
+How \pkg{brms} models can be initialized depends on the backend.
+The method that all backends supports is as a list (one for each chain) of
+lists (one for each variable) with numeric values. Since this requires
+knowing how many chains are being run, which may not be available when the
+model is being defined, and to support random initialization, the \pkg{rstan}
+backend also supports initialization as a function returning a list of
+functions (one for each parameter) returning a numeric array of length 1.
+Also, to support the common use-case of initializing everything to zero or
+randomly in the range (-2, 2) on the unconstrained scale, \pkg{rstan} also
+supports initializing with \code{0} and \code{"random"}.
 
-To make BayesPharma more backend agnostic, this helper function takes the
-an init and the number of chains and reduces it to the list of list format.
+To make \pkg{BayesPharma} more backend agnostic, this helper function takes
+the an init and the number of chains and reduces it to the list of list
+format.
 }

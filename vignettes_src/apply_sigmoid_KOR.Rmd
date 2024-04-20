@@ -20,8 +20,9 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 
 # inspired by https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
 knitr::opts_chunk$set(
-  cache = TRUE,
   echo = FALSE,
+  cache = TRUE,
+  cache.path = "cache/apply_sigmoid_KOR/",
   fig.path = "apply_sigmoid_KOR_files/",
   fig.retina = 2, # Control using dpi
   fig.width = 6,  # generated images

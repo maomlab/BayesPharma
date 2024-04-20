@@ -7,7 +7,7 @@
 plot_pp_check(model, plot_type = "dens_overlay", n = 50, ...)
 }
 \arguments{
-\item{model}{\code{brmsfit} model.}
+\item{model}{\link[brms:brmsfit-class]{brms::brmsfit} model.}
 
 \item{plot_type}{\code{character} for the plot type.}
 
@@ -16,20 +16,19 @@ plot_pp_check(model, plot_type = "dens_overlay", n = 50, ...)
 \item{...}{additional arguments to \code{\link[brms:pp_check.brmsfit]{brms::pp_check()}}.}
 }
 \value{
-\code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.
+\link[ggplot2:ggplot]{ggplot2::ggplot} object.
 }
 \description{
-Given a brms model, perform a graphical posterior
-predictive check.
+Given a \pkg{brms} model, perform a graphical posterior
+predictive check (PPC).
 
-pp_check from the brms package has different plot types to analyze
-the model fit by comparing the observed data with generated data
-from the model.
+\code{\link[brms:pp_check.brmsfit]{brms::pp_check()}} has different plot types to analyze the model fit by
+comparing the observed data with generated data from the model.
 
-Here is the documentation for pp_check:
+Here is the documentation for \link[brms:pp_check.brmsfit]{brms::pp_check}:
 \url{http://paul-buerkner.github.io/brms/reference/pp_check.brmsfit.html}
 
-Here is the documentation for pp_check plot types under PPC
+Here is the documentation for \link[bayesplot:pp_check]{bayesplot::pp_check} plot types under PPC
 plotting functions:
 \url{https://mc-stan.org/bayesplot/reference/PPC-overview.html}
 }
