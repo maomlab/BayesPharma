@@ -17,7 +17,7 @@ and then passed to \code{tQ_single} to integrate it using the \emph{stiff backwa
 differentiation formula (BDF) method}. To fit multiple time series
 in one model, the \code{tQ_multiple} can be used. Note that to handle fitting
 time-series with different numbers of observations, an additional
-\code{series_index} argument is used. Note that observations in the same
+integer \code{series_index} argument is used. Note that observations in the same
 time-series should be in sequential order in the supplied data.
 }
 \examples{

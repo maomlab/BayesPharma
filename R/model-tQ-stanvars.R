@@ -10,7 +10,7 @@
 #' differentiation formula (BDF) method_. To fit multiple time series
 #' in one model, the `tQ_multiple` can be used. Note that to handle fitting
 #' time-series with different numbers of observations, an additional
-#' `series_index` argument is used. Note that observations in the same
+#' integer `series_index` argument is used. Note that observations in the same
 #' time-series should be in sequential order in the supplied data.
 #'
 #' @examples
@@ -94,7 +94,7 @@ vector tQ_single(
 }
 
 vector tQ_multiple(
-  data vector series_index,
+  data int[] series_index,
   vector time,
   vector vkcat,
   vector vkM,
@@ -104,15 +104,15 @@ vector tQ_multiple(
   int N = size(time);
   vector[N] P;
   int begin = 1;
-  real current_series = series_index[1];
+  int current_series = series_index[1];
   for (i in 1:N) {
     if(current_series != series_index[i]) {
       P[begin:i-1] = tQ_single(
-	time[begin:i-1],
-	vkcat[begin:i-1],
-	vkM[begin:i-1],
-	vET[begin:i-1],
-	vST[begin:i-1]);
+	      time[begin:i-1],
+	      vkcat[begin:i-1],
+	      vkM[begin:i-1],
+	      vET[begin:i-1],
+	      vST[begin:i-1]);
 
       //// For debugging
       // for(j in 1:3) {
