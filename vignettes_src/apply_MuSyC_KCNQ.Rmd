@@ -466,8 +466,8 @@ brms::loo_compare(model_MuSyC, model_bilevel)
 #| message=FALSE,
 #| dependson=c("fit-MuSyC-model", "fit-bilevel-model")
 
-model_subsets <- data.frame(
-  fraction = seq_len(10) / 10) |>
+model_subsets01 <- data.frame(
+  fraction = seq(0.01, 0.09, by=0.01)) |>
   dplyr::rowwise() |>
   dplyr::do({
     fraction <- .$fraction[1]
@@ -476,16 +476,82 @@ model_subsets <- data.frame(
       sep = "")
     model_data_subset <- model_data |>
       dplyr::sample_frac(size = fraction)
-    data.frame(
+    tibble::tibble(
       fraction = fraction,
       model_MuSyC = model_MuSyC |>
         stats::update(
           newdata = model_data_subset |>
             dplyr::mutate(
               logd1scale = mean(voltage),
-              logd2scale = mean(logdose))),
+              logd2scale = mean(logdose)),
+          control = list(
+            adapt_delta = .99,
+            max_treedepth = 12),
+          cores = 4,
+          silent = TRUE) |>
+        brms::add_criterion(
+          "loo",
+          moment_match = TRUE) |>
+        list(),
       model_bilevel = model_bilevel |>
-        stats::update(newdata = model_data_subset))
+        stats::update(
+          newdata = model_data_subset,
+          cores = 4,
+          control = list(
+            adapt_delta = .99,
+            max_treedepth = 12),
+          silent = TRUE) |>
+        brms::add_criterion(
+          "loo",
+          moment_match = TRUE) |>
+        list())
+  }) |>
+  dplyr::ungroup()
+
+
+model_subsets_loo_compare <- model_subsets01 |>
+  dplyr::rowwise() |>
+  dplyr::do({
+    z <- .
+    dplyr::bind_rows(
+      data.frame(
+        model_id = "model_MuSyC",
+        elpd_loo = z$model_MuSyC$criteria$loo$estimates[1, 1],
+        elpd_loo_se = z$model_MuSyC$criteria$loo$estimates[1, 2]),
+      data.frame(
+        model_id = "model_bilevel",
+        elpd_loo = z$model_bilevel$criteria$loo$estimates[1, 1],
+        elpd_loo_se = z$model_bilevel$criteria$loo$estimates[1, 2])) |>
+      dplyr::mutate(
+        fraction = z$fraction,
+        .before = 1)
   })
+
+
+ggplot2::ggplot(data = model_subsets_loo_compare) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_ribbon(
+    mapping = ggplot2::aes(
+      x = fraction,
+      ymin = elpd_loo - elpd_loo_se,
+      ymax = elpd_loo + elpd_loo_se,
+      fill = model_id,
+      group = model_id),
+    alpha = 0.3) +
+  ggplot2::geom_line(
+    mapping = ggplot2::aes(
+      x = fraction,
+      y = elpd_loo,
+      color = model_id,
+      group = model_id),
+    linewidth = 1.2) +
+  ggplot2::scale_color_discrete(
+    "Model ID") +
+  ggplot2::scale_fill_discrete(
+    "Model ID") +
+  ggplot2::scale_x_continuous(
+    "Fraction of dataset") +
+  ggplot2::scale_y_continuous(
+    "Expected Log Probability of the Data (Higher is Better)")
 ```
 

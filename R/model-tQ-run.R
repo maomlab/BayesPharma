@@ -44,15 +44,22 @@ tQ_model <- function(
 
   args <- list(...)
 
-  if (!(
-    formula$bayes_pharma_info[["series_index_variable"]] %in% names(data))) {
+  series_index_variable <- formula$bayes_pharma_info[["series_index_variable"]]
+  if (!(series_index_variable %in% names(data))) {
     stop(
       paste0(
-        "The series index ",
-        "'", formula$bayes_pharma_info[["series_index_variable"]], "' ",
+        "The series index '", series_index_variable, "' ",
         "needs to be a column of the input 'data' data.frame\n"))
   }
+  if(typeof(data[[series_index_variable]]) != "integer") {
+    stop(
+      paste0(
+        "The series index column '", series_index_variable, "' ",
+        "needs to be an integer column instead it is a '",
+        typeof(data[[series_index_variable]]), "'\n"))
+  }
 
+  
   time_variable <- formula$bayes_pharma_info[["treatment_variable"]]
   if (!(time_variable %in% names(data))) {
     stop(
