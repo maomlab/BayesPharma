@@ -14,6 +14,48 @@ vignette: >
 
 
 
+```
+## here() starts at /Users/maom/opt/BayesPharma
+```
+
+```
+## Error in library(tidymodels): there is no package called 'tidymodels'
+```
+
+```
+## Loading required package: brms
+```
+
+```
+## Loading required package: Rcpp
+```
+
+```
+## Loading 'brms' package (version 2.21.0). Useful instructions
+## can be found by typing help('brms'). A more detailed introduction
+## to the package is available through vignette('brms_overview').
+```
+
+```
+## 
+## Attaching package: 'brms'
+```
+
+```
+## The following object is masked from 'package:bayesplot':
+## 
+##     rhat
+```
+
+```
+## The following object is masked from 'package:stats':
+## 
+##     ar
+```
+
+```
+## Loading required package: parsnip
+```
 # Using BayesPharma models with Tidymodels
 
 Tidymodels is a platform for running and analyzing models in R. This vignette
@@ -73,7 +115,60 @@ kor_workflow <- workflows::workflow() |>
 ```
 
 ```
+## Trying to compile a simple C file
+```
+
+```
+## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c
+## using C compiler: ‘Apple clang version 15.0.0 (clang-1500.3.9.4)’
+## using SDK: ‘’
+## clang -arch x86_64 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/opt/R/x86_64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c foo.c -o foo.o
+## In file included from <built-in>:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:88:
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name 'namespace'
+## namespace Eigen {
+## ^
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected ';' after top level declarator
+## namespace Eigen {
+##                ^
+##                ;
+## In file included from <built-in>:1:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
+## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
+## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:96:10: fatal error: 'complex' file not found
+## #include <complex>
+##          ^~~~~~~~~
+## 3 errors generated.
+## make[1]: *** [foo.o] Error 1
+```
+
+```
 ## Start sampling
+```
+
+```
+## Warning in .local(object, ...): some chains had errors; consider specifying
+## chains = 1 to debug
+```
+
+```
+## here are whatever error messages were returned
+```
+
+```
+## [[1]]
+## Stan model 'anon_model' does not contain samples.
+## 
+## [[2]]
+## Stan model 'anon_model' does not contain samples.
+## 
+## [[3]]
+## Stan model 'anon_model' does not contain samples.
+## 
+## [[4]]
+## Stan model 'anon_model' does not contain samples.
 ```
 
 ```r
@@ -81,14 +176,14 @@ kor_workflow
 ```
 
 ```
-## ══ Workflow [trained] ════════════════════════════════════════════════════════════════════════════════════════════════════
+## ══ Workflow [trained] ════════════════════════════════════════════════════════════════════════════════════════════════════════════
 ## Preprocessor: Recipe
 ## Model: bayesian()
 ## 
-## ── Preprocessor ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Preprocessor ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ## 0 Recipe Steps
 ## 
-## ── Model ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Model ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ##  Family: gaussian 
 ##   Links: mu = identity; sigma = identity 
 ## Formula: ..y ~ sigmoid(ic50, hill, top, bottom, log_dose) 
@@ -97,49 +192,6 @@ kor_workflow
 ##          top ~ 0 + substance_id
 ##          bottom ~ 0 + substance_id
 ##    Data: ~data (Number of observations: 73) 
-##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
-##          total post-warmup draws = 4000
 ## 
-## Population-Level Effects: 
-##                                Estimate Est.Error l-95% CI u-95% CI Rhat
-## ic50_substance_idBTRX_335140      -8.85      0.20    -9.22    -8.42 1.00
-## ic50_substance_idBTRX_395750      -8.25      0.39    -8.92    -7.46 1.00
-## ic50_substance_idJNJ              -9.15      0.31    -9.76    -8.51 1.00
-## ic50_substance_idPF               -6.13      1.10    -7.65    -3.14 1.00
-## hill_substance_idBTRX_335140      -1.46      0.59    -2.83    -0.58 1.00
-## hill_substance_idBTRX_395750      -0.90      0.51    -2.27    -0.28 1.00
-## hill_substance_idJNJ              -1.01      0.52    -2.48    -0.41 1.00
-## hill_substance_idPF               -0.31      0.25    -0.91    -0.03 1.00
-## bottom_substance_idBTRX_335140     0.00      0.51    -1.02     1.00 1.00
-## bottom_substance_idBTRX_395750     0.01      0.50    -0.97     0.98 1.00
-## bottom_substance_idJNJ             0.00      0.51    -1.03     0.98 1.00
-## bottom_substance_idPF              0.01      0.50    -0.94     0.99 1.00
-## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA
-## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA
-## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA
-## top_substance_idPF               100.00      0.00   100.00   100.00   NA
-##                                Bulk_ESS Tail_ESS
-## ic50_substance_idBTRX_335140       3453     2241
-## ic50_substance_idBTRX_395750       2970     1707
-## ic50_substance_idJNJ               3764     2646
-## ic50_substance_idPF                2124     1222
-## hill_substance_idBTRX_335140       2996     2651
-## hill_substance_idBTRX_395750       2949     1852
-## hill_substance_idJNJ               3926     3141
-## hill_substance_idPF                1784     1342
-## bottom_substance_idBTRX_335140     4155     2948
-## bottom_substance_idBTRX_395750     4618     2963
-## bottom_substance_idJNJ             4014     3065
-## bottom_substance_idPF              4128     2920
-## top_substance_idBTRX_335140          NA       NA
-## top_substance_idBTRX_395750          NA       NA
-## top_substance_idJNJ                  NA       NA
-## top_substance_idPF                   NA       NA
-## 
-## Family Specific Parameters: 
-##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma    32.15      2.84    27.30    38.27 1.00     3616     2674
-## 
-## ...
-## and 4 more lines.
+## The model does not contain posterior draws.
 ```

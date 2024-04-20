@@ -46,25 +46,26 @@ form is
 
 The parameterization follows (Zwietering, 1990) and \pkg{grofit}:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{K      = **carrying capacity**, `K = response(time = Inf)`. The
-         \pkg{grofit} package calls this parameter `A`. `K` has the same
-         units as the `response`.
-K0     = **initial population size** `K0 = response(time = 0)`. The
-         \pkg{grofit} package assumes `K0=0`. `K0` has the same units as
-         the `response`.
-rate   = **maximum growth rate** `rate = max[d(response)/d(time)]`. The
-         \pkg{grofit} package calls this `mu`. `rate` has the units of
-         `response/time`
-lambda = **duration of the lag-phase** the time point at which the
+\if{html}{\out{<div class="sourceCode">}}\preformatted{K      = carrying capacity, K = response(time = Inf). The
+         grofit package calls this parameter A. The K parameter has the
+         same units as the response.
+K0     = initial population size, K0 = response(time = 0). The
+         grofit package assumes K0 = 0. The K0 parameter has the same
+         units as the response.
+rate   = maximum growth rate, rate = max[d(response)/d(time)]. The
+         grofit package calls this mu. The rate parameter has the units
+         of response/time.
+lambda = duration of the lag-phase, the time point at which the
          tangent through the growth curve when it achieves the maximum
-         growth rate crosses the initial population size `K0`. (see
-         Figure 2 in (Kahm et al., 2010)).
-nu     = **growth asymmetry** before and after the inflection
-         point.
+         growth rate crosses the initial population size K0. (see
+         Figure 2 in (Kahm et al., 2010)). The lambda parameter has the
+         units of time. 
+nu     = growth asymmetry before and after the inflection
+         point. The nu parameter is unitless.
 }\if{html}{\out{</div>}}
 
-See the vignettes(topic = "derive_growth_model", package = "BayesPharma") for
-more details.
+See the \code{vignettes(topic = "derive_growth_model", package = "BayesPharma")}
+for more details.
 }
 \examples{
 \dontrun{

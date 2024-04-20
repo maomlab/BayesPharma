@@ -33,7 +33,7 @@ parameters defined in the formula. (see above).}
 \code{iter} can help with model convergence (see \link[brms:brm]{brms::brm})}
 
 \item{control}{a named \code{list} of arguments to control the sampler's
-behavior.  Adding \code{max_treedepth} and giving a greater
+behavior. Adding \code{max_treedepth} and giving a greater
 value than \code{10} can improve model convergence (see \link[brms:brm]{brms::brm})}
 
 \item{stanvar_function}{stan code for the model.}

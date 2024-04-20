@@ -1,3 +1,12 @@
 ## Over dispersed negative binomial response
 
-The response of an assay results from a measurement of the experimental system. Often the measurements are normalized so that the response for negative control is 1 (e.g. diseased) and the positive control is 0 (e.g. healthy). However when the robustness of the measurement depends on the measured value, this normalization can make it difficult to combine different measurements. An alternative approach is to model the measurements directly, to take into account the uncertainty associated with the response. To illustrate, if the measurement is the relative number of cells having a phenotype, then five out of ten cells and five thousand out of ten thousand cells will have the same response of 0.5, but the former will a less reliable measurement.        
+The response of an assay results from a measurement of the experimental system.
+Often the measurements are normalized so that the response for negative control
+is 1 (e.g. diseased) and the positive control is 0 (e.g. healthy). However when
+the robustness of the measurement depends on the measured value, this
+normalization can make it difficult to combine different measurements. An
+alternative approach is to model the measurements directly, to take into account
+the uncertainty associated with the response. To illustrate, if the measurement
+is the relative number of cells having a phenotype, then five out of ten cells
+and five thousand out of ten thousand cells will have the same response of 0.5,
+but the former will a less reliable measurement.

@@ -18,9 +18,8 @@ MuSyC_init(
 )
 }
 \arguments{
-\item{logE0}{\code{numeric} or function returning \code{array} of
-length \code{1}.  Initial value for the \code{logE0}
-parameter. Default: \code{log(0.5)}}
+\item{logE0}{\code{numeric} or function returning \code{array} of length \code{1}. Initial
+value for the \code{logE0} parameter. Default: \code{log(0.5)}}
 
 \item{logC1}{\code{numeric} or function returning array of length
 1. Initial value for the \code{logC1} parameter. Default:

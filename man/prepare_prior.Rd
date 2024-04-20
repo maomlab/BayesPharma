@@ -2,20 +2,20 @@
 % Please edit documentation in R/model-util.R
 \name{prepare_prior}
 \alias{prepare_prior}
-\title{Helper Function to Prepare a Prior for a \link{brms} Model}
+\title{Helper Function to Prepare a Prior for a \pkg{brms} Model}
 \usage{
 prepare_prior(prior, ...)
 }
 \arguments{
-\item{prior}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric}.}
+\item{prior}{\link[brms:set_prior]{brms::brmsprior} or \code{numeric}.}
 
 \item{...}{additional arguments to \code{\link[brms:set_prior]{brms::prior_string()}}. If \code{prior} is a
-\code{\link[brms:set_prior]{brms::brmsprior()}} then this will check that the slots have the given
+\link[brms:set_prior]{brms::brmsprior} then this will check that the slots have the given
 values. If prior is \code{numeric}, then these arguments are passed to
 \code{\link[brms:set_prior]{brms::prior_string()}}}
 }
 \value{
-\code{\link[brms:set_prior]{brms::brmsprior()}}
+\link[brms:set_prior]{brms::brmsprior}
 }
 \description{
 This extends \code{\link[brms:set_prior]{brms::prior()}} by
@@ -26,7 +26,7 @@ to specify a constant prior
 arguments
 }
 
-This is used in building \link{BayesPharma} models to allow user specified priors
+This is used in building \pkg{BayesPharma} models to allow user specified priors
 but make sure they are for the right parameters to make sure the model is
 well specified.
 }
@@ -45,7 +45,5 @@ well specified.
 
   # gives an assert error that nlpar is not set correctly
 }
-
-
 
 }

@@ -16,10 +16,10 @@
 #' @param ... additional arguments to [brms::brmsformula()]
 #'
 #' @returns a `bpformula`, which is a subclass of [brms::brmsformula] and can be
-#'   passed to [sigmoid_model()].
+#'   passed to [sigmoid_model_agonist()] or [sigmoid_model_antagonist()].
 #'
-#' @seealso [brms::brmsformula], which this function wraps. [sigmoid_model()]
-#'   into which the result of this function can be passed.
+#' @seealso [brms::brmsformula], which this function wraps. The resulting
+#'   `bpformula` object can be passed into [sigmoid_model_agonist()].
 #'
 #' @examples
 #'\dontrun{
@@ -92,8 +92,9 @@ sigmoid_agonist_formula <- function(
 #' @returns a `bpformula`, which is a subclass of [brms::brmsformula] and can
 #'   be passed to [sigmoid_model()].
 #'
-#' @seealso [brms::brmsformula], which this function wraps. [sigmoid_model()]
-#'   into which the result of this function can be passed.
+#' @seealso [brms::brmsformula], which this function wraps. The resulting
+#'   `bpformula` object can be passed into [sigmoid_model_antagonist()].
+#'
 #' @examples
 #'\dontrun{
 #'   # Data has a string column drug_id with drug identifiers

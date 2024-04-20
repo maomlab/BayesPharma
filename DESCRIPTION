@@ -39,6 +39,7 @@ Suggests:
     covr,
     deSolve,
     drc,
+    drcData,
     docreview,
     forcats,
     GeomIndicator,
@@ -51,6 +52,7 @@ Suggests:
     modelr,
     optparse,
     parsnip,
+    tidyverse,
     readr,
     readxl,
     recipes,
@@ -69,9 +71,11 @@ Suggests:
 Remotes:
     maomlab/GeomIndicator,
     r-lib/revdepcheck,
-    stan-dev/cmdstanr
+    stan-dev/cmdstanr,
+    thisisnic/docreview,
+    DoseResponse/drcData
 LazyData: true
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Roxygen: list(markdown = TRUE)

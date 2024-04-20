@@ -1,25 +1,52 @@
-## Michaelis-Menten enzyme progress model {#sec-michaelis_menten}
+### Enzyme Progress Kinetics {#sec-michaelis_menten}
 
-## Enzyme Kinetic Modeling
-Enzymes are proteins that catalyze chemical reactions. Not only do they facilitate producing virtual all biological matter, but they are crucial for regulating biological processes. In the early 20th century Michaelis and Menten described a foundational kinematic model for enzymes, where the substrate and enzyme reversibly bind, the substrate is converted to the product and then
+#### Enzyme Kinetic Modeling
+Enzymes are proteins that catalyze chemical reactions. Not only do they
+facilitate producing virtual all biological matter, but they are crucial for
+regulating biological processes. In the early 20th century Michaelis and Menten
+described a foundational kinematic model for enzymes, where the substrate and
+enzyme reversibly bind, the substrate is converted to the product and then
 released.
 
 $$
 E + S \xrightleftharpoons[k_b]{k_f} C \xrightarrow{k_{cat}} E + P 
 $$
 
-where the free enzyme (E) reversibly binds to the substrate (S) to form a complex (C) with forward and backward rate constants of `kf` and `kb`, which is  irreversibly catalyzed into the product (P), with rate constant of `kcat`, releasing the enzyme to catalyze additional substrate. The total enzyme concentration is defined to be the `ET := E + C`. The total substrate and product concentration is defined to be `ST := S + C + P`. The Michaelis constant is the defined to be the `kM := (kb + kcat) / kf`. The `kcat` rate constant determines the maximum turn over at saturating substrate concentrations, `Vmax := kcat * ET`. The rate constants `kcat` and `kM` can be estimated by monitoring the product accumulation over time (enzyme progress curves), by varying the enzyme and substrate concentrations.
+where the free enzyme (E) reversibly binds to the substrate (S) to form a
+complex (C) with forward and backward rate constants of `kf` and `kb`, which is
+irreversibly catalyzed into the product (P), with rate constant of `kcat`,
+releasing the enzyme to catalyze additional substrate. The total enzyme
+concentration is defined to be the `ET := E + C`. The total substrate and
+product concentration is defined to be `ST := S + C + P`. The Michaelis constant
+is the defined to be the `kM := (kb + kcat) / kf`. The `kcat` rate constant
+determines the maximum turn over at saturating substrate concentrations,
+`Vmax := kcat * ET`. The rate constants `kcat` and `kM` can be estimated by
+monitoring the product accumulation over time (enzyme progress curves), by
+varying the enzyme and substrate concentrations.
 
-By assuming that the enzyme concentration is very low (`ET << ST`), they derived their celebrated Michaelis-Menten kinetics. Since their work, a number of groups have developed models for enzyme kinetics that make less stringent assumptions. Recently [@Choi2017-ew], described a Bayesian model for the total QSSA model. To make their model more accessible, we have re-implemented it in the Stan/BRMS framework and made it available through the `BayesPharma` package.
+By assuming that the enzyme concentration is very low (`ET << ST`), they derived
+their celebrated Michaelis-Menten kinetics. Since their work, a number of groups
+have developed models for enzyme kinetics that make less stringent assumptions.
+Recently [@Choi2017-ew], described a Bayesian model for the total QSSA model.
+To make their model more accessible, we have re-implemented it in the Stan/BRMS
+framework and made it available through the `BayesPharma` package.
 
-## Outline for Vignette
-Next we will formally define the problem and formulate the model as the solution to an ordinary differential equation. To illustrate, we will consider a a toy system where we assuming the `kcat` and `kM` are known and simulate a sequence of measurements using `deSolve`. We will then implement the ODE in Stan/BRMS using stanvars and show how the parameters of the toy system can be estimated. Since it is common to vary the enzyme and substrate concentrations in order to better estimate the kinematic parameters, we will show how we can improve the Stan/BRMS model to allow multiple observations, each with an arbitrary number of measurements. Then finally, we will consider a real enzyme kinetics data set and use the Stan/BRMS model to estimate the kinematic parameters. We will compare estimated parameters with those fit using standard approaches.
+Next we will formally define the problem and formulate the model as the solution
+to an ordinary differential equation. To illustrate, we will consider a a toy
+system where we assuming the `kcat` and `kM` are known and simulate a sequence
+of measurements using `deSolve`. We will then implement the ODE in Stan/BRMS
+using `stanvars` and show how the parameters of the toy system can be estimated.
+Since it is common to vary the enzyme and substrate concentrations in order to
+better estimate the kinematic parameters, we will show how we can improve the
+Stan/BRMS model to allow multiple observations, each with an arbitrary number of
+measurements. Then finally, we will consider a real enzyme kinetics data set and
+use the Stan/BRMS model to estimate the kinematic parameters. We will compare
+estimated parameters with those fit using standard approaches.
 
 
-## Problem Statement
-Implement the total QSSA model in stan/BRMS, a refinement of the classical
-Michaelis-Menten enzyme kinetics ordinary differential equation described in
-(Choi, et al., 2017, DOI: 10.1038/s41598-017-17072-z). From their equation 2:
+**Problem Statement**: Implement the total QSSA model in Stan/BRMS, a refinement
+of the classical Michaelis-Menten enzyme kinetics ordinary differential equation
+described in [@Choi2017-ew]. From their equation 2:
 
 \scriptsize
 ```
@@ -49,9 +76,12 @@ $$
 $$
 where `K = kb/kf` is the dissociation constant.
 
-## Simulate one observation
-Using the `deSolve` package we can simulate data following the total QSSA model. Measurements are made with random Gaussian noise with mean `0` and variance of `0.5`. To visualize, the true enzyme progress curve is shown in blue, and the enzyme progress curve fit to the noisy measurements with a smooth `loess` spline is shown in orange. While the smooth fits well, we cannot estimate the parameters for the curve from it.
-
+**Simulate one observation**: Using the `deSolve` package we can simulate data
+following the total QSSA model. Measurements are made with random Gaussian noise
+with mean `0` and variance of `0.5`. To visualize, the true enzyme progress
+curve is shown in blue, and the enzyme progress curve fit to the noisy
+measurements with a smooth `loess` spline is shown in orange. While the smooth
+fits well, we cannot estimate the parameters for the curve from it.
 
 \scriptsize
 ```{r tQ-simulate-data-single}
@@ -94,7 +124,7 @@ ggplot2::ggplot(data = data_single) +
   ggplot2::geom_line(
     mapping = ggplot2::aes(x = time, y = P_true),
     color = "blue",
-    size = 1.2) +
+    linewidth = 1.2) +
   ggplot2::geom_smooth(
     mapping = ggplot2::aes(x = time, y = P),
     method = "loess",
@@ -108,8 +138,17 @@ ggplot2::ggplot(data = data_single) +
 ```
 
 
-## Fitting a single ODE observation in BRMS
-To implement in BRMS, we can use the `stanvars` to define custom functions. The key idea is call the ODE solver, in this case the backward differentiation formula (bdf) used to solve stiff ODEs, passing a function `ode_tQ` that returns `dP/dt`, the change in product at time `t`. The `ode_tQ` function depends on the product at time `t` as the state vector, the kinematic parameters to be estimated `kcat` and `kM` and the user-provided data of the enzyme and substrate concentrations `ET` and `ST`. To call `ode_dbf` we pass in the initial product concentration and time (both equal to zero), measured time-points, parameters and user defied data. Finally we, extract the vector of sampled vector of product concentrations which we return.
+**Fitting a single ODE observation in BRMS**:
+To implement in BRMS, we can use the `stanvars` to define custom functions. The
+key idea is call the ODE solver, in this case the backward differentiation
+formula (bdf) used to solve stiff ODEs, passing a function `ode_tQ` that returns
+`dP/dt`, the change in product at time `t`. The `ode_tQ` function depends on the
+product at time `t` as the state vector, the kinematic parameters to be
+estimated `kcat` and `kM` and the user-provided data of the enzyme and substrate
+concentrations `ET` and `ST`. To call `ode_dbf` we pass in the initial product
+concentration and time (both equal to zero), measured time-points, parameters
+and user defied data. Finally we, extract the vector of sampled vector of
+product concentrations which we return.
 
 \scriptsize
 ```{r tQ-stanvars-ode}
@@ -174,7 +213,14 @@ block = "functions")
 ```
 \normalsize
 
-To use this function, we define `kcat` and `kM` as parameters and that we wish to sample `P ~ tQ(...)`. Since all the data points define a single observation, we set `loop = FALSE`. We use `gamma` priors for `kcat` and `kM` with the shape parameter `alpha=4` and the rate parameter `beta=1`. The prior mean is `alpha/beta = 4/1 = 4` and the variance is `alpha/beta^2 = 4/1 = 4`. We also bound the parameters from below by `0`. We initialize each chain at the prior mean and use `cmdstanr` version 2.29.2 as the backend, and use the default warmup of `1000`
+To use this function, we define `kcat` and `kM` as parameters and that we wish
+to sample `P ~ tQ(...)`. Since all the data points define a single observation,
+we set `loop = FALSE`. We use `gamma` priors for `kcat` and `kM` with the shape
+parameter `alpha=4` and the rate parameter `beta=1`. The prior mean is
+`alpha/beta = 4/1 = 4` and the variance is `alpha/beta^2 = 4/1 = 4`. We also
+bound the parameters from below by `0`. We initialize each chain at the prior
+mean and use `cmdstanr` version 2.29.2 as the backend, and use the default
+warmup of `1000`.
 
 \scriptsize
 ```{r tQ-model-single}
@@ -200,7 +246,9 @@ model_single <- brms::brm(
 ``` 
 \normalsize
 
-Fitting the model takes ~15 seconds, with `Rhat = 1` and effective sample size for the bulk and tail greater than `1400` for both parameters. The estimates and 95% confidence intervals are good.
+Fitting the model takes ~15 seconds, with `Rhat = 1` and effective sample size
+for the bulk and tail greater than `1400` for both parameters. The estimates
+and 95% confidence intervals are good.
 
 \scriptsize
 ```{r tQ-model-single-summary}
@@ -209,7 +257,9 @@ model_single
 ```
 \normalsize
 
-To visualize the posterior distribution vs. the prior distribution, we first sample from the prior, using the same `brms::brm` call with `sample_prior = "only"` the argument.
+To visualize the posterior distribution vs. the prior distribution, we first
+sample from the prior, using the same `brms::brm` call with
+`sample_prior = "only"` the argument.
 
 \scriptsize
 ```{r tQ-model-single-prior}
@@ -225,7 +275,9 @@ model_single_prior <- model_single |>
 ```
 \normalsize
 
-And to plot, we use `tidybayes` to gather the draws and `ggplot2` to map them to curves, with the prior as the orange curve, posterior as the blue curve, and the true parameter marked as a vertical line.
+And to plot, we use `tidybayes` to gather the draws and `ggplot2` to map them to
+curves, with the prior as the orange curve, posterior as the blue curve, and the
+true parameter marked as a vertical line.
 
 ```{r tQ-model-single-draws}
 #| dependson = c("tQ-model-single-prior", "tQ-model-single")
@@ -252,7 +304,7 @@ ggplot2::ggplot() +
     mapping = ggplot2::aes(
       xintercept = .value),
     color = "black",
-    size = 1.5) +
+    linewidth = 1.5) +
   ggplot2::geom_density(
     data = draws_single_prior,
     mapping = ggplot2::aes(
@@ -268,7 +320,10 @@ ggplot2::ggplot() +
     scales = "free")
 ```
 
-Next, we plot the prior and posterior samples as a scatter plot. Note that the high correlation of the `kcat` and `kM` parameters in the posterior. This is expected, and typically better estimates require varying the enzyme and substrate concentrations.
+Next, we plot the prior and posterior samples as a scatter plot. Note that the
+high correlation of the `kcat` and `kM` parameters in the posterior. This is
+expected, and typically better estimates require varying the enzyme and
+substrate concentrations.
 
 ```{r tQ-prior-posterior-single-scatter}
 #| dependson = c("tQ-model-single-draws"),
@@ -323,7 +378,10 @@ ggplot2::ggplot() +
 
 ## Fitting multiple observations
 
-Next we will extend the BRMS model to allow fitting common `kcat`, `kM` concentrations based on multiple replicas, or varying substrate/enzyme concentrations using BRMS. To demonstrate, we varying the enzyme and substrate concentrations, to better fit the kinematic parameters.
+Next we will extend the BRMS model to allow fitting common `kcat`, `kM`
+concentrations based on multiple replicas, or varying substrate/enzyme
+concentrations using BRMS. To demonstrate, we varying the enzyme and substrate
+concentrations, to better fit the kinematic parameters.
 
 \scriptsize
 ```{r tQ-data-multiple}
@@ -501,7 +559,7 @@ ggplot2::ggplot() +
     size = 0.8,
     shape = 16,
     alpha = .6) +
-    ggplot2::geom_point(
+  ggplot2::geom_point(
     data = draws_multiple_posterior_pairs,
     mapping = ggplot2::aes(
       x = b_kcat_Intercept,
@@ -591,6 +649,4 @@ ggplot2::ggplot() +
     rows = dplyr::vars(ET_label),
     cols = dplyr::vars(ST_label))
 ```
-
-
 

@@ -40,7 +40,7 @@
 #'   https://doi.org/10.1038/s41467-021-24789-z
 #'
 #' @export
-MuSyC <- function(
+MuSyC_robust <- function(
   logd1,
   logd2,
   logE0,
@@ -48,21 +48,42 @@ MuSyC <- function(
   logE2, logC2, h2,
   logE3,
   logalpha) {
-  numerator_parts <- c(
-    h1 * logC1 + h2 * logC2 + logE0,
-    h1 * logd1 + h2 * logC2 + logE1,
-    h1 * logC1 + h2 * logd2 + logE2,
-    h1 * logd1 + h2 * logd2 + logE3 + logalpha)
-  numerator_max <- max(numerator_parts)
-  log_numerator <- numerator_max +
-    log(sum(exp(numerator_parts - numerator_max)))
-  denominator_parts <- c(
-    h1 * logC1 + h2 * logC2,
-    h1 * logd1 + h2 * logC2,
-    h1 * logC1 + h2 * logd2,
-    h1 * logd1 + h2 * logd2 + logalpha)
-  denominator_max <- max(denominator_parts)
-  log_denominator <- denominator_max +
-    log(sum(exp(denominator_parts - denominator_max)))
-  exp(log_numerator - log_denominator)
+
+  numerator_parts <- h1 * logC1 + h2 * logC2 + logE0
+  denominator_parts <- h1 * logC1 + h2 * logC2
+
+  if (logd1 > -Inf) {
+    numerator_parts <- c(numerator_parts, h1 * logd1 + h2 * logC2 + logE1)
+    denominator_parts <- c(denominator_parts, h1 * logd1 + h2 * logC2)
+  } else {
+    numerator_parts <- c(numerator_parts, -Inf)
+    denominator_parts <- c(denominator_parts, -Inf)
+  }
+
+  if (logd2 > -Inf) {
+    numerator_parts <- c(numerator_parts, h1 * logC1 + h2 * logd2 + logE2)
+    denominator_parts <- c(denominator_parts, h1 * logC1 + h2 * logd2)
+  } else {
+    numerator_parts <- c(numerator_parts, -Inf)
+    denominator_parts <- c(denominator_parts, -Inf)
+  }
+
+  if ((logd1 > -Inf) && (logd2 > -Inf)) {
+    numerator_parts <- c(
+      numerator_parts, h1 * logd1 + h2 * logd2 + logE3 + logalpha)
+    denominator_parts <- c(
+      denominator_parts, h1 * logd1 + h2 * logd2 + logalpha)
+  } else {
+    numerator_parts <- c(numerator_parts, -Inf)
+    denominator_parts <- c(denominator_parts, -Inf)
+  }
+
+  stable_logsumexp <- function(parts) {
+    stabilizer <- parts |>
+      max() |>
+      is.finite() |>
+      ifelse(max(parts), 0)
+    stabilizer + log(sum(exp(parts - stabilizer)))
+  }
+  exp(stable_logsumexp(numerator_parts) - stable_logsumexp(denominator_parts))
 }

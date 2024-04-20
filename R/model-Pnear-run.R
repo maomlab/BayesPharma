@@ -37,19 +37,19 @@
 #' ```
 #'
 #' @note Unlike the Conway discrimination score, the PNear calculation uses no
-#' hard cutoffs.  This is advantageous for repeated testing: if the scatter of
+#' hard cutoffs. This is advantageous for repeated testing: if the scatter of
 #' points on the RMSD plot changes very slightly from run to run, the PNear
 #' value will only change by a small amount, whereas any metric dependent on
 #' hard cutoffs could change by a large amount if a low-energy point crosses an
 #' RMSD threshold.
 #'
-#' @author Vikram K. Mulligan (vmulligan\@flatironinstitute.org) adapted from
-#'   Rosetta
+#' @author Vikram K. Mulligan \email{vmulligan@@flatironinstitute.org} adapted
+#'   from Rosetta.
 #'
 #' @param score a vector of scores e.g. Rosetta energies e.g. in the Ref2015.
 #' @param rmsd root mean squared deviation values for e.g. backbone atoms
 #' @param lambda Lambda is a value in Angstroms indicating the breadth of the
-#'   Gaussian used to define "native-like-ness".  The bigger the value, the more
+#'   Gaussian used to define "native-like-ness". The bigger the value, the more
 #'   permissive the calculation is to structures that deviate from native.
 #'   Typical values for peptides range from 1.5 to 2.0, and for proteins from
 #'   2.0 to perhaps 4.0.

@@ -28,7 +28,7 @@ of the parameter, see \code{\link[=rstan_default_init]{rstan_default_init()}} to
 init.}
 }
 \value{
-input for \verb{[brm][brms::brm](init = ...)}
+input for \verb{[brms::brm](init = ...)}
 }
 \description{
 Create initial values for sigmoid growth model parameters that

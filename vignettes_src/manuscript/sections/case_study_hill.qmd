@@ -1,26 +1,28 @@
-## Hill Equation {#sec-hill}
+### Hill Equation {#sec-hill}
 
-In this case study, we are going to reanalyze the dose response of 4
-Kappa Opioid receptor (KOR) antagonists using the `BayesPharma`
-package from a study performed by Margolis et
-al. (-@Margolis2020-bm). Whole cell electrophysiology in acute rat
+In this case study, we are going to reanalyze the dose responses of 4
+Kappa Opioid receptor (KOR) antagonists from a study performed by Margolis et
+al. (-@Margolis2020-bm) using the `BayesPharma`
+package. Whole cell electrophysiology in acute rat
 midbrain slices was used to evaluate the pharmacological properties of
 four novel KOR antagonists: BTRX-335140, BTRX-395750, PF-04455242, and
-JNJ-67953964
+JNJ-67953964.
 
-Originally, the dose-response data analysis was performed by using
+Originally, the dose-response analysis was performed using
 the `drc` package in R, which implements the minimization of negative
 log likelihood function and reduces to least square estimation for a
-continuous response. The data was normalized to % baseline then fit to
-a 4-parameter log-logistic dose response model, setting the top (max
-response) to 100% and estimating the IC50, its variance, and the
-bottom (min response).
+continuous response. The data were normalized to % baseline agonist response,
+measuring the extent of blockade of agonist response in the presence of
+different concentrations of antagonist. These data were then fit to a 4-parameter
+log-logistic dose response model, setting the top (max agonist response) to
+100% and estimating the IC50, its variance, and the bottom (min agonist
+response).
 
-### Fitting the sigmoid model
+#### Fitting the sigmoid model
 
 Using the `BayesPharma` package, we can re-fit the sigmoid model with a
 negative slope, and fix the top parameter to `100` as the response is
-normalized to a no-drug baseline.
+normalized to a no-antagonist baseline.
 
 For the prior, we are going to use a normal distribution because the
 response values are continuous. First, we will run the analysis with the
@@ -115,13 +117,13 @@ kor_model <- BayesPharma::sigmoid_model(
 ```
 \normalsize
 
-### Analyzing model fit
+#### Analyzing model fit
 
 The `brms` generated model summary shows the formula that the expected
 response a is sigmoid function of the `log_dose` with four parameters, and
 a shared Gaussian distribution. Each parameter is dependent on the
 `substance_id`. Since we want to fit a separate model for each substance, we
-include a `0 +` to indicate that there is no common intercept.  The data
+include a `0 +` to indicate that there is no common intercept. The data
 consists of `73` data points and the posterior sampling was done in `4`
 chains each with `8000` steps with `4000` steps of warm-up. The population
 effects for each parameter summarize the marginal posterior distributions,
@@ -137,9 +139,7 @@ kor_model
 ```
 \normalsize
 
-#### Traceplot
-
-The model ran without warning messages, meaning there were no parameter
+**Traceplot**: The model ran without warning messages, meaning there were no parameter
 value problems or MCMC conflicts. The bulk and tail ESS indicate high
 resolution and stability. The R-hat for each parameter equals `1.00` and
 the `traceplot` shows the chains mixed well, indicating the chains
@@ -157,12 +157,10 @@ kor_model |>
 ```
 \normalsize
 
-#### Compare prior and posterior marginal distributions
-
-Displayed below is a plot for the prior and posterior distributions of
-the parameters (prior is pink and posterior is teal). This can be
-useful for comparing the density distribution of the prior and
-posterior produced by the model:
+**Compare prior and posterior marginal distributions**: Displayed below is a
+plot for the prior and posterior distributions of the parameters (prior is pink
+and posterior is teal). This can be useful for comparing the density
+distribution of the prior and posterior produced by the model:
 
 \scriptsize
 ```{r kor-model-prior-posterior-densities}
@@ -224,7 +222,7 @@ BayesPharma::plot_posterior_draws(
 ```
 \normalsize
 
-### Comparing alternative models
+#### Comparing alternative models
 
 To test the sensitivity of the analysis to the prior, we can re-fit the model
 with a more informative prior:
@@ -242,9 +240,9 @@ kor_prior2
 
 Re-fitting the model with the `kor_prior2` gives:
 
-\scriptsize
 ```{r kor-model2}
 #| message=FALSE,
+#| results='hide',
 #| dependson=c("kor-model-prior2")
 
 kor_model2 <- BayesPharma::sigmoid_model(
@@ -253,44 +251,47 @@ kor_model2 <- BayesPharma::sigmoid_model(
     predictors = 0 + substance_id), 
   prior = kor_prior2,
   init = BayesPharma::sigmoid_antagonist_init())
+```
 
+\scriptsize
+```{r kor_model2_fit}
+#| dependson=c("kor-model2"),
+#| echo=FALSE
 kor_model2
 ```
 \normalsize
 
-## Comparing the Two Models Using LOO-Comparison:
-
-One way to evaluate the quality of a model is for each data-point,
-re-fit the model with remaining points, and evaluate the log
-probability of the point in the posterior distribution. Taking the
-expectation across all points give the Expected Log Pointwise
-predictive Density (ELPD). Since this is computationally challenging
-to re-fit the model for each point, if the model fits the data
-reasonably well, then the ELPD can be approximated using the Pareto
-smoothed importance sampling (PSIS). Using the LOO, the package,
-Pareto k value for each data point is computed, where k less than `0.5`
-is good, between `0.5` and `0.7` is OK, and higher than `0.7`
-indicates the data point is not fit by the model well. Evaluating the model for
-the KOR antagonists, shows that the model fits the data well.
+**Comparing the Two Models Using LOO-Comparison**: One way to evaluate the
+quality of a model is for each data-point, re-fit the model with remaining
+points and evaluate the log probability of the point in the posterior
+distribution. Taking the expectation across all points gives the Expected Log
+Pointwise predictive Density (ELPD). Since this is computationally challenging
+to re-fit the model for each point, if the model fits the data reasonably well,
+then the ELPD can be approximated using the Pareto smoothed importance sampling
+(PSIS). Using the LOO package, Pareto k value for each data point is computed
+that indicate how well that data point is fit by the model, where `k < 0.5` is
+good, `0.5 <= k < 0.7` is OK, and `0.7 <= k` is bad. Evaluating the model for
+the KOR antagonists shows that the model fits the data well.
 
 \scriptsize
 ```{r kor-loo}
 #| dependson=c("kor-model")
-kor_model <- kor_model |>
-  brms::add_criterion(criterion = c("loo"), reloo = TRUE)
-kor_model$critera$loo
+kor_model |> brms::expose_functions(vectorize = TRUE)
+kor_model <- kor_model |> brms::add_criterion(criterion = "loo")
+kor_model$criteria$loo
 ```
 \normalsize
 
-Since ELPD is a global measure of model fit, it can be used to compare
-models.  Using `loo_compare` from the LOO package, returns the
-`elpd_diff` and `se_diff` for each model relative the model with the
-lowest ELPD. The `kor_model2`, the model with more informative prior,
-is the preferred model, but not significantly.
+Since ELPD is a global measure of model fit, it can be used to compare models.
+Using `loo_compare` from the LOO package returns the `elpd_diff` and `se_diff`
+for each model relative the model with the lowest ELPD. The `kor_model2`, the
+model with more informative prior, is the preferred model, but not
+significantly.
 
 \scriptsize
 ```{r kor-model-model2-loo-compare}
 #| dependson=c("kor-loo", "kor-model2")
+kor_model2 |> brms::expose_functions(vectorize = TRUE)
 kor_model2 <- kor_model2 |>
   brms::add_criterion(criterion = c("loo"), reloo = TRUE)
 
@@ -298,9 +299,8 @@ brms::loo_compare(kor_model, kor_model2)
 ```
 \normalsize
 
-##Analysis Using the `drc` Package
-
-Here we will analyze the KOR antagonist data using the drc package and
+**Comparing against models fit with the `drc` Package**:
+Here we will analyze the KOR antagonist data using the `drc` package and
 compare it to the results from the `BayesPharma` analysis.
 
 We will fix the top to `100` and fit the `ic50`, `hill`, and
@@ -370,7 +370,7 @@ drc_model_conditional_effects_plot_layers <- list(
       x = log_dose,
       y = response),
     color = "purple",
-    size = 1.3))
+    linewidth = 1.3))
 
 kor_model_conditional_effects <- kor_model |>  
   brms::conditional_effects(

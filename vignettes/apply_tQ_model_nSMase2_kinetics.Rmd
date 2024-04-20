@@ -13,6 +13,9 @@ vignette: >
 
 
 
+```
+## Error in library(tidyverse): there is no package called 'tidyverse'
+```
 
 
 
@@ -55,34 +58,34 @@ vignette: >
 ```
 
 ```
-## Timing stopped at: 1.058 0.09 1.007
+## Timing stopped at: 3.325 0.073 3.451
 ```
 
 
 
 ```
-## Error in update(model, sample_prior = "only"): object 'model' not found
+## Error in eval(expr, envir, enclos): object 'model' not found
 ```
 
 ```
-## Error in tidybayes::tidy_draws(model_prior): object 'model_prior' not found
+## Error in eval(expr, envir, enclos): object 'model_prior' not found
 ```
 
 ```
-## Error in tidybayes::tidy_draws(model): object 'model' not found
+## Error in eval(expr, envir, enclos): object 'model' not found
 ```
 
 
 ```
-## Error in tidyr::pivot_wider(draws_prior, id_cols = c(".chain", ".iteration", : object 'draws_prior' not found
+## Error in eval(expr, envir, enclos): object 'draws_prior' not found
 ```
 
 ```
-## Error in tidyr::pivot_wider(draws_posterior, id_cols = c(".chain", ".iteration", : object 'draws_posterior' not found
+## Error in eval(expr, envir, enclos): object 'draws_posterior' not found
 ```
 
 ```
-## Error in fortify(data): object 'draws_prior_pairs' not found
+## Error in eval(expr, envir, enclos): object 'draws_prior_pairs' not found
 ```
 
 

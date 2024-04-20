@@ -37,7 +37,7 @@ in using the **Pnear score**, which is defined by
 
 where *(RMSD[i], score[i])* is the score RMSD and score values for a
 conformation *i*. The parameter *lambda* is measured in Angstroms indicating the
-breadth of the Gaussian used to define "native-like-ness".  The bigger the
+breadth of the Gaussian used to define "native-like-ness". The bigger the
 value, the more permissive the calculation is to structures that deviate from
 native. Typical values for peptides range from 1.5 to 2.0, and for proteins from
 2.0 to perhaps 4.0. And finally the parameter *k_BT* is measured in in energy
@@ -79,6 +79,12 @@ so that the log of the RMSD defines a linear reaction coordinate.
 
 If we simulate, trajectory points from the sigmoid on the log(RMSD) scale,
 with a Normally distributed error we can generate synthetic score-vs-rmsd plots
+
+
+```
+## Warning in GeomIndicator::geom_indicator(mapping = ggplot2::aes(indicator = paste0("Pnear: ", : All aesthetics have length 1, but the data has 300 rows.
+## ℹ Did you mean to use `annotate()`?
+```
 
 <div class="figure" style="text-align: center">
 <img src="apply_sigmoid_model_Pnear_files/simulate-score-vs-rmsd-data-1.png" alt="plot of chunk simulate-score-vs-rmsd-data" width="100%" />
@@ -127,36 +133,36 @@ Check the model parameter fit and estimated parameters:
 ##   Draws: 4 chains, each with iter = 4000; warmup = 2000; thin = 1;
 ##          total post-warmup draws = 8000
 ## 
-## Population-Level Effects: 
+## Regression Coefficients:
 ##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## ec50_target1ahw       1.70      0.11     1.44     1.86 1.00     4480     2619
-## ec50_target1jps       1.37      0.13     1.08     1.59 1.00     3326     3002
-## ec50_target1mlc       2.40      0.50     1.10     3.18 1.00     3209     2260
-## ec50_target1ztx       0.75      0.08     0.59     0.89 1.00     3795     3796
-## ec50_target2aep       1.13      0.39     0.60     1.60 1.01     1434      413
-## ec50_target2jel       1.65      0.06     1.53     1.76 1.00     5303     4378
-## hill_target1ahw       1.69      0.44     0.90     2.62 1.00     3395     2143
-## hill_target1jps       1.50      0.36     0.89     2.32 1.00     3134     3214
-## hill_target1mlc       1.04      0.56     0.26     2.34 1.00     3608     3501
-## hill_target1ztx       2.74      0.55     1.79     3.95 1.00     5279     4769
-## hill_target2aep       1.97      0.68     0.61     3.33 1.00     1030      365
-## hill_target2jel       3.19      0.59     2.09     4.39 1.00     6304     5194
-## top_target1ahw      -10.56      0.69   -11.57    -8.89 1.00     4469     2908
-## top_target1jps       -9.69      0.59   -10.61    -8.28 1.00     4565     3218
-## top_target1mlc       -1.28      5.95    -9.87    12.57 1.00     5597     4983
-## top_target1ztx      -17.45      0.27   -17.96   -16.93 1.00     9519     6062
-## top_target2aep      -16.14      1.61   -16.96   -14.96 1.01     1095      316
-## top_target2jel      -11.09      0.33   -11.74   -10.44 1.00     9532     5667
-## bottom_target1ahw   -25.98      2.10   -31.41   -23.07 1.00     3767     2052
-## bottom_target1jps   -30.51      3.69   -39.47   -25.05 1.00     2992     2724
-## bottom_target1mlc   -18.34      4.07   -30.38   -14.74 1.00     3115     2455
-## bottom_target1ztx   -38.73      3.43   -46.49   -33.05 1.00     4061     3747
-## bottom_target2aep   -30.20      5.82   -43.09   -21.02 1.00     4166     3031
-## bottom_target2jel   -19.48      0.98   -21.59   -17.75 1.00     5535     4735
+## ec50_target1ahw       1.70      0.11     1.44     1.87 1.00     3855     2019
+## ec50_target1jps       1.37      0.13     1.09     1.59 1.00     4683     3670
+## ec50_target1mlc       2.39      0.53     0.91     3.18 1.00     3115     2020
+## ec50_target1ztx       0.75      0.08     0.59     0.89 1.00     5633     4243
+## ec50_target2aep       1.13      0.29     0.63     1.59 1.00     3537     1060
+## ec50_target2jel       1.65      0.06     1.53     1.76 1.00     6256     4982
+## hill_target1ahw       1.68      0.44     0.89     2.60 1.00     3088     1821
+## hill_target1jps       1.50      0.36     0.89     2.31 1.00     3901     3482
+## hill_target1mlc       1.04      0.56     0.25     2.32 1.00     2889     3080
+## hill_target1ztx       2.71      0.55     1.78     3.91 1.00     6778     5448
+## hill_target2aep       1.98      0.68     0.55     3.36 1.00     1535      476
+## hill_target2jel       3.19      0.59     2.09     4.43 1.00     7529     5076
+## top_target1ahw      -10.55      0.75   -11.56    -8.81 1.00     3866     2206
+## top_target1jps       -9.69      0.59   -10.62    -8.33 1.00     5050     3681
+## top_target1mlc       -1.23      5.88    -9.86    12.05 1.00     5941     4949
+## top_target1ztx      -17.44      0.28   -17.98   -16.90 1.00     8988     5820
+## top_target2aep      -16.20      1.25   -16.96   -14.77 1.01     1477      477
+## top_target2jel      -11.09      0.34   -11.73   -10.43 1.00     9507     5865
+## bottom_target1ahw   -26.02      2.26   -31.59   -23.09 1.00     3274     1812
+## bottom_target1jps   -30.51      3.77   -39.49   -24.92 1.00     4264     3586
+## bottom_target1mlc   -18.54      4.61   -32.33   -14.78 1.00     2644     1743
+## bottom_target1ztx   -38.89      3.49   -46.84   -33.10 1.00     5294     4182
+## bottom_target2aep   -30.28      5.92   -43.99   -21.21 1.00     5628     5171
+## bottom_target2jel   -19.47      0.98   -21.53   -17.74 1.00     6849     4766
 ## 
-## Family Specific Parameters: 
+## Further Distributional Parameters:
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     5.74      0.07     5.60     5.89 1.00    10800     6007
+## sigma     5.74      0.07     5.60     5.89 1.00    10025     5933
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -168,16 +174,17 @@ data very well
 
 ```
 ## 
-## Computed from 8000 by 3003 log-likelihood matrix
+## Computed from 8000 by 3003 log-likelihood matrix.
 ## 
 ##          Estimate   SE
-## elpd_loo  -9521.4 39.0
+## elpd_loo  -9521.3 39.0
 ## p_loo        21.4  1.2
-## looic     19042.7 78.0
+## looic     19042.6 78.0
 ## ------
-## Monte Carlo SE of elpd_loo is 0.1.
+## MCSE of elpd_loo is 0.1.
+## MCSE and ESS estimates assume MCMC draws (r_eff in [0.1, 1.4]).
 ## 
-## All Pareto k estimates are good (k < 0.5).
+## All Pareto k estimates are good (k < 0.7).
 ## See help('pareto-k-diagnostic') for details.
 ```
 

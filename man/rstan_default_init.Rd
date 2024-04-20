@@ -14,7 +14,7 @@ rstan_default_init(lb = NULL, ub = NULL, dim = 0)
 \item{dim}{\code{numeric} dimension of parameter.}
 }
 \value{
-function that return the default brms initial value for a parameter.
+function that return the default \pkg{brms} initial value for a parameter.
 If \code{dim=0}, then it will be a numeric scalar, if \code{dim=1} or greater, than
 return an array with the given dimension.
 }
