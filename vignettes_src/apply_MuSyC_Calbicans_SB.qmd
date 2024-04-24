@@ -1,0 +1,224 @@
+
+
+```{r set-options, echo=FALSE}
+
+# inspired by
+# https://www.jumpingrivers.com/blog/knitr-default-options-settings-hooks/
+knitr::opts_chunk$set(
+  echo = FALSE,
+  cache = TRUE,
+  cache.path = "cache/apply_MuSyC_KCNQ/",
+  fig.path = "apply_MuSyC_KCNQ_files/",
+  fig.retina = 2, # Control using dpi
+  fig.width = 6,  # generated images
+  fig.height = 5, # generated images
+  fig.pos = "t",  # pdf mode
+  fig.align = "center",
+  dpi = if (knitr::is_latex_output()) 72 else 300, 
+  out.width = "100%")
+options(width = 300)
+```
+
+
+```{r load-packages}
+#| echo=FALSE
+suppressWarnings(suppressMessages(library(tidyverse)))
+library(BayesPharma)
+```
+
+
+
+```{r load-data}
+#| echo=FALSE
+read_range <- function(
+    path,
+    treatment_1_max_dose,
+    treatment_2_max_dose,
+    data_range){
+  
+  treatment_1_doses <- tibble::tibble(
+    row_index = 1:12,
+    treatment_1_dose = (1/2) ^ (row_index - 1) * treatment_1_max_dose) |>
+    dplyr::mutate(
+      treatment_1_dose = ifelse(row_index < 12, treatment_1_dose, 0))
+  
+  treatment_2_doses <- tibble::tibble(
+    col_index = 1:8,
+    treatment_2_dose = (1/2) ^ (col_index - 1) * treatment_2_max_dose) |>
+    dplyr::mutate(
+      treatment_2_dose = ifelse(col_index < 8, treatment_2_dose, 0))
+    
+  data <- readxl::read_excel(
+    path = path,
+    sheet = 1,
+    range = data_range,
+    col_names = as.character(1:12)) |>
+    dplyr::mutate(col_index = 1:8) |>
+    tidyr::pivot_longer(
+      cols = -col_index,
+      names_to = "row_index",
+      values_to = "response") |>
+    dplyr::mutate(row_index = as.numeric(row_index)) |>
+    dplyr::left_join(treatment_1_doses, by = "row_index") |>
+    dplyr::left_join(treatment_2_doses, by = "col_index")
+}
+
+data_1 <- read_range(
+  path = "~/Downloads/20240403_SBcheckerboard1.xlsx",
+  treatment_1_max_dose = 160,
+  treatment_2_max_dose = 32,
+  data_range = "C33:N40") |>
+  dplyr::mutate(
+    treatment_1 = "CCG-280256",
+    treatment_2 = "Fluconazole",
+    treatment_1_units = "µM",
+    treatment_2_units = "µg/mL",
+    replica = 1)
+
+data_2 <- read_range(
+  path = "~/Downloads/20240403_SBcheckerboard2.xlsx",
+  treatment_1_max_dose = 160,
+  treatment_2_max_dose = 32,
+  data_range = "C33:N40") |>
+  dplyr::mutate(
+    treatment_1 = "CCG-280256",
+    treatment_2 = "Fluconazole",
+    treatment_1_units = "µM",
+    treatment_2_units = "µg/mL",
+    replica = 2)
+
+data_3 <- read_range(
+  path = "~/Downloads/20240403_SBcheckerboard3.xlsx",
+  treatment_1_max_dose = 160,
+  treatment_2_max_dose = 32,
+  data_range = "C33:N40") |>
+  dplyr::mutate(
+    treatment_1 = "CCG-324086",
+    treatment_2 = "Fluconazole",
+    treatment_1_units = "µM",
+    treatment_2_units = "µg/mL",
+    replica = 1)
+
+data_4 <- read_range(
+  path = "~/Downloads/20240403_SBcheckerboard4.xlsx",
+  treatment_1_max_dose = 160,
+  treatment_2_max_dose = 32,
+  data_range = "C33:N40") |>
+  dplyr::mutate(
+    treatment_1 = "CCG-324086",
+    treatment_2 = "Fluconazole",
+    treatment_1_units = "µM",
+    treatment_2_units = "µg/mL",
+    replica = 2)
+
+data_5 <- read_range(
+  path = "~/Downloads/20240322_SBcheckerboard5.xlsx",
+  treatment_1_max_dose = 160,
+  treatment_2_max_dose = 160,
+  data_range = "C35:N42") |>
+  dplyr::mutate(
+    treatment_1 = "CCG-280256",
+    treatment_2 = "CCG-324086",
+    treatment_1_units = "µM",
+    treatment_2_units = "µM",
+    replica = 1)
+
+data_6 <- read_range(
+  path = "~/Downloads/20240322_SBcheckerboard6.xlsx",
+  treatment_1_max_dose = 160,
+  treatment_2_max_dose = 160,
+  data_range = "C35:N42") |>
+  dplyr::mutate(
+    treatment_1 = "CCG-280256",
+    treatment_2 = "CCG-324086",
+    treatment_1_units = "µM",
+    treatment_2_units = "µM",
+    replica = 2)
+
+data <- dplyr::bind_rows(
+  data_1, data_2,
+  data_3, data_4,
+  data_5, data_6) |>
+  dplyr::select(
+    row_index, treatment_1, treatment_1_dose, treatment_1_units,
+    col_index, treatment_2, treatment_2_dose, treatment_2_units,
+    replica,
+    response)
+```
+
+
+```{r plot-data}
+#| echo=FALSE,
+#| fig.width=4,
+#| fig.heigh=4,
+#| fig.cap="Plot dose-response",
+#| dependson=c("load-data")
+plot_data <- data |>
+  dplyr::mutate(dose_label = ifelse(is_control, 0, dose_uM)) |>
+  dplyr::arrange(dose_label) |>
+  dplyr::mutate(
+    dose_label = ifelse(dose_label == 0, "Control", paste0(dose_uM, " uM")) |>
+      forcats::fct_inorder()) |>
+  dplyr::arrange(desc(treatment)) |>
+  dplyr::mutate(
+    treatment = treatment |> forcats::fct_inorder())
+
+data_normalize <- plot_data |>
+  dplyr::filter(is_control) |>
+  dplyr::group_by(treatment, dose_uM, voltage) |>
+  dplyr::summarize(
+    conductance_mean = mean(conductance),
+    .groups = "drop") |>
+  dplyr::group_by(treatment, dose_uM) |>
+  dplyr::summarize(
+    conductance_max = max(conductance_mean),
+    .groups = "drop")
+
+plot_data <- plot_data |>
+  dplyr::left_join(
+    data_normalize,
+    by = c("treatment", "dose_uM")) |>
+  dplyr::mutate(
+    conductance_normalized = conductance / conductance_max)
+
+plot_data_replica_summary <- plot_data |>
+  dplyr::group_by(treatment, dose_label, voltage) |>
+  dplyr::summarize(
+    conductance_mean = mean(conductance_normalized),
+    conductance_se = sd(conductance_normalized) / sqrt(dplyr::n()),
+    .groups = "drop")
+
+ggplot2::ggplot() +
+  ggplot2::theme_bw() +
+  ggplot2::geom_line(
+    data = plot_data_replica_summary,
+    mapping = ggplot2::aes(
+      x = voltage,
+      y = conductance_mean,
+      color = dose_label,
+      group = dose_label)) +
+  ggplot2::geom_errorbar(
+    data = plot_data_replica_summary,
+    mapping = ggplot2::aes(
+      x = voltage,
+      ymin = conductance_mean - conductance_se,
+      ymax = conductance_mean + conductance_se,
+      color = dose_label,
+      group = dose_label),
+    width = 2) +
+  ggplot2::geom_point(
+    data = plot_data_replica_summary,
+    mapping = ggplot2::aes(
+      x = voltage,
+      y = conductance_mean,
+      color = dose_label,
+      group = dose_label)) +
+  ggplot2::facet_wrap(
+    facets = dplyr::vars(treatment), ncol = 1) +
+  ggplot2::scale_color_discrete("Drug Dose") +
+  ggplot2::scale_x_continuous("Voltage") +
+  ggplot2::scale_y_continuous("G/Gmax")
+
+```
+
+
