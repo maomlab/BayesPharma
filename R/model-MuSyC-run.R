@@ -19,9 +19,9 @@
 #'
 #'    * **`<treatment 1>`**: `logd1`, the `log10` of the dose
 #'      as a molar concentration of treatment 1
-#'    * **`<response>`**: `response`, with unspecified units
 #'    * **`<treatment 2>`**: `logd2`, the `log10` of the dose
 #'      as a molar concentration of treatment 2
+#'    * **`<response>`**: `response`, with unspecified units
 #'
 #'  The `logd1scale` and `logd2scale` are used to center `<treatment 1>`
 #'  and `<treatment 2>` to make fitting more numerically stable. If they are not

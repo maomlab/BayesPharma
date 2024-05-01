@@ -42,7 +42,7 @@ separately?}
 }
 \description{
 Setup a \code{MuSyC} synergy model formula to predict the
-\code{E0}, \code{C1}, \code{E1}, \code{s1}, \code{C2}, \code{E2}, \code{s2}, \code{log10alpha}, and \code{E3alpha}
+\code{E0}, \code{E1}, \code{C1}, \code{h1}, \code{E2}, \code{C2}, \code{h2}, \code{log10alpha}, and \code{E3alpha}
 parameters.
 }
 \examples{

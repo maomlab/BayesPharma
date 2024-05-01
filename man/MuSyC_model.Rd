@@ -61,9 +61,9 @@ columns in the input data data.frame) are
 \itemize{
 \item \strong{\verb{<treatment 1>}}: \code{logd1}, the \code{log10} of the dose
 as a molar concentration of treatment 1
-\item \strong{\verb{<response>}}: \code{response}, with unspecified units
 \item \strong{\verb{<treatment 2>}}: \code{logd2}, the \code{log10} of the dose
 as a molar concentration of treatment 2
+\item \strong{\verb{<response>}}: \code{response}, with unspecified units
 }
 
 The \code{logd1scale} and \code{logd2scale} are used to center \verb{<treatment 1>}

@@ -6,11 +6,11 @@
 \usage{
 MuSyC_init(
   logE0 = function() runif(n = 1, min = log(0.4), max = log(0.6)),
-  logC1 = function() runif(n = 1, min = -0.2, max = 0.2),
   logE1 = function() runif(n = 1, min = log(0.4), max = log(0.6)),
+  logC1 = function() runif(n = 1, min = -0.2, max = 0.2),
   h1 = function() runif(n = 1, min = 3, max = 5),
-  logC2 = function() runif(n = 1, min = -0.2, max = 0.2),
   logE2 = function() runif(n = 1, min = log(0.4), max = log(0.6)),
+  logC2 = function() runif(n = 1, min = -0.2, max = 0.2),
   h2 = function() runif(n = 1, min = 3, max = 5),
   logE3 = function() runif(n = 1, min = log(0.4), max = log(0.6)),
   logalpha = function() runif(n = 1, min = -0.2, max = 0.2),
@@ -21,25 +21,25 @@ MuSyC_init(
 \item{logE0}{\code{numeric} or function returning \code{array} of length \code{1}. Initial
 value for the \code{logE0} parameter. Default: \code{log(0.5)}}
 
-\item{logC1}{\code{numeric} or function returning array of length
-1. Initial value for the \code{logC1} parameter. Default:
-\code{0 = log(1)}}
-
 \item{logE1}{\code{numeric} or function returning array of length
 1. Initial value for the \code{logE1} parameter. Default:
 log(0.5)}
+
+\item{logC1}{\code{numeric} or function returning array of length
+1. Initial value for the \code{logC1} parameter. Default:
+\code{0 = log(1)}}
 
 \item{h1}{\code{numeric} or function returning array of length
 1. Initial value for the \code{h1} parameter. Default: \code{4 = MuSyC_si_to_hi(si=1, Ci=1, E0=1, Ei=0.0)} the exponent for
 treatment \code{1} corresponding to a slope of \code{1}}
 
-\item{logC2}{\code{numeric} or function returning array of length
-\code{1}. Initial value for the \code{logC2}
-parameter. Default: \code{0 = log(1)}}
-
 \item{logE2}{\code{numeric} or function returning array of length
 \code{1}. Initial value for the \code{logE2} parameter. Default:
 \code{log(0.5)}}
+
+\item{logC2}{\code{numeric} or function returning array of length
+\code{1}. Initial value for the \code{logC2}
+parameter. Default: \code{0 = log(1)}}
 
 \item{h2}{\code{numeric} or function returning array of length
 \code{1}. Initial value for the \code{h2} parameter. Default:

@@ -1,7 +1,7 @@
 #' Create a Formula for the MuSyC Synergy Model
 #'
 #' @description Setup a `MuSyC` synergy model formula to predict the
-#'   `E0`, `C1`, `E1`, `s1`, `C2`, `E2`, `s2`, `log10alpha`, and `E3alpha`
+#'   `E0`, `E1`, `C1`, `h1`, `E2`, `C2`, `h2`, `log10alpha`, and `E3alpha`
 #'   parameters.
 #'
 #' @param treatment_1_variable `character` variable representing the treatment.
@@ -54,16 +54,16 @@ MuSyC_formula <- function(
       treatment_1_variable, " - logd1scale, ",
       treatment_2_variable, " - logd2scale, ",
       "logE0, ",
-      "logC1, logE1, h1, ",
-      "logC2, logE2, h2, ",
+      "logE1, logC1, h1, ",
+      "logE2, logC2, h2, ",
       "logE3, logalpha)"))
 
 
   predictor_eq <- rlang::new_formula(
     lhs = quote(
       logE0 +
-        logC1 + logE1 + h1 +
-        logC2 + logE2 + h2 +
+        logE1 + logC1 + h1 +
+        logE2 + logC2 + h2 +
         logE3 + logalpha),
     rhs = rlang::enexpr(predictors))
 
