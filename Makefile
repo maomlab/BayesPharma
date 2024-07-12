@@ -17,6 +17,12 @@ clean:
 	rm -rf vignettes/manuscript.pdf
 	rm -rf vignettes/manuscript.docx
 
+clean-vignette-%:
+# e.g. make clean-vignette-apply_MuSyC_KCNQ
+	rm -rf vignette/${@:clean-vignette-%=%}.Rmd
+	rm -rf vignette/${@:clean-vignette-%=%}_files
+	rm -rf vignette/cache/${@:clean-vignette-%=%}
+
 deps:
 	Rscript -e 'if(!require("devtools")) install.packages("devtools", repos="http://cran.us.r-project.org")'
 	Rscript -e "devtools::install_dev_deps()"

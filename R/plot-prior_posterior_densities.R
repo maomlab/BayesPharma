@@ -13,7 +13,7 @@
 #'     fits the type of experiment that was done (i.e. ec50, ic50,
 #'     ed50, id50, ld50, etc.).
 #' @param title_label string of the plot title.
-#' @param ... further arguments passed to [stats::update()] to sample from the
+#' @param ... further arguments passed to [brms::brm()] to sample from the
 #'   prior
 #' @returns [ggplot2::ggplot()] object.
 #'

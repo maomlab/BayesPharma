@@ -26,7 +26,7 @@ ed50, id50, ld50, etc.).}
 
 \item{title_label}{string of the plot title.}
 
-\item{...}{further arguments passed to \code{\link[stats:update]{stats::update()}} to sample from the
+\item{...}{further arguments passed to \code{\link[brms:brm]{brms::brm()}} to sample from the
 prior}
 }
 \value{
