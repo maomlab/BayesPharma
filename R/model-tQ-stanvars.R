@@ -66,14 +66,14 @@ vector tQ_single(
   real initial_time = 0.0;
   int M = dims(time)[1];
 
-  vector[1] P_ode[M] = ode_bdf(     // Function signature:
-    tQ_ode,                         // function ode
-    initial_state,                  // vector initial_state
-    initial_time,                   // real initial_time
-    to_array_1d(time),              // array[] real time
-    params,                         // vector params
-    vET[1],                         // ...
-    vST[1]);                        // ...
+  array[M] vector[1] P_ode = ode_bdf(     // Function signature:
+    tQ_ode,                               // function ode
+    initial_state,                        // vector initial_state
+    initial_time,                         // real initial_time
+    to_array_1d(time),                    // array[] real time
+    params,                               // vector params
+    vET[1],                               // ...
+    vST[1]);                              // ...
 
   vector[M] P;                      // Need to return a vector not array
 
@@ -94,7 +94,7 @@ vector tQ_single(
 }
 
 vector tQ_multiple(
-  data int[] series_index,
+  array[] int series_index,
   vector time,
   vector vkcat,
   vector vkM,
