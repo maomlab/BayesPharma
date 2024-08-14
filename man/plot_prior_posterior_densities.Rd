@@ -6,25 +6,17 @@
 \usage{
 plot_prior_posterior_densities(
   model,
-  predictors_col_name = "_Intercept",
-  half_max_label = "ec50",
   title_label = "Prior Posterior Density",
+  exclude_variables = c("lp__", "lprior"),
   ...
 )
 }
 \arguments{
 \item{model}{\code{bpfit} object resulting from fitting a BayesPharma model}
 
-\item{predictors_col_name}{string expression for predictors column
-in the input data.frame (default = "_Intercept"). Predictors
-are the perturbations tested during the experiment (i.e. Drug,
-Temperature, etc.).}
-
-\item{half_max_label}{string of the label for the half maximal that
-fits the type of experiment that was done (i.e. ec50, ic50,
-ed50, id50, ld50, etc.).}
-
 \item{title_label}{string of the plot title.}
+
+\item{exclude_variables}{\code{string} vector of variables to exclude}
 
 \item{...}{further arguments passed to \code{\link[brms:brm]{brms::brm()}} to sample from the
 prior}
@@ -42,7 +34,6 @@ distribution of the marginal prior uncertainty.
   plot_prior_posterior_densities(
     model = my_sigmoid_model,
     predictors_col_name = "predictors",
-    half_max_response = "ic50",
     title_label = "Prior Posterior Density Plots")
 }
 
