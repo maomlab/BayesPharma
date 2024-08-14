@@ -1,0 +1,159 @@
+
+```{r setwd}
+setwd("vignettes_src/apply_tQ_model_Markin2021")
+
+```
+
+Revealing enzyme functional architecture via high-throughput microfluidic enzyme kinetics
+
+# Introduction
+
+In (Markin, et al., 2021), they High-Throughput Microfluidic Enzyme
+Kinetics (HT-MEK) method to analyze 1036 mutants of the alkaline phosphatase PafA (phosphate-irrepressible alkaline phosphatase of Flavobacterium)
+
+The PafA enzyme is a well-studied enzyme from the alkaline phosphatase
+superfamily that catalyzes phosphate ester substrates such as
+4-methylumbelliferyl phosphate ester (MUP).
+
+
+
+
+## Data preparation
+The full 21.1 Gb dataset is hosted on Open Science Foundation Repository (DOI:
+10.17605/OSF.IO/QRN3C) at this url: https://osf.io/ez9xv/ under an MIT License.
+To access, login, and click the three dots icon on right, and then "Request
+Access".
+
+```{r download-data}
+
+data_path_base <- "."
+
+# get the nodes from the main repo and select the data specific ones
+osfr:: osf_retrieve_node("ez9xv") |>
+  osfr::osf_ls_nodes()
+
+datasets <- dplyr::bind_rows(
+  tibble::tibble(name = "cMUP_hydrolysis", osf_id = "j2wmu"),
+  tibble::tibble(name = "expression_conditions", osf_id = "2baxd"),
+  tibble::tibble(name = "MeP_hydrolysis", osf_id = "gfsy4"),
+  tibble::tibble(name = "phosphate_inhibition", osf_id = "hy9ps"),
+  tibble::tibble(name = "MecMUP_hydrolysis", osf_id = "h3ejq"),
+  tibble::tibble(name = "assay_conditions", osf_id = "jtr7n")) |>
+  dplyr::rowwise() |>
+  dplyr::do({
+    dataset <- .
+    cat(
+      "Getting data for osf_id: '", dataset$osf_id[1], "', ",
+      "name: '", dataset$name[1], "'\n", sep ="")
+    
+    output_path <- paste0(data_path_base, "/", dataset$name[1])
+    if (!dir.exists(output_path)) {
+      cat("Creating output directory '", output_path, "'...\n", sep = "")
+      dir.create(output_path)
+    }
+    
+    files <- osfr::osf_retrieve_node(id = dataset$osf_id) |>
+      osfr::osf_ls_files()
+    
+    files |>
+      dplyr::rowwise() |>
+      dplyr::do({
+        file <- .
+        osfr::osf_retrieve_file(file$id[1]) |>
+          osfr::osf_download(
+            path = output_path,
+            verbose = TRUE)
+      })
+  })
+```
+In their published work, they used a series of Mathematica notebooks to fit
+Michaelis Menten kinetics models (HT-MEK_KineticThermodynamicFitting-1.0.1.zip,
+https://osf.io/b8t3y). Mathematica notebooks can be opened and viewed using the
+free Wolfram Player app (https://www.wolfram.com/player/).
+
+They report data for seven experiments, exploring hydrolysis of three different
+substrates, cMUP, MeP, MecMUP; titration of cofactors and assay conditions:
+Urea, Zinc, and pH; varying expression conditions; and sequence variants of the
+active site.
+
+
+```{r parse-per-experiment-data-set}
+
+data <- readr::read_csv(
+  "cMUP_hydrolysis/Per-Experiment Data/180225_S2_d2_cMUP_1_ValScan.csv",
+  show_col_types = FALSE)
+
+z <- data |> dplyr::filter(dplyr::row_number() == 1)
+
+
+
+z <- data |>
+  dplyr::mutate(well_index = dplyr::row_number()) |>
+  dplyr::rowwise() |>
+  dplyr::do({
+    row <- .
+    measurements <- tibble::tibble(
+      time = row$Times[1] |>
+        stringr::str_replace_all("[{}]", ""),
+      intensity_median = row$MedianIntensities[1] |>
+        stringr::str_replace_all("[{}]", "")) |>
+      tidyr::separate_longer_delim(
+        cols = c(time, intensity_median),
+        delim = ", ") |>
+      dplyr::mutate(
+        well_index = row$well_index[1],
+        global_experiment_index = row$GlobalExperimentIndex[1],
+        date = row$Date[1],
+        experiment = row$Experiment[1],
+        experiment_index = row$ExpIndex[1],
+        device = row$Device[1],
+        mutant_id = row$MutantID[1],
+        x = row$x[1],
+        y = row$y[1],
+        phosephate_sensor_conc = row$PhosphateSensorConc[1],
+        substrate_conc = row$SubstrateConc[1],
+        inhibitor_conc = row$InhibitorConcentration[1],
+        enzyme_conc = row$EnzymeConc[1],
+        time = time |> as.numeric(),
+        intensity_median = intensity_median |> as.numeric(),
+        fit_mm_kcat = row$fit_mm_kcat[1],
+        fit_mm_kcat_param_error = row$fit_kcat_param_error[1],
+        fit_mm_KM = row$fit_mm_KM[1],
+        fit_mm_KM_param_error = row$fit_mm_KM_param_error[1],
+        .before = 1)
+  }) |>
+  dplyr::ungroup()
+```
+
+
+```{r plot-intensities}
+
+ggplot2::ggplot(
+  data = z |> dplyr::filter(
+    mutant_id == "WT")) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_line(
+    mapping = ggplot2::aes(
+      x = time,
+      y = intensity_median,
+      color = enzyme_conc,
+      group = well_index)) +
+  ggplot2::facet_wrap(
+    facets = dplyr::vars(substrate_conc))
+```
+```{r model-wt}
+model <- BayesPharma::tQ_model
+```
+
+
+
+
+
+## References:
+
+Markin, C. J., D. A. Mokhtari, F. Sunden, M. J. Appel, E. Akiva, S. A. Longwell, C. Sabatti, D. Herschlag, and P. M. Fordyce. 2021. “Revealing Enzyme Functional Architecture via High-Throughput Microfluidic Enzyme Kinetics.” Science 373 (6553). https://doi.org/10.1126/science.abf8761.
+
+
+
+
+
