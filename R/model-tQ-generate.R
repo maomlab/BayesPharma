@@ -52,7 +52,8 @@
 #'
 #' where K = kb/kf is the dissociation constant.
 #'
-#' @param time `numeric` vector. Increasing time points
+#' @param time `numeric` vector. Increasing time points (e.g.
+#'   `time[i] > time[i+1]`, for `i` in `[1, ... n]`) 
 #' @param kcat `numeric` value catalytic rate constant
 #' @param kM `numeric` value Michaelis rate constant
 #' @param ET `numeric` value total enzyme concentration
@@ -69,6 +70,17 @@
 #' Choi, B., Rempala, G.A. & Kim, J.K. Beyond the Michaelis-Menten equation:
 #' Accurate and efficient estimation of enzyme kinetic parameters. Sci Rep 7,
 #' 17018 (2017). https://doi.org/10.1038/s41598-017-17072-z
+#'
+#' @examples
+#' \dontrun{
+#' BayesPharma::tQ_model_generate(
+#'   time = seq(0.1, 3, by = .5),
+#'   kcat = 3,
+#'   kM = 5,
+#'   ET = 10,
+#'   ST = 10) |>
+#'   as.data.frame(col.names = c("time", "P_pred"))
+#' }
 #'
 #' @export
 tQ_model_generate <- function(time, kcat, kM, ET, ST, ...) {

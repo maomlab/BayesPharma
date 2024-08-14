@@ -7,7 +7,8 @@
 tQ_model_generate(time, kcat, kM, ET, ST, ...)
 }
 \arguments{
-\item{time}{\code{numeric} vector. Increasing time points}
+\item{time}{\code{numeric} vector. Increasing time points (e.g.
+\code{time[i] > time[i+1]}, for \code{i} in \verb{[1, ... n]})}
 
 \item{kcat}{\code{numeric} value catalytic rate constant}
 
@@ -77,6 +78,18 @@ In (Choi, et al. 2017) they prove, that the tQ model is valid when
     K/(2*ST) * (ET+kM+ST) / sqrt((ET+kM+ST+P)^2 - 4*ET(ST-P)) << 1,}
 
 where K = kb/kf is the dissociation constant.
+}
+\examples{
+\dontrun{
+BayesPharma::tQ_model_generate(
+  time = seq(0.1, 3, by = .5),
+  kcat = 3,
+  kM = 5,
+  ET = 10,
+  ST = 10) |>
+  as.data.frame(col.names = c("time", "P_pred"))
+}
+
 }
 \references{
 Choi, B., Rempala, G.A. & Kim, J.K. Beyond the Michaelis-Menten equation:
