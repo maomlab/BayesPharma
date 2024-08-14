@@ -18,10 +18,11 @@ clean:
 	rm -rf vignettes/manuscript.docx
 
 clean-vignette-%:
-# e.g. make clean-vignette-apply_MuSyC_KCNQ
-	rm -rf vignette/${@:clean-vignette-%=%}.Rmd
-	rm -rf vignette/${@:clean-vignette-%=%}_files
-	rm -rf vignette/cache/${@:clean-vignette-%=%}
+# Use this to clean a specific vignette
+# e.g. `make clean-vignette-apply_MuSyC_KCNQ`
+	rm -rf vignettes/${@:clean-vignette-%=%}.Rmd
+	rm -rf vignettes/${@:clean-vignette-%=%}_files
+	rm -rf vignettes/cache/${@:clean-vignette-%=%}
 
 deps:
 	Rscript -e 'if(!require("devtools")) install.packages("devtools", repos="http://cran.us.r-project.org")'
