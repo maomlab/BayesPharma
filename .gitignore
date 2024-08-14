@@ -28,3 +28,5 @@ vignettes_src/manuscript/*tex
 vignettes_src/manuscript/*pdf
 vignettes_src/manuscript/*html
 vignettes_src/manuscript_files
+
+tests/testthat/testthat-problems.rds
