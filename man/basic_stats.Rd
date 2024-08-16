@@ -6,8 +6,7 @@
 \usage{
 basic_stats(
   model,
-  predictors_col_name = "_Intercept",
-  half_max_label = "ec50",
+  exclude_vars = c("__$", "lprior"),
   l_ci = 0.025,
   u_ci = 0.975
 )
@@ -15,13 +14,8 @@ basic_stats(
 \arguments{
 \item{model}{\link[brms:brmsfit-class]{brms::brmsfit} object}
 
-\item{predictors_col_name}{\code{character} expression for predictors column
-in the input \code{data.frame}. Predictors are the perturbations tested
-during the experiment (i.e. Drug, Temperature, etc.)}
-
-\item{half_max_label}{\code{character} of the label for the half maximal that
-fits the type of experiment that was done (i.e. ec50, ic50, ed50, id50,
-ld50, etc.).}
+\item{exclude_vars}{list of regular expressions to match what variables to
+exclude.}
 
 \item{l_ci}{\code{numeric} unit of the lower confidence interval}
 
@@ -40,8 +34,6 @@ interval.
 \dontrun{
   BayesPharma::basic_stats(
     model = my_sigmoid_model,
-    predictors_col_name = "predictors",
-    half_max_label = "ic50",
     l_ci = 0.025,
     u_ci = 0.975)
 }

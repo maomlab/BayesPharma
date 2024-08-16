@@ -7,7 +7,7 @@
 plot_prior_posterior_densities(
   model,
   title_label = "Prior Posterior Density",
-  exclude_variables = c("lp__", "lprior"),
+  exclude_variables = c("__$", "lprior"),
   ...
 )
 }
@@ -33,7 +33,6 @@ distribution of the marginal prior uncertainty.
 \dontrun{
   plot_prior_posterior_densities(
     model = my_sigmoid_model,
-    predictors_col_name = "predictors",
     title_label = "Prior Posterior Density Plots")
 }
 

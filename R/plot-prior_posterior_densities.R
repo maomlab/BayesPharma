@@ -15,7 +15,6 @@
 #'\dontrun{
 #'   plot_prior_posterior_densities(
 #'     model = my_sigmoid_model,
-#'     predictors_col_name = "predictors",
 #'     title_label = "Prior Posterior Density Plots")
 #'}
 #'
@@ -85,5 +84,5 @@ plot_prior_posterior_densities <- function(
     ggplot2::scale_x_continuous("Parameter Value") +
     ggplot2::scale_fill_manual(
       "Sample Type",
-      values = c("Posterior" = "cyan2", "Prior" = "hotpink2"))
+      values = c("Posterior" = "hotpink2", "Prior" = "cyan2"))
 }

@@ -43,7 +43,6 @@
 #'   plot_posterior_draws(
 #'     model = my_model,
 #'     newdata = my_data,
-#'     predictors_col_name = "predictors",
 #'     lower = -12,
 #'     upper = -3,
 #'     n = 50,
