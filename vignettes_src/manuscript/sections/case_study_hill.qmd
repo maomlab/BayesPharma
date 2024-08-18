@@ -174,9 +174,7 @@ distribution of the prior and posterior produced by the model:
 
 BayesPharma::plot_prior_posterior_densities(
   model = kor_model,
-  predictors_col_name = "substance_id",
-  half_max_label = "ic50",
-  title_label="")
+  title_label = "")
 ```
 \normalsize
 
@@ -196,9 +194,7 @@ intervals:
 #| fig.cap="KOR Antagonists, posterior distribution for each substance"
 
 BayesPharma::plot_posterior_density(
-  kor_model, 
-  predictors_col_name = "substance_id", 
-  half_max_label = "ic50",
+  kor_model,
   title_label = "")
 ```
 \normalsize
@@ -217,8 +213,7 @@ quantile intervals:
 #| fig.cap="KOR antagonists, posterior draws"
 
 BayesPharma::plot_posterior_draws(
-  model = kor_model,
-  title = "")
+  model = kor_model)
 ```
 \normalsize
 
