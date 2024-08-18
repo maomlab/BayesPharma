@@ -6,7 +6,7 @@
 \usage{
 plot_posterior_density(
   model,
-  exclude_vars = c("__$", "lprior"),
+  exclude_variables = c("__$", "lprior"),
   l_ci = 0.025,
   u_ci = 0.975,
   title_label = "Posterior Density Plots w/ Mean & 95\% CI"
@@ -15,8 +15,8 @@ plot_posterior_density(
 \arguments{
 \item{model}{\code{bpfit} model.}
 
-\item{exclude_vars}{list of regular expressions to match what variables to
-exclude.}
+\item{exclude_variables}{list of regular expressions to match what variables
+to exclude.}
 
 \item{l_ci}{\code{numeric} unit of the lower confidence interval}
 
