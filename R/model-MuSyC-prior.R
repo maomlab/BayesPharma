@@ -12,35 +12,35 @@
 #' Recommendations
 #' ](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
 #'
-#' @param logE0 `numeric` or [brms::brmsprior()]. Prior for the
+#' @param logE0 [brms::brmsprior()] or `numeric`. Prior for the
 #'   log response with no treatment. (Default: `normal(log(0.5), 3)` lower
 #'   bounded by `0`).
-#' @param logE1 `numeric` or [brms::brmsprior()]. Prior for the
+#' @param logE1 [brms::brmsprior()] or `numeric`. Prior for the
 #'   full log response for treatment 1 and the treatment 2 is zero. (Default:
 #'   `normal(log(0.25), 3)` lower bounded by `0`).
-#' @param logC1 `numeric` or [brms::brmsprior()]. Prior for the
+#' @param logC1 [brms::brmsprior()] or `numeric`. Prior for the
 #'   log AC50 of treatment 1 and the dose of treatment 2 is zero. (Default:
 #'   `normal(log(1), 3)`).
-#' @param h1 `numeric` or [brms::brmsprior()]. Prior for the
+#' @param h1 [brms::brmsprior()] or `numeric`. Prior for the
 #'   slope of treatment 1 at its AC50 and treatment 2 is zero in exponential
 #'   form. To converted the slope to exponential form, use
 #'   [MuSyC_si_to_hi()]). In particular, let `mu =
 #'   MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei = 0)`, then (Default:
 #'   `normal(mu, 3)` lower bounded by `.1`).
-#' @param logE2 `numeric` or [brms::brmsprior()]. Prior for the
+#' @param logE2 [brms::brmsprior()] or `numeric`. Prior for the
 #'   full log response for treatment 2 and the treatment 1 is zero. (Default:
 #'   `normal(log(0.25), 3)` lower bounded by `0`).
-#' @param logC2 `numeric` or [brms::brmsprior()]. Prior for the
+#' @param logC2 [brms::brmsprior()] or `numeric`. Prior for the
 #'   log AC50 of treatment 2. (Default: to `normal(log(1), 3)`).
-#' @param h2 `numeric` or [brms::brmsprior()]. Prior the slope of
+#' @param h2 [brms::brmsprior()] or `numeric`. Prior the slope of
 #'   treatment 2 at its AC50 and treatment 1 is zero in exponential form. To
 #'   converted the slope to exponential form, use [MuSyC_si_to_hi()]).
 #'   In particular, let `mu = MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei =
 #'   0)`, then (Default: `normal(mu, 3)` lower bounded by `.1`).
-#' @param logE3 `numeric` or [brms::brmsprior()]. Prior for the
+#' @param logE3 [brms::brmsprior()] or `numeric`. Prior for the
 #'   combined full response for treatment 1 and treatment 2. (Default:
 #'   `normal(log(0.25), 3)` lower bounded by 0).
-#' @param logalpha `numeric` or [brms::brmsprior()]. Prior for
+#' @param logalpha [brms::brmsprior()] or `numeric`. Prior for
 #'   the log synergistic potency. Where values greater than `1` are
 #'   synergistic, values less than `1` are antagonistic. (Default:
 #'   `normal(log(0), 0.5)`.

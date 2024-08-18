@@ -54,7 +54,8 @@ sigmoid_agonist_prior <- function(
     prepare_prior(prior = ec50, nlpar = "ec50"),
     prepare_prior(prior = hill, nlpar = "hill"),
     prepare_prior(prior = top, nlpar = "top"),
-    prepare_prior(prior = bottom, nlpar = "bottom"))
+    prepare_prior(prior = bottom, nlpar = "bottom"),
+    ...)
 }
 
 #' Create a Prior an Antagonist Sigmoid Model

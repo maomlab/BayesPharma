@@ -42,7 +42,8 @@ growth_sigmoid_prior <- function(
     prepare_prior(prior = K, nlpar = "K"),
     prepare_prior(prior = K0, nlpar = "K0"),
     prepare_prior(prior = rate, nlpar = "rate"),
-    prepare_prior(prior = lambda, nlpar = "lambda"))
+    prepare_prior(prior = lambda, nlpar = "lambda"),
+    ...)
 }
 
 #' Create a Prior for the Richards Growth Model
@@ -95,5 +96,6 @@ growth_richards_prior <- function(
     prepare_prior(prior = K0, nlpar = "K0"),
     prepare_prior(prior = rate, nlpar = "rate"),
     prepare_prior(prior = lambda, nlpar = "lambda"),
-    prepare_prior(prior = nu, nlpar = "nu"))
+    prepare_prior(prior = nu, nlpar = "nu"),
+    ...)
 }

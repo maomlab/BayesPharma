@@ -6,19 +6,22 @@
 #' is the rate, `beta=1`. The mean of gamma distributions is `alpha/beta` and
 #' the variance is `alpha/beta^2`.
 #'
-#' @param kcat prior for `kcat` parameter. Given a numeric value, it will be
-#'   used as a constant and not estimated.
-#' @param kM prior for `kM` parameter. Given a numeric value, it will be used as
-#'   a constant and not estimated.
+#' @param kcat [brms::brmsprior] or `numeric`. Prior for `kcat` parameter. Given
+#'   a numeric value, it will be used as a constant and not estimated.
+#' @param kM [brms::brmsprior] or `numeric`. Prior for `kM` parameter. Given a
+#'   numeric value, it will be used as a constant and not estimated.
+#' @param ... additional [brms::brmsprior()] objects.
 #'
 #' @seealso [tQ_model], [tQ_formula], [tQ_init], and [tQ_stanvar]
 #'
 #' @export
 tQ_prior <- function(
   kcat = brms::prior_string(prior = "gamma(4, 1)", lb = 0, nlpar = "kcat"),
-  kM = brms::prior_string(prior = "gamma(4, 1)", lb = 0, nlpar = "kM")) {
-
+  kM = brms::prior_string(prior = "gamma(4, 1)", lb = 0, nlpar = "kM"),
+  ...) {
+  
   c(
     prepare_prior(kcat, nlpar = "kcat"),
-    prepare_prior(kM, nlpar = "kM"))
+    prepare_prior(kM, nlpar = "kM"),
+    ...)
 }

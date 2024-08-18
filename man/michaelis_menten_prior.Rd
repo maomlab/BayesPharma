@@ -6,15 +6,17 @@
 \usage{
 michaelis_menten_prior(
   kcat = brms::prior_string(prior = "gamma(4, 1)", lb = 0, nlpar = "kcat"),
-  kM = brms::prior_string(prior = "gamma(4, 1)", lb = 0, nlpar = "kM")
+  kM = brms::prior_string(prior = "gamma(4, 1)", lb = 0, nlpar = "kM"),
+  ...
 )
 }
 \arguments{
-\item{kcat}{prior for \code{kcat} parameter. Given a numeric value, it will be
-used as a constant and not estimated.}
+\item{kcat}{\code{\link[brms:set_prior]{brms::brmsprior()}} or \code{numeric} for \code{kcat} parameter. Given a}
 
-\item{kM}{prior for \code{kM} parameter. Given a numeric value, it will be used as
-a constant and not estimated.}
+\item{kM}{\code{\link[brms:set_prior]{brms::brmsprior()}} \code{numeric} for \code{kM} parameter. Given a numeric
+value, it  will be used as a constant and not estimated.}
+
+\item{...}{additional \code{\link[brms:set_prior]{brms::brmsprior()}} objects.}
 }
 \description{
 For both the \code{kcat} and \code{kM} parameters, the default priors are

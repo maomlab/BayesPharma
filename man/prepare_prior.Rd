@@ -44,6 +44,7 @@ well specified.
     nlpar = "hill")
 
   # gives an assert error that nlpar is not set correctly
+
 }
 
 }
