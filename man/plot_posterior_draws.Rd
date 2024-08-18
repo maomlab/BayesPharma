@@ -17,7 +17,8 @@ plot_posterior_draws(
   n = 50,
   point_size = 0.75,
   jitter_height = 0,
-  jitter_width = 0
+  jitter_width = 0,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -62,6 +63,8 @@ the Y-axis of the plot.}
 points.}
 
 \item{jitter_width}{\code{numeric}. the width distance between overlapping points.}
+
+\item{verbose}{\code{logical} give verbose output}
 }
 \value{
 \link[ggplot2:ggplot]{ggplot2::ggplot} object.

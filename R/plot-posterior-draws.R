@@ -33,6 +33,7 @@
 #'   points.
 #' @param jitter_width `numeric`. the width distance between overlapping points.
 #' @param title character name for the plot
+#' @param verbose `logical` give verbose output
 #'
 #' @returns [ggplot2::ggplot] object.
 #'
@@ -69,7 +70,8 @@ plot_posterior_draws <- function(
   n = 50,
   point_size = 0.75,
   jitter_height = 0,
-  jitter_width = 0) {
+  jitter_width = 0,
+  verbose = FALSE) {
 
   if (!inherits(model, "bpfit")) {
     warning(paste0(
@@ -101,6 +103,12 @@ plot_posterior_draws <- function(
         treatment_variable, response_variable))) |>
       as.list() |>
       purrr::map(unique)
+    if (verbose) {
+      cat(
+        "N predictor values: ",
+        predictor_values |> purrr::map(length) |> paste0(collapse = " x "),
+        "\n", sep = "")
+    }
 
     # if the treatment range isn't given, then use the (finite) range of the
     # model data
@@ -128,6 +136,10 @@ plot_posterior_draws <- function(
       args = c(predictor_values, treatment_values))
   }
 
+  if (verbose) {
+    cat("Predicting data at ", nrow(newdata), " data points\n", sep = "")
+  }
+  
   predictor_names <- newdata |>
     names() |>
     purrr::keep(~. != treatment_variable)
@@ -140,6 +152,13 @@ plot_posterior_draws <- function(
   } else {
     facets_layer <- NULL
   }
+  
+  if (verbose) {
+    cat(
+      "Generating ", n, " hair for different epred draws from the posterior\n",
+      sep = "")
+  }
+  
   # this makes the "hair"
   ep_data <- model |>
     tidybayes::add_epred_draws(
@@ -149,6 +168,13 @@ plot_posterior_draws <- function(
       ndraws = n)
 
   # this makes the ribbon
+  if (verbose) {
+    cat(
+      "Generating ribbon predition quantiles from 200 draws ",
+      "from the posterior\n",
+      sep = "")
+  }
+  
   pp_data <- model |>
     tidybayes::add_predicted_draws(
       newdata = newdata,
