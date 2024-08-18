@@ -104,6 +104,7 @@ tQ_model <- function(
       data = data,
       prior = prior,
       ...),
+    algorithm = args$algorithm,
     chains = args$chains)
 
   model <- brms::brm(
@@ -126,7 +127,14 @@ tQ_model <- function(
 
   # this is needed e.g. for brms::loo_compare()
   if (expose_functions) {
-    brms::expose_functions(model, vectorize = TRUE)
+    tryCatch({
+      brms::expose_functions(model, vectorize = TRUE)
+    }, error = function(e) {
+      browser()
+      cat(
+        e$message, "\n",
+        "WARNING: Unable to expose functions\n")
+    })
   }
 
   class(model) <- c("bpfit", class(model))

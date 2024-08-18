@@ -177,13 +177,39 @@ eval_init_one_param <- function(param_init, param_name, sdata) {
 #'   it should be list having elements `K_<parameter_name>` for each parameter
 #'   in the model. Where the value of these elements is the dimension of the
 #'   parameter.
+#' @param algorithm `character` string naming the estimation approach to use.
+#'   see `brms::brm` for details. This is needed here because some algorithms
+#'   can be run in parallel from different initialization points, which affects
+#'   the dimension of the initial values if the `chains` parameter is NULL.
 #' @param chains `numeric` number of chains for which to initialize
 #' @returns `list` of `list` form of model initialization
 #'
 #' @export
-eval_init <- function(init, sdata = NULL, chains = 4) {
+eval_init <- function(
+    init,
+    sdata = NULL,
+    algorithm = "sampling",
+    chains = 4) {
+  
+  if (is.null(algorithm)) {
+    if (!is.null(options()$brms.algorithm)) {
+      algorithm <- options("brms.algorithm")
+    } else {
+      algorithm <- "sampling"
+    }
+  }
+  
   if (is.null(chains)) {
-    chains <- 4
+    if (algorithm %in% c("sampling", "pathfinder")) {
+      chains <- 4
+    } else if (algorithm %in% c("meanfield", "fullrank", "fixed_param")) {
+      chains <- 1
+    } else {
+      chains <- 1
+      warning(paste0(
+        "Unrecognized algorithm '", algorithm, "' in trying to ",
+        "number of chains to initialize"))
+    }
   }
   if (is.null(init) || is.numeric(init) || is.character(init)) {
     # not sure if cmdstanr can support this type of initialization or not...
@@ -247,6 +273,7 @@ eval_init <- function(init, sdata = NULL, chains = 4) {
 #'     nlpar = "hill")
 #'
 #'   # gives an assert error that nlpar is not set correctly
+#'
 #' }
 #'
 #' @returns [brms::brmsprior]

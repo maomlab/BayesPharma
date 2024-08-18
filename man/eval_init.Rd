@@ -4,7 +4,7 @@
 \alias{eval_init}
 \title{Evaluate an init}
 \usage{
-eval_init(init, sdata = NULL, chains = 4)
+eval_init(init, sdata = NULL, algorithm = "sampling", chains = 4)
 }
 \arguments{
 \item{init}{One of
@@ -19,6 +19,11 @@ either \code{array}, \code{numeric}, or a function returning a \code{numeric} va
 it should be list having elements \verb{K_<parameter_name>} for each parameter
 in the model. Where the value of these elements is the dimension of the
 parameter.}
+
+\item{algorithm}{\code{character} string naming the estimation approach to use.
+see \code{brms::brm} for details. This is needed here because some algorithms
+can be run in parallel from different initialization points, which affects
+the dimension of the initial values if the \code{chains} parameter is NULL.}
 
 \item{chains}{\code{numeric} number of chains for which to initialize}
 }

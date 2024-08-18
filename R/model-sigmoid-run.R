@@ -123,6 +123,7 @@ sigmoid_model <- function(
       data = data,
       prior = prior,
       ...),
+    algorithm = args$algorithm,
     chains = args$chains)
 
   model <- brms::brm(
