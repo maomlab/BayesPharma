@@ -13,9 +13,6 @@ vignette: >
 
 
 
-```
-## Error in library(tidyverse): there is no package called 'tidyverse'
-```
 
 
 
@@ -58,7 +55,7 @@ vignette: >
 ```
 
 ```
-## Timing stopped at: 3.325 0.073 3.451
+## Timing stopped at: 6.673 0.166 9.207
 ```
 
 

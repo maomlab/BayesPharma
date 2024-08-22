@@ -59,7 +59,7 @@ recommendations.](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendat
 
 \scriptsize
 
-```r
+``` r
 kor_prior <- BayesPharma::sigmoid_antagonist_prior(top = 100)
 kor_prior
 ##            prior class coef group resp dpar  nlpar   lb   ub source
@@ -84,7 +84,7 @@ function. We will use the default response distribution of the model
 
 \scriptsize
 
-```r
+``` r
 kor_sample_prior <- BayesPharma::sigmoid_model(
   data = kor_antag |> dplyr::select(substance_id, log_dose, response),
   formula = BayesPharma::sigmoid_antagonist_formula(),
@@ -98,7 +98,7 @@ And then plot of the prior predictive distributions:
 
 \scriptsize
 
-```r
+``` r
 kor_sample_prior |>
   BayesPharma::plot_density_distribution()
 ```
@@ -116,7 +116,7 @@ model convergence, using the default values of `ec50 = -9`, `hill = -1`,
 
 \scriptsize
 
-```r
+``` r
 kor_model <- BayesPharma::sigmoid_model(
   data = kor_antag |> dplyr::select(substance_id, log_dose, response),
   formula = BayesPharma::sigmoid_antagonist_formula(
@@ -156,18 +156,18 @@ being good for this type of model.
 ## 
 ## Regression Coefficients:
 ##                                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## ic50_substance_idBTRX_335140      -8.84      0.20    -9.21    -8.40 1.00    16238     8649
-## ic50_substance_idBTRX_395750      -8.24      0.43    -8.93    -7.35 1.00    11144     5226
-## ic50_substance_idJNJ              -9.15      0.32    -9.77    -8.49 1.00    18721    11109
-## ic50_substance_idPF               -6.16      1.09    -7.77    -3.37 1.00     7243     5400
-## hill_substance_idBTRX_335140      -1.46      0.60    -2.87    -0.57 1.00    15956     9588
-## hill_substance_idBTRX_395750      -0.90      0.52    -2.26    -0.26 1.00    11295     6558
-## hill_substance_idJNJ              -1.00      0.50    -2.32    -0.41 1.00    16994    12437
-## hill_substance_idPF               -0.31      0.25    -0.92    -0.03 1.00     7705     5527
-## bottom_substance_idBTRX_335140    -0.00      0.49    -0.97     0.95 1.00    20805    11601
-## bottom_substance_idBTRX_395750     0.02      0.51    -0.98     1.00 1.00    22354    12010
-## bottom_substance_idJNJ            -0.00      0.49    -0.98     0.97 1.00    21344    11981
-## bottom_substance_idPF              0.00      0.49    -0.98     0.97 1.00    20946    12246
+## ic50_substance_idBTRX_335140      -8.84      0.20    -9.20    -8.42 1.00    15027     8248
+## ic50_substance_idBTRX_395750      -8.24      0.41    -8.93    -7.36 1.00    11072     5925
+## ic50_substance_idJNJ              -9.15      0.31    -9.77    -8.50 1.00    15946    10770
+## ic50_substance_idPF               -6.14      1.08    -7.69    -3.32 1.00     7646     5332
+## hill_substance_idBTRX_335140      -1.47      0.59    -2.85    -0.57 1.00    14309     9824
+## hill_substance_idBTRX_395750      -0.91      0.52    -2.28    -0.26 1.00    10745     7238
+## hill_substance_idJNJ              -1.01      0.51    -2.38    -0.41 1.00    14567    11520
+## hill_substance_idPF               -0.31      0.24    -0.92    -0.03 1.00     7908     5627
+## bottom_substance_idBTRX_335140    -0.00      0.49    -0.96     0.95 1.00    17746    11293
+## bottom_substance_idBTRX_395750     0.01      0.50    -0.97     0.99 1.00    18472    10902
+## bottom_substance_idJNJ            -0.01      0.49    -0.99     0.96 1.00    17703    11821
+## bottom_substance_idPF              0.01      0.50    -0.97     0.99 1.00    16850    11426
 ## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA       NA       NA
 ## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA       NA       NA
 ## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA       NA       NA
@@ -175,7 +175,7 @@ being good for this type of model.
 ## 
 ## Further Distributional Parameters:
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma    32.18      2.87    27.12    38.37 1.00    16895    10965
+## sigma    32.17      2.90    27.13    38.38 1.00    14788    11389
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -191,7 +191,7 @@ converged.
 
 \scriptsize
 
-```r
+``` r
 kor_model |>
   bayesplot::mcmc_trace()
 ```
@@ -209,12 +209,10 @@ distribution of the prior and posterior produced by the model:
 
 \scriptsize
 
-```r
+``` r
 BayesPharma::plot_prior_posterior_densities(
   model = kor_model,
-  predictors_col_name = "substance_id",
-  half_max_label = "ic50",
-  title_label="")
+  title_label = "")
 ```
 
 <div class="figure" style="text-align: center">
@@ -230,18 +228,15 @@ intervals:
   
 \scriptsize
 
-```r
+``` r
 BayesPharma::plot_posterior_density(
-  kor_model, 
-  predictors_col_name = "substance_id", 
-  half_max_label = "ic50",
+  kor_model,
   title_label = "")
+## Error in `dplyr::filter()`:
+## ℹ In argument: `!...`.
+## Caused by error in `.data[[".variable"]]`:
+## ! Column `.variable` not found in `.data`.
 ```
-
-<div class="figure" style="text-align: center">
-<img src="apply_sigmoid_KOR_files/kor-model-posterior-densities-1.png" alt="KOR Antagonists, posterior distribution for each substance" width="100%" />
-<p class="caption">KOR Antagonists, posterior distribution for each substance</p>
-</div>
 \normalsize
 
 Displayed below is a plot of a sample of 100 sigmoid dose-response
@@ -250,7 +245,7 @@ quantile intervals:
 
 \scriptsize
 
-```r
+``` r
 BayesPharma::plot_posterior_draws(
   model = kor_model,
   title = "")
@@ -298,35 +293,35 @@ Re-fitting the model with the `kor_prior2` gives:
 ## 
 ## Regression Coefficients:
 ##                                Estimate Est.Error l-95% CI u-95% CI Rhat
-## ic50_substance_idBTRX_335140      -8.82      0.21    -9.22    -8.38 1.00
-## ic50_substance_idBTRX_395750      -8.58      0.31    -9.17    -7.96 1.00
-## ic50_substance_idJNJ              -8.95      0.31    -9.53    -8.31 1.00
-## ic50_substance_idPF               -8.18      0.44    -9.06    -7.33 1.00
-## hill_substance_idBTRX_335140      -1.19      0.36    -2.00    -0.57 1.00
+## ic50_substance_idBTRX_335140      -8.82      0.21    -9.23    -8.37 1.00
+## ic50_substance_idBTRX_395750      -8.58      0.31    -9.16    -7.94 1.00
+## ic50_substance_idJNJ              -8.95      0.31    -9.53    -8.32 1.00
+## ic50_substance_idPF               -8.18      0.45    -9.09    -7.30 1.00
+## hill_substance_idBTRX_335140      -1.19      0.37    -1.99    -0.57 1.00
 ## hill_substance_idBTRX_395750      -1.06      0.39    -1.90    -0.42 1.00
-## hill_substance_idJNJ              -0.86      0.34    -1.70    -0.39 1.00
-## hill_substance_idPF               -0.73      0.45    -1.74    -0.08 1.00
-## bottom_substance_idBTRX_335140     1.67     10.32   -19.03    21.74 1.00
-## bottom_substance_idBTRX_395750    15.50     11.24    -7.81    36.58 1.00
-## bottom_substance_idJNJ            -2.82      9.94   -23.63    15.50 1.00
-## bottom_substance_idPF             31.48     11.43     7.42    51.97 1.00
+## hill_substance_idJNJ              -0.85      0.33    -1.65    -0.39 1.00
+## hill_substance_idPF               -0.72      0.45    -1.72    -0.07 1.00
+## bottom_substance_idBTRX_335140     1.71     10.47   -19.21    21.94 1.00
+## bottom_substance_idBTRX_395750    15.44     11.10    -7.30    36.02 1.00
+## bottom_substance_idJNJ            -2.77      9.82   -23.22    15.35 1.00
+## bottom_substance_idPF             31.22     11.59     7.03    52.03 1.00
 ## top_substance_idBTRX_335140      100.00      0.00   100.00   100.00   NA
 ## top_substance_idBTRX_395750      100.00      0.00   100.00   100.00   NA
 ## top_substance_idJNJ              100.00      0.00   100.00   100.00   NA
 ## top_substance_idPF               100.00      0.00   100.00   100.00   NA
 ##                                Bulk_ESS Tail_ESS
-## ic50_substance_idBTRX_335140      11617    10443
-## ic50_substance_idBTRX_395750      11302    10768
-## ic50_substance_idJNJ              11345    10928
-## ic50_substance_idPF               12546    10945
-## hill_substance_idBTRX_335140      13618     9668
-## hill_substance_idBTRX_395750      12801     9637
-## hill_substance_idJNJ              12200    12108
-## hill_substance_idPF                9609     6137
-## bottom_substance_idBTRX_335140    12150    10842
-## bottom_substance_idBTRX_395750    11673    10173
-## bottom_substance_idJNJ             9911    10098
-## bottom_substance_idPF             10213     9564
+## ic50_substance_idBTRX_335140      13087    10643
+## ic50_substance_idBTRX_395750      12995    10960
+## ic50_substance_idJNJ              13299    11776
+## ic50_substance_idPF               13156    10947
+## hill_substance_idBTRX_335140      14798     9835
+## hill_substance_idBTRX_395750      13437     9765
+## hill_substance_idJNJ              13283    11670
+## hill_substance_idPF                8776     5539
+## bottom_substance_idBTRX_335140    14068    12061
+## bottom_substance_idBTRX_395750    12671    10835
+## bottom_substance_idJNJ            12510    10615
+## bottom_substance_idPF             10495    10156
 ## top_substance_idBTRX_335140          NA       NA
 ## top_substance_idBTRX_395750          NA       NA
 ## top_substance_idJNJ                  NA       NA
@@ -334,7 +329,7 @@ Re-fitting the model with the `kor_prior2` gives:
 ## 
 ## Further Distributional Parameters:
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma    31.87      2.81    26.92    37.98 1.00    13698    10989
+## sigma    31.86      2.83    26.91    37.99 1.00    14470    11441
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -361,12 +356,12 @@ the KOR antagonists shows that the model fits the data well.
 ## Computed from 16000 by 73 log-likelihood matrix.
 ## 
 ##          Estimate   SE
-## elpd_loo   -360.6  6.5
-## p_loo         7.0  1.1
-## looic       721.2 13.0
+## elpd_loo   -360.5  6.5
+## p_loo         6.9  1.1
+## looic       721.0 13.1
 ## ------
 ## MCSE of elpd_loo is 0.0.
-## MCSE and ESS estimates assume MCMC draws (r_eff in [0.3, 1.4]).
+## MCSE and ESS estimates assume MCMC draws (r_eff in [0.4, 1.4]).
 ## 
 ## All Pareto k estimates are good (k < 0.7).
 ## See help('pareto-k-diagnostic') for details.
@@ -385,7 +380,7 @@ significantly.
 ## No problematic observations found. Returning the original 'loo' object.
 ##            elpd_diff se_diff
 ## kor_model2  0.0       0.0   
-## kor_model  -1.1       1.2
+## kor_model  -0.9       1.2
 ```
 \normalsize
 
@@ -398,7 +393,7 @@ We will fix the top to `100` and fit the `ic50`, `hill`, and
 
 \scriptsize
 
-```r
+``` r
 drc_models <- kor_antag |>
   dplyr::group_by(substance_id) |>
   dplyr::group_nest() |>

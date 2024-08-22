@@ -1,10 +1,32 @@
 
-```{r setwd}
-setwd("vignettes_src/apply_tQ_model_Markin2021")
+
+Revealing enzyme functional architecture via high-throughput microfluidic enzyme kinetics
+
+```{r scales}
+
+scale_color_log10_substrate <- viridis::scale_color_viridis(
+  "Substrate Concentration (uM)",
+  labels = c(10, 100, 1000),
+  breaks = log10(c(10, 100, 1000)))
+
+scale_color_log10_enzyme <- viridis::scale_color_viridis(
+  "Enzyme Concentration",
+  labels = c(0.001, 0.1, 10),
+  breaks = log10(c(0.001, 0.1, 10)))
+
+scale_x_time <- ggplot2::scale_x_continuous(
+  "Time (s)")
+
+scale_y_log10_product_concentration <- ggplot2::scale_y_log10(
+  "Product Concentration")
+
+scale_xy_log10kcat_log10kM <- list(
+  ggplot2::scale_x_log10("Catalytic Constant kcat"),
+  ggplot2::scale_y_log10("Michaelis Constant kM"))
+
 
 ```
 
-Revealing enzyme functional architecture via high-throughput microfluidic enzyme kinetics
 
 # Introduction
 
@@ -17,16 +39,13 @@ superfamily that catalyzes phosphate ester substrates such as
 
 
 
-
 ## Data preparation
 The full 21.1 Gb dataset is hosted on Open Science Foundation Repository (DOI:
 10.17605/OSF.IO/QRN3C) at this url: https://osf.io/ez9xv/ under an MIT License.
-To access, login, and click the three dots icon on right, and then "Request
-Access".
 
 ```{r download-data}
 
-data_path_base <- "."
+data_path_base <- "vignettes_src/apply_tQ_model_Markin2021"
 
 # get the nodes from the main repo and select the data specific ones
 osfr:: osf_retrieve_node("ez9xv") |>
@@ -76,77 +95,567 @@ substrates, cMUP, MeP, MecMUP; titration of cofactors and assay conditions:
 Urea, Zinc, and pH; varying expression conditions; and sequence variants of the
 active site.
 
-
 ```{r parse-per-experiment-data-set}
 
-data <- readr::read_csv(
-  "cMUP_hydrolysis/Per-Experiment Data/180225_S2_d2_cMUP_1_ValScan.csv",
-  show_col_types = FALSE)
 
-z <- data |> dplyr::filter(dplyr::row_number() == 1)
+# Product concentrations are calibrated 
+normalize_product_concentration <- function(intensity, slope, intercept) {
+  (intensity - intercept) / slope
+}
 
 
+data <- list.files(
+  path = paste0(data_path_base, "/", "cMUP_hydrolysis/Per-Experiment\ Data"),
+  pattern = "*.csv.bz2",
+  full.names = TRUE) |>
+  purrr::map_dfr(.f = function(path) {
+    cat("Loading file: '", path, "'\n", sep = "")
+    
+    readr::read_csv(
+      file = path,
+      show_col_types = FALSE) |>
+      
+      # the time and product are packed into "{x1, x2, x3, ..., x15}"
+      # like strings, so strip off the "{}" and split each into it's own row
+      dplyr::mutate(
+        
+        # each time-series gets its own series index
+        series_index = dplyr::row_number(),
 
-z <- data |>
-  dplyr::mutate(well_index = dplyr::row_number()) |>
-  dplyr::rowwise() |>
-  dplyr::do({
-    row <- .
-    measurements <- tibble::tibble(
-      time = row$Times[1] |>
-        stringr::str_replace_all("[{}]", ""),
-      intensity_median = row$MedianIntensities[1] |>
-        stringr::str_replace_all("[{}]", "")) |>
+        Times = Times |>
+          stringr::str_replace_all("[{]|[}]", ""),
+        MedianIntensities = MedianIntensities |>
+          stringr::str_replace_all("[{]|[}]", "")) |>
       tidyr::separate_longer_delim(
-        cols = c(time, intensity_median),
+        cols = c(Times, MedianIntensities),
         delim = ", ") |>
       dplyr::mutate(
-        well_index = row$well_index[1],
-        global_experiment_index = row$GlobalExperimentIndex[1],
-        date = row$Date[1],
-        experiment = row$Experiment[1],
-        experiment_index = row$ExpIndex[1],
-        device = row$Device[1],
-        mutant_id = row$MutantID[1],
-        x = row$x[1],
-        y = row$y[1],
-        phosephate_sensor_conc = row$PhosphateSensorConc[1],
-        substrate_conc = row$SubstrateConc[1],
-        inhibitor_conc = row$InhibitorConcentration[1],
-        enzyme_conc = row$EnzymeConc[1],
-        time = time |> as.numeric(),
-        intensity_median = intensity_median |> as.numeric(),
-        fit_mm_kcat = row$fit_mm_kcat[1],
-        fit_mm_kcat_param_error = row$fit_kcat_param_error[1],
-        fit_mm_KM = row$fit_mm_KM[1],
-        fit_mm_KM_param_error = row$fit_mm_KM_param_error[1],
-        .before = 1)
+        # product concentration before and after normalization
+        intensity_median = ifelse(
+          MedianIntensities == "Missing[\"Nonexistent\"]",
+          NA, MedianIntensities),
+        intensity_median = as.numeric(intensity_median),
+        
+        std_curve_slope = ifelse(
+          StdCurveSlope == "Missing[\"Nonexistent\"]",
+          NA, StdCurveSlope),
+        std_curve_slope = as.numeric(std_curve_slope),
+        
+        std_curve_intercept = ifelse(
+          StdCurveSlope == "Missing[\"Nonexistent\"]",
+          NA, StdCurveIntercept),
+        std_curve_intercept = as.numeric(std_curve_intercept),
+                
+        fit_mm_kcat = ifelse(
+          fit_mm_kcat == "Missing[\"Nonexistent\"]",
+          NA, fit_mm_kcat),
+        fit_mm_kcat = as.numeric(fit_mm_kcat),
+        
+        fit_mm_KM = ifelse(
+          fit_mm_KM == "Missing[\"Nonexistent\"]",
+          NA, fit_mm_KM),
+        fit_mm_KM = as.numeric(fit_mm_KM),
+        
+        fit_mm_curved_r2 = ifelse(
+          fit_mm_curved_r2 == "Missing[\"Nonexistent\"]",
+          NA, fit_mm_curved_r2),
+        fit_mm_curved_r2 = as.numeric(fit_mm_curved_r2),
+        
+        fit_mm_scale_factor = ifelse(
+          fit_mm_scale_factor == "Missing[\"Nonexistent\"]",
+          NA, fit_mm_scale_factor),
+        fit_mm_scale_factor = as.numeric(fit_mm_scale_factor)) |>
+      dplyr::transmute(
+        # 7 experiments with names like '180225_S2_d2_cMUP_1'
+        global_experiment_index = GlobalExperimentIndex,
+        # This unpacks components of the GlobalExperimentIndex
+        #Date, Experiment, Setup, Device,
+        
+        series_index,
+        
+        # e.g. "WT" or "T77V"
+        mutant_id = MutantID,
+        
+        # coordinates of well on plate
+        x, y,
+        
+        # substrate concentration
+        substrate_concentration = SubstrateConc,
+        
+        # time point
+        time = as.numeric(Times),
+        
+        product_concentration = normalize_product_concentration(
+          intensity_median,
+          std_curve_slope,
+          std_curve_intercept),
+        
+        # for product_concentration_QC
+        #StdCurveRSquared,
+        
+        # enzyme concentration (what units? is it normalized?)
+        enzyme_concentration = EnzymeConc,
+        
+        # change units to make it consistent with Markin2021 kinetic modeling
+        enzyme_concentration = enzyme_concentration / 1000,
+        
+        # fit Michaelis Menten parameters, not sure what the scale factor is
+        # most have high r2 values
+        fit_mm_kcat = fit_mm_kcat,
+        fit_mm_KM = fit_mm_KM,
+        fit_mm_curved_r2 = fit_mm_curved_r2,
+        fit_mm_scale_factor = fit_mm_scale_factor)
+  })
+
+data_wt <- data |>
+  dplyr::filter(
+    mutant_id == "WT",
+    enzyme_concentration > 0)
+
+save(data_wt, file = "data_wt.Rdata")
+
+load("data_wt.Rdata")
+```
+
+```{r plot-wt-data}
+
+plot <- ggplot2::ggplot(
+  data = data_wt) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_line(
+    mapping = ggplot2::aes(
+      x = time,
+      y = log10(product_concentration),
+      color = log10(enzyme_concentration),
+      group = paste(x, y))) +
+  ggplot2::facet_grid(
+    cols = dplyr::vars(substrate_concentration),
+    rows = dplyr::vars(global_experiment_index)) +
+  scale_y_log10_product_concentration +
+  scale_x_time +
+  scale_color_log10_enzyme +
+  ggplot2::theme(legend.position = "bottom")
+
+
+ggplot2::ggsave(
+  filename = "/tmp/plot_wt_data.pdf",
+  width = 12,
+  height = 8)
+```
+
+
+```{r filter-for-example-data}
+
+example_data <- data_wt |>
+  dplyr::filter(
+    global_experiment_index == "180225_S2_d2_cMUP_1",
+    x == 19,
+    y == 19)
+
+example_data <- example_data |>
+  dplyr::group_by(substrate_concentration) |>
+  dplyr::do({
+    data <- .
+    
+    predicted <- BayesPharma::tQ_model_generate(
+      time = data$time,
+      ST = data$substrate_concentration[1],
+      ET = data$enzyme_concentration[1],
+      kcat = data$fit_mm_kcat[1],
+      kM = data$fit_mm_KM[1]) |>
+      as.data.frame() |>
+      dplyr::rename(P_pred = P)
+    
+    data |>
+      dplyr::left_join(predicted, by = "time")
   }) |>
   dplyr::ungroup()
 ```
 
 
-```{r plot-intensities}
+```{r plot-observed-vs-predicted}
 
-ggplot2::ggplot(
-  data = z |> dplyr::filter(
-    mutant_id == "WT")) +
+ggplot2::ggplot(data = example_data) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_abline(
+    xintercept = 0,
+    slope = 1,
+    color = "black",
+    alpha = 0.3,
+    linewidth = 1.2) +
+  ggplot2::geom_smooth(
+    mapping = ggplot2::aes(
+      x = P_pred,
+      y = product_concentration),
+    method = "lm",
+    formula = "y ~ x",
+    color = "blue",
+    linewidth = 1.2) +
+  ggplot2::geom_point(
+    mapping = ggplot2::aes(
+      x = P_pred,
+      y = product_concentration,
+      color = log10(substrate_concentration),
+      group = log10(substrate_concentration))) +
+  ggplot2::scale_x_log10(
+    "Predicted Product Concentration",
+    limits = c(1, 1000)) +
+  ggplot2::scale_y_log10(
+    "Observed Product Concentration",
+    limits = c(1, 1000)) +
+  ggplot2::coord_equal() +
+  ggplot2::ggtitle(
+    label = "Observed vs. Markin2021 Predicted Michael Menten Model Fit") +
+  scale_color_log10_substrate +
+  ggplot2::theme(legend.position = "bottom")
+
+
+ggplot2::ggplot(data = example_data) +
   ggplot2::theme_bw() +
   ggplot2::geom_line(
     mapping = ggplot2::aes(
       x = time,
-      y = intensity_median,
-      color = enzyme_conc,
-      group = well_index)) +
-  ggplot2::facet_wrap(
-    facets = dplyr::vars(substrate_conc))
+      y = P_pred,
+      color = log10(substrate_concentration),
+      group = log10(substrate_concentration))) +
+  ggplot2::geom_point(
+    mapping = ggplot2::aes(
+      x = time,
+      y = product_concentration,
+      color = log10(substrate_concentration))) +
+  scale_y_log10_product_concentration +
+  scale_color_log10_substrate +
+  ggplot2::theme(legend.position = "bottom")
+
 ```
+
+```{r fit-model-example-data}
+model_data <- example_data |>
+  dplyr::select(
+    series_index,
+    time,
+    ST = substrate_concentration,
+    ET = enzyme_concentration,
+    P = product_concentration) |>
+  dplyr::filter(time > 0)
+
+model_example <- BayesPharma::tQ_model(
+  data = model_data,
+  formula = BayesPharma::tQ_formula(),
+  prior = BayesPharma::tQ_prior(
+    # mean = 90, sd = 18
+    kcat = brms::prior(prior = gamma(450, 5), lb = 0, nlpar = "kcat"),
+    kM = brms::prior(prior = gamma(450, 5), lb = 0, nlpar = "kM"),
+    sigma = brms::prior(prior = student_t(3, 0, 2.5), class = "sigma")),
+  init = list(
+    b_kcat = \() runif(n = 1, 70, 110),
+    b_kM = \() runif(n = 1, 70, 110),
+    sigma = \() runif(n = 1, 0, 2)) |>
+    "class<-"("bpinit"),
+  cores = 8,
+  threads = 2,
+  control = NULL,
+  backend = "cmdstanr",
+  expose_functions = FALSE)
+```
+
+```{r expose-function}
+model_example_rstan <- BayesPharma::tQ_model(
+  data = model_data,
+  formula = BayesPharma::tQ_formula(),
+  prior = BayesPharma::tQ_prior(
+    # mean = 90, sd = 18
+    kcat = brms::prior(prior = gamma(450, 5), lb = 0, nlpar = "kcat"),
+    kM = brms::prior(prior = gamma(450, 5), lb = 0, nlpar = "kM"),
+    sigma = brms::prior(prior = student_t(3, 0, 2.5), class = "sigma")),
+  init = list(
+    b_kcat = \() runif(n = 1, 70, 110),
+    b_kM = \() runif(n = 1, 70, 110),
+    sigma = \() runif(n = 1, 0, 2)) |>
+    "class<-"("bpinit"),
+  chains = 0,
+  cores = 8,
+  threads = 2,
+  control = NULL,
+  expose_functions = FALSE)
+
+model_example_rstan |> brms::expose_functions()
+```
+
+```{r plot-prior-posterior}
+
+model_example |>
+  BayesPharma::plot_prior_posterior_densities()
+```
+
+
+```{r plot-prior-posterior-scatter}
+model <- model_wt_mcmc
+
+model_prior <- model |>
+  update(sample_prior = "only")
+
+draws_prior <- model_prior |>
+  tidybayes::tidy_draws() |>
+  tidybayes::gather_variables() |>
+  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|kM)")) |>
+  tidyr::separate_wider_regex(
+    cols = .variable,
+    patterns = c(
+      class = "b", "_",
+      kinetic_parameter = "[^_]+", "_globalID",
+      global_experiment_index = ".*$"))
+
+
+draws_posterior <- model |>
+  tidybayes::tidy_draws() |>
+  tidybayes::gather_variables() |>
+  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|kM)")) |>
+  tidyr::separate_wider_regex(
+    cols = .variable,
+    patterns = c(
+      class = "b", "_",
+      kinetic_parameter = "[^_]+", "_globalID",
+      global_experiment_index = ".*$"))
+
+
+draws_prior_pairs <- draws_prior |>
+  tidyr::pivot_wider(
+    id_cols = c(".chain", ".iteration", ".draw", "global_experiment_index"),
+    names_from = "kinetic_parameter",
+    values_from = ".value")
+
+draws_posterior_pairs <- draws_posterior |>
+  tidyr::pivot_wider(
+    id_cols = c(".chain", ".iteration", ".draw", "global_experiment_index"),
+    names_from = "kinetic_parameter",
+    values_from = ".value")
+
+ggplot2::ggplot() +
+  ggplot2::theme_bw() +
+    ggplot2::geom_point(
+      data = draws_prior_pairs,
+      mapping = ggplot2::aes(
+        x = kcat,
+        y = kM),
+      color = "lightblue",
+      size = .8,
+      shape = 16,
+      alpha = .3) +  
+    ggplot2::geom_point(
+      data = draws_posterior_pairs,
+      mapping = ggplot2::aes(
+        x = kcat,
+        y = kM),
+      color = "orange",
+      size = .8,
+      shape = 16,
+      alpha = .3) +
+  scale_xy_log10kcat_log10kM +
+  ggplot2::facet_wrap(facets = dplyr::vars(global_experiment_index))
+
+```
+
+```{r posterior-draws}
+model <- model_example
+
+
+newdata_levels <- model$data |>
+    dplyr::select(tidyselect::any_of(c("ET", "ST", "time"))) |>
+    as.list() |>
+    purrr::map(unique)
+newdata_levels$time = seq(1, 4000, 300)
+newdata <- do.call(tidyr::expand_grid, newdata_levels)
+
+# add series_index
+newdata <- newdata |>
+  dplyr::left_join(
+    newdata |>
+      dplyr::distinct(ET, ST) |>
+      dplyr::mutate(series_index = dplyr::row_number()),
+    by = c("ET", "ST"))
+
+pp_data <- model |>
+  tidybayes::add_predicted_draws(
+    newdata = newdata,
+    value = "P",
+    re_formula = NA,
+    ndraws = 200)  |>
+  ggdist:: median_qi(.width = c(.5, .8, .95))
+
+ggplot2::ggplot() +
+  ggplot2::theme_bw() +
+  ggplot2::theme(legend.position = "bottom") +
+  ggplot2::scale_fill_discrete(
+    "Median Quantile Interval",
+    labels = c("95%", "80%", "50%")) +
+  ggdist::geom_lineribbon(
+    data = pp_data,
+    mapping = ggplot2::aes(
+      x = .data[["time"]],
+      y = .data[["P"]],
+      ymin = .data[[".lower"]],
+      ymax = .data[[".upper"]],
+      color = log10(.data[["ST"]]),
+      group = .data[["ST"]]),
+    alpha = .15) +
+  ggplot2::geom_line(
+    data = model$data,
+    mapping = ggplot2::aes(
+      x = .data[["time"]],
+      y = .data[["P"]],
+      color = log10(.data[["ST"]]),
+      group = log10(.data[["ST"]])),
+    linewidth = 0.3,
+    alpha = 1) +
+  ggplot2::geom_point(
+    data = model$data,
+    mapping = ggplot2::aes(
+      x = .data[["time"]],
+      y = .data[["P"]],
+      color = log10(.data[["ST"]])),
+    size = 1.5,
+    alpha = 1) +
+  ggplot2::labs(title = "Predicted tQ Enzyme Progress Curve") +
+  scale_color_log10_substrate +
+  ggplot2::scale_y_continuous("Product Concentration") +
+  ggplot2::scale_x_continuous("Time (s)")
+
+ggplot2::ggsave(
+  filename = "/tmp/model_example_posterior_draws.pdf",
+  width = 5,
+  height = 5,
+  useDingbats = FALSE)
+
+```
+
 ```{r model-wt}
-model <- BayesPharma::tQ_model
+model_data <- data_wt |>
+  dplyr::select(
+    globalID = global_experiment_index,
+    x, y,
+    series_index,
+    time,
+    ST = substrate_concentration,
+    ET = enzyme_concentration,
+    P = product_concentration) |>
+  dplyr::filter(time > 0) |>
+  dplyr::arrange(series_index, time)
+
+model_wt_mcmc <- BayesPharma::tQ_model(
+  data = model_data,
+  formula = BayesPharma::tQ_formula(
+    predictors = 0 + globalID),
+  prior = BayesPharma::tQ_prior(
+    # mean = 90, sd = 18
+    kcat = brms::prior(prior = gamma(300, 3), lb = 0, nlpar = "kcat"),
+    kM = brms::prior(prior = gamma(160, 2), lb = 0, nlpar = "kM"),
+    sigma = brms::prior(prior = student_t(10, 0, 10), class = "sigma")),
+  init = list(
+    b_kcat = \() runif(n = 1, 80, 120),
+    b_kM = \() runif(n = 1, 60, 100),
+    sigma = \() runif(n = 1, 0, 2)) |>
+    "class<-"("bpinit"),
+  cores = 8,
+  threads = 2,
+  control = NULL,
+  backend = "cmdstanr",
+  expose_functions = FALSE)
+
+save(model_wt_mcmc, file = "model_wt_mcmc.Rdata")
+
+
+model_wt_mcmc_wide <- BayesPharma::tQ_model(
+  data = model_data,
+  formula = BayesPharma::tQ_formula(
+    predictors = 0 + globalID),
+  prior = BayesPharma::tQ_prior(
+    # mean = 90, sd = 18
+    kcat = brms::prior(prior = gamma(240, 2), lb = 0, nlpar = "kcat"),
+    kM = brms::prior(prior = gamma(100, 1.25), lb = 0, nlpar = "kM"),
+    sigma = brms::prior(prior = student_t(10, 0, 40), class = "sigma")),
+  init = list(
+    b_kcat = \() runif(n = 1, 100, 140),
+    b_kM = \() runif(n = 1, 60, 100),
+    sigma = \() runif(n = 1, 0, 20)) |>
+    "class<-"("bpinit"),
+  cores = 8,
+  threads = 2,
+  control = NULL,
+  backend = "cmdstanr",
+  expose_functions = FALSE)
+
+save(model_wt_mcmc_wide, file = "model_wt_mcmc_wide.Rdata")
+
 ```
 
 
+```{r compare-bayes-Markin2021}
+fit_summary <- model_wt_mcmc |>
+  posterior::summarise_draws() |>
+  dplyr::filter(variable |> stringr::str_detect("b_")) |>
+  dplyr::select(variable, mean, median, q5, q95) |>
+  tidyr::pivot_longer(
+    cols = c(-"variable"),
+    names_to = "measurement") |>
+  dplyr::mutate(
+    global_experiment_index = variable |>
+      stringr::str_extract("globalID(.*)$", group = 1),
+    kinetic_parameter_measurement = paste0(
+      "bayes_",
+      variable |> stringr::str_extract("b_([^_]+)", group = 1), "_",
+      measurement)) |>
+  dplyr::select(-variable, -measurement) |>
+  tidyr::pivot_wider(
+    id_cols = global_experiment_index,
+    names_from = kinetic_parameter_measurement,
+    values_from = value)
 
+fit_summary <- fit_summary |>
+  dplyr::left_join(
+    data_wt |>
+      dplyr::group_by(global_experiment_index) |>
+      dplyr::summarize(
+        Markin2021_kcat_mean = mean(fit_mm_kcat),
+        Markin2021_kcat_median = median(fit_mm_kcat),
+        Markin2021_kcat_q5 = quantile(fit_mm_kcat, probs = c(0.05))[[1]],
+        Markin2021_kcat_q95 = quantile(fit_mm_kcat, probs = c(0.95))[[1]],
+        Markin2021_kM_mean = mean(fit_mm_KM),
+        Markin2021_kM_median = median(fit_mm_KM),
+        Markin2021_kM_q5 = quantile(fit_mm_KM, probs = c(0.05))[[1]],
+        Markin2021_kM_q95 = quantile(fit_mm_KM, probs = c(0.95))[[1]],
+        .groups = "drop"),
+    by = "global_experiment_index")
+
+```
+
+```{r plot-fit-summary}
+
+ggplot2::ggplot(data = fit_summary) +
+  ggplot2::theme_bw() +
+  ggplot2::coord_equal() +
+  ggplot2::geom_point(
+    data = draws_prior_pairs,
+    mapping = ggplot2::aes(
+      x = kcat,
+      y = kM),
+    color = "lightblue",
+    size = .8,
+    shape = 16,
+    alpha = .1) + 
+  ggplot2::geom_point(
+    mapping = ggplot2::aes(
+      x = Markin2021_kcat_mean,
+      y = Markin2021_kM_mean),
+    color = "blue") +
+  ggplot2::geom_point(
+    mapping = ggplot2::aes(
+      x = bayes_kcat_mean,
+      y = bayes_kM_mean),
+    color = "orange") +
+  scale_xy_log10kcat_log10kM
+
+```
 
 
 ## References:

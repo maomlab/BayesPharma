@@ -13,9 +13,6 @@ vignette: >
 
 
 
-```
-## Error in library(tidyverse): there is no package called 'tidyverse'
-```
 ## Enzyme Kinetic Modeling
 Enzymes are proteins that catalyze chemical reactions. Not only do they
 facilitate producing virtual all biological matter, but they are crucial for
@@ -98,7 +95,7 @@ Using the `deSolve` package we can simulate data following the total QSSA model.
 Measurements are made with random Gaussian noise with mean `0` and variance of
 `0.5`.
 
-```r
+``` r
 tQ_model_generate <- function(time, kcat, kM, ET, ST){
   ode_tQ <- function(time, Pt, theta){
     list(c(theta[1] * (
@@ -123,13 +120,13 @@ head(data_single)
 ```
 
 ```
-##   time    P_true         P ST ET
-## 1 0.00 0.0000000 0.1223538 10 10
-## 2 0.05 0.7311578 0.6060729 10 10
-## 3 0.10 1.4243598 2.0420722 10 10
-## 4 0.15 2.0794197 2.3973591 10 10
-## 5 0.20 2.6964485 2.1516463 10 10
-## 6 0.25 3.2758537 3.3034788 10 10
+##   time    P_true           P ST ET
+## 1 0.00 0.0000000 -0.08982865 10 10
+## 2 0.05 0.7311578  1.34853281 10 10
+## 3 0.10 1.4243598  1.43308014 10 10
+## 4 0.15 2.0794197  1.73661838 10 10
+## 5 0.20 2.6964485  2.78619356 10 10
+## 6 0.25 3.2758537  3.17795634 10 10
 ```
 To visualize, the true enzyme progress curve is shown in
 <span style="color:blue">blue</span>, and the enzyme progress curve fit to the
@@ -163,7 +160,7 @@ time-points, parameters and user defied data. Finally we, extract the vector of
 sampled vector of product concentrations which we return.
 
 
-```r
+``` r
 stanvars_tQ_ode <- brms::stanvar(scode = paste("
 vector tQ_ode(
    real time,
@@ -186,7 +183,7 @@ block = "functions")
 ```
 
 
-```r
+``` r
 stanvars_tQ_single <- brms::stanvar(scode = paste("
 vector tQ_single(
   data vector time,
@@ -227,7 +224,7 @@ initialize each chain at the prior mean and use `cmdstanr` version 2.29.2 as the
 backend, and use the default warmup of `1000`
 
 
-```r
+``` r
 brms_params <- list(
   cores = 4,
   seed = 52L,
@@ -236,7 +233,7 @@ brms_params <- list(
 
 
 
-```r
+``` r
 model_single <- do.call(what = brms::brm, args = c(list(
   formula = brms::brmsformula(
     P ~ tQ_single(time, kcat, kM, ET, ST),
@@ -255,26 +252,24 @@ model_single <- do.call(what = brms::brm, args = c(list(
 ```
 
 ```
-## Warning in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-141037b56c0ad.stan', line 34, column 2: Declaration
-##     of arrays by placing brackets after a variable name is deprecated and
-##     will be removed in Stan 2.33.0. Instead use the array keyword before the
-##     type. This can be changed automatically using the auto-format flag to
-##     stanc
+## Syntax error in '/var/folders/7z/yfz7cw1d0gs8lf1mzdgkv1pw0000gn/T/RtmpsyOm66/model-14253748bb373.stan', line 34, column 18 to column 19, parsing error:
+##    -------------------------------------------------
+##     32:    int M = dims(time)[1];
+##     33:  
+##     34:    vector[1] P_ode[M] = ode_bdf(     // Function signature:
+##                            ^
+##     35:      tQ_ode,                         // function ode
+##     36:      initial_state,                  // vector initial_state
+##    -------------------------------------------------
+## 
+## ";" expected after variable declaration.
+## It looks like you are trying to use the old array syntax.
+## Please use the new syntax:
+## array[M] vector[1] P_ode;
 ```
 
 ```
-## error: PCH file uses an older PCH format that is no longer supported
-```
-
-```
-## Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
-## If your model failed to compile please run rebuild_cmdstan().
-## If the issue persists please open a bug report.
-```
-
-```
-## 1 error generated.
-## make[1]: *** [/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-141037b56c0ad] Error 1
+## make[1]: *** [/var/folders/7z/yfz7cw1d0gs8lf1mzdgkv1pw0000gn/T/RtmpsyOm66/model-14253748bb373.hpp] Error 1
 ```
 
 ```
@@ -292,7 +287,7 @@ To visualize the posterior distribution vs. the prior distribution, we first
 sample from the prior, using the same `brms::brm` call with
 `sample_prior = "only"` the argument.
 
-```r
+``` r
 model_single_prior <- do.call(what = brms::brm, args = c(list(
   formula = brms::brmsformula(
     P ~ tQ_single(time, kcat, kM, ET, ST),
@@ -312,29 +307,24 @@ model_single_prior <- do.call(what = brms::brm, args = c(list(
 ```
 
 ```
-## Warning in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-1410319141a6d.stan', line 34, column 2: Declaration
-##     of arrays by placing brackets after a variable name is deprecated and
-##     will be removed in Stan 2.33.0. Instead use the array keyword before the
-##     type. This can be changed automatically using the auto-format flag to
-##     stanc
+## Syntax error in '/var/folders/7z/yfz7cw1d0gs8lf1mzdgkv1pw0000gn/T/RtmpsyOm66/model-142534112e1ed.stan', line 34, column 18 to column 19, parsing error:
+##    -------------------------------------------------
+##     32:    int M = dims(time)[1];
+##     33:  
+##     34:    vector[1] P_ode[M] = ode_bdf(     // Function signature:
+##                            ^
+##     35:      tQ_ode,                         // function ode
+##     36:      initial_state,                  // vector initial_state
+##    -------------------------------------------------
+## 
+## ";" expected after variable declaration.
+## It looks like you are trying to use the old array syntax.
+## Please use the new syntax:
+## array[M] vector[1] P_ode;
 ```
 
 ```
-## error: PCH file uses an older PCH format that is no longer supported
-```
-
-```
-## Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
-## If your model failed to compile please run rebuild_cmdstan().
-## If the issue persists please open a bug report.
-```
-
-```
-## 1 error generated.
-```
-
-```
-## make[1]: *** [/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-1410319141a6d] Error 1
+## make[1]: *** [/var/folders/7z/yfz7cw1d0gs8lf1mzdgkv1pw0000gn/T/RtmpsyOm66/model-142534112e1ed.hpp] Error 1
 ```
 
 ```
@@ -383,7 +373,7 @@ concentrations based on multiple replicas, or varying substrate/enzyme
 concentrations using BRMS. To demonstrate, we varying the enzyme and substrate
 concentrations, to better fit the kinematic parameters.
 
-```r
+``` r
 data_multiple <- tidyr::expand_grid(
   kcat = 3,
   kM =  5,
@@ -413,7 +403,7 @@ data_multiple <- tidyr::expand_grid(
 </div>
 
 
-```r
+``` r
 stanvars_tQ_multiple <- brms::stanvar(scode = paste("
 vector tQ_multiple(
   array[] int replica,
@@ -446,7 +436,7 @@ block = "functions")
 ```
 
 
-```r
+``` r
 model_multiple <- do.call(what = brms::brm, args = c(list(
   formula = brms::brmsformula(
     P ~ tQ_multiple(observation_index, time, kcat, kM, ET, ST),
@@ -466,36 +456,31 @@ model_multiple <- do.call(what = brms::brm, args = c(list(
 ```
 
 ```
-## Warning in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-141033d27a17.stan', line 34, column 2: Declaration
-##     of arrays by placing brackets after a variable name is deprecated and
-##     will be removed in Stan 2.33.0. Instead use the array keyword before the
-##     type. This can be changed automatically using the auto-format flag to
-##     stanc
+## Syntax error in '/var/folders/7z/yfz7cw1d0gs8lf1mzdgkv1pw0000gn/T/RtmpsyOm66/model-142532f07ca55.stan', line 34, column 18 to column 19, parsing error:
+##    -------------------------------------------------
+##     32:    int M = dims(time)[1];
+##     33:  
+##     34:    vector[1] P_ode[M] = ode_bdf(     // Function signature:
+##                            ^
+##     35:      tQ_ode,                         // function ode
+##     36:      initial_state,                  // vector initial_state
+##    -------------------------------------------------
+## 
+## ";" expected after variable declaration.
+## It looks like you are trying to use the old array syntax.
+## Please use the new syntax:
+## array[M] vector[1] P_ode;
 ```
 
 ```
-## error: PCH file uses an older PCH format that is no longer supported
-```
-
-```
-## Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.
-## If your model failed to compile please run rebuild_cmdstan().
-## If the issue persists please open a bug report.
-```
-
-```
-## 1 error generated.
-```
-
-```
-## make[1]: *** [/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-141033d27a17] Error 1
+## make[1]: *** [/var/folders/7z/yfz7cw1d0gs8lf1mzdgkv1pw0000gn/T/RtmpsyOm66/model-142532f07ca55.hpp] Error 1
 ```
 
 ```
 ## Error: An error occured during compilation! See the message above for more information.
 ```
 
-```r
+``` r
 model_multiple
 ```
 

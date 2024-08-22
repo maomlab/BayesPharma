@@ -133,12 +133,7 @@ set.seed(0)
 
 ## Case Studies
 
-In this section, we will consider several models as case studies: the sigmoidal
-hill model in @sec-hill, the MuSyC synergy model in @sec-MuSyC}, and the
-Michaelis-Menten enzyme progress curve in @sec-michaelis_menten}. For each, we
-will implement it, apply it to example data by fitting different models, and
-compare the models based on their fit of the data and inferences that can be
-made.
+In this section, we will consider several models as case studies: the sigmoidal hill model in @sec-hill, the MuSyC synergy model in @sec-MuSyC}, and the Michaelis-Menten enzyme progress curve in @sec-michaelis_menten}. For each, we will implement it, apply it to example data by fitting different models, and compare the models based on their fit of the data and inferences that can be made.
 
 {{< include sections/case_study_hill.qmd >}}
 
@@ -149,9 +144,5 @@ made.
 {{< include sections/case_study_negbinom.qmd >}}
 
 ## Conclusion
-The `BayesPharma` package aims to make Bayesian modeling for pharmacology more
-accessible. To do this, it makes easy to use interfaces for foundational
-dose-response type models. By building on the powerful Stan/BRMS framework,
-BayesPharma can be light-weight and adaptable to more advanced use cases while
-being computationally efficient and powerful. 
 
+The `BayesPharma` package aims to make Bayesian modeling for pharmacology more accessible. To do this, it makes easy to use interfaces for foundational dose-response type models. By building on the powerful Stan/BRMS framework, BayesPharma can be light-weight and adaptable to more advanced use cases while being computationally efficient and powerful.

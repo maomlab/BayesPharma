@@ -15,7 +15,7 @@ vignette: >
 
 
 ```
-## here() starts at /Users/maom/opt/BayesPharma
+## here() starts at /Users/maom/opt/bayespharma
 ```
 
 ```
@@ -62,7 +62,7 @@ Tidymodels is a platform for running and analyzing models in R. This vignette
 demonstrates how to use the BayesPharma models with Tidy Models.
 
 
-```r
+``` r
 load(here::here("data", "kor_antag.rda"))
 kor_antag <- kor_antag |> dplyr::transmute(
   substance_id = Drug,
@@ -73,7 +73,7 @@ kor_antag <- kor_antag |> dplyr::transmute(
 
 Define a recipe and assign roles to different columns
 
-```r
+``` r
 kor_recipe <- kor_antag |>
   recipes::recipe() |>
   recipes::update_role(response, new_role = "outcome") |>
@@ -83,7 +83,7 @@ kor_recipe <- kor_antag |>
 
 Define the model using the \code{bayesian} wrapper package for Tidymodels.
 
-```r
+``` r
 kor_model <- bayesian::bayesian(
   cores = 4,
   chains = 4,
@@ -103,7 +103,7 @@ kor_model <- bayesian::bayesian(
 
 Build and run the workflow by adding the recipe and model and then running fit.
 
-```r
+``` r
 kor_workflow <- workflows::workflow() |>
   workflows::add_recipe(kor_recipe) |>
   workflows::add_model(spec = kor_model) |>
@@ -112,36 +112,6 @@ kor_workflow <- workflows::workflow() |>
 
 ```
 ## Compiling Stan program...
-```
-
-```
-## Trying to compile a simple C file
-```
-
-```
-## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c
-## using C compiler: ‘Apple clang version 15.0.0 (clang-1500.3.9.4)’
-## using SDK: ‘’
-## clang -arch x86_64 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/opt/R/x86_64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c foo.c -o foo.o
-## In file included from <built-in>:1:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:88:
-## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name 'namespace'
-## namespace Eigen {
-## ^
-## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected ';' after top level declarator
-## namespace Eigen {
-##                ^
-##                ;
-## In file included from <built-in>:1:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
-## In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Dense:1:
-## /Library/Frameworks/R.framework/Versions/4.2/Resources/miworkspace-library/RcppEigen/include/Eigen/Core:96:10: fatal error: 'complex' file not found
-## #include <complex>
-##          ^~~~~~~~~
-## 3 errors generated.
-## make[1]: *** [foo.o] Error 1
 ```
 
 ```
@@ -171,19 +141,19 @@ kor_workflow <- workflows::workflow() |>
 ## Stan model 'anon_model' does not contain samples.
 ```
 
-```r
+``` r
 kor_workflow
 ```
 
 ```
-## ══ Workflow [trained] ════════════════════════════════════════════════════════════════════════════════════════════════════════════
+## ══ Workflow [trained] ════════════════════════════════════════════════════════════════════════════════════════════════
 ## Preprocessor: Recipe
 ## Model: bayesian()
 ## 
-## ── Preprocessor ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Preprocessor ──────────────────────────────────────────────────────────────────────────────────────────────────────
 ## 0 Recipe Steps
 ## 
-## ── Model ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Model ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ##  Family: gaussian 
 ##   Links: mu = identity; sigma = identity 
 ## Formula: ..y ~ sigmoid(ic50, hill, top, bottom, log_dose) 

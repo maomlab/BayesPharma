@@ -35,6 +35,19 @@ library(GeomIndicator)
 suppressWarnings(suppressMessages(library(tidybayes)))
 ```
 
+Chondroitinase ABC (ChABC) is a bacterial enzyme that degrades several types of
+proteoglycans. While natively, it is secreted to digest host tissue to
+facilitate nutrient acquisition, it has been repurposed as a tool for glycomics
+and as a therapeutic to treat scar formation, such post-stroke recovery. A
+limitation of the widely used ChABC Proteus vulgaris for use in biotechnology
+and medicine is that it is unstable and has a short half life. To overcome this,
+several groups have tried to stabilize ChABC while maintaining or improving
+enzyme efficiency. For example, in (Hettiaratchi, et al., 2020), they used
+Protein One Stop Shop (PROSS) to generate 3 designs ranging from XX-YY number of
+mutations and measured the enzyme efficiency of the enzyme to break down the
+substrate Chondroitan A.
+
+
 
 ```{r read-data}
 #| echo=FALSE
@@ -59,6 +72,7 @@ data <- tibble::tibble(
           .before = 1)
   }) |>
   dplyr::ungroup()
+
 names(data)[seq(4, 16, by = 3)] <- paste0(
   data[1,2:16] |> as.character() |> na.omit(), "_1")
 names(data)[seq(5, 17, by = 3)] <- paste0(
@@ -67,6 +81,7 @@ names(data)[seq(6, 18, by = 3)] <- paste0(
   data[1,2:16] |> as.character() |> na.omit(), "_3")
 names(data)[2] <- "time_s"
 names(data)[3] <- "temperature_C"
+
 data <- data |>
   dplyr::filter(
     !is.na(time_s),
@@ -83,9 +98,10 @@ data <- data |>
     replica = as.factor(replica),
     time_s = as.numeric(time_s),
     temperature_C = as.numeric(temperature_C),
-    product_concentration = dplyr::case_when(
-      product_concentration == "OVER" ~ NA_real_,
-      TRUE ~ as.numeric(product_concentration)))
+    product_concentration = ifelse(
+      product_concentration == "OVER",
+      NA, product_concentration),
+    product_concentration = as.numeric(product_concentration))
 
 baseline <- data |>
   dplyr::filter(treatment == "Blank") |>
@@ -105,12 +121,16 @@ data <- data |>
 
 
 ```{r plot-data}
-ggplot2::ggplot(data = data |> dplyr::filter(treatment != "Blank")) + 
+ggplot2::ggplot(
+  data = data |>
+    dplyr::filter(
+      treatment != "Blank",
+      !is.na(product_concentration))) + 
   ggplot2::theme_bw() +
   ggplot2::geom_line(
     mapping = ggplot2::aes(
       x = time_s,
-      y = product_concentration * 0.93,
+      y = normalized_product_concentration,
       color = log(substrate_concentration_mg_ml),
       group = paste0(substrate_concentration_mg_ml, "_", replica))) +
   ggplot2::geom_smooth(
@@ -120,7 +140,7 @@ ggplot2::ggplot(data = data |> dplyr::filter(treatment != "Blank")) +
         time_s <= 200),
     mapping = ggplot2::aes(
       x = time_s,
-      y = product_concentration * 0.7,
+      y = normalized_product_concentration,
       group = paste0(substrate_concentration_mg_ml, "_", replica)),
     method = "lm",
     formula = y ~ x,
@@ -130,12 +150,12 @@ ggplot2::ggplot(data = data |> dplyr::filter(treatment != "Blank")) +
     nrow = 1) +
   ggplot2::theme(legend.position = "bottom") +
   ggplot2::scale_color_continuous(
-    "Substrate mg/ml:",
+    "Substrate mg/ml",
     breaks = log(c(0.5, 1, 2.5, 5, 10, 15)),
     labels = c("0.5", "1", "2.5", "5", "10", "15")) +
   ggplot2::scale_x_continuous("Time (s)") +
   ggplot2::scale_y_continuous(
-    "Product mg/ml:",
+    "Product mg/ml",
     breaks = c(0.5, 1, 2.5, 5, 10, 15),
     labels = c("0.5", "1", "2.5", "5", "10", "15")) 
 
@@ -150,7 +170,7 @@ data_simulate <- tidyr::expand_grid(
   dplyr::rowwise() |>
   dplyr::do({
     data <- .
-    time <- seq(0, 1200, by=20)
+    time <- seq(0, 1200, by = 20)
     data <- data.frame(data,
       time = time,
       P = BayesPharma::tQ_model_generate(
@@ -185,23 +205,18 @@ ggplot2::ggplot(data = data_simulate) +
 ```
 
 ```{r model-tQ}
-z <- data |>
-  dplyr::filter(treatment |> stringr::str_detect("^D")) |>
+model_data <- data |>
   dplyr::arrange(
     treatment,
     substrate_concentration_mg_ml,
     replica,
     time_s)
 
-z <- z |>
+model_data <- model_data |>
   dplyr::left_join(
-    z |>
-      dplyr::distinct(
-        treatment,
-        substrate_concentration_mg_ml,
-        replica) |>
-      dplyr::mutate(
-        series_index = dplyr::row_number()),
+    model_data |>
+      dplyr::distinct(treatment, substrate_concentration_mg_ml, replica) |>
+      dplyr::mutate(series_index = dplyr::row_number()),
     by = c("treatment", "substrate_concentration_mg_ml", "replica")) |>
   dplyr::filter(time_s > 0) |>
   dplyr::filter(!is.na(normalized_product_concentration)) |>
@@ -213,77 +228,121 @@ z <- z |>
     P = product_concentration,
     time = time_s)
 
-# model <- brms::brm(
-#     data = z,
-#     formula = brms::brmsformula(
-#       P ~ baseline + scale * prod,
-#       brms::nlf(
-#         prod ~ tQ_multiple(series_index, time, kcat, kM, ET, ST),
-#         loop = FALSE),
-#       kcat + kM ~ 0 + treatment,
-#       baseline + scale ~ 1,
-#       nl = TRUE),
-#     prior = c(
-#       brms::prior(prior = gamma(0.25, 0.01), lb = 0, nlpar = "kcat"),
-#       brms::prior(prior = gamma(6, 0.01), lb = 0, nlpar = "kM"),
-#       brms::prior(prior = normal(0, 3), nlpar = "baseline"),
-#       brms::prior(prior = normal(1, 3), nlpar = "scale")),
-#     init = function() list(
-#       kcat = 250,
-#       kM = 6000,
-#       baseline = 0,
-#       scale = 1),
-#     iter = 4000,
-#     cores = 4,
-#     seed = 52L,
-#     backend = 'cmdstanr',
-#     stanvars = BayesPharma::tQ_stanvar(),
-#     algorithm = "meanfield")
+model_data <- model_data |>
+  dplyr::filter(treatment != "Blank")
+
+model_aa <- BayesPharma::tQ_model(
+  data = model_data,
+  formula = BayesPharma::tQ_formula(predictors = 0 + treatment),
+  prior = BayesPharma::tQ_prior(
+    kcat = brms::prior(prior = gamma(1, 200), lb = 0, nlpar = "kcat"),
+    kM = brms::prior(prior = gamma(2, 0.2), lb = 0, nlpar = "kM")),
+  init = BayesPharma::tQ_init(
+    kcat = \() runif(n = 1, 0.001, 0.1),
+    kM = \() runif(n = 1, 1, 20),
+    sigma = \() runif(n = 1, 0, 2)),
+  cores = 8,
+  threads = 2,
+  control = NULL,
+  backend="cmdstanr",
+  expose_functions = FALSE)
 
 
-model <- BayesPharma::tQ_model(
-    data = z |>
-      dplyr::filter(treatment == "D14-14"),
-    #formula = tQ_formula(),
-    #prior = tQ_prior(
-    #  kcat = brms::prior(prior = gamma(2, 1), lb = 0, nlpar = "kcat"),
-    #  kM = brms::prior(prior = gamma(1000, 1), lb = 0, nlpar = "kM")),
-    formula = brms::brmsformula(
-      P ~ tQ_multiple(series_index, time, kcat, 10^logkM, ET, ST),
-      kcat ~ 1,
-      logkM ~ 1,
-      nl = TRUE,
-      loop = FALSE),
-    prior = c(
-        brms::prior(prior = gamma(2, 10), lb = 0, nlpar = "kcat"),
-        brms::prior(prior = normal(2, 1), nlpar = "logkM")),
-    init = function() list(b_kcat = 0.2, b_logkM = 2),
-    iter = 8000,
-    control = NULL,
-    algorithm = "meanfield")
+
+# trainable offset paramter
+model_formula <- brms::brmsformula(
+    P ~ tQ_multiple(series_index, time + offset, kcat, kM, ET, ST),
+    kcat + kM ~ 0 + treatment,
+    offset ~ 1,
+    nl = TRUE,
+    loop = FALSE)
+model_formula$bayes_pharma_info <- list(
+    formula_type = "tQ",
+    series_index_variable = "series_index",
+    treatment_variable = "time",
+    treatment_units = "seconds",
+    ET_variable = "ET",
+    ET_units = "mg/ml",
+    ST_variable = "ST",
+    ST_units = "mg/ml",
+    response_variable = "P",
+    response_units = "mg/ml")
+
+
+model_offset <- BayesPharma::tQ_model(
+  data = model_data,
+  formula = model_formula,
+  prior = BayesPharma::tQ_prior(
+    kcat = brms::prior(prior = gamma(1, 200), lb = 0, nlpar = "kcat"),
+    kM = brms::prior(prior = gamma(2, 0.2), lb = 0, nlpar = "kM"),
+    offset = brms::prior(prior = normal(0, 5), nlpar = "offset"),
+    sigma = brms::prior(prior = student_t(3, 0, 2.5), class = "sigma")),
+  init = list(
+    b_kcat = \() runif(n = 1, 0.001, 0.1),
+    b_kM = \() runif(n = 1, 1, 20),
+    b_offset = \() runif(n = 1, -2, 2),
+    sigma = \() runif(n = 1, 0, 2)) |>
+    "class<-"("bpinit"),
+  cores = 8,
+  threads = 2,
+  control = NULL,
+  backend="cmdstanr",
+  expose_functions = FALSE)
+
+model_offset_rstan <- BayesPharma::tQ_model(
+  data = model_data,
+  formula = model_formula,
+  prior = BayesPharma::tQ_prior(
+    kcat = brms::prior(prior = gamma(1, 200), lb = 0, nlpar = "kcat"),
+    kM = brms::prior(prior = gamma(2, 0.2), lb = 0, nlpar = "kM"),
+    offset = brms::prior(prior = normal(0, 5), nlpar = "offset"),
+    sigma = brms::prior(prior = student_t(3, 0, 2.5), class = "sigma")),
+  init = list(
+    b_kcat = \() runif(n = 1, 0.001, 0.1),
+    b_kM = \() runif(n = 1, 1, 20),
+    b_offset = \() runif(n = 1, -2, 2),
+    sigma = \() runif(n = 1, 0, 2)) |>
+    "class<-"("bpinit"),
+  chains = 0,
+  cores = 8,
+  threads = 2,
+  control = NULL,
+  expose_functions = FALSE)
+
+
 ```
 
+```{r plot-prior-posterior}
+
+model_offset |>
+  BayesPharma::plot_prior_posterior_densities()
+```
 
 ```{r model-multiple-draws, deps=c("model-multiple", "model-multiple-prior")}
+
+```
+
+```{r prior-posterior-multiple-scatter, deps=c("model-multiple-draws")}
+model <- model_offset
+
 model_prior <- model |>
   update(sample_prior = "only")
 
 draws_prior <- model_prior |>
   tidybayes::tidy_draws() |>
   tidybayes::gather_variables() |>
-  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|logkM)")) |>
+  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|kM)")) |>
   tidyr::separate(.variable, into = c("class", "parameter", "treatment"), sep = "_") |>
   dplyr::mutate(treatment = treatment |> stringr::str_replace("treatment", ""))
 
 draws_posterior <- model |>
   tidybayes::tidy_draws() |>
   tidybayes::gather_variables() |>
-  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|logkM)")) |>
+  dplyr::filter(.variable |> stringr::str_detect("b_(kcat|kM)")) |>
   tidyr::separate(.variable, into = c("class", "parameter", "treatment"), sep = "_") |>
   dplyr::mutate(treatment = treatment |> stringr::str_replace("treatment", ""))
-```
 
-```{r prior-posterior-multiple-scatter, deps=c("model-multiple-draws")}
+
 draws_prior_pairs <- draws_prior |>
   tidyr::pivot_wider(
     id_cols = c(".chain", ".iteration", ".draw", "treatment"),
@@ -299,25 +358,95 @@ draws_posterior_pairs <- draws_posterior |>
 ggplot2::ggplot() +
   ggplot2::theme_bw() +
     ggplot2::geom_point(
-    data = draws_prior_pairs,
-    mapping = ggplot2::aes(
-      x = log10(kcat),
-      y = logkM),
-    color = "orange",
-    size = .8,
-    shape = 16,
-    alpha = .3) +  
+      data = draws_prior_pairs,
+      mapping = ggplot2::aes(
+        x = log10(kcat),
+        y = log10(kM)),
+      color = "orange",
+      size = .8,
+      shape = 16,
+      alpha = .3) +  
     ggplot2::geom_point(
-    data = draws_posterior_pairs,
-    mapping = ggplot2::aes(
-      x = log10(kcat),
-      y = logkM),
-    color = "blue",
-    size = .8,
-    shape = 16,
-    alpha = .3) +
-  ggplot2::scale_x_continuous("catalytic constant log(kcat)") +
-  ggplot2::scale_y_continuous("Michaelis constant log(kM)") +
-  ggplot2::facet_wrap(facets = dplyr::vars(treatment), nrow = 1, scales = "free")
+      data = draws_posterior_pairs,
+      mapping = ggplot2::aes(
+        x = log10(kcat),
+        y = log10(kM)),
+      color = "blue",
+      size = .8,
+      shape = 16,
+      alpha = .3) +
+  ggplot2::scale_x_continuous("Catalytic constant log10(kcat)") +
+  ggplot2::scale_y_continuous("Michaelis constant log10(kM)") +
+  ggplot2::facet_wrap(facets = dplyr::vars(treatment), nrow = 1)
 ```
 
+
+
+```{r posterior-draws}
+model <- model_offset
+
+
+newdata_levels <- model$data |>
+    dplyr::select(tidyselect::any_of(c("treatment", "ET", "ST", "time"))) |>
+    as.list() |>
+    purrr::map(unique)
+newdata_levels$time = seq(-120, 1200, 100)
+newdata <- do.call(tidyr::expand_grid, newdata_levels)
+
+# add series_index
+newdata <- newdata |>
+  dplyr::left_join(
+    newdata |>
+      dplyr::distinct(treatment, ET, ST) |>
+      dplyr::mutate(series_index = dplyr::row_number()),
+    by = c("treatment", "ET", "ST"))
+
+pp_data <- model |>
+  tidybayes::add_predicted_draws(
+    newdata = newdata,
+    value = "P",
+    re_formula = NA,
+    ndraws = 200)  |>
+  ggdist:: median_qi(.width = c(.5, .8, .95))
+
+ggplot2::ggplot() +
+  ggplot2::theme_bw() +
+  ggplot2::theme(legend.position = "bottom") +
+  ggplot2::scale_fill_discrete(
+    "Median Quantile Interval",
+    labels = c("95%", "80%", "50%")) +
+  ggdist::geom_lineribbon(
+    data = pp_data,
+    mapping = ggplot2::aes(
+      x = .data[["time"]],
+      y = .data[["P"]],
+      ymin = .data[[".lower"]],
+      ymax = .data[[".upper"]],
+      color = log10(.data[["ST"]]),
+      group = .data[["ST"]]),
+    alpha = .15) +
+  ggplot2::geom_point(
+    data = model$data,
+    mapping = ggplot2::aes(
+      x = .data[["time"]],
+      y = .data[["P"]],
+      color = log10(.data[["ST"]])),
+    size = 0.8,
+    alpha = 0.7) +
+  ggplot2::facet_wrap(facets = ~treatment) +
+  ggplot2::labs(title = "Predicted tQ Enzyme Progress Curve") +
+  ggplot2::scale_color_viridis_c(
+    "Substrate Concentration (uM)",
+    labels = c("0.5", "2.5", "15"),
+    breaks = log10(c(0.5, 2.5, 15)),
+    begin = 0.2, end = 0.9) +
+  ggplot2::scale_y_continuous("Product Concentration") +
+  ggplot2::scale_x_continuous("Time (s)")
+
+ggplot2::ggsave(
+  filename = "/tmp/model_offset_posterior_draws.pdf",
+  width = 10,
+  height = 6,
+  useDingbats = FALSE)
+
+```

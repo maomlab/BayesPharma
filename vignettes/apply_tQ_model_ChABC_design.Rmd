@@ -13,9 +13,6 @@ vignette: >
 
 
 
-```
-## Error in library(tidyverse): there is no package called 'tidyverse'
-```
 
 
 
@@ -44,7 +41,7 @@ vignette: >
 
 
 ```
-## Error in if (!(formula$bayes_pharma_info[["series_index_variable"]] %in% : argument is of length zero
+## Error in if (!(series_index_variable %in% names(data))) {: argument is of length zero
 ```
 
 
