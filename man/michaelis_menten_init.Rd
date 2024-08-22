@@ -5,8 +5,8 @@
 \title{Initialize Parameter Values for the Michaelis Menten Enzyme Kinetic Model}
 \usage{
 michaelis_menten_init(
-  kcat = function() runif(n = 1, min = 3, max = 5),
-  kM = function() runif(n = 1, max = 3, min = 5),
+  kcat = function() stats::runif(n = 1, min = 3, max = 5),
+  kM = function() stats::runif(n = 1, max = 3, min = 5),
   ...
 )
 }

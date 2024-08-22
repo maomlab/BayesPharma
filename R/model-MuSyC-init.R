@@ -52,15 +52,15 @@
 #'}
 #'@export
 MuSyC_init <- function(
-  logE0 = \() runif(n = 1, min = log(0.4), max = log(0.6)),
-  logE1 = \() runif(n = 1, min = log(0.4), max = log(0.6)),
-  logC1 = \() runif(n = 1, min = -0.2, max = 0.2),
-  h1 = \() runif(n = 1, min = 3, max = 5),
-  logE2 = \() runif(n = 1, min = log(0.4), max = log(0.6)),
-  logC2 = \() runif(n = 1, min = -0.2, max = 0.2),
-  h2 = \() runif(n = 1, min = 3, max = 5),
-  logE3 = \() runif(n = 1, min = log(0.4), max = log(0.6)),
-  logalpha = \() runif(n = 1, min = -0.2, max = 0.2),
+  logE0 = \() stats::runif(n = 1, min = log(0.4), max = log(0.6)),
+  logE1 = \() stats::runif(n = 1, min = log(0.4), max = log(0.6)),
+  logC1 = \() stats::runif(n = 1, min = -0.2, max = 0.2),
+  h1 = \() stats::runif(n = 1, min = 3, max = 5),
+  logE2 = \() stats::runif(n = 1, min = log(0.4), max = log(0.6)),
+  logC2 = \() stats::runif(n = 1, min = -0.2, max = 0.2),
+  h2 = \() stats::runif(n = 1, min = 3, max = 5),
+  logE3 = \() stats::runif(n = 1, min = log(0.4), max = log(0.6)),
+  logalpha = \() stats::runif(n = 1, min = -0.2, max = 0.2),
   ...) {
 
   init <- list(

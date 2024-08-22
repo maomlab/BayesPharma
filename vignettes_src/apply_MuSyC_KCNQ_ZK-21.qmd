@@ -194,10 +194,10 @@ model_conductance2 <- BayesPharma::sigmoid_model(
     top = brms::prior(normal(0.2, 1), nlpar = "top"),
     bottom = brms::prior(normal(-0.2, 2), nlpar = "bottom")),
   init = BayesPharma::sigmoid_agonist_init(
-    ec50 = \() runif(1, min = -1, max = 0.2),
-    hill = \() runif(1, min = 2, max = 4),
-    bottom = \() runif(1, min = -0.25, max = 0),
-    top = \() runif(1, min = 0, max = 0.25)),
+    ec50 = \() stats::runif(1, min = -1, max = 0.2),
+    hill = \() stats::runif(1, min = 2, max = 4),
+    bottom = \() stats::runif(1, min = -0.25, max = 0),
+    top = \() stats::runif(1, min = 0, max = 0.25)),
   control = list(adapt_delta = 0.99, max_treedepth = 12),
   cores = 4)
 

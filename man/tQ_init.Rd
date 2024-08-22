@@ -5,8 +5,8 @@
 \title{Initialize Parameter Values for the tQ Enzyme Kinetic Model}
 \usage{
 tQ_init(
-  kcat = function() runif(n = 1, min = 3, max = 5),
-  kM = function() runif(n = 1, min = 3, max = 5),
+  kcat = function() stats::runif(n = 1, min = 3, max = 5),
+  kM = function() stats::runif(n = 1, min = 3, max = 5),
   ...
 )
 }

@@ -359,7 +359,7 @@ cli_load_bivariate_formula <- function(options) {
     treatment_2_units = treatment_2_units,
     response_variable = options$response_variable,
     response_units = options$response_units,
-    predictors = rland::parse_expr(options$predictors))
+    predictors = rlang::parse_expr(options$predictors))
 }
 # nolint end
 

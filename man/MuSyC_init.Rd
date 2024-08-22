@@ -5,15 +5,15 @@
 \title{Create Initial Parameter Values for the MuSyC Model}
 \usage{
 MuSyC_init(
-  logE0 = function() runif(n = 1, min = log(0.4), max = log(0.6)),
-  logE1 = function() runif(n = 1, min = log(0.4), max = log(0.6)),
-  logC1 = function() runif(n = 1, min = -0.2, max = 0.2),
-  h1 = function() runif(n = 1, min = 3, max = 5),
-  logE2 = function() runif(n = 1, min = log(0.4), max = log(0.6)),
-  logC2 = function() runif(n = 1, min = -0.2, max = 0.2),
-  h2 = function() runif(n = 1, min = 3, max = 5),
-  logE3 = function() runif(n = 1, min = log(0.4), max = log(0.6)),
-  logalpha = function() runif(n = 1, min = -0.2, max = 0.2),
+  logE0 = function() stats::runif(n = 1, min = log(0.4), max = log(0.6)),
+  logE1 = function() stats::runif(n = 1, min = log(0.4), max = log(0.6)),
+  logC1 = function() stats::runif(n = 1, min = -0.2, max = 0.2),
+  h1 = function() stats::runif(n = 1, min = 3, max = 5),
+  logE2 = function() stats::runif(n = 1, min = log(0.4), max = log(0.6)),
+  logC2 = function() stats::runif(n = 1, min = -0.2, max = 0.2),
+  h2 = function() stats::runif(n = 1, min = 3, max = 5),
+  logE3 = function() stats::runif(n = 1, min = log(0.4), max = log(0.6)),
+  logalpha = function() stats::runif(n = 1, min = -0.2, max = 0.2),
   ...
 )
 }

@@ -16,8 +16,8 @@
 #'
 #' @export
 michaelis_menten_init <- function(
-  kcat = \() runif(n = 1, min = 3, max = 5),
-  kM = \() runif(n = 1, max = 3, min = 5),
+  kcat = \() stats::runif(n = 1, min = 3, max = 5),
+  kM = \() stats::runif(n = 1, max = 3, min = 5),
   ...) {
 
   init <- list(

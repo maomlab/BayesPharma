@@ -266,10 +266,10 @@ model_conductance <- BayesPharma::sigmoid_model(
     ec50 = brms::prior(normal(-0.2, 1), nlpar = "ec50"),
     hill = brms::prior(normal(3, 2), nlpar = "hill", lb = 0)),
   init = BayesPharma::sigmoid_agonist_init(
-    ec50 = \() runif(1, min = -7, max = -5),
-    hill = \() runif(1, min = 0.8, max = 1.2),
-    bottom = \() runif(1, min = -.1, max = 0.1),
-    top = \() runif(1, min = 0.8, max = 1.2)),
+    ec50 = \() stats::runif(1, min = -7, max = -5),
+    hill = \() stats::runif(1, min = 0.8, max = 1.2),
+    bottom = \() stats::runif(1, min = -.1, max = 0.1),
+    top = \() stats::runif(1, min = 0.8, max = 1.2)),
   cores = 4)
 ```
 ```{r model_conductance_summary}
@@ -322,13 +322,13 @@ model_MuSyC <- BayesPharma::MuSyC_model(
   init = BayesPharma::MuSyC_init(
     logE0 = NULL,
     logE1 = NULL,
-    logC1 = \() runif(n = 1, min = -0.4, max = 0),
-    h1 = \() runif(n = 1, min = 0.8, max = 1.2),
+    logC1 = \() stats::runif(n = 1, min = -0.4, max = 0),
+    h1 = \() stats::runif(n = 1, min = 0.8, max = 1.2),
     logE2 = NULL,
-    logC2 = \() runif(n = 1, min = -7, max = -5),
-    h2 = \() runif(n = 1, min = -1.2, max = -0.8),
+    logC2 = \() stats::runif(n = 1, min = -7, max = -5),
+    h2 = \() stats::runif(n = 1, min = -1.2, max = -0.8),
     logE3 = NULL,
-    logalpha = \() runif(n = 1, min = -0.2, max = 0.2)),
+    logalpha = \() stats::runif(n = 1, min = -0.2, max = 0.2)),
   control = list(
       adapt_delta = .99,
       max_treedepth = 12),
@@ -428,18 +428,18 @@ prior_bilevel <- c(
   brms::prior(prior = normal(0, 0.3), nlpar = "vbottom"))
 
 init_bilevel <- list(
-  b_Eec50 = \() runif(n = 1, min = -7, max = -5),
-  b_Ehill = \() runif(n = 1, min = -1.6, max = -1.4),
-  b_Etop = \() runif(n = 1, min = -.12, max = -.08),
-  b_Ebottom = \() runif(n = 1, min = -.42, max = -0.38),
+  b_Eec50 = \() stats::runif(n = 1, min = -7, max = -5),
+  b_Ehill = \() stats::runif(n = 1, min = -1.6, max = -1.4),
+  b_Etop = \() stats::runif(n = 1, min = -.12, max = -.08),
+  b_Ebottom = \() stats::runif(n = 1, min = -.42, max = -0.38),
   
-  b_Hec50 = \() runif(n = 1, min = -7, max = -5),
-  b_Hhill = \() runif(n = 1, min = 0.8, max = 1.2),
-  b_Htop = \() runif(n = 1, min = 4, max = 6),
-  b_Hbottom = \() runif(n = 1, min = 2.9, max = 3.1),
+  b_Hec50 = \() stats::runif(n = 1, min = -7, max = -5),
+  b_Hhill = \() stats::runif(n = 1, min = 0.8, max = 1.2),
+  b_Htop = \() stats::runif(n = 1, min = 4, max = 6),
+  b_Hbottom = \() stats::runif(n = 1, min = 2.9, max = 3.1),
   
-  b_vtop = \() runif(n = 1, min = 0.7, max = 1.3),
-  b_vbottom = \() runif(n = 1, min = -0.3, max = .3)) |>
+  b_vtop = \() stats::runif(n = 1, min = 0.7, max = 1.3),
+  b_vbottom = \() stats::runif(n = 1, min = -0.3, max = .3)) |>
   `class<-`(c("bpinit")) |>
   BayesPharma::eval_init(
     sdata = brms::make_standata(

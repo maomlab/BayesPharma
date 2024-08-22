@@ -5,11 +5,11 @@
 \title{Create Initialization for the Richards Growth Model}
 \usage{
 growth_richards_init(
-  K = function() runif(n = 1, min = 0.8, max = 1.2),
-  K0 = function() runif(n = 1, min = -0.2, max = 0.2),
-  rate = function() runif(n = 1, min = 0.8, max = 1.2),
-  lambda = function() runif(n = 1, min = 0.3, max = 0.7),
-  nu = function() runif(n = 1, min = 0.8, max = 1.2),
+  K = function() stats::runif(n = 1, min = 0.8, max = 1.2),
+  K0 = function() stats::runif(n = 1, min = -0.2, max = 0.2),
+  rate = function() stats::runif(n = 1, min = 0.8, max = 1.2),
+  lambda = function() stats::runif(n = 1, min = 0.3, max = 0.7),
+  nu = function() stats::runif(n = 1, min = 0.8, max = 1.2),
   ...
 )
 }

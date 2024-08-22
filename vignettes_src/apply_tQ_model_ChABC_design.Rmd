@@ -238,9 +238,9 @@ model_aa <- BayesPharma::tQ_model(
     kcat = brms::prior(prior = gamma(1, 200), lb = 0, nlpar = "kcat"),
     kM = brms::prior(prior = gamma(2, 0.2), lb = 0, nlpar = "kM")),
   init = BayesPharma::tQ_init(
-    kcat = \() runif(n = 1, 0.001, 0.1),
-    kM = \() runif(n = 1, 1, 20),
-    sigma = \() runif(n = 1, 0, 2)),
+    kcat = \() stats::runif(n = 1, 0.001, 0.1),
+    kM = \() stats::runif(n = 1, 1, 20),
+    sigma = \() stats::runif(n = 1, 0, 2)),
   cores = 8,
   threads = 2,
   control = NULL,
@@ -278,10 +278,10 @@ model_offset <- BayesPharma::tQ_model(
     offset = brms::prior(prior = normal(0, 5), nlpar = "offset"),
     sigma = brms::prior(prior = student_t(3, 0, 2.5), class = "sigma")),
   init = list(
-    b_kcat = \() runif(n = 1, 0.001, 0.1),
-    b_kM = \() runif(n = 1, 1, 20),
-    b_offset = \() runif(n = 1, -2, 2),
-    sigma = \() runif(n = 1, 0, 2)) |>
+    b_kcat = \() stats::runif(n = 1, 0.001, 0.1),
+    b_kM = \() stats::runif(n = 1, 1, 20),
+    b_offset = \() stats::runif(n = 1, -2, 2),
+    sigma = \() stats::runif(n = 1, 0, 2)) |>
     "class<-"("bpinit"),
   cores = 8,
   threads = 2,
@@ -298,10 +298,10 @@ model_offset_rstan <- BayesPharma::tQ_model(
     offset = brms::prior(prior = normal(0, 5), nlpar = "offset"),
     sigma = brms::prior(prior = student_t(3, 0, 2.5), class = "sigma")),
   init = list(
-    b_kcat = \() runif(n = 1, 0.001, 0.1),
-    b_kM = \() runif(n = 1, 1, 20),
-    b_offset = \() runif(n = 1, -2, 2),
-    sigma = \() runif(n = 1, 0, 2)) |>
+    b_kcat = \() stats::runif(n = 1, 0.001, 0.1),
+    b_kM = \() stats::runif(n = 1, 1, 20),
+    b_offset = \() stats::runif(n = 1, -2, 2),
+    sigma = \() stats::runif(n = 1, 0, 2)) |>
     "class<-"("bpinit"),
   chains = 0,
   cores = 8,

@@ -79,10 +79,10 @@ model_conductance <- BayesPharma::sigmoid_model(
     ec50 = brms::prior(normal(-0.2, 1), nlpar = "ec50"),
     hill = brms::prior(normal(3, 2), nlpar = "hill", lb = 0)),
   init = BayesPharma::sigmoid_agonist_init(
-    ec50 = \() runif(1, min = -7, max = -5),
-    hill = \() runif(1, min = 0.8, max = 1.2),
-    bottom = \() runif(1, min = -.1, max = 0.1),
-    top = \() runif(1, min = 0.8, max = 1.2)),
+    ec50 = \() stats::runif(1, min = -7, max = -5),
+    hill = \() stats::runif(1, min = 0.8, max = 1.2),
+    bottom = \() stats::runif(1, min = -.1, max = 0.1),
+    top = \() stats::runif(1, min = 0.8, max = 1.2)),
   cores = 4)
 ```
 

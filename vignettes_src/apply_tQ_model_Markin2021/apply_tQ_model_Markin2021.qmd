@@ -348,9 +348,9 @@ model_example <- BayesPharma::tQ_model(
     kM = brms::prior(prior = gamma(450, 5), lb = 0, nlpar = "kM"),
     sigma = brms::prior(prior = student_t(3, 0, 2.5), class = "sigma")),
   init = list(
-    b_kcat = \() runif(n = 1, 70, 110),
-    b_kM = \() runif(n = 1, 70, 110),
-    sigma = \() runif(n = 1, 0, 2)) |>
+    b_kcat = \() stats::runif(n = 1, 70, 110),
+    b_kM = \() stats::runif(n = 1, 70, 110),
+    sigma = \() stats::runif(n = 1, 0, 2)) |>
     "class<-"("bpinit"),
   cores = 8,
   threads = 2,
@@ -369,9 +369,9 @@ model_example_rstan <- BayesPharma::tQ_model(
     kM = brms::prior(prior = gamma(450, 5), lb = 0, nlpar = "kM"),
     sigma = brms::prior(prior = student_t(3, 0, 2.5), class = "sigma")),
   init = list(
-    b_kcat = \() runif(n = 1, 70, 110),
-    b_kM = \() runif(n = 1, 70, 110),
-    sigma = \() runif(n = 1, 0, 2)) |>
+    b_kcat = \() stats::runif(n = 1, 70, 110),
+    b_kM = \() stats::runif(n = 1, 70, 110),
+    sigma = \() stats::runif(n = 1, 0, 2)) |>
     "class<-"("bpinit"),
   chains = 0,
   cores = 8,
@@ -552,9 +552,9 @@ model_wt_mcmc <- BayesPharma::tQ_model(
     kM = brms::prior(prior = gamma(160, 2), lb = 0, nlpar = "kM"),
     sigma = brms::prior(prior = student_t(10, 0, 10), class = "sigma")),
   init = list(
-    b_kcat = \() runif(n = 1, 80, 120),
-    b_kM = \() runif(n = 1, 60, 100),
-    sigma = \() runif(n = 1, 0, 2)) |>
+    b_kcat = \() stats::runif(n = 1, 80, 120),
+    b_kM = \() stats::runif(n = 1, 60, 100),
+    sigma = \() stats::runif(n = 1, 0, 2)) |>
     "class<-"("bpinit"),
   cores = 8,
   threads = 2,
@@ -575,9 +575,9 @@ model_wt_mcmc_wide <- BayesPharma::tQ_model(
     kM = brms::prior(prior = gamma(100, 1.25), lb = 0, nlpar = "kM"),
     sigma = brms::prior(prior = student_t(10, 0, 40), class = "sigma")),
   init = list(
-    b_kcat = \() runif(n = 1, 100, 140),
-    b_kM = \() runif(n = 1, 60, 100),
-    sigma = \() runif(n = 1, 0, 20)) |>
+    b_kcat = \() stats::runif(n = 1, 100, 140),
+    b_kM = \() stats::runif(n = 1, 60, 100),
+    sigma = \() stats::runif(n = 1, 0, 20)) |>
     "class<-"("bpinit"),
   cores = 8,
   threads = 2,

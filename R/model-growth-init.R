@@ -25,10 +25,10 @@
 #'}
 #'@export
 growth_sigmoid_init <- function(
-  K = \() runif(n = 1, min = 0.8, max = 1.2),
-  K0 = \() runif(n = 1, min = -0.2, max = 0.2),
-  rate = \() runif(n = 1, min = 0.8, max = 1.2),
-  lambda = \() runif(n = 1, min = 0.3, max = 0.7),
+  K = \() stats::runif(n = 1, min = 0.8, max = 1.2),
+  K0 = \() stats::runif(n = 1, min = -0.2, max = 0.2),
+  rate = \() stats::runif(n = 1, min = 0.8, max = 1.2),
+  lambda = \() stats::runif(n = 1, min = 0.3, max = 0.7),
   ...) {
 
   init <- list(
@@ -70,11 +70,11 @@ growth_sigmoid_init <- function(
 #'}
 #'@export
 growth_richards_init <- function(
-  K = \() runif(n = 1, min = 0.8, max = 1.2),
-  K0 = \() runif(n = 1, min = -0.2, max = 0.2),
-  rate = \() runif(n = 1, min = 0.8, max = 1.2),
-  lambda = \() runif(n = 1, min = 0.3, max = 0.7),
-  nu = \() runif(n = 1, min = 0.8, max = 1.2),
+  K = \() stats::runif(n = 1, min = 0.8, max = 1.2),
+  K0 = \() stats::runif(n = 1, min = -0.2, max = 0.2),
+  rate = \() stats::runif(n = 1, min = 0.8, max = 1.2),
+  lambda = \() stats::runif(n = 1, min = 0.3, max = 0.7),
+  nu = \() stats::runif(n = 1, min = 0.8, max = 1.2),
   ...) {
 
   init <- list(

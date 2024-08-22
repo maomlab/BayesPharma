@@ -33,10 +33,10 @@
 #'}
 #'@export
 sigmoid_agonist_init <- function(
-  ec50 = \() runif(n = 1, min = -7, max = -5),
-  hill = \() runif(n = 1, min = 0.8, max = 1.2),
-  top = \() runif(n = 1, min = 0.8, max = 1.2),
-  bottom = \() runif(n = 1, min = -0.2, max = 0.2),
+  ec50 = \() stats::runif(n = 1, min = -7, max = -5),
+  hill = \() stats::runif(n = 1, min = 0.8, max = 1.2),
+  top = \() stats::runif(n = 1, min = 0.8, max = 1.2),
+  bottom = \() stats::runif(n = 1, min = -0.2, max = 0.2),
   ...) {
   init <- list(
     b_ec50 = ec50,
@@ -91,10 +91,10 @@ sigmoid_agonist_init <- function(
 #'}
 #'@export
 sigmoid_antagonist_init <- function(
-  ic50 = \() runif(n = 1, min = -7, max = -5),
-  hill = \() runif(n = 1, min = -1.2, max = -0.8),
-  top = \() runif(n = 1, min = 0.8, max = 1.2),
-  bottom = \() runif(n = 1, min = -0.2, max = 0.2),
+  ic50 = \() stats::runif(n = 1, min = -7, max = -5),
+  hill = \() stats::runif(n = 1, min = -1.2, max = -0.8),
+  top = \() stats::runif(n = 1, min = 0.8, max = 1.2),
+  bottom = \() stats::runif(n = 1, min = -0.2, max = 0.2),
   ...) {
   init <- list(
     b_ic50 = ic50,
