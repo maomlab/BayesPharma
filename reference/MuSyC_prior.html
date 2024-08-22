@@ -85,25 +85,25 @@ For other distribution options, reference <a href="https://paul-buerkner.github.
 
 
 <dl><dt id="arg-loge-">logE0<a class="anchor" aria-label="anchor" href="#arg-loge-"></a></dt>
-<dd><p><code>numeric</code> or <code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code>. Prior for the
+<dd><p><code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code> or <code>numeric</code>. Prior for the
 log response with no treatment. (Default: <code>normal(log(0.5), 3)</code> lower
 bounded by <code>0</code>).</p></dd>
 
 
 <dt id="arg-loge-">logE1<a class="anchor" aria-label="anchor" href="#arg-loge-"></a></dt>
-<dd><p><code>numeric</code> or <code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code>. Prior for the
+<dd><p><code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code> or <code>numeric</code>. Prior for the
 full log response for treatment 1 and the treatment 2 is zero. (Default:
 <code>normal(log(0.25), 3)</code> lower bounded by <code>0</code>).</p></dd>
 
 
 <dt id="arg-logc-">logC1<a class="anchor" aria-label="anchor" href="#arg-logc-"></a></dt>
-<dd><p><code>numeric</code> or <code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code>. Prior for the
+<dd><p><code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code> or <code>numeric</code>. Prior for the
 log AC50 of treatment 1 and the dose of treatment 2 is zero. (Default:
 <code>normal(log(1), 3)</code>).</p></dd>
 
 
 <dt id="arg-h-">h1<a class="anchor" aria-label="anchor" href="#arg-h-"></a></dt>
-<dd><p><code>numeric</code> or <code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code>. Prior for the
+<dd><p><code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code> or <code>numeric</code>. Prior for the
 slope of treatment 1 at its AC50 and treatment 2 is zero in exponential
 form. To converted the slope to exponential form, use
 <code><a href="MuSyC_si_to_hi.html">MuSyC_si_to_hi()</a></code>). In particular, let <code>mu = MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei = 0)</code>, then (Default:
@@ -111,31 +111,31 @@ form. To converted the slope to exponential form, use
 
 
 <dt id="arg-loge-">logE2<a class="anchor" aria-label="anchor" href="#arg-loge-"></a></dt>
-<dd><p><code>numeric</code> or <code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code>. Prior for the
+<dd><p><code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code> or <code>numeric</code>. Prior for the
 full log response for treatment 2 and the treatment 1 is zero. (Default:
 <code>normal(log(0.25), 3)</code> lower bounded by <code>0</code>).</p></dd>
 
 
 <dt id="arg-logc-">logC2<a class="anchor" aria-label="anchor" href="#arg-logc-"></a></dt>
-<dd><p><code>numeric</code> or <code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code>. Prior for the
+<dd><p><code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code> or <code>numeric</code>. Prior for the
 log AC50 of treatment 2. (Default: to <code>normal(log(1), 3)</code>).</p></dd>
 
 
 <dt id="arg-h-">h2<a class="anchor" aria-label="anchor" href="#arg-h-"></a></dt>
-<dd><p><code>numeric</code> or <code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code>. Prior the slope of
+<dd><p><code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code> or <code>numeric</code>. Prior the slope of
 treatment 2 at its AC50 and treatment 1 is zero in exponential form. To
 converted the slope to exponential form, use <code><a href="MuSyC_si_to_hi.html">MuSyC_si_to_hi()</a></code>).
 In particular, let <code>mu = MuSyC_si_to_hi(si = 1, Ci = 1, E0 = 0, Ei = 0)</code>, then (Default: <code>normal(mu, 3)</code> lower bounded by <code>.1</code>).</p></dd>
 
 
 <dt id="arg-loge-">logE3<a class="anchor" aria-label="anchor" href="#arg-loge-"></a></dt>
-<dd><p><code>numeric</code> or <code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code>. Prior for the
+<dd><p><code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code> or <code>numeric</code>. Prior for the
 combined full response for treatment 1 and treatment 2. (Default:
 <code>normal(log(0.25), 3)</code> lower bounded by 0).</p></dd>
 
 
 <dt id="arg-logalpha">logalpha<a class="anchor" aria-label="anchor" href="#arg-logalpha"></a></dt>
-<dd><p><code>numeric</code> or <code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code>. Prior for
+<dd><p><code><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">brms::brmsprior()</a></code> or <code>numeric</code>. Prior for
 the log synergistic potency. Where values greater than <code>1</code> are
 synergistic, values less than <code>1</code> are antagonistic. (Default:
 <code>normal(log(0), 0.5)</code>.</p></dd>

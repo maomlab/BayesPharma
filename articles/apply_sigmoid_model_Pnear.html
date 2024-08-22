@@ -135,7 +135,7 @@ log of the RMSD defines a linear reaction coordinate.</p>
 scale, with a Normally distributed error we can generate synthetic
 score-vs-rmsd plots</p>
 <pre><code><span><span class="co">## Warning in GeomIndicator::geom_indicator(mapping = ggplot2::aes(indicator = paste0("Pnear: ", : All aesthetics have length 1, but the data has 300 rows.</span></span>
-<span><span class="co">## ℹ Did you mean to use `annotate()`?</span></span></code></pre>
+<span><span class="co">## ℹ Please consider using `annotate()` or provide this layer with data containing a single row.</span></span></code></pre>
 <div class="figure" style="text-align: center">
 <img src="apply_sigmoid_model_Pnear_files/simulate-score-vs-rmsd-data-1.png" alt="plot of chunk simulate-score-vs-rmsd-data" width="100%"><p class="caption">
 plot of chunk simulate-score-vs-rmsd-data
@@ -182,34 +182,34 @@ using the <code>BayesPharma</code> package, which relies on
 <span><span class="co">## </span></span>
 <span><span class="co">## Regression Coefficients:</span></span>
 <span><span class="co">##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
-<span><span class="co">## ec50_target1ahw       1.70      0.11     1.44     1.87 1.00     3855     2019</span></span>
-<span><span class="co">## ec50_target1jps       1.37      0.13     1.09     1.59 1.00     4683     3670</span></span>
-<span><span class="co">## ec50_target1mlc       2.39      0.53     0.91     3.18 1.00     3115     2020</span></span>
-<span><span class="co">## ec50_target1ztx       0.75      0.08     0.59     0.89 1.00     5633     4243</span></span>
-<span><span class="co">## ec50_target2aep       1.13      0.29     0.63     1.59 1.00     3537     1060</span></span>
-<span><span class="co">## ec50_target2jel       1.65      0.06     1.53     1.76 1.00     6256     4982</span></span>
-<span><span class="co">## hill_target1ahw       1.68      0.44     0.89     2.60 1.00     3088     1821</span></span>
-<span><span class="co">## hill_target1jps       1.50      0.36     0.89     2.31 1.00     3901     3482</span></span>
-<span><span class="co">## hill_target1mlc       1.04      0.56     0.25     2.32 1.00     2889     3080</span></span>
-<span><span class="co">## hill_target1ztx       2.71      0.55     1.78     3.91 1.00     6778     5448</span></span>
-<span><span class="co">## hill_target2aep       1.98      0.68     0.55     3.36 1.00     1535      476</span></span>
-<span><span class="co">## hill_target2jel       3.19      0.59     2.09     4.43 1.00     7529     5076</span></span>
-<span><span class="co">## top_target1ahw      -10.55      0.75   -11.56    -8.81 1.00     3866     2206</span></span>
-<span><span class="co">## top_target1jps       -9.69      0.59   -10.62    -8.33 1.00     5050     3681</span></span>
-<span><span class="co">## top_target1mlc       -1.23      5.88    -9.86    12.05 1.00     5941     4949</span></span>
-<span><span class="co">## top_target1ztx      -17.44      0.28   -17.98   -16.90 1.00     8988     5820</span></span>
-<span><span class="co">## top_target2aep      -16.20      1.25   -16.96   -14.77 1.01     1477      477</span></span>
-<span><span class="co">## top_target2jel      -11.09      0.34   -11.73   -10.43 1.00     9507     5865</span></span>
-<span><span class="co">## bottom_target1ahw   -26.02      2.26   -31.59   -23.09 1.00     3274     1812</span></span>
-<span><span class="co">## bottom_target1jps   -30.51      3.77   -39.49   -24.92 1.00     4264     3586</span></span>
-<span><span class="co">## bottom_target1mlc   -18.54      4.61   -32.33   -14.78 1.00     2644     1743</span></span>
-<span><span class="co">## bottom_target1ztx   -38.89      3.49   -46.84   -33.10 1.00     5294     4182</span></span>
-<span><span class="co">## bottom_target2aep   -30.28      5.92   -43.99   -21.21 1.00     5628     5171</span></span>
-<span><span class="co">## bottom_target2jel   -19.47      0.98   -21.53   -17.74 1.00     6849     4766</span></span>
+<span><span class="co">## ec50_target1ahw       1.70      0.11     1.45     1.87 1.00     4597     2714</span></span>
+<span><span class="co">## ec50_target1jps       1.37      0.13     1.07     1.60 1.00     4199     3043</span></span>
+<span><span class="co">## ec50_target1mlc       2.39      0.52     0.96     3.17 1.00     2741     2016</span></span>
+<span><span class="co">## ec50_target1ztx       0.75      0.08     0.59     0.89 1.00     5111     3856</span></span>
+<span><span class="co">## ec50_target2aep       1.11      0.25     0.58     1.51 1.00     4927     3196</span></span>
+<span><span class="co">## ec50_target2jel       1.65      0.06     1.53     1.76 1.00     5928     5263</span></span>
+<span><span class="co">## hill_target1ahw       1.69      0.43     0.91     2.62 1.00     3637     2596</span></span>
+<span><span class="co">## hill_target1jps       1.50      0.37     0.88     2.30 1.00     3547     3000</span></span>
+<span><span class="co">## hill_target1mlc       1.05      0.55     0.27     2.29 1.00     2972     2934</span></span>
+<span><span class="co">## hill_target1ztx       2.72      0.55     1.76     3.91 1.00     6168     5216</span></span>
+<span><span class="co">## hill_target2aep       2.00      0.66     0.75     3.36 1.00     4343     2235</span></span>
+<span><span class="co">## hill_target2jel       3.19      0.58     2.13     4.41 1.00     7193     5504</span></span>
+<span><span class="co">## top_target1ahw      -10.57      0.67   -11.59    -8.95 1.00     4882     2870</span></span>
+<span><span class="co">## top_target1jps       -9.69      0.59   -10.63    -8.31 1.00     4673     3178</span></span>
+<span><span class="co">## top_target1mlc       -1.42      5.83    -9.88    12.31 1.00     6140     4915</span></span>
+<span><span class="co">## top_target1ztx      -17.44      0.28   -17.99   -16.89 1.00     9799     5483</span></span>
+<span><span class="co">## top_target2aep      -16.33      0.47   -16.94   -15.47 1.00     5453     2790</span></span>
+<span><span class="co">## top_target2jel      -11.09      0.34   -11.73   -10.41 1.00     8342     5971</span></span>
+<span><span class="co">## bottom_target1ahw   -25.95      2.09   -31.02   -23.10 1.00     3745     2320</span></span>
+<span><span class="co">## bottom_target1jps   -30.53      3.80   -39.70   -24.89 1.00     3415     2998</span></span>
+<span><span class="co">## bottom_target1mlc   -18.38      4.30   -31.43   -14.75 1.00     2561     2009</span></span>
+<span><span class="co">## bottom_target1ztx   -38.76      3.46   -46.52   -32.95 1.00     5696     4004</span></span>
+<span><span class="co">## bottom_target2aep   -30.40      6.00   -44.30   -21.31 1.00     7151     4817</span></span>
+<span><span class="co">## bottom_target2jel   -19.45      0.97   -21.52   -17.75 1.00     6116     4923</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Further Distributional Parameters:</span></span>
 <span><span class="co">##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
-<span><span class="co">## sigma     5.74      0.07     5.60     5.89 1.00    10025     5933</span></span>
+<span><span class="co">## sigma     5.74      0.07     5.60     5.89 1.00     9878     5783</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
 <span><span class="co">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
@@ -221,11 +221,11 @@ fits the data very well</p>
 <span><span class="co">## </span></span>
 <span><span class="co">##          Estimate   SE</span></span>
 <span><span class="co">## elpd_loo  -9521.3 39.0</span></span>
-<span><span class="co">## p_loo        21.4  1.2</span></span>
+<span><span class="co">## p_loo        21.5  1.1</span></span>
 <span><span class="co">## looic     19042.6 78.0</span></span>
 <span><span class="co">## ------</span></span>
 <span><span class="co">## MCSE of elpd_loo is 0.1.</span></span>
-<span><span class="co">## MCSE and ESS estimates assume MCMC draws (r_eff in [0.1, 1.4]).</span></span>
+<span><span class="co">## MCSE and ESS estimates assume MCMC draws (r_eff in [0.4, 1.6]).</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## All Pareto k estimates are good (k &lt; 0.7).</span></span>
 <span><span class="co">## See help('pareto-k-diagnostic') for details.</span></span></code></pre>

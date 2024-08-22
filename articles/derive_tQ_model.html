@@ -72,7 +72,6 @@
 
     
     
-<pre><code><span><span class="co">## Error in library(tidyverse): there is no package called 'tidyverse'</span></span></code></pre>
 <div class="section level2">
 <h2 id="enzyme-kinetic-modeling">Enzyme Kinetic Modeling<a class="anchor" aria-label="anchor" href="#enzyme-kinetic-modeling"></a>
 </h2>
@@ -159,7 +158,7 @@ when</p>
 <p>Using the <code>deSolve</code> package we can simulate data following
 the total QSSA model. Measurements are made with random Gaussian noise
 with mean <code>0</code> and variance of <code>0.5</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tQ_model_generate</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">time</span>, <span class="va">kcat</span>, <span class="va">kM</span>, <span class="va">ET</span>, <span class="va">ST</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">ode_tQ</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">time</span>, <span class="va">Pt</span>, <span class="va">theta</span><span class="op">)</span><span class="op">{</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">theta</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span></span>
@@ -181,13 +180,13 @@ with mean <code>0</code> and variance of <code>0.5</code>.</p>
 <span>    P <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">P_true</span>, <span class="fl">0.5</span><span class="op">)</span>, <span class="co"># add some observational noise</span></span>
 <span>    ST <span class="op">=</span> <span class="fl">10</span>, ET <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data_single</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##   time    P_true         P ST ET</span></span>
-<span><span class="co">## 1 0.00 0.0000000 0.1223538 10 10</span></span>
-<span><span class="co">## 2 0.05 0.7311578 0.6060729 10 10</span></span>
-<span><span class="co">## 3 0.10 1.4243598 2.0420722 10 10</span></span>
-<span><span class="co">## 4 0.15 2.0794197 2.3973591 10 10</span></span>
-<span><span class="co">## 5 0.20 2.6964485 2.1516463 10 10</span></span>
-<span><span class="co">## 6 0.25 3.2758537 3.3034788 10 10</span></span></code></pre>
+<pre><code><span><span class="co">##   time    P_true           P ST ET</span></span>
+<span><span class="co">## 1 0.00 0.0000000 -0.08982865 10 10</span></span>
+<span><span class="co">## 2 0.05 0.7311578  1.34853281 10 10</span></span>
+<span><span class="co">## 3 0.10 1.4243598  1.43308014 10 10</span></span>
+<span><span class="co">## 4 0.15 2.0794197  1.73661838 10 10</span></span>
+<span><span class="co">## 5 0.20 2.6964485  2.78619356 10 10</span></span>
+<span><span class="co">## 6 0.25 3.2758537  3.17795634 10 10</span></span></code></pre>
 <p>To visualize, the true enzyme progress curve is shown in <span style="color:blue">blue</span>, and the enzyme progress curve fit to the
 noisy measurements with a smooth <code>loess</code> spline is shown in
 <span style="color:orange">orange</span>. While the smooth fits well, we
@@ -218,7 +217,7 @@ concentrations <code>ET</code> and <code>ST</code>. To call
 time (both equal to zero), measured time-points, parameters and user
 defied data. Finally we, extract the vector of sampled vector of product
 concentrations which we return.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stanvars_tQ_ode</span> <span class="op">&lt;-</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/stanvar.html" class="external-link">stanvar</a></span><span class="op">(</span>scode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"</span></span>
 <span><span class="st">vector tQ_ode(</span></span>
 <span><span class="st">   real time,</span></span>
@@ -238,7 +237,7 @@ concentrations which we return.</p>
 <span><span class="st">}</span></span>
 <span><span class="st">"</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span>,</span>
 <span>block <span class="op">=</span> <span class="st">"functions"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stanvars_tQ_single</span> <span class="op">&lt;-</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/stanvar.html" class="external-link">stanvar</a></span><span class="op">(</span>scode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"</span></span>
 <span><span class="st">vector tQ_single(</span></span>
 <span><span class="st">  data vector time,</span></span>
@@ -278,12 +277,12 @@ prior mean is <code>alpha/beta = 4/1 = 4</code> and the variance is
 below by <code>0</code>. We initialize each chain at the prior mean and
 use <code>cmdstanr</code> version 2.29.2 as the backend, and use the
 default warmup of <code>1000</code></p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">brms_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  cores <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">52L</span>,</span>
 <span>  backend <span class="op">=</span> <span class="st">'cmdstanr'</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_single</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span>what <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="va"><a href="https://paul-buerkner.github.io/brms/reference/brm.html" class="external-link">brm</a></span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  formula <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/brmsformula.html" class="external-link">brmsformula</a></span><span class="op">(</span></span>
 <span>    <span class="va">P</span> <span class="op">~</span> <span class="fu">tQ_single</span><span class="op">(</span><span class="va">time</span>, <span class="va">kcat</span>, <span class="va">kM</span>, <span class="va">ET</span>, <span class="va">ST</span><span class="op">)</span>,</span>
@@ -299,17 +298,21 @@ default warmup of <code>1000</code></p>
 <span>    <span class="va">stanvars_tQ_ode</span>,</span>
 <span>    <span class="va">stanvars_tQ_single</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  <span class="va">brms_params</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-141037b56c0ad.stan', line 34, column 2: Declaration</span></span>
-<span><span class="co">##     of arrays by placing brackets after a variable name is deprecated and</span></span>
-<span><span class="co">##     will be removed in Stan 2.33.0. Instead use the array keyword before the</span></span>
-<span><span class="co">##     type. This can be changed automatically using the auto-format flag to</span></span>
-<span><span class="co">##     stanc</span></span></code></pre>
-<pre><code><span><span class="co">## error: PCH file uses an older PCH format that is no longer supported</span></span></code></pre>
-<pre><code><span><span class="co">## Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.</span></span>
-<span><span class="co">## If your model failed to compile please run rebuild_cmdstan().</span></span>
-<span><span class="co">## If the issue persists please open a bug report.</span></span></code></pre>
-<pre><code><span><span class="co">## 1 error generated.</span></span>
-<span><span class="co">## make[1]: *** [/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-141037b56c0ad] Error 1</span></span></code></pre>
+<pre><code><span><span class="co">## Syntax error in '/var/folders/7z/yfz7cw1d0gs8lf1mzdgkv1pw0000gn/T/RtmpsyOm66/model-14253748bb373.stan', line 34, column 18 to column 19, parsing error:</span></span>
+<span><span class="co">##    -------------------------------------------------</span></span>
+<span><span class="co">##     32:    int M = dims(time)[1];</span></span>
+<span><span class="co">##     33:  </span></span>
+<span><span class="co">##     34:    vector[1] P_ode[M] = ode_bdf(     // Function signature:</span></span>
+<span><span class="co">##                            ^</span></span>
+<span><span class="co">##     35:      tQ_ode,                         // function ode</span></span>
+<span><span class="co">##     36:      initial_state,                  // vector initial_state</span></span>
+<span><span class="co">##    -------------------------------------------------</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ";" expected after variable declaration.</span></span>
+<span><span class="co">## It looks like you are trying to use the old array syntax.</span></span>
+<span><span class="co">## Please use the new syntax:</span></span>
+<span><span class="co">## array[M] vector[1] P_ode;</span></span></code></pre>
+<pre><code><span><span class="co">## make[1]: *** [/var/folders/7z/yfz7cw1d0gs8lf1mzdgkv1pw0000gn/T/RtmpsyOm66/model-14253748bb373.hpp] Error 1</span></span></code></pre>
 <pre><code><span><span class="co">## Error: An error occured during compilation! See the message above for more information.</span></span></code></pre>
 <p>Fitting the model takes ~15 seconds, with <code>Rhat = 1</code> and
 effective sample size for the bulk and tail greater than
@@ -319,7 +322,7 @@ intervals are good.</p>
 <p>To visualize the posterior distribution vs. the prior distribution,
 we first sample from the prior, using the same <code><a href="https://paul-buerkner.github.io/brms/reference/brm.html" class="external-link">brms::brm</a></code>
 call with <code>sample_prior = "only"</code> the argument.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_single_prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span>what <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="va"><a href="https://paul-buerkner.github.io/brms/reference/brm.html" class="external-link">brm</a></span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  formula <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/brmsformula.html" class="external-link">brmsformula</a></span><span class="op">(</span></span>
 <span>    <span class="va">P</span> <span class="op">~</span> <span class="fu">tQ_single</span><span class="op">(</span><span class="va">time</span>, <span class="va">kcat</span>, <span class="va">kM</span>, <span class="va">ET</span>, <span class="va">ST</span><span class="op">)</span>,</span>
@@ -336,17 +339,21 @@ call with <code>sample_prior = "only"</code> the argument.</p>
 <span>    <span class="va">stanvars_tQ_single</span><span class="op">)</span>,</span>
 <span>  sample_prior <span class="op">=</span> <span class="st">"only"</span><span class="op">)</span>,</span>
 <span>  <span class="va">brms_params</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-1410319141a6d.stan', line 34, column 2: Declaration</span></span>
-<span><span class="co">##     of arrays by placing brackets after a variable name is deprecated and</span></span>
-<span><span class="co">##     will be removed in Stan 2.33.0. Instead use the array keyword before the</span></span>
-<span><span class="co">##     type. This can be changed automatically using the auto-format flag to</span></span>
-<span><span class="co">##     stanc</span></span></code></pre>
-<pre><code><span><span class="co">## error: PCH file uses an older PCH format that is no longer supported</span></span></code></pre>
-<pre><code><span><span class="co">## Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.</span></span>
-<span><span class="co">## If your model failed to compile please run rebuild_cmdstan().</span></span>
-<span><span class="co">## If the issue persists please open a bug report.</span></span></code></pre>
-<pre><code><span><span class="co">## 1 error generated.</span></span></code></pre>
-<pre><code><span><span class="co">## make[1]: *** [/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-1410319141a6d] Error 1</span></span></code></pre>
+<pre><code><span><span class="co">## Syntax error in '/var/folders/7z/yfz7cw1d0gs8lf1mzdgkv1pw0000gn/T/RtmpsyOm66/model-142534112e1ed.stan', line 34, column 18 to column 19, parsing error:</span></span>
+<span><span class="co">##    -------------------------------------------------</span></span>
+<span><span class="co">##     32:    int M = dims(time)[1];</span></span>
+<span><span class="co">##     33:  </span></span>
+<span><span class="co">##     34:    vector[1] P_ode[M] = ode_bdf(     // Function signature:</span></span>
+<span><span class="co">##                            ^</span></span>
+<span><span class="co">##     35:      tQ_ode,                         // function ode</span></span>
+<span><span class="co">##     36:      initial_state,                  // vector initial_state</span></span>
+<span><span class="co">##    -------------------------------------------------</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ";" expected after variable declaration.</span></span>
+<span><span class="co">## It looks like you are trying to use the old array syntax.</span></span>
+<span><span class="co">## Please use the new syntax:</span></span>
+<span><span class="co">## array[M] vector[1] P_ode;</span></span></code></pre>
+<pre><code><span><span class="co">## make[1]: *** [/var/folders/7z/yfz7cw1d0gs8lf1mzdgkv1pw0000gn/T/RtmpsyOm66/model-142534112e1ed.hpp] Error 1</span></span></code></pre>
 <pre><code><span><span class="co">## Error: An error occured during compilation! See the message above for more information.</span></span></code></pre>
 <p>And to plot, we use <code>tidybayes</code> to gather the draws and
 <code>ggplot2</code> to map them to curves, with the prior as the<span style="color:orange">orange curve</span>, posterior as the <span style="color:blue">blue curve</span>, and the true parameter marked as a
@@ -370,7 +377,7 @@ estimates require varying the enzyme and substrate concentrations.</p>
 replicas, or varying substrate/enzyme concentrations using BRMS. To
 demonstrate, we varying the enzyme and substrate concentrations, to
 better fit the kinematic parameters.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_multiple</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/expand_grid.html" class="external-link">expand_grid</a></span><span class="op">(</span></span>
 <span>  kcat <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  kM <span class="op">=</span>  <span class="fl">5</span>,</span>
@@ -397,7 +404,7 @@ better fit the kinematic parameters.</p>
 plot of chunk data-multiple-plot
 </p>
 </div>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stanvars_tQ_multiple</span> <span class="op">&lt;-</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/stanvar.html" class="external-link">stanvar</a></span><span class="op">(</span>scode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"</span></span>
 <span><span class="st">vector tQ_multiple(</span></span>
 <span><span class="st">  array[] int replica,</span></span>
@@ -427,7 +434,7 @@ plot of chunk data-multiple-plot
 <span><span class="st">  return(P);</span></span>
 <span><span class="st">}"</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span>,</span>
 <span>block <span class="op">=</span> <span class="st">"functions"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_multiple</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span>what <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="va"><a href="https://paul-buerkner.github.io/brms/reference/brm.html" class="external-link">brm</a></span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  formula <span class="op">=</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/brmsformula.html" class="external-link">brmsformula</a></span><span class="op">(</span></span>
 <span>    <span class="va">P</span> <span class="op">~</span> <span class="fu">tQ_multiple</span><span class="op">(</span><span class="va">observation_index</span>, <span class="va">time</span>, <span class="va">kcat</span>, <span class="va">kM</span>, <span class="va">ET</span>, <span class="va">ST</span><span class="op">)</span>,</span>
@@ -444,19 +451,23 @@ plot of chunk data-multiple-plot
 <span>    <span class="va">stanvars_tQ_single</span>,</span>
 <span>    <span class="va">stanvars_tQ_multiple</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  <span class="va">brms_params</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in '/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-141033d27a17.stan', line 34, column 2: Declaration</span></span>
-<span><span class="co">##     of arrays by placing brackets after a variable name is deprecated and</span></span>
-<span><span class="co">##     will be removed in Stan 2.33.0. Instead use the array keyword before the</span></span>
-<span><span class="co">##     type. This can be changed automatically using the auto-format flag to</span></span>
-<span><span class="co">##     stanc</span></span></code></pre>
-<pre><code><span><span class="co">## error: PCH file uses an older PCH format that is no longer supported</span></span></code></pre>
-<pre><code><span><span class="co">## Warning: CmdStan's precompiled header (PCH) files may need to be rebuilt.</span></span>
-<span><span class="co">## If your model failed to compile please run rebuild_cmdstan().</span></span>
-<span><span class="co">## If the issue persists please open a bug report.</span></span></code></pre>
-<pre><code><span><span class="co">## 1 error generated.</span></span></code></pre>
-<pre><code><span><span class="co">## make[1]: *** [/var/folders/w2/kpys2s194q381xp3_knz9bgc0000gs/T/RtmpFnbbA1/model-141033d27a17] Error 1</span></span></code></pre>
+<pre><code><span><span class="co">## Syntax error in '/var/folders/7z/yfz7cw1d0gs8lf1mzdgkv1pw0000gn/T/RtmpsyOm66/model-142532f07ca55.stan', line 34, column 18 to column 19, parsing error:</span></span>
+<span><span class="co">##    -------------------------------------------------</span></span>
+<span><span class="co">##     32:    int M = dims(time)[1];</span></span>
+<span><span class="co">##     33:  </span></span>
+<span><span class="co">##     34:    vector[1] P_ode[M] = ode_bdf(     // Function signature:</span></span>
+<span><span class="co">##                            ^</span></span>
+<span><span class="co">##     35:      tQ_ode,                         // function ode</span></span>
+<span><span class="co">##     36:      initial_state,                  // vector initial_state</span></span>
+<span><span class="co">##    -------------------------------------------------</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ";" expected after variable declaration.</span></span>
+<span><span class="co">## It looks like you are trying to use the old array syntax.</span></span>
+<span><span class="co">## Please use the new syntax:</span></span>
+<span><span class="co">## array[M] vector[1] P_ode;</span></span></code></pre>
+<pre><code><span><span class="co">## make[1]: *** [/var/folders/7z/yfz7cw1d0gs8lf1mzdgkv1pw0000gn/T/RtmpsyOm66/model-142532f07ca55.hpp] Error 1</span></span></code></pre>
 <pre><code><span><span class="co">## Error: An error occured during compilation! See the message above for more information.</span></span></code></pre>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_multiple</span></span></code></pre></div>
 <pre><code><span><span class="co">## Error in eval(expr, envir, enclos): object 'model_multiple' not found</span></span></code></pre>
 <pre><code><span><span class="co">## Error in eval(expr, envir, enclos): object 'model_multiple' not found</span></span></code></pre>

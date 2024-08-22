@@ -56,9 +56,8 @@ distribution of the marginal prior uncertainty.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_prior_posterior_densities</span><span class="op">(</span></span>
 <span>  <span class="va">model</span>,</span>
-<span>  predictors_col_name <span class="op">=</span> <span class="st">"_Intercept"</span>,</span>
-<span>  half_max_label <span class="op">=</span> <span class="st">"ec50"</span>,</span>
 <span>  title_label <span class="op">=</span> <span class="st">"Prior Posterior Density"</span>,</span>
+<span>  exclude_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"__$"</span>, <span class="st">"lprior"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -71,21 +70,12 @@ distribution of the marginal prior uncertainty.</p>
 <dd><p><code>bpfit</code> object resulting from fitting a BayesPharma model</p></dd>
 
 
-<dt id="arg-predictors-col-name">predictors_col_name<a class="anchor" aria-label="anchor" href="#arg-predictors-col-name"></a></dt>
-<dd><p>string expression for predictors column
-in the input data.frame (default = "_Intercept"). Predictors
-are the perturbations tested during the experiment (i.e. Drug,
-Temperature, etc.).</p></dd>
-
-
-<dt id="arg-half-max-label">half_max_label<a class="anchor" aria-label="anchor" href="#arg-half-max-label"></a></dt>
-<dd><p>string of the label for the half maximal that
-fits the type of experiment that was done (i.e. ec50, ic50,
-ed50, id50, ld50, etc.).</p></dd>
-
-
 <dt id="arg-title-label">title_label<a class="anchor" aria-label="anchor" href="#arg-title-label"></a></dt>
 <dd><p>string of the plot title.</p></dd>
+
+
+<dt id="arg-exclude-variables">exclude_variables<a class="anchor" aria-label="anchor" href="#arg-exclude-variables"></a></dt>
+<dd><p><code>string</code> vector of variables to exclude</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -103,8 +93,6 @@ prior</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span>  <span class="fu">plot_prior_posterior_densities</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    model <span class="op">=</span> <span class="va">my_sigmoid_model</span>,</span></span>
-<span class="r-in"><span>    predictors_col_name <span class="op">=</span> <span class="st">"predictors"</span>,</span></span>
-<span class="r-in"><span>    half_max_response <span class="op">=</span> <span class="st">"ic50"</span>,</span></span>
 <span class="r-in"><span>    title_label <span class="op">=</span> <span class="st">"Prior Posterior Density Plots"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
