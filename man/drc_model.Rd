@@ -31,7 +31,7 @@ An object of (S3) class \code{drc} from the \pkg{drc} package.
 \description{
 The Dose Response Curve (\pkg{drc}) package supports regression
 models for sigmoidal and other functional forms. This wrapper sets up
-a similar model to the \link{sigmiod_model}.
+a similar model to the \link{sigmoid_model}.
 }
 \examples{
 \dontrun{

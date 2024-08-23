@@ -32,7 +32,7 @@ differences should be modeled separately?}
 }
 \value{
 a \code{bpformula}, which is a subclass of \link[brms:brmsformula]{brms::brmsformula} and can be
-passed to \code{\link[=sigmoid_model_agonist]{sigmoid_model_agonist()}} or \code{\link[=sigmoid_model_antagonist]{sigmoid_model_antagonist()}}.
+passed to \code{\link[=sigmoid_model]{sigmoid_model()}}.
 }
 \description{
 set-up a sigmoid dose response model formula to define a
@@ -58,5 +58,5 @@ and, \code{bottom} for use in the \link{sigmoid_model} .
 }
 \seealso{
 \link[brms:brmsformula]{brms::brmsformula}, which this function wraps. The resulting
-\code{bpformula} object can be passed into \code{\link[=sigmoid_model_agonist]{sigmoid_model_agonist()}}.
+\code{bpformula} object can be passed into \code{\link[=sigmoid_model]{sigmoid_model()}}.
 }

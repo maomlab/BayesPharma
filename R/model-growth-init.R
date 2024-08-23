@@ -55,7 +55,7 @@ growth_sigmoid_init <- function(
 #'   values range between \[0, Inf\], with 1 being standard sigmoid
 #' @param ... additional parameter initialization. Each named argument should be
 #'   a function that returns an `numeric` `array` of length `1`, see
-#'   [rstan_default_scalar_init()] to use the rstan default init.
+#'   [rstan_default_init()] to use the rstan default init.
 #'
 #' @returns input for `[brm][brms::brm](init = ...)`
 #'

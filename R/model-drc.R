@@ -2,7 +2,7 @@
 #'
 #' @description The Dose Response Curve (\pkg{drc}) package supports regression
 #'  models for sigmoidal and other functional forms. This wrapper sets up
-#'  a similar model to the [sigmiod_model].
+#'  a similar model to the [sigmoid_model].
 #'
 #' @param data `data.frame`
 #' @param formula `formula` formula relating the `response` to the `log_dose`,

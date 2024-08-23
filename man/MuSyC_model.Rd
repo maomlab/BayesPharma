@@ -55,7 +55,7 @@ The functional form is
       logC1, logE1, h1,
       logC2, logE2, h2,
       logE3, logalpha)}
-See \code{\link[=MuSyC]{MuSyC()}} for the full mathematical description of the
+See \code{\link[=MuSyC_robust]{MuSyC_robust()}} for the full mathematical description of the
 \code{MuSyC} function. By default the observed data (and therefore should be
 columns in the input data data.frame) are
 \itemize{

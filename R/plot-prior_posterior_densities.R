@@ -61,7 +61,7 @@ plot_prior_posterior_densities <- function(
             paste0(exclude_variables, collapse = "|"),
             negate = TRUE))) |>
     dplyr::mutate(
-      sample_type = sample_type |> forcats::fct_inorder())
+      sample_type = .data[["sample_type"]] |> forcats::fct_inorder())
 
   
   

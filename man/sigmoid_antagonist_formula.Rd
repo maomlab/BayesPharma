@@ -59,5 +59,5 @@ define a non-linear model or multilevel non-linear model for \code{ic50},
 }
 \seealso{
 \link[brms:brmsformula]{brms::brmsformula}, which this function wraps. The resulting
-\code{bpformula} object can be passed into \code{\link[=sigmoid_model_antagonist]{sigmoid_model_antagonist()}}.
+\code{bpformula} object can be passed into \code{\link[=sigmoid_model]{sigmoid_model()}}.
 }

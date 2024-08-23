@@ -28,7 +28,7 @@ response}
 
 \item{...}{additional parameter initialization. Each named argument should be
 a function that returns an \code{numeric} \code{array} of length \code{1}, see
-\code{\link[=rstan_default_scalar_init]{rstan_default_scalar_init()}} to use the rstan default init.}
+\code{\link[=rstan_default_init]{rstan_default_init()}} to use the rstan default init.}
 }
 \value{
 input for \verb{[brm][brms::brm](init = ...)}

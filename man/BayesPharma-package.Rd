@@ -9,7 +9,7 @@
 The \pkg{BayesPharma} package builds on the \pkg{Stan} and \pkg{brms} to
 provide support for Bayesian regression modeling for foundational
 pharmacology models. For each model type, the user provides
-\itemize{
+\describe{
 \item{\strong{formula}: }{Describing how the model parameters, treatment,
 and optional predictors lead to the measured response using functions
 provided by BayesPharma for each model type.}
@@ -19,7 +19,7 @@ predictors as a \code{data.frame}}
 }
 
 The models that BayesPharma support are
-\itemize{
+\describe{
 \item{\strong{\link{sigmoid_model}}: }{4-parameter Hill equation}
 \item{\strong{\link{MuSyC_model}}: }{Bivariate synergy model with Bliss and
 Loewe interaction models as special cases}

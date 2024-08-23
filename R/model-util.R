@@ -29,9 +29,8 @@ prepare_init <- function(init) {
 #'
 #' @description By default, \pkg{rstan} will initialize parameters uniformly at
 #' random in the range (-2, 2), on the unconstrained scale. Description of how
-#' stan transforms parameters to satisfy constraints is described in the stan
-#' documentation
-#' [https://mc-stan.org/docs/reference-manual/variable-transforms.html]
+#' stan transforms parameters to satisfy constraints is described in the
+#' [stan documentation](https://mc-stan.org/docs/reference-manual/variable-transforms.html)
 #'
 #' This helper is especially useful for running models using the \pkg{cmdstanr}
 #' backend, which requires all parameters (including distributional) parameters

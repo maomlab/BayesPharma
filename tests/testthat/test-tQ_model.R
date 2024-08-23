@@ -8,7 +8,7 @@ testthat::test_that("tQ_model", {
     as.data.frame() |>
     dplyr::rename(P_true = 2) |>
     dplyr::mutate(
-      series_index = 1,
+      series_index = 1L,
       P = rnorm(dplyr::n(), P_true, 0.5), # add some observational noise
       ST = 10, ET = 10)
 

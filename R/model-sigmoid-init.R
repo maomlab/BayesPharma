@@ -67,7 +67,7 @@ sigmoid_agonist_init <- function(
 #'   response
 #' @param ... additional parameter initialization. Each named argument should be
 #'   a function that returns an `numeric` `array` of length `1`, see
-#'   [rstan_default_scalar_init()] to use the rstan default init.
+#'   [rstan_default_init()] to use the rstan default init.
 #' @returns input for `[brm][brms::brm](init = ...)`
 #'
 #' @seealso [sigmoid_antagonist_formula()], [sigmoid_antagonist_prior()], and
