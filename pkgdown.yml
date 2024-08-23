@@ -10,7 +10,7 @@ articles:
   derive_MuSyC_model: derive_MuSyC_model.html
   derive_tQ_model: derive_tQ_model.html
   implement_tidymodels: implement_tidymodels.html
-last_built: 2024-08-22T18:49Z
+last_built: 2024-08-23T01:44Z
 urls:
   reference: https://maomlab.github.io/BayesPharma/reference
   article: https://maomlab.github.io/BayesPharma/articles
